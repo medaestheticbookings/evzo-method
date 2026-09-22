@@ -1,0 +1,701 @@
+/* EVZO — site styles
+ * Tokens below are copied verbatim from tools/slide.css, which is the brand
+ * source of truth for the carousels. Do not change a value here in isolation:
+ * change it in slide.css and mirror it, or the feed and the site drift apart.
+ * Deliberately single-theme — EVZO is a dark identity — so every colour is
+ * painted explicitly and nothing inherits the host ground.
+ * ========================================================================= */
+
+:root{
+  --ground:#0B1220;
+  --raised:#141C2C;
+  --raised-2:#1B2436;
+  --bone:#FFFFFF;
+  --bone-dim:#C8CEDA;
+  --muted:#7A849A;
+  --yellow:#FFE14D;
+  --yellow-deep:#C9AE33;
+  --ink:#06101B;
+  --line:rgba(255,255,255,.16);
+  --line-soft:rgba(255,255,255,.08);
+  --warn:#FF8A6B;
+
+  --display:"Anton","Arial Narrow",sans-serif;
+  --body:"Commissioner",system-ui,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,monospace;
+
+  --pad:20px;
+  --header-h:64px;
+
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--bone);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* Anton carries no Greek glyphs — Greek headlines fall back to Commissioner
+   800, exactly as tools/slide.css does for the carousels. */
+body.gr h1,body.gr h2,body.gr h3,body.gr .h{
+  font-family:var(--body);
+  font-weight:800;
+  letter-spacing:-.01em;
+  line-height:1.12;
+  text-transform:none;
+}
+
+.wrap{max-width:1080px;margin:0 auto;padding-inline:var(--pad)}
+
+/* ---------- shared atoms ---------- */
+.label{
+  font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);display:block;
+}
+.pill{
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  background:var(--yellow);color:var(--ink);padding:6px 12px 5px;display:inline-block;
+}
+.num{font-variant-numeric:tabular-nums}
+mark{background:var(--yellow);color:var(--ink);padding:1px 6px;font-weight:600}
+
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,6.4vw,58px);line-height:1;text-transform:uppercase}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4.8vw,40px);line-height:1.02;text-transform:uppercase}
+h3{font-family:var(--display);font-weight:400;font-size:clamp(20px,3vw,25px);line-height:1.06;text-transform:uppercase}
+
+section{padding-block:clamp(44px,7vw,72px)}
+section > .wrap > .label{margin-bottom:12px}
+.lede{max-width:62ch;color:var(--bone-dim);margin:16px 0 0}
+
+/* Buttons. .btn is the one primary action; .btn-ghost is everything else. */
+.btn,.btn-ghost{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:48px;padding:13px 26px;
+  font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:500;cursor:pointer;text-decoration:none;text-align:center;
+  border:1px solid var(--yellow);background:var(--yellow);color:var(--ink);
+}
+.btn:hover{background:#fff;border-color:#fff}
+.btn-ghost{background:transparent;color:var(--bone);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--yellow);color:var(--yellow)}
+.btn[disabled],.btn-ghost[disabled]{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.btn-ghost:focus-visible,a:focus-visible,button:focus-visible,
+input:focus-visible,select:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+.panel{background:var(--raised);padding:clamp(22px,3.4vw,32px)}
+
+/* ---------- sticky header ---------- */
+.mast{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:60;
+  background:rgba(11,18,32,.94);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.mast-in{
+  max-width:1080px;margin:0 auto;padding-inline:var(--pad);
+  min-height:var(--header-h);
+  display:flex;align-items:center;gap:14px;
+}
+/* The logo: the stacked EVZO wordmark, unchanged. Never restyle this rule. */
+.mast .mark{font-family:var(--display);font-size:28px;letter-spacing:.03em;line-height:1;color:var(--bone)}
+/* Two-tone wordmark, matching the @evzo_method profile photo: EV yellow,
+   ZO white. Applies wherever .mark is used, header and footer alike. */
+/* The wordmark is the supplied logo artwork (Archivo Black, outlined), not
+   type set in the display face — those are different letterforms. */
+.mast .mark{display:flex;align-items:center;flex:none}
+.mast .mark img{display:block;height:28px;width:auto}
+@media (max-width:420px){ .mast .mark img{height:22px} }
+.mark-img{display:block;height:24px;width:auto}
+.mast .spacer{flex:1}
+.mast .nav{display:none;gap:22px}
+.mast .nav a{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+}
+.mast .nav a:hover{color:var(--yellow)}
+.mast .btn{min-height:44px;padding:10px 18px;font-size:12px}
+@media (min-width:860px){ .mast .nav{display:flex} }
+@media (max-width:420px){
+  .mast .btn{padding:10px 12px;font-size:11.5px;letter-spacing:.06em}
+  .mast .mark{font-size:24px}
+}
+
+.lang{display:flex;flex:none}
+.lang button{
+  background:transparent;border:1px solid var(--line);color:var(--muted);
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;
+  min-height:44px;padding:0 11px;cursor:pointer;
+}
+.lang button + button{border-left:none}
+.lang button[aria-pressed="true"]{background:var(--yellow);border-color:var(--yellow);color:var(--ink);font-weight:500}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(38px,6vw,68px) clamp(30px,4vw,44px)}
+.hero h1{margin-bottom:18px}
+.hero .sub{max-width:54ch;color:var(--bone-dim);font-size:clamp(16px,2.2vw,19px);margin:0 0 26px}
+.hero .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.trust{
+  display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+.trust span{display:flex;align-items:center;gap:8px}
+.trust span::before{content:"";width:5px;height:5px;background:var(--yellow);flex:none}
+
+/* Scope statement. Never shrink or dim this below these values. */
+.scope{
+  margin-top:24px;border-left:3px solid var(--yellow);padding:12px 0 12px 16px;
+  color:var(--bone-dim);font-size:15px;line-height:1.5;max-width:64ch;
+}
+.scope strong{color:var(--bone)}
+
+/* ---------- goal cards ---------- */
+/* 210px, not 240: at 768 (iPad portrait) three cards fit on one row instead
+   of leaving the third orphaned under the other two. */
+/* One column on a phone, then all three side by side. Deliberately NOT
+   auto-fit: with three cards auto-fit drops to 2 + 1 on mid-width windows,
+   and an orphaned third card looks broken rather than responsive. */
+.goals{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:680px){ .goals{grid-template-columns:repeat(3,1fr)} }
+.goal{
+  background:var(--raised);border:1px solid var(--line-soft);border-top:3px solid transparent;
+  padding:24px 22px;text-align:left;cursor:pointer;color:var(--bone);
+  font-family:var(--body);display:flex;flex-direction:column;gap:10px;min-height:150px;
+}
+.goal .h{font-family:var(--display);font-size:24px;line-height:1.05;text-transform:uppercase}
+.goal p{margin:0;color:var(--bone-dim);font-size:15px;line-height:1.5}
+.goal:hover{border-color:var(--line)}
+.goal[aria-pressed="true"]{border-top-color:var(--yellow);background:var(--raised-2)}
+.goal[aria-pressed="true"] .h{color:var(--yellow)}
+.goal .tick{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-top:auto;
+}
+.goal[aria-pressed="true"] .tick{color:var(--yellow)}
+
+/* ---------- assessment stepper ---------- */
+.step-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.bar{height:4px;background:var(--raised-2);margin-bottom:26px}
+.bar > i{display:block;height:100%;background:var(--yellow);transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){ .bar > i{transition:none} }
+
+.step{display:none}
+.step.on{display:block}
+.step legend,.step .q{
+  font-family:var(--display);font-size:clamp(21px,3.4vw,27px);line-height:1.08;
+  text-transform:uppercase;margin:0 0 8px;padding:0;
+}
+body.gr .step legend,body.gr .step .q{font-family:var(--body);font-weight:800;text-transform:none}
+.step .hint{color:var(--muted);font-size:14.5px;margin:0 0 20px;max-width:52ch}
+.step fieldset{border:0;padding:0;margin:0}
+
+.in-unit{display:flex;align-items:stretch;min-width:0}
+.in-unit input{flex:1;min-width:0}
+.in-unit .sfx{
+  display:flex;align-items:center;padding:0 12px;background:var(--raised-2);
+  border:1px solid var(--line-soft);border-left:none;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+.in-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:0}
+
+input[type=number],input[type=text],input[type=email],select{
+  width:100%;min-height:50px;background:var(--raised-2);border:1px solid var(--line-soft);
+  color:var(--bone);font-family:var(--body);font-size:17px;font-weight:500;
+  padding:12px 14px;border-radius:0;appearance:none;
+}
+input::placeholder{color:var(--muted)}
+select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
+                   linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 19px) 22px,calc(100% - 13px) 22px;
+  background-size:6px 6px,6px 6px;background-repeat:no-repeat;
+}
+.field{margin-bottom:20px}
+.field > .label{margin-bottom:9px}
+
+.seg{display:flex;flex-wrap:wrap;gap:0}
+.seg button{
+  flex:1 1 90px;min-height:50px;background:var(--raised-2);border:1px solid var(--line-soft);
+  color:var(--bone-dim);font-family:var(--mono);font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;padding:12px 6px;cursor:pointer;
+}
+.seg button + button{border-left:none}
+.seg button[aria-pressed="true"]{background:var(--yellow);color:var(--ink);border-color:var(--yellow);font-weight:500}
+
+.opts{display:grid;gap:10px}
+.opt{
+  display:flex;align-items:flex-start;gap:13px;background:var(--raised-2);
+  border:1px solid var(--line-soft);padding:15px 16px;cursor:pointer;text-align:left;
+  color:var(--bone);font-family:var(--body);font-size:16px;min-height:52px;
+}
+.opt:hover{border-color:var(--line)}
+.opt[aria-pressed="true"]{border-color:var(--yellow);background:var(--raised)}
+.opt .box{
+  width:18px;height:18px;border:1px solid var(--muted);flex:none;margin-top:3px;position:relative;
+}
+.opt[aria-pressed="true"] .box{background:var(--yellow);border-color:var(--yellow)}
+.opt[aria-pressed="true"] .box::after{
+  content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;
+  border:solid var(--ink);border-width:0 2px 2px 0;transform:rotate(45deg);
+}
+.opt .t{display:block}
+.opt .d{display:block;color:var(--muted);font-size:14px;margin-top:3px;line-height:1.45}
+
+/* Food picker — the same control as .opt, packed tight, because twenty-seven
+   of them stacked full width would turn one question into a scroll marathon. */
+.foods{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:8px}
+.foods .opt{padding:10px 12px;min-height:44px;font-size:15px;gap:10px;align-items:center}
+.foods .opt .box{margin-top:0}
+.foods .opt[hidden]{display:none}
+.food-group{margin:20px 0 8px}
+.food-group:first-of-type{margin-top:4px}
+@media (max-width:520px){ .foods{grid-template-columns:1fr 1fr} }
+
+.nav-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;align-items:center}
+.nav-row .btn{flex:1 1 180px}
+.nav-row .btn-ghost{flex:0 0 auto}
+
+.err{margin:10px 0 0;font-size:14.5px;color:var(--warn);line-height:1.5}
+.note{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:8px 0 0}
+
+/* ---------- result ---------- */
+.result-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:820px){ .result-grid{grid-template-columns:1fr} }
+
+.range{font-family:var(--display);font-size:clamp(38px,8vw,64px);line-height:.92;color:var(--yellow);display:block}
+.range-cap{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:14px;display:block}
+.estimate-note{color:var(--bone-dim);font-size:15px;line-height:1.55;margin:18px 0 0}
+
+.stack{display:flex;height:20px;margin:22px 0 12px;overflow:hidden}
+.stack span{display:block;height:100%}
+.s-pro{background:var(--yellow)}.s-car{background:var(--yellow-deep)}.s-fat{background:var(--muted)}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
+.macro{background:var(--raised);padding:15px 13px}
+.macro .key{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.macro .key i{width:8px;height:8px;display:block;flex:none}
+.macro .g{font-family:var(--display);font-size:30px;line-height:1.05;display:block;margin-top:6px}
+
+.readout{margin-top:20px;border-top:1px solid var(--line-soft);padding-top:16px;display:flex;flex-direction:column;gap:11px}
+.line{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.line .k{font-size:15px;color:var(--bone-dim)}
+.line .v{font-family:var(--mono);font-size:14.5px;color:var(--yellow);white-space:nowrap}
+
+/* Locked preview of the paid guide */
+.locked{position:relative;background:var(--raised-2);border:1px solid var(--line-soft);overflow:hidden}
+.locked .sheet{padding:24px 22px;filter:blur(3px);opacity:.5;pointer-events:none;user-select:none}
+.locked .sheet .row{height:9px;background:var(--muted);opacity:.5;margin-bottom:9px}
+.locked .sheet .row.s{width:55%}.locked .sheet .row.m{width:78%}
+.locked .sheet h4{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--yellow);margin:18px 0 10px}
+.locked .veil{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;gap:10px;text-align:center;padding:24px;
+  background:linear-gradient(to bottom,rgba(11,18,32,.5),rgba(11,18,32,.93));
+}
+.locked .veil .lock{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow)}
+.locked .veil p{margin:0;color:var(--bone-dim);font-size:15px;max-width:34ch}
+
+/* excluded-user panel */
+.excluded{border-top:3px solid var(--warn)}
+.excluded h3{color:var(--warn)}
+.excluded ul{margin:14px 0 0;padding-left:18px;color:var(--bone-dim);font-size:15.5px;line-height:1.6}
+
+/* ---------- steps / receive / suitability ---------- */
+.steps3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;counter-reset:s}
+.s3{border-top:1px solid var(--line);padding-top:18px}
+.s3 .n{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--yellow);display:block;margin-bottom:10px}
+.s3 h3{font-size:21px;margin-bottom:8px}
+.s3 p{margin:0;color:var(--bone-dim);font-size:15.5px;line-height:1.55}
+
+.receive{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:26px;align-items:start}
+@media (max-width:820px){ .receive{grid-template-columns:1fr} }
+.receive ul{margin:0;padding:0;list-style:none;display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
+.receive li{background:var(--raised);padding:15px 18px;display:flex;gap:13px;align-items:flex-start;font-size:15.5px;color:var(--bone-dim)}
+.receive li::before{content:"";width:7px;height:7px;background:var(--yellow);flex:none;margin-top:8px}
+
+/* Representative mock-up of the deliverable — not real nutritional content. */
+.mock{background:var(--raised-2);border:1px solid var(--line);padding:22px 20px}
+.mock .cap{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:14px;display:block}
+.mock .doc{background:var(--ground);padding:18px;border:1px solid var(--line-soft)}
+.mock .doc .hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line-soft);padding-bottom:10px;margin-bottom:14px}
+.mock .doc .hd b{font-family:var(--display);font-size:17px;letter-spacing:.03em;font-weight:400}
+.mock .doc .hd span{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted)}
+.mock .doc .ln{height:8px;background:var(--muted);opacity:.32;margin-bottom:8px}
+.mock .doc .ln.a{width:90%}.mock .doc .ln.b{width:66%}.mock .doc .ln.c{width:78%}
+.mock .doc .tag{display:inline-block;background:var(--yellow);color:var(--ink);font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;padding:3px 8px;margin-bottom:12px}
+
+.fit{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.fit-card{background:var(--raised);padding:24px 22px;border-top:3px solid var(--yellow)}
+.fit-card.no{border-top-color:var(--warn)}
+.fit-card h3{font-size:20px;margin-bottom:14px}
+.fit-card.no h3{color:var(--warn)}
+.fit-card ul{margin:0;padding-left:18px;color:var(--bone-dim);font-size:15.5px;line-height:1.62}
+.fit-card li{margin-bottom:5px}
+
+/* ---------- pricing ---------- */
+.price-card{background:var(--raised);border-top:3px solid var(--yellow);padding:clamp(24px,3.6vw,34px);max-width:560px}
+.price-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.price{font-family:var(--display);font-size:clamp(46px,9vw,62px);line-height:.9;color:var(--yellow)}
+.price-sub{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px;display:block}
+.price-card ul{margin:22px 0;padding-left:18px;color:var(--bone-dim);font-size:15.5px;line-height:1.65}
+.price-card .btn{width:100%}
+
+.bump{margin-top:18px;border:1px dashed var(--line);padding:16px}
+.bump .opt{background:transparent;border:0;padding:0;min-height:0}
+.bump .bp{font-family:var(--mono);font-size:12px;color:var(--yellow);letter-spacing:.08em}
+
+.consent{display:grid;gap:10px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line-soft)}
+.consent .opt{background:var(--raised-2)}
+.consent .opt .d{margin-top:5px}
+
+.unset{
+  display:inline-block;background:var(--warn);color:var(--ink);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;font-weight:600;
+}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);max-width:820px}
+.faq details{background:var(--raised)}
+.faq summary{
+  cursor:pointer;padding:17px 20px;font-weight:600;font-size:16px;list-style:none;
+  display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:52px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--yellow);font-family:var(--mono);font-size:19px;line-height:1}
+.faq details[open] summary::after{content:"\2212"}
+.faq .a{padding:0 20px 19px;color:var(--bone-dim);font-size:15.5px;line-height:1.6;margin:0;max-width:66ch}
+
+/* ---------- final CTA / footer ---------- */
+.final{text-align:center}
+.final h2{margin-bottom:16px}
+.final .lede{margin-inline:auto;text-align:center}
+.final .btn{margin-top:26px;min-width:260px}
+
+footer{border-top:1px solid var(--line-soft);padding-block:34px 44px;margin-top:20px}
+.foot-grid{display:flex;flex-wrap:wrap;gap:26px;justify-content:space-between}
+.foot-links{display:flex;flex-wrap:wrap;gap:8px 20px}
+.foot-links a{
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+}
+.foot-links a:hover{color:var(--yellow)}
+.legal{margin-top:24px;color:var(--bone-dim);font-size:14px;line-height:1.6;max-width:78ch}
+.legal strong{color:var(--bone)}
+
+/* ---------- utility ---------- */
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{
+  position:absolute;left:-9999px;top:0;background:var(--yellow);color:var(--ink);
+  padding:12px 18px;font-family:var(--mono);font-size:12px;z-index:100;
+}
+.skip:focus{left:0}
+
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+@media (max-width:420px){
+  .in-pair{grid-template-columns:1fr}
+  .macros{grid-template-columns:1fr}
+  .nav-row .btn,.nav-row .btn-ghost{flex:1 1 100%}
+}
+
+/* ===========================================================================
+   CENTRED READING COLUMN
+   The page is centred as a symmetrical column. Headings, ledes and CTAs are
+   centre-aligned; anything that is a paragraph of real length, a form field or
+   a list stays left-aligned inside its block, because a ragged left edge is
+   genuinely harder to read. Centre the block, not the sentence.
+   ========================================================================== */
+
+.wrap{max-width:940px}
+
+/* Centre the top-level rhythm of every section */
+section > .wrap{text-align:center}
+section > .wrap > .label{text-align:center}
+.lede{margin-inline:auto;text-align:center}
+.hero .sub{margin-inline:auto;text-align:center}
+.hero .cta-row{justify-content:center}
+.trust{justify-content:center}
+
+/* Scope statement: centred block. The left rule became a top rule so the
+   text can centre without looking pinned to an edge. */
+.scope{
+  margin-inline:auto;text-align:center;
+  border-left:0;border-top:3px solid var(--yellow);
+  padding:16px 0 0;
+}
+
+/* Restore left alignment wherever real reading happens */
+.goal,
+.s3,
+.fit-card,
+.receive li,
+.receive ul,
+.mock,
+.faq,
+.faq summary,
+.faq .a,
+.price-card,
+.price-card ul,
+.consent,
+.step,
+.step-head,
+.readout,
+.macro,
+.locked .sheet,
+.excluded,
+.foot-grid{text-align:left}
+
+/* Centre the constrained blocks themselves */
+.faq{margin-inline:auto}
+.price-card{margin-inline:auto}
+.panel{margin-inline:auto}
+.locked .veil{text-align:center}
+.excluded .lede{text-align:left;margin-inline:0}
+.excluded ul{text-align:left}
+
+/* Grids: centre the row when it does not fill the width */
+.goals,.steps3,.fit{justify-content:center}
+
+/* The assessment panel reads as a centred card with left-aligned innards */
+#assessment .panel{max-width:680px}
+#assessment .step legend,
+#assessment .step .hint{text-align:left}
+#assessment .nav-row{justify-content:flex-start}
+
+/* Result: two centred columns, content left-aligned inside */
+.result-grid{max-width:900px;margin-inline:auto}
+.result-grid .panel{text-align:left}
+.result-grid .range,
+.result-grid .range-cap{text-align:left}
+
+/* Receive block centred as a pair */
+.receive{max-width:900px;margin-inline:auto}
+
+/* Footer stays a centred column */
+footer .wrap{text-align:center}
+.foot-grid{justify-content:center;text-align:center}
+.foot-links{justify-content:center}
+.legal{margin-inline:auto;text-align:center}
+
+@media (max-width:820px){
+  .foot-grid{flex-direction:column;align-items:center}
+}
+
+/* ===========================================================================
+   VERTICAL RHYTHM
+   Sections were 72px top + 72px bottom, which put 150-250px of dead navy
+   between every block. Tightened to a deliberate scale: roughly 100px between
+   sections on desktop, 70 on mobile, so the page reads as continuous rather
+   than as a stack of islands.
+   ========================================================================== */
+
+section{padding-block:clamp(34px,4.4vw,50px)}
+.hero{padding-block:clamp(28px,4vw,46px) clamp(20px,2.6vw,30px)}
+footer{padding-block:30px 40px;margin-top:0}
+
+/* Headings sat too far from the copy under them */
+section > .wrap > .label{margin-bottom:8px}
+.lede{margin-top:12px}
+.hero .sub{margin-bottom:22px}
+.scope{margin-top:20px}
+
+/* The locked preview was shorter than the panel beside it, leaving the
+   section's own box hanging open below it. Both columns now fill the row. */
+.result-grid{align-items:stretch}
+.result-grid > div:last-child{display:flex;flex-direction:column}
+.result-grid > div:last-child .locked{flex:1;min-height:300px}
+.result-grid > div:last-child .note{margin-top:10px}
+
+/* Trailing elements inside sections were adding a second gap on top of the
+   section padding */
+section > .wrap > *:last-child{margin-bottom:0}
+.faq details:last-child{margin-bottom:0}
+.receive,.fit,.goals,.steps3{margin-top:22px}
+
+/* Equal-height cards. Unequal columns left a ragged bottom edge and read as
+   an accidental gap before the next section. */
+.goals,.fit,.receive,.steps3{align-items:stretch}
+.goal,.fit-card,.s3{height:100%}
+.receive > *{min-height:100%}
+.receive ul{height:100%;align-content:start}
+.mock{display:flex;flex-direction:column}
+.mock .doc{flex:1}
+
+/* Instagram link in the header. Inline SVG so nothing is fetched and the
+   glyph inherits the brand colour rather than arriving pre-coloured. */
+.mast .ig{
+  display:flex;align-items:center;justify-content:center;
+  min-width:44px;min-height:44px;flex:none;
+  color:var(--muted);text-decoration:none;
+  border:1px solid transparent;
+}
+.mast .ig:hover,.mast .ig:focus-visible{color:var(--yellow);border-color:var(--line)}
+@media (max-width:420px){
+  /* At phone width the row is tight: keep the icon, trim the padding. */
+  .mast-in{gap:8px}
+  .mast .ig{min-width:38px}
+}
+
+/* Phone header: logo + Instagram + language + CTA on one row. The CTA must
+   not wrap — a two-line button doubles the header height and pushes the hero
+   off the first screen. */
+@media (max-width:460px){
+  .mast-in{gap:6px}
+  .mast .mark{font-size:22px}
+  .mast .ig{min-width:36px}
+  .mast .ig svg{width:19px;height:19px}
+  .lang button{padding:0 8px;font-size:11px;letter-spacing:.06em}
+  .mast .btn{
+    white-space:nowrap;
+    padding:10px 11px;font-size:11px;letter-spacing:.04em;
+  }
+}
+
+/* Launch pricing. Uses the existing tokens and faces only — Anton for the
+   figure, Roboto Mono for the labels, yellow accent, muted for the old price. */
+.price-block{display:flex;flex-direction:column;align-items:flex-end;gap:7px;text-align:right}
+.price-badge{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--yellow);color:var(--ink);padding:4px 9px;font-weight:500;
+}
+.price-pair{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.price-was{
+  font-family:var(--display);font-size:clamp(22px,3.4vw,30px);line-height:1;
+  color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px;
+}
+.price-ends{
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  color:var(--muted);line-height:1.5;max-width:26ch;
+}
+.p-delivery-note{
+  margin:14px 0 0;color:var(--bone-dim);font-size:15px;line-height:1.55;
+  padding-top:14px;border-top:1px solid var(--line-soft);
+}
+.reassure{
+  margin:12px 0 0;text-align:center;
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);line-height:1.6;
+}
+@media (max-width:560px){
+  .price-top{flex-direction:column}
+  .price-block{align-items:flex-start;text-align:left}
+  .price-pair{justify-content:flex-start}
+  .price-ends{max-width:none}
+}
+
+/* Anchor targets sat under the sticky header when jumped to from the nav or
+   the footer policy links. */
+section,footer,.faq details{scroll-margin-top:calc(var(--header-h) + 16px)}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+
+/* Contact address. Yellow like every other link in the brand, and allowed to
+   break mid-address on a narrow phone rather than forcing a sideways scroll. */
+a.mail{color:var(--yellow);text-decoration:underline;text-underline-offset:3px;word-break:break-word}
+a.mail:hover{color:#fff}
+a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
+.contact-line{
+  margin:20px 0 0;color:var(--bone-dim);font-size:15.5px;line-height:1.6;
+}
+
+
+/* ---- phones ---------------------------------------------------------------
+   Checked on a real 390x844 viewport at 3x. Everything below is a problem seen
+   on that screen, not a precaution. */
+@media (max-width:520px){
+  /* Two hero buttons of different widths (184px and 222px) read as a mistake
+     once they stack. One tap target per line, same width. */
+  .hero .cta-row{flex-direction:column;align-items:stretch}
+  .hero .cta-row .btn,.hero .cta-row .btn-ghost{width:100%;text-align:center}
+
+  /* The three cues wrapped into a ragged 3-2-1 shape. One centred column. */
+  .trust{flex-direction:column;align-items:center;gap:9px}
+
+  /* Footer links were 19px tall, well under the 44px minimum tap target. */
+  .foot-links{gap:0 18px}
+  .foot-links a{display:inline-flex;align-items:center;min-height:44px}
+
+  /* The header must hold logo, language and the CTA. The Instagram icon is the
+     one item repeated in the footer, so it yields the space. */
+  .mast .ig{display:none}
+  .mast-in{gap:10px}
+
+  /* A long centred paragraph is harder to read in a narrow column. */
+  .hero .sub{text-align:left;font-size:17px}
+}
+
+
+/* ---- reviews --------------------------------------------------------------
+   Renders only when real entries exist. Each card carries a photo the customer
+   supplied, their words, their first name and a short context line — the three
+   things that make a review readable rather than decorative. */
+.reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.review {
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--raised); border: 1px solid var(--line-soft); padding: 18px 20px;
+}
+.review .stars { color: var(--yellow); letter-spacing: 3px; font-size: 13px; line-height: 1; }
+.review blockquote {
+  margin: 0; font-size: 16px; line-height: 1.55; color: var(--bone);
+}
+.review blockquote::before { content: "\201C"; }
+.review blockquote::after { content: "\201D"; }
+.review .who { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+.review .who img {
+  width: 44px; height: 44px; object-fit: cover; flex: none; border: 1px solid var(--line);
+}
+.review .who b { display: block; font-size: 14px; font-weight: 600; }
+.review .who span {
+  display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); margin-top: 3px;
+}
+.review .verified {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--good); border: 1px solid var(--good); padding: 3px 7px; align-self: flex-start;
+}
+.sample-banner {
+  background: var(--warn); color: var(--ink); font-family: var(--mono); font-size: 12px;
+  letter-spacing: .1em; text-transform: uppercase; padding: 10px 14px; margin-bottom: 16px;
+}
+
+
+/* ---- reviews --------------------------------------------------------------
+   Renders only when real entries exist. Each card carries a photo the customer
+   supplied, their words, their first name and a short context line — the three
+   things that make a review readable rather than decorative. */
+.reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.review {
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--raised); border: 1px solid var(--line-soft); padding: 18px 20px;
+}
+.review .stars { color: var(--yellow); letter-spacing: 3px; font-size: 13px; line-height: 1; }
+.review blockquote {
+  margin: 0; font-size: 16px; line-height: 1.55; color: var(--bone);
+}
+.review blockquote::before { content: "\201C"; }
+.review blockquote::after { content: "\201D"; }
+.review .who { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+.review .who img {
+  width: 44px; height: 44px; object-fit: cover; flex: none; border: 1px solid var(--line);
+}
+.review .who b { display: block; font-size: 14px; font-weight: 600; }
+.review .who span {
+  display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); margin-top: 3px;
+}
+.review .verified {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--good); border: 1px solid var(--good); padding: 3px 7px; align-self: flex-start;
+}
+.sample-banner {
+  background: var(--warn); color: var(--ink); font-family: var(--mono); font-size: 12px;
+  letter-spacing: .1em; text-transform: uppercase; padding: 10px 14px; margin-bottom: 16px;
+}

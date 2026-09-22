@@ -1,0 +1,199 @@
+/* EVZO — the home page's new sections
+   =========================================================================
+   Only the sections added when the page was restructured. Deliberately a
+   separate file from shop.css: that one resets `section` padding globally,
+   which would move every existing block on the sales page.
+
+   Everything here uses the same tokens as evzo.css, so a palette change still
+   carries, and every class name is new — nothing already on the page is
+   restyled from this file.
+   ====================================================================== */
+
+/* ---- the stats band ---------------------------------------------------- */
+.statband { background: var(--raised); padding-block: clamp(26px, 4vw, 40px); }
+.stats {
+  display: grid; gap: 1px; background: var(--raised-2);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: 1px solid var(--raised-2);
+}
+.stats > div { background: var(--raised); padding: 18px 16px; text-align: center; }
+.stats b {
+  display: block; font-family: var(--display); font-size: clamp(26px, 4.4vw, 38px);
+  line-height: 1; color: var(--yellow); font-weight: 400;
+}
+.stats span {
+  display: block; margin-top: 7px; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+.statband .note { text-align: center; margin: 14px auto 0; max-width: 62ch; }
+
+/* ---- a feature block, image beside text -------------------------------- */
+.feature { display: grid; gap: clamp(22px, 4vw, 48px); align-items: center; }
+@media (min-width: 900px) {
+  .feature { grid-template-columns: 1fr 1fr; }
+  .feature.flip .feature-art { order: 2; }
+}
+.feature-copy { text-align: left; }
+.feature-copy h2 { margin: 6px 0 14px; }
+.feature-copy p { color: var(--bone-dim); max-width: 54ch; margin: 0 0 14px; line-height: 1.6; }
+.feature-list { list-style: none; margin: 18px 0 22px; padding: 0; }
+.feature-list li {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 11px 0; border-top: 1px solid var(--raised-2); color: var(--bone-dim);
+  font-size: 15.5px; line-height: 1.5; text-align: left;
+}
+.feature-list li:last-child { border-bottom: 1px solid var(--raised-2); }
+.feature-list li::before {
+  content: ""; width: 6px; height: 6px; background: var(--yellow);
+  margin-top: 8px; flex: none;
+}
+.feature-list b { color: var(--bone); font-weight: 600; }
+
+/* A phone-shaped frame around a real screenshot. No mockup, no device chrome
+   pretending to be an iPhone — just a bezel so the screen reads as a screen. */
+.shots { display: flex; justify-content: center; gap: clamp(10px, 2vw, 18px); }
+.shot {
+  background: var(--ink); border: 1px solid var(--line); border-radius: 22px;
+  padding: 8px; flex: 0 1 220px; max-width: 220px;
+}
+.shot img { display: block; width: 100%; height: auto; border-radius: 15px; }
+.shot:nth-child(2) { display: none; }
+@media (min-width: 560px) { .shot:nth-child(2) { display: block; } }
+@media (min-width: 1100px) { .shot { flex-basis: 230px; max-width: 230px; } }
+
+/* ---- the free-content row ---------------------------------------------- */
+.linkcards {
+  display: grid; gap: 12px; margin-top: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.linkcard {
+  display: flex; flex-direction: column; text-align: left; text-decoration: none;
+  background: var(--raised); border-top: 2px solid var(--raised-2);
+  padding: 20px; color: inherit;
+}
+.linkcard:hover { border-top-color: var(--yellow); }
+.linkcard h3 { font-size: 18px; margin: 9px 0 7px; }
+.linkcard p { margin: 0; color: var(--bone-dim); font-size: 14.5px; line-height: 1.5; }
+.linkcard .go {
+  margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--yellow);
+}
+
+/* ---- reviews ------------------------------------------------------------ */
+.rating-summary {
+  display: flex; flex-wrap: wrap; gap: 18px 34px; align-items: center;
+  justify-content: center; margin-bottom: 26px;
+}
+.rating-big {
+  font-family: var(--display); font-size: 52px; line-height: 1; color: var(--yellow);
+}
+.rating-meta { text-align: left; }
+.rating-meta .stars { color: var(--yellow); font-size: 19px; letter-spacing: 3px; }
+.rating-meta span { display: block; color: var(--muted); font-size: 13.5px; margin-top: 5px; }
+
+.reviews {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+}
+.review {
+  display: flex; flex-direction: column; text-align: left;
+  background: var(--raised); border-top: 2px solid var(--yellow); padding: 22px 20px;
+}
+.review .verified {
+  align-self: flex-start; font-family: var(--mono); font-size: 10px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink);
+  background: var(--yellow); padding: 4px 8px; margin-bottom: 12px;
+}
+.review .stars { color: var(--yellow); font-size: 15px; letter-spacing: 2px; }
+.review blockquote {
+  margin: 11px 0 0; font-size: 16px; line-height: 1.6; color: var(--bone);
+}
+.review .who {
+  display: flex; align-items: center; gap: 12px; margin-top: auto;
+  padding-top: 16px; border-top: 1px solid var(--raised-2);
+}
+.review .who { margin-top: 18px; }
+.review .who img {
+  width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex: none;
+}
+.review .who b { display: block; font-size: 15px; }
+.review .who span { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+/* The empty state. It is not hidden from the owner — it is hidden from
+   visitors, and the page simply does not render the section at all until
+   config.testimonials has a real entry in it. */
+
+/* ---- the email capture -------------------------------------------------- */
+.signup {
+  background: var(--raised); border-left: 2px solid var(--yellow);
+  padding: clamp(22px, 3.4vw, 34px); text-align: left;
+}
+.signup h2 { margin: 6px 0 10px; }
+.signup p { color: var(--bone-dim); max-width: 58ch; margin: 0 0 18px; }
+.signup-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.signup-row input {
+  flex: 1 1 240px; min-width: 0; background: var(--ground);
+  border: 1px solid var(--line); color: var(--bone);
+  padding: 13px 15px; font: inherit; font-size: 16px;
+}
+.signup-row input::placeholder { color: var(--muted); }
+.signup-row .btn { flex: 0 0 auto; }
+.signup .note { margin-top: 12px; max-width: 58ch; }
+.signup-said { margin-top: 14px; color: var(--yellow); font-size: 15px; }
+
+/* ---- utilities the new markup needs ------------------------------------ */
+
+/* A label that only a screen reader hears. The email field has a visible
+   placeholder, which is not a label — placeholders vanish on focus. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Alternating band, so three long sections in a row do not read as one. */
+.alt-band { background: var(--raised); }
+.alt-band .linkcard { background: var(--ground); }
+
+/* ---- the three packages ------------------------------------------------ */
+.packages {
+  display: grid; gap: 12px; margin: 22px 0 26px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  align-items: stretch;
+}
+.pack {
+  position: relative; display: flex; flex-direction: column; gap: 4px;
+  text-align: left; cursor: pointer; font: inherit; color: var(--bone);
+  background: var(--raised); border: 1px solid var(--line-soft);
+  border-top: 3px solid var(--raised-2); padding: 22px 20px 20px;
+}
+.pack:hover { border-top-color: var(--line); }
+.pack[aria-pressed="true"] {
+  border-color: var(--yellow); border-top-color: var(--yellow);
+  background: var(--raised-2);
+}
+.pack-flag {
+  position: absolute; top: -1px; right: 16px; transform: translateY(-50%);
+  background: var(--yellow); color: var(--ink); padding: 4px 10px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; font-weight: 500;
+}
+.pack-rec { border-top-color: var(--yellow); }
+.pack-name {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
+}
+.pack-price {
+  font-family: var(--display); font-size: clamp(30px, 4.6vw, 40px);
+  line-height: 1; margin-top: 4px;
+}
+.pack[aria-pressed="true"] .pack-price { color: var(--yellow); }
+.pack-per { font-family: var(--mono); font-size: 13px; color: var(--bone-dim); margin-top: 6px; }
+.pack-save {
+  font-size: 13px; color: var(--yellow); min-height: 1.2em;
+  line-height: 1.35; margin-top: 4px;
+}
+.pack-sum {
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--raised-2);
+  color: var(--bone-dim); font-size: 14.5px; line-height: 1.5;
+}
+#pricing .lede { text-align: center; }

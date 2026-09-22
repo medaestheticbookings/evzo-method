@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>EVZO Seven Day Starter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="brand/evzo-profile-navy-zowhite.png">
+<link rel="apple-touch-icon" href="brand/evzo-profile-navy-zowhite.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Commissioner:wght@400;500;600;800&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  /* Live identity, mirrored from tools/slide.css — navy and yellow, as posted
+     on @evzo_method. The olive names are kept because the rules below use them;
+     the values are the real palette. The olive/bone scheme this page opened in
+     is a dead direction: the freebie has to look like the feed it comes from. */
+  --ground:#0B1220;
+  --raised:#141C2C;
+  --raised-2:#1B2436;
+  --bone:#FFFFFF;
+  --bone-dim:#C8CEDA;
+  --muted:#7A849A;
+  --olive:#FFE14D;        /* accent — yellow */
+  --olive-deep:#C9AE33;   /* accent, stepped down */
+  --rust:#FFE14D;         /* cue colour is yellow too */
+  --ink:#06101B;          /* text on yellow */
+  --line:rgba(255,255,255,.16);
+  --line-soft:rgba(255,255,255,.08);
+
+  --display:"Anton","Arial Narrow",Impact,sans-serif;
+  --greek:"Commissioner","Helvetica Neue",Arial,sans-serif;
+  --body:"Commissioner","Helvetica Neue",Arial,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --wrap:760px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+body{
+  background:var(--ground);
+  color:var(--bone);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---- language switching ---------------------------------------------- */
+.el{display:none}
+body[data-lang="el"] .en{display:none}
+body[data-lang="el"] .el{display:revert}
+/* Anton has no Greek glyphs — every Greek headline is Commissioner 800. */
+body[data-lang="el"] h1,
+body[data-lang="el"] h2,
+body[data-lang="el"] h3,
+body[data-lang="el"] .day-act{
+  font-family:var(--greek);
+  font-weight:800;
+  letter-spacing:-.005em;
+  line-height:1.14;
+}
+body[data-lang="el"] h1{font-size:clamp(30px,6.6vw,50px)}
+body[data-lang="el"] h2{font-size:clamp(23px,4.4vw,33px)}
+
+/* ---- shell ------------------------------------------------------------ */
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+
+.topbar{
+  display:flex;align-items:baseline;gap:18px;
+  padding:20px 0 12px;
+  border-bottom:1px solid var(--line);
+}
+/* The wordmark is the supplied logo artwork, not type set in the display face. */
+.mark{display:block;height:24px;width:auto}
+.topbar .slug{
+  font-family:var(--mono);font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--muted);
+  margin-right:auto;
+}
+.langtoggle{display:flex;gap:2px;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.langtoggle button{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  background:transparent;color:var(--muted);
+  border:0;padding:6px 11px;cursor:pointer;line-height:1;
+}
+/* On a phone these were 23px tall — too small to hit reliably. */
+@media (max-width:520px){
+  .langtoggle button{min-height:44px;padding:6px 16px}
+}
+.langtoggle button[aria-pressed="true"]{background:var(--olive);color:var(--ink)}
+.langtoggle button:focus-visible{outline:2px solid var(--olive);outline-offset:-2px}
+
+/* ---- section device (echoes the slide header) ------------------------- */
+section{padding:52px 0 0}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--olive-deep);
+  display:block;margin-bottom:12px;
+}
+h1{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(38px,8.4vw,66px);
+  line-height:.96;letter-spacing:.005em;
+  text-transform:uppercase;text-wrap:balance;
+  margin:0 0 20px;
+}
+h2{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(26px,5vw,38px);
+  line-height:1.02;text-transform:uppercase;
+  text-wrap:balance;margin:0 0 14px;
+}
+h3{
+  font-family:var(--display);font-weight:400;
+  font-size:19px;text-transform:uppercase;letter-spacing:.02em;
+  margin:0 0 6px;
+}
+p{margin:0 0 15px;max-width:62ch;color:var(--bone-dim)}
+p.lead{font-size:19px;color:var(--bone)}
+strong{color:var(--bone);font-weight:600}
+.rust{color:var(--rust)}
+.olive{color:var(--olive)}
+
+/* ---- hero ------------------------------------------------------------- */
+.hero{padding-top:44px}
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:8px 26px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);
+  padding-top:20px;margin-top:26px;border-top:1px solid var(--line-soft);
+}
+
+/* ---- the rule + league chart ------------------------------------------ */
+.rulebox{
+  background:var(--raised);
+  border-left:2px solid var(--olive);
+  padding:22px 24px;margin:22px 0 30px;
+}
+.rulebox p:last-child{margin-bottom:0}
+.formula{
+  font-family:var(--mono);font-size:14px;color:var(--olive);
+  letter-spacing:.02em;margin:0 0 12px;
+}
+
+.league{display:flex;flex-direction:column;gap:13px;margin-top:26px}
+.league-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);
+  padding-bottom:9px;border-bottom:1px solid var(--line-soft);
+}
+.row{display:grid;grid-template-columns:1fr 62px;gap:10px 14px;align-items:center}
+.row .name{font-weight:600;font-size:16px;color:var(--bone)}
+.row .kcal{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--muted);grid-column:1;
+}
+.row .score{
+  font-family:var(--display);font-size:26px;line-height:1;
+  text-align:right;grid-row:1 / span 2;grid-column:2;
+  font-variant-numeric:tabular-nums;
+}
+.track{grid-column:1;display:block;height:8px;background:var(--raised-2);border-radius:1px;overflow:hidden}
+/* display:block matters — an inline span ignores a percentage width. */
+.bar{display:block;height:100%;background:var(--olive-deep);border-radius:1px}
+.row.high .score{color:var(--olive)}
+.row.high .bar{background:var(--olive)}
+.row.low .score{color:var(--rust)}
+.row.low .bar{background:var(--rust);opacity:.75}
+.scale-note{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+  margin-top:14px;padding-top:11px;border-top:1px solid var(--line-soft);
+}
+
+/* ---- seven day spine --------------------------------------------------- */
+.days{margin-top:26px;border-top:1px solid var(--line)}
+.day{
+  display:grid;
+  grid-template-columns:58px 1fr;
+  gap:4px 20px;
+  padding:26px 0;
+  border-bottom:1px solid var(--line-soft);
+}
+.day-n{
+  font-family:var(--display);font-size:40px;line-height:.9;
+  color:var(--olive-deep);grid-row:1 / span 3;
+  font-variant-numeric:tabular-nums;
+}
+.day-lab{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);
+}
+.day-act{
+  font-family:var(--display);font-weight:400;
+  font-size:22px;line-height:1.08;text-transform:uppercase;
+  color:var(--bone);
+}
+.day p{margin:8px 0 0;font-size:16px}
+.day-do{
+  display:inline-block;margin-top:11px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  color:var(--olive);
+  background:var(--raised);border:1px solid var(--line-soft);
+  padding:7px 12px;
+}
+
+/* ---- breakfasts -------------------------------------------------------- */
+.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:24px}
+.plate{background:var(--raised);padding:19px 18px;display:flex;flex-direction:column;gap:9px}
+.plate .nm{font-weight:600;font-size:16px;line-height:1.3;color:var(--bone)}
+.plate .macros{
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;
+  color:var(--olive);font-variant-numeric:tabular-nums;
+  margin-top:auto;padding-top:9px;border-top:1px solid var(--line-soft);
+}
+
+/* ---- calculator --------------------------------------------------------- */
+.calc{background:var(--raised);padding:26px 24px;margin-top:24px}
+.calc-note{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 18px;
+}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);
+}
+.field input,.field select{
+  font-family:var(--body);font-size:16px;font-weight:500;
+  background:var(--ground);color:var(--bone);
+  border:1px solid var(--line);border-radius:0;
+  padding:10px 11px;width:100%;
+}
+.field input:focus-visible,.field select:focus-visible{outline:2px solid var(--olive);outline-offset:-1px}
+.field select{appearance:none;cursor:pointer}
+
+.readout{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:2px;margin-top:22px;background:var(--line-soft);
+}
+.stat{background:var(--raised);padding:16px 16px 18px}
+.stat .k{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;
+}
+.stat .v{
+  font-family:var(--display);font-size:36px;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.stat .u{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted);margin-left:5px}
+.stat.target .v{color:var(--olive)}
+.stat.protein .v{color:var(--rust)}
+
+/* ---- closing ------------------------------------------------------------ */
+.warn{border-left:2px solid var(--rust);background:var(--raised);padding:22px 24px;margin-top:24px}
+.warn p:last-child{margin-bottom:0}
+
+.foot{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  margin:56px 0 0;padding:16px 0 34px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);
+}
+.foot .handle{color:var(--rust)}
+
+@media (max-width:520px){
+  .day{grid-template-columns:42px 1fr;gap:4px 14px}
+  .day-n{font-size:31px}
+  .row .score{font-size:22px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <img class="mark" src="brand/evzo-wordmark-ev-yellow.svg" alt="EVZO" width="107" height="24">
+    <span class="slug en">Seven day starter</span>
+    <span class="slug el">Πλάνο 7 ημερών</span>
+    <div class="langtoggle" role="group" aria-label="Language">
+      <button type="button" data-set="en" aria-pressed="true">EN</button>
+      <button type="button" data-set="el" aria-pressed="false">ΕΛ</button>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <span class="eyebrow en">The free starter plan</span>
+    <span class="eyebrow el">Το δωρεάν πλάνο</span>
+
+    <h1 class="en">Seven days.<br>One change a day.</h1>
+    <h1 class="el">Επτά μέρες.<br>Μία αλλαγή τη μέρα.</h1>
+
+    <p class="lead en">This is not a diet. There is no food you have to give up and nothing to buy. Seven days, one small change each day, and at the end of it you own the three numbers that decide whether weight comes off and stays off.</p>
+    <p class="lead el">Αυτό δεν είναι δίαιτα. Δεν υπάρχει τροφή που πρέπει να κόψεις και δεν χρειάζεται ν' αγοράσεις τίποτα. Επτά μέρες, μία μικρή αλλαγή την ημέρα, και στο τέλος έχεις τους τρεις αριθμούς που κρίνουν αν θα χάσεις βάρος και αν θα το κρατήσεις.</p>
+
+    <p class="en">Do them in order. Each one takes under ten minutes and each one stays with you after the week ends — that is the whole point of doing it this slowly.</p>
+    <p class="el">Κάνε τες με τη σειρά. Καθεμιά θέλει κάτω από δέκα λεπτά και καθεμιά μένει μαζί σου αφού τελειώσει η εβδομάδα — γι' αυτό ακριβώς πάμε τόσο σιγά.</p>
+
+    <div class="hero-meta">
+      <span class="en">7 days · 3 numbers · 0 € </span>
+      <span class="el">7 ημέρες · 3 αριθμοί · 0 €</span>
+      <span class="en">Read time 6 min</span>
+      <span class="el">Διάβασμα 6 λεπτά</span>
+    </div>
+  </section>
+
+  <!-- ============ THE ONE RULE ============ -->
+  <section>
+    <span class="eyebrow en">Before day one</span>
+    <span class="eyebrow el">Πριν την πρώτη μέρα</span>
+
+    <h2 class="en">The one rule everything else hangs on</h2>
+    <h2 class="el">Ο ένας κανόνας στον οποίο στηρίζονται όλα</h2>
+
+    <div class="rulebox">
+      <p class="formula">protein score = g protein ÷ (kcal ÷ 100)</p>
+      <p class="en">Calories tell you what a food costs. They tell you nothing about what you get back. Grams of protein per 100 calories tells you both, and it takes three seconds to work out. <strong>Anchor every meal above 15</strong> and the counting mostly takes care of itself.</p>
+      <p class="el">Οι θερμίδες σου λένε τι κοστίζει μια τροφή. Δεν σου λένε τίποτα για το τι παίρνεις πίσω. Τα γραμμάρια πρωτεΐνης ανά 100 θερμίδες σου λένε και τα δύο, και βγαίνει σε τρία δευτερόλεπτα. <strong>Χτίσε κάθε γεύμα πάνω από το 15</strong> και το μέτρημα σχεδόν κάνει τη δουλειά μόνο του.</p>
+    </div>
+
+    <div class="league">
+      <div class="league-head">
+        <span class="en">The league · per 100 g</span>
+        <span class="el">Η κατάταξη · ανά 100 g</span>
+        <span>SCORE</span>
+      </div>
+
+      <div class="row high">
+        <span class="name en">Prawns, cooked</span><span class="name el">Γαρίδες, βραστές</span>
+        <span class="kcal">99 KCAL · 24G P</span>
+        <span class="track"><span class="bar" style="width:96.8%"></span></span>
+        <span class="score">24.2</span>
+      </div>
+      <div class="row high">
+        <span class="name en">Tuna, in water</span><span class="name el">Τόνος σε νερό</span>
+        <span class="kcal">116 KCAL · 26G P</span>
+        <span class="track"><span class="bar" style="width:89.6%"></span></span>
+        <span class="score">22.4</span>
+      </div>
+      <div class="row high">
+        <span class="name en">Turkey breast</span><span class="name el">Στήθος γαλοπούλας</span>
+        <span class="kcal">135 KCAL · 30G P</span>
+        <span class="track"><span class="bar" style="width:88.0%"></span></span>
+        <span class="score">22.0</span>
+      </div>
+      <div class="row high">
+        <span class="name en">Chicken breast</span><span class="name el">Στήθος κοτόπουλο</span>
+        <span class="kcal">165 KCAL · 31G P</span>
+        <span class="track"><span class="bar" style="width:75.2%"></span></span>
+        <span class="score">18.8</span>
+      </div>
+      <div class="row high">
+        <span class="name en">Greek yoghurt 0%</span><span class="name el">Γιαούρτι στραγγιστό 0%</span>
+        <span class="kcal">59 KCAL · 10G P</span>
+        <span class="track"><span class="bar" style="width:68.0%"></span></span>
+        <span class="score">17.0</span>
+      </div>
+      <div class="row low">
+        <span class="name en">Almonds</span><span class="name el">Αμύγδαλα</span>
+        <span class="kcal">579 KCAL · 21G P</span>
+        <span class="track"><span class="bar" style="width:14.4%"></span></span>
+        <span class="score">3.6</span>
+      </div>
+      <div class="row low">
+        <span class="name en">Olive oil</span><span class="name el">Ελαιόλαδο</span>
+        <span class="kcal">884 KCAL · 0G P</span>
+        <span class="track"><span class="bar" style="width:0.8%"></span></span>
+        <span class="score">0.0</span>
+      </div>
+
+      <p class="scale-note en">Scale 0 to 25 · above 15 keeps you full · below 5 does not</p>
+      <p class="scale-note el">Κλίμακα 0 έως 25 · πάνω από 15 σε κρατάει · κάτω από 5 όχι</p>
+    </div>
+
+    <p class="en" style="margin-top:20px">Almonds and olive oil are not the enemy and nothing here is banned. They are simply foods you have to weigh rather than pour, and days 4 and 6 deal with exactly that.</p>
+    <p class="el" style="margin-top:20px">Τα αμύγδαλα και το ελαιόλαδο δεν είναι ο εχθρός και τίποτα εδώ δεν απαγορεύεται. Είναι απλώς τροφές που τις ζυγίζεις αντί να τις χύνεις — και οι μέρες 4 και 6 ασχολούνται ακριβώς μ' αυτό.</p>
+  </section>
+
+  <!-- ============ THE SEVEN DAYS ============ -->
+  <section>
+    <span class="eyebrow en">The week</span>
+    <span class="eyebrow el">Η εβδομάδα</span>
+
+    <h2 class="en">One change a day, in this order</h2>
+    <h2 class="el">Μία αλλαγή τη μέρα, με αυτή τη σειρά</h2>
+
+    <p class="en">The order matters. Each day rests on the one before it, which is why day 7 — the one that actually keeps the weight off — comes last and not first.</p>
+    <p class="el">Η σειρά μετράει. Κάθε μέρα πατάει πάνω στην προηγούμενη — γι' αυτό η μέρα 7, αυτή που τελικά κρατάει το βάρος μακριά, είναι τελευταία και όχι πρώτη.</p>
+
+    <div class="days">
+
+      <div class="day">
+        <span class="day-n">1</span>
+        <span class="day-lab en">Monday · your baseline</span>
+        <span class="day-lab el">Δευτέρα · η αφετηρία</span>
+        <span class="day-act en">Weigh yourself once. Then leave the scale alone.</span>
+        <span class="day-act el">Ζυγίσου μία φορά. Και μετά άσε τη ζυγαριά ήσυχη.</span>
+        <p class="en">Same day, same time, before you eat or drink anything. Once a week — not daily. Daily weight swings two kilos on salt and stored carbs alone, and people quit over a number that was only ever water.</p>
+        <p class="el">Ίδια μέρα, ίδια ώρα, πριν φας ή πιεις οτιδήποτε. Μία φορά την εβδομάδα — όχι κάθε μέρα. Το βάρος παίζει δύο κιλά μόνο από αλάτι και αποθηκευμένους υδατάνθρακες, και κόσμος τα παρατάει για έναν αριθμό που ήταν πάντα νερό.</p>
+        <span class="day-do en">Write the number down. You will not look again until day 8.</span>
+        <span class="day-do el">Γράψε τον αριθμό. Δεν τον ξανακοιτάς μέχρι τη μέρα 8.</span>
+      </div>
+
+      <div class="day">
+        <span class="day-n">2</span>
+        <span class="day-lab en">Tuesday · the number</span>
+        <span class="day-lab el">Τρίτη · ο αριθμός</span>
+        <span class="day-act en">Find your maintenance calories</span>
+        <span class="day-act el">Βρες τις θερμίδες συντήρησής σου</span>
+        <p class="en">This is the figure you eat at to stay exactly where you are. Everything else in weight loss is a number relative to this one, and almost nobody knows theirs. The calculator further down gives it to you in thirty seconds.</p>
+        <p class="el">Είναι ο αριθμός στον οποίο τρως για να μείνεις ακριβώς εκεί που είσαι. Όλα τα υπόλοιπα στο αδυνάτισμα είναι αριθμοί σε σχέση μ' αυτόν, και σχεδόν κανείς δεν ξέρει τον δικό του. Ο υπολογιστής πιο κάτω σου τον δίνει σε τριάντα δευτερόλεπτα.</p>
+        <span class="day-do en">Scroll down, fill in four boxes, keep the three numbers.</span>
+        <span class="day-do el">Κατέβα πιο κάτω, συμπλήρωσε τέσσερα πεδία, κράτα τους τρεις αριθμούς.</span>
+      </div>
+
+      <div class="day">
+        <span class="day-n">3</span>
+        <span class="day-lab en">Wednesday · breakfast</span>
+        <span class="day-lab el">Τετάρτη · πρωινό</span>
+        <span class="day-act en">30 g of protein before you leave the house</span>
+        <span class="day-act el">30 g πρωτεΐνης πριν φύγεις από το σπίτι</span>
+        <p class="en">Bread, honey and a coffee is around 500 calories and you are starving by eleven. That is not willpower failing — that is a breakfast with almost no protein in it. Three replacements are below, all under 400 calories.</p>
+        <p class="el">Ψωμί, μέλι και καφές: γύρω στις 500 θερμίδες, και στις έντεκα πεινάς. Δεν φταίει η θέληση — φταίει ένα πρωινό σχεδόν χωρίς πρωτεΐνη. Τρεις αντικαταστάσεις πιο κάτω, όλες κάτω από 400 θερμίδες.</p>
+        <span class="day-do en">Pick one of the three and buy what it needs today.</span>
+        <span class="day-do el">Διάλεξε ένα από τα τρία κι αγόρασε σήμερα ό,τι χρειάζεται.</span>
+      </div>
+
+      <div class="day">
+        <span class="day-n">4</span>
+        <span class="day-lab en">Thursday · the pour</span>
+        <span class="day-lab el">Πέμπτη · το λάδι</span>
+        <span class="day-act en">Weigh your olive oil pour. Once.</span>
+        <span class="day-act el">Ζύγισε το λάδι που ρίχνεις. Μία φορά.</span>
+        <p class="en">Olive oil is genuinely good for you and it is also 884 calories per 100 g. A level tablespoon is 119. A normal pour into a hot pan is closer to 357 and almost nobody logs the pour at all — three home dinners a week and that is around 700 calories you never decided to eat.</p>
+        <p class="el">Το ελαιόλαδο είναι πραγματικά καλό για σένα και είναι επίσης 884 θερμίδες ανά 100 g. Μια κουταλιά της σούπας ίσια είναι 119. Μια κανονική ρίψη στο ζεστό τηγάνι είναι πιο κοντά στις 357 και σχεδόν κανείς δεν την υπολογίζει — τρία σπιτικά δείπνα την εβδομάδα και μιλάμε για 700 θερμίδες που δεν αποφάσισες ποτέ να φας.</p>
+        <span class="day-do en">Pour as you normally would, onto the scale. Be annoyed. Then buy the spray bottle.</span>
+        <span class="day-do el">Ρίξε όπως ρίχνεις πάντα, πάνω στη ζυγαριά. Εκνευρίσου. Και μετά πάρε το μπουκάλι με το σπρέι.</span>
+      </div>
+
+      <div class="day">
+        <span class="day-n">5</span>
+        <span class="day-lab en">Friday · the label</span>
+        <span class="day-lab el">Παρασκευή · η ετικέτα</span>
+        <span class="day-act en">Read three labels in the shop</span>
+        <span class="day-act el">Διάβασε τρεις ετικέτες στο σούπερ μάρκετ</span>
+        <p class="en">The front of the packet is an advert. The back is the contract. Three checks, ten seconds: read <strong>per 100 g</strong> always, because brands pick their own flattering serving size. Work the protein score. Ignore the claim on the front entirely — "low fat" usually means more sugar, and a high-protein bar at 400 calories is a chocolate bar with ambitions.</p>
+        <p class="el">Η μπροστινή πλευρά είναι διαφήμιση. Η πίσω είναι το συμβόλαιο. Τρεις έλεγχοι, δέκα δευτερόλεπτα: διάβαζε πάντα <strong>ανά 100 g</strong>, γιατί κάθε μάρκα διαλέγει τη δική της βολική μερίδα. Βγάλε το protein score. Αγνόησε τελείως τον ισχυρισμό μπροστά — το «light» συνήθως σημαίνει περισσότερη ζάχαρη, και μια μπάρα πρωτεΐνης 400 θερμίδων είναι σοκολάτα με φιλοδοξίες.</p>
+        <span class="day-do en">Try it on three things you already buy. One will surprise you.</span>
+        <span class="day-do el">Δοκίμασέ το σε τρία πράγματα που ήδη αγοράζεις. Το ένα θα σε εκπλήξει.</span>
+      </div>
+
+      <div class="day">
+        <span class="day-n">6</span>
+        <span class="day-lab en">Saturday · the swaps</span>
+        <span class="day-lab el">Σάββατο · οι αλλαγές</span>
+        <span class="day-act en">Pick two swaps you genuinely will not miss</span>
+        <span class="day-act el">Διάλεξε δύο αλλαγές που πραγματικά δεν θα σου λείψουν</span>
+        <p class="en">Two. Not ten. The free-poured oil, the dressing you did not order, the 20% mince you bought because it sat next to the 5%. Two swaps you would not notice, run for three weeks, is roughly 1.5 kg a month with nothing that feels like a diet.</p>
+        <p class="el">Δύο. Όχι δέκα. Το λάδι που ρίχνεις ελεύθερα, το ντρέσινγκ που δεν παρήγγειλες, ο κιμάς 20% που πήρες επειδή ήταν δίπλα στον 5%. Δύο αλλαγές που δεν θα καταλάβεις, για τρεις εβδομάδες, βγάζουν περίπου 1,5 κιλό τον μήνα χωρίς τίποτα να μοιάζει με δίαιτα.</p>
+        <span class="day-do en">Write the two down. Only two.</span>
+        <span class="day-do el">Γράψε τις δύο. Μόνο δύο.</span>
+      </div>
+
+      <div class="day">
+        <span class="day-n">7</span>
+        <span class="day-lab en">Sunday · the one that lasts</span>
+        <span class="day-lab el">Κυριακή · αυτή που μένει</span>
+        <span class="day-act en">Build the plan for your worst week, not your best one</span>
+        <span class="day-act el">Φτιάξε το πλάνο για τη χειρότερή σου εβδομάδα, όχι την καλύτερη</span>
+        <p class="en">Look back at days 1 to 6 and cross out anything you could not do on a week with no sleep, a deadline and people coming over. Whatever survives is your actual plan. This is the step everyone skips, and it is the only reason the previous three attempts ended in week three.</p>
+        <p class="el">Κοίτα πίσω τις μέρες 1 έως 6 και σβήσε ό,τι δεν θα μπορούσες να κάνεις σε μια εβδομάδα χωρίς ύπνο, με deadline και κόσμο να έρχεται σπίτι. Ό,τι επιβιώσει είναι το πραγματικό σου πλάνο. Αυτό είναι το βήμα που όλοι προσπερνούν, κι είναι ο μόνος λόγος που οι προηγούμενες τρεις προσπάθειες τελείωσαν στην τρίτη εβδομάδα.</p>
+        <span class="day-do en">Keep what survives. Repeat it next week.</span>
+        <span class="day-do el">Κράτα ό,τι επιβίωσε. Επανάλαβέ το την επόμενη εβδομάδα.</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ BREAKFASTS ============ -->
+  <section>
+    <span class="eyebrow en">For day 3</span>
+    <span class="eyebrow el">Για τη μέρα 3</span>
+
+    <h2 class="en">Three breakfasts under 400 calories</h2>
+    <h2 class="el">Τρία πρωινά κάτω από 400 θερμίδες</h2>
+
+    <p class="en">All three have 30 g of protein or more. Fewer calories than what you eat now and two to three times the protein — the difference shows up at 11am, not on the scale.</p>
+    <p class="el">Και τα τρία έχουν 30 g πρωτεΐνης ή περισσότερη. Λιγότερες θερμίδες από αυτό που τρως τώρα και δύο με τρεις φορές περισσότερη πρωτεΐνη — η διαφορά φαίνεται στις έντεκα το πρωί, όχι στη ζυγαριά.</p>
+
+    <div class="plates">
+      <div class="plate">
+        <span class="nm en">Strapatsada with cottage cheese</span>
+        <span class="nm el">Στραπατσάδα με cottage</span>
+        <span class="macros">350 KCAL · 30G P · SCORE 8.6</span>
+      </div>
+      <div class="plate">
+        <span class="nm en">Greek yoghurt bowl, oats and fruit</span>
+        <span class="nm el">Μπολ με γιαούρτι, βρώμη και φρούτο</span>
+        <span class="macros">370 KCAL · 30G P · SCORE 8.1</span>
+      </div>
+      <div class="plate">
+        <span class="nm en">Protein frappé, two boiled eggs, an apple</span>
+        <span class="nm el">Φραπές πρωτεΐνης, δύο βραστά αυγά, ένα μήλο</span>
+        <span class="macros">350 KCAL · 37G P · SCORE 10.6</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CALCULATOR ============ -->
+  <section>
+    <span class="eyebrow en">For day 2</span>
+    <span class="eyebrow el">Για τη μέρα 2</span>
+
+    <h2 class="en">Your maintenance calories, in 30 seconds</h2>
+    <h2 class="el">Οι θερμίδες συντήρησής σου, σε 30 δευτερόλεπτα</h2>
+
+    <div class="calc">
+      <p class="calc-note en">Example figures below — change them to yours</p>
+      <p class="calc-note el">Παράδειγμα πιο κάτω — άλλαξέ το στα δικά σου</p>
+
+      <div class="fields">
+        <div class="field">
+          <label for="sex"><span class="en">Sex</span><span class="el">Φύλο</span></label>
+          <select id="sex">
+            <option value="f" selected>♀</option>
+            <option value="m">♂</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="age"><span class="en">Age</span><span class="el">Ηλικία</span></label>
+          <input id="age" type="number" inputmode="numeric" value="34" min="15" max="90">
+        </div>
+        <div class="field">
+          <label for="ht"><span class="en">Height cm</span><span class="el">Ύψος cm</span></label>
+          <input id="ht" type="number" inputmode="numeric" value="168" min="130" max="215">
+        </div>
+        <div class="field">
+          <label for="wt"><span class="en">Weight kg</span><span class="el">Βάρος kg</span></label>
+          <input id="wt" type="number" inputmode="decimal" value="78" min="35" max="250">
+        </div>
+        <div class="field">
+          <label for="act"><span class="en">Daily movement</span><span class="el">Κίνηση</span></label>
+          <select id="act">
+            <option value="1.2">Desk job</option>
+            <option value="1.375" selected>On your feet some</option>
+            <option value="1.55">Active most days</option>
+            <option value="1.725">Physical job / training</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="readout">
+        <div class="stat">
+          <span class="k en">Maintenance</span><span class="k el">Συντήρηση</span>
+          <span class="v" id="out-maint">—</span><span class="u">KCAL</span>
+        </div>
+        <div class="stat target">
+          <span class="k en">To lose 0.5 kg / week</span><span class="k el">Για 0,5 κιλό / εβδομάδα</span>
+          <span class="v" id="out-target">—</span><span class="u">KCAL</span>
+        </div>
+        <div class="stat protein">
+          <span class="k en">Protein a day</span><span class="k el">Πρωτεΐνη τη μέρα</span>
+          <span class="v" id="out-prot">—</span><span class="u">G</span>
+        </div>
+      </div>
+
+      <p class="en" style="margin:20px 0 0;font-size:15px">A kilo of fat is roughly 7,700 calories, so a 500 a day gap is about half a kilo a week. That is the honest rate. Anything faster is water on the way out and muscle on the way down.</p>
+      <p class="el" style="margin:20px 0 0;font-size:15px">Ένα κιλό λίπους είναι περίπου 7.700 θερμίδες, οπότε 500 θερμίδες έλλειμμα τη μέρα βγάζουν περίπου μισό κιλό την εβδομάδα. Αυτός είναι ο τίμιος ρυθμός. Ό,τι πιο γρήγορο είναι νερό που φεύγει και μυς που χάνεται.</p>
+    </div>
+  </section>
+
+  <!-- ============ WEEK THREE ============ -->
+  <section>
+    <span class="eyebrow en">Read this on day 21</span>
+    <span class="eyebrow el">Διάβασέ το τη μέρα 21</span>
+
+    <h2 class="en">It falls apart in week three</h2>
+    <h2 class="el">Χαλάει στην τρίτη εβδομάδα</h2>
+
+    <div class="warn">
+      <p class="en">It is the same week every time. Not week one, not week six. Week three.</p>
+      <p class="el">Είναι πάντα η ίδια εβδομάδα. Όχι η πρώτη, όχι η έκτη. Η τρίτη.</p>
+      <p class="en">Week one you lose three kilos and most of it was water. By week three the water is gone and the real number shows up — around <strong>0.6 kg</strong>. After a three-kilo week, half a kilo feels like failing. It is the opposite: it is the first week the number actually meant something.</p>
+      <p class="el">Την πρώτη εβδομάδα χάνεις τρία κιλά και τα περισσότερα ήταν νερό. Μέχρι την τρίτη το νερό έχει φύγει και εμφανίζεται ο πραγματικός αριθμός — γύρω στα <strong>0,6 κιλά</strong>. Μετά από μια εβδομάδα των τριών κιλών, το μισό κιλό μοιάζει με αποτυχία. Είναι το αντίθετο: είναι η πρώτη εβδομάδα που ο αριθμός σήμαινε κάτι.</p>
+      <p class="en">You have not failed three times. You have <strong>started</strong> three times, on plans built for someone with unlimited energy and no life. Nobody is that person by week three — which is exactly what day 7 was for.</p>
+      <p class="el">Δεν απέτυχες τρεις φορές. <strong>Ξεκίνησες</strong> τρεις φορές, με πλάνα φτιαγμένα για κάποιον με απεριόριστη ενέργεια και καθόλου ζωή. Κανείς δεν είναι αυτός ο άνθρωπος μέχρι την τρίτη εβδομάδα — και γι' αυτό ακριβώς ήταν η μέρα 7.</p>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span class="handle">@EVZO.METHOD</span>
+    <span class="en">ευ ζω · I live well</span>
+    <span class="el">ευ ζω · ζω καλά</span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var body=document.body;
+  var btns=document.querySelectorAll(".langtoggle button");
+
+  /* <option> takes no markup, so the two selects are translated here. */
+  var OPTS={
+    sex:{ en:["♀","♂"], el:["♀","♂"] },
+    act:{
+      en:["Desk job","On your feet some","Active most days","Physical job / training"],
+      el:["Καθιστική δουλειά","Αρκετή ορθοστασία","Κίνηση τις πιο πολλές μέρες","Χειρωνακτική δουλειά / προπόνηση"]
+    }
+  };
+
+  function setLang(l){
+    body.setAttribute("data-lang",l);
+    document.documentElement.lang = (l==="el") ? "el" : "en";
+    btns.forEach(function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.set===l));
+    });
+    Object.keys(OPTS).forEach(function(id){
+      var sel=document.getElementById(id), words=OPTS[id][l];
+      if(sel) Array.prototype.forEach.call(sel.options,function(o,i){
+        if(words[i]) o.textContent=words[i];
+      });
+    });
+    try{ localStorage.setItem("evzo-lang",l); }catch(e){}
+  }
+
+  btns.forEach(function(b){
+    b.addEventListener("click",function(){ setLang(b.dataset.set); });
+  });
+
+  var saved=null;
+  try{ saved=localStorage.getItem("evzo-lang"); }catch(e){}
+  setLang(saved==="el" ? "el" : "en");
+
+  /* ---- maintenance calories · Mifflin-St Jeor ---- */
+  var ids=["sex","age","ht","wt","act"];
+  var el={};
+  ids.forEach(function(i){ el[i]=document.getElementById(i); });
+  var outM=document.getElementById("out-maint"),
+      outT=document.getElementById("out-target"),
+      outP=document.getElementById("out-prot");
+
+  function round10(n){ return Math.round(n/10)*10; }
+
+  function calc(){
+    var age=parseFloat(el.age.value),
+        ht=parseFloat(el.ht.value),
+        wt=parseFloat(el.wt.value),
+        act=parseFloat(el.act.value);
+
+    if(!(age>0&&ht>0&&wt>0&&act>0)){
+      outM.textContent=outT.textContent=outP.textContent="—";
+      return;
+    }
+
+    var bmr = 10*wt + 6.25*ht - 5*age + (el.sex.value==="m" ? 5 : -161);
+    var maint = bmr*act;
+    var target = maint-500;
+    // Never prescribe below a sane floor.
+    var floor = el.sex.value==="m" ? 1500 : 1200;
+    if(target<floor) target=floor;
+
+    outM.textContent=round10(maint).toLocaleString("en-US");
+    outT.textContent=round10(target).toLocaleString("en-US");
+    outP.textContent=Math.round(wt*1.8);
+  }
+
+  ids.forEach(function(i){
+    el[i].addEventListener("input",calc);
+    el[i].addEventListener("change",calc);
+  });
+  calc();
+})();
+</script>

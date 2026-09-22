@@ -1,0 +1,34 @@
+# What must never be published
+# ============================================================================
+# This repository is served publicly by GitHub Pages. Everything committed to
+# it is downloadable by anyone, so the rule here is an allow-list in spirit:
+# only the files the website actually serves belong in it.
+
+# The ebooks are the product. Publishing the PDFs gives them away, and the
+# recipe source is what they are built from.
+ebooks/
+
+# Instagram source material and working images — not part of the website.
+photos/
+posts/
+build/
+content/
+
+# Build tooling and internal notes stay on the machine.
+tools/
+PROJECT.md
+POSTING-SCHEDULE.md
+BETA-OUTREACH.md
+
+# Layout preview with placeholder review text. It carries a noindex tag, but
+# the safest place for a page of fake-looking quotes is off the internet.
+_preview-reviews.html
+
+# Local junk
+.DS_Store
+Thumbs.db
+*.log
+
+# Internal architecture notes and unit tests — no reason to serve them.
+site/INTEGRATION.md
+site/calc.test.js

@@ -1,0 +1,194 @@
+/* EVZO — shop and blog
+   =========================================================================
+   Additions to evzo.css for the two pages the sales page does not cover.
+   Everything here reuses the same tokens, so a palette change in evzo.css
+   still carries. Nothing in this file is page-specific enough to duplicate.
+   ====================================================================== */
+
+/* ---- shared section rhythm ------------------------------------------- */
+section { padding-block: clamp(42px, 6vw, 76px); }
+section.alt { background: var(--raised); }
+section > .wrap > h2 { margin: 6px 0 0; }
+section > .wrap > .lede { margin-bottom: 26px; }
+
+.shop-hero h1 { font-size: clamp(38px, 7.2vw, 74px); }
+
+/* ---- the bundle band -------------------------------------------------- */
+.bundle-band { padding-block: 0; }
+.bundle {
+  text-align: left;
+  display: flex; flex-wrap: wrap; gap: 20px 28px;
+  align-items: center; justify-content: space-between;
+  background: var(--yellow); color: var(--ink);
+  padding: clamp(20px, 3vw, 30px) clamp(18px, 3vw, 32px);
+}
+.bundle .label { color: #6E6224; }
+.bundle p { margin: 6px 0 0; font-size: 15px; max-width: 46ch; }
+.bundle-price {
+  font-family: var(--display); font-size: clamp(30px, 5.4vw, 46px);
+  line-height: 1; margin-top: 8px; text-transform: uppercase;
+}
+.bundle-act { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.bundle .btn {
+  background: var(--ink); border-color: var(--ink); color: var(--yellow);
+}
+.bundle .btn:hover { background: #000; border-color: #000; }
+.bundle .note { color: #5C5220; }
+.btn-lg { padding: 15px 28px; font-size: 14px; }
+
+/* ---- the shelf -------------------------------------------------------- */
+.shelf {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.book {
+  text-align: left;
+  display: flex; flex-direction: column;
+  background: var(--raised); border-top: 2px solid var(--raised-2);
+  padding: 20px 20px 18px;
+}
+section.alt .book { background: var(--ground); }
+.book:hover { border-top-color: var(--yellow); }
+
+/* A miniature of the real PDF cover: same type, same yellow eyebrow. */
+.book-cover {
+  background: var(--ink); border: 1px solid var(--line);
+  padding: 18px 16px 14px; margin-bottom: 16px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 132px;
+}
+.book-cover .label { color: var(--yellow); }
+.book-cover .h {
+  font-family: var(--display); font-size: clamp(20px, 3.4vw, 25px);
+  line-height: 1.02; text-transform: uppercase; margin-top: 10px;
+}
+.book-cover .foot {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted); margin-top: 14px;
+}
+.book h3 { font-size: 19px; margin: 0 0 6px; }
+.book > p { color: var(--bone-dim); font-size: 15px; line-height: 1.5; margin: 0; }
+
+.book-stats {
+  display: flex; flex-wrap: wrap; gap: 6px 16px;
+  margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--raised-2);
+  font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+}
+.book-stats b { color: var(--bone); font-weight: 500; }
+
+.book-buy {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid var(--raised-2);
+}
+.book-price { font-family: var(--mono); font-size: 15px; color: var(--yellow); }
+
+/* ---- what is inside --------------------------------------------------- */
+.inside {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.inside .panel { background: var(--ground); text-align: left; }
+section:not(.alt) .inside .panel { background: var(--raised); }
+.inside h3 { font-size: 18px; margin: 10px 0 8px; }
+.inside p { margin: 0; color: var(--bone-dim); font-size: 15px; line-height: 1.55; }
+
+/* ---- the honest bit --------------------------------------------------- */
+.honest { text-align: left; border-left: 2px solid var(--yellow); padding-left: clamp(16px, 3vw, 28px); }
+.honest ul { margin: 18px 0 0; padding-left: 18px; max-width: 68ch; }
+.honest li { margin-bottom: 10px; color: var(--bone-dim); line-height: 1.6; }
+
+/* ---- faq -------------------------------------------------------------- */
+.faq { text-align: left; margin-top: 20px; border-top: 1px solid var(--raised-2); }
+.faq details { border-bottom: 1px solid var(--raised-2); }
+.faq summary {
+  cursor: pointer; list-style: none; padding: 16px 0;
+  font-size: 16.5px; display: flex; justify-content: space-between; gap: 16px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--yellow); font-family: var(--mono); flex: none; }
+.faq details[open] summary::after { content: "\2212"; }
+.faq p { margin: 0 0 18px; color: var(--bone-dim); max-width: 68ch; line-height: 1.6; }
+
+/* ---- blog ------------------------------------------------------------- */
+.posts { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.post-card {
+  text-align: left;
+  display: flex; flex-direction: column; background: var(--raised);
+  border-top: 2px solid var(--raised-2); padding: 20px; text-decoration: none; color: inherit;
+}
+.post-card:hover { border-top-color: var(--yellow); }
+.post-card h3 { font-size: 20px; margin: 10px 0 8px; }
+.post-card p { margin: 0; color: var(--bone-dim); font-size: 15px; line-height: 1.55; }
+.post-meta {
+  margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--raised-2);
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* an article page */
+.article { max-width: 70ch; text-align: left; }
+.article h2 { margin: 34px 0 10px; font-size: clamp(22px, 3.4vw, 30px); }
+.article h3 { margin: 26px 0 8px; font-size: 19px; }
+.article p { margin: 0 0 16px; line-height: 1.7; color: var(--bone-dim); }
+.article p strong { color: var(--bone); }
+.article ul, .article ol { margin: 0 0 18px; padding-left: 20px; color: var(--bone-dim); }
+.article li { margin-bottom: 8px; line-height: 1.65; }
+.article .lede { font-size: clamp(17px, 2.4vw, 20px); color: var(--bone); margin-bottom: 28px; }
+
+/* the recipe block inside a post, with its computed figures */
+.post-recipe { background: var(--raised); padding: clamp(18px, 3vw, 26px); margin: 26px 0; }
+.post-recipe .macros {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  border: 1px solid var(--raised-2); margin: 14px 0 18px;
+}
+.post-recipe .macros div { padding: 10px 8px; border-right: 1px solid var(--raised-2); }
+@media (max-width: 420px) {
+  .post-recipe .macros b { font-size: 17px; }
+  .post-recipe .macros .k { font-size: 8.5px; letter-spacing: .08em; }
+}
+.post-recipe .macros div:last-child { border-right: 0; }
+.post-recipe .macros b {
+  font-family: var(--display); font-size: 21px; display: block;
+  margin-top: 3px; font-weight: 400;
+}
+.post-recipe .macros .k {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
+}
+.post-recipe .ing { list-style: none; margin: 0; padding: 0; }
+.post-recipe .ing li {
+  display: flex; justify-content: space-between; gap: 16px;
+  padding: 8px 0; border-bottom: 1px solid var(--raised-2); color: var(--bone);
+}
+.post-recipe .ing li span:last-child { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.post-recipe ol { margin: 14px 0 0; padding-left: 18px; }
+
+.post-cta {
+  text-align: left;
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+  justify-content: space-between; background: var(--raised);
+  border-left: 2px solid var(--yellow); padding: 22px 24px; margin-top: 36px;
+}
+.post-cta p { margin: 6px 0 0; color: var(--bone-dim); max-width: 46ch; }
+
+@media (max-width: 560px) {
+  .bundle-act { width: 100%; }
+  .bundle .btn { width: 100%; text-align: center; }
+}
+
+/* ---- long-form overrides ------------------------------------------------
+   evzo.css centres the top-level rhythm of every section, which is right for
+   a sales page and wrong for an article: a centred paragraph of body copy is
+   measurably harder to read because every line starts in a different place.
+   Articles and cards therefore opt back out, by name rather than globally. */
+.article .lede,
+.article p,
+.article ul,
+.article ol,
+.article h2,
+.article h3 { text-align: left; margin-inline: 0; }
+
+.post-card p, .post-cta p, .book > p, .inside p, .honest li { text-align: left; margin-inline: 0; }
+.book-stats, .post-recipe, .post-recipe p, .post-recipe ol { text-align: left; }
+.shop-hero .sub { text-align: center; }
