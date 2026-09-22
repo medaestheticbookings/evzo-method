@@ -896,27 +896,35 @@
      ebooks/build.mjs by counting the actual content. If the file is missing the
      band removes itself rather than showing an em dash — a broken statistic is
      worse than no statistic. */
-  (function () {
+  var statTotals = null;
+
+  function renderStats() {
     var band = $("stats");
-    if (!band) return;
-    fetch("site/shop-data.json", { cache: "no-store" })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        var t = d && d.totals;
-        if (!t) throw new Error("no totals");
-        var cells = [
+    if (!band || !statTotals) return;
+    var t = statTotals;
+    var cells = [
           [t.planDays, T("Day plan")],
           [t.recipes, T("Recipes")],
           [t.ingredients, T("Ingredients costed")],
-          [t.trainingPlans, T("Training plans")]
-        ];
-        band.innerHTML = "";
-        cells.forEach(function (c) {
-          var d1 = document.createElement("div");
-          var b = document.createElement("b"); b.textContent = c[0];
-          var sp = document.createElement("span"); sp.textContent = c[1];
-          d1.appendChild(b); d1.appendChild(sp); band.appendChild(d1);
-        });
+      [t.trainingPlans, T("Training plans")]
+    ];
+    band.innerHTML = "";
+    cells.forEach(function (c) {
+      var d1 = document.createElement("div");
+      var b = document.createElement("b"); b.textContent = c[0];
+      var sp = document.createElement("span"); sp.textContent = c[1];
+      d1.appendChild(b); d1.appendChild(sp); band.appendChild(d1);
+    });
+  }
+
+  (function () {
+    if (!$("stats")) return;
+    fetch("site/shop-data.json", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.totals) throw new Error("no totals");
+        statTotals = d.totals;
+        renderStats();
       })
       .catch(function () {
         var sec = document.getElementById("numbers");
@@ -959,5 +967,5 @@
   showStep(0);
   syncConsent();
 
-  window.EVZO_APP = { rerender: function () { renderConfig(); showStep(S.step); if (S.lastResult) renderResult(S.lastResult); } };
+  window.EVZO_APP = { rerender: function () { renderConfig(); renderStats(); showStep(S.step); if (S.lastResult) renderResult(S.lastResult); } };
 })();
