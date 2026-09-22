@@ -32,3 +32,4 @@ Thumbs.db
 # Internal architecture notes and unit tests — no reason to serve them.
 site/INTEGRATION.md
 site/calc.test.js
+GO-LIVE.md
