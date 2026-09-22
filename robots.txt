@@ -4,4 +4,4 @@ Disallow: /_preview-reviews.html
 Disallow: /ebooks/
 Disallow: /content/
 
-# Sitemap line is added by tools/seo.mjs once config.site.baseUrl is set.
+Sitemap: https://evzomethod.com/sitemap.xml

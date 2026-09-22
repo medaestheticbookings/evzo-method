@@ -158,7 +158,7 @@
        Until it is set, nothing invents a URL: canonicals are omitted rather
        than pointed somewhere wrong, which is worse than having none. */
     site: {
-      baseUrl: TODO,
+      baseUrl: "https://evzomethod.com",
       name: "EVZO",
       legalName: "EVZO METHOD",
       locale: "en",
