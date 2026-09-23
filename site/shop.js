@@ -71,6 +71,10 @@
     $("bundle-note").textContent = T(bundle.blurb);
     $("bundle-buy").textContent = T("Get the whole library");
     $("bundle-buy").href = buyHref(bundle.name);
+    if ($("bundle-alt")) {
+      $("bundle-alt").innerHTML = esc(T("Or message")) + ' <a href="' + esc(CFG.links.instagram) +
+        '" target="_blank" rel="noopener noreferrer">@evzo_method</a> ' + esc(T("to order"));
+    }
 
     // Stated as a comparison with buying them separately, which is what it is.
     // It is deliberately NOT presented as a former price: nothing has ever
@@ -111,6 +115,8 @@
           '<span class="book-price">' + esc(price) + '</span>' +
           '<a class="btn" href="' + buyHref(b.name) + '">' + esc(T("Buy")) + '</a>' +
         '</div>' +
+        '<p class="buy-alt">' + esc(T("Or message")) + ' <a href="' + esc(CFG.links.instagram) +
+          '" target="_blank" rel="noopener noreferrer">@evzo_method</a> ' + esc(T("to order")) + '</p>' +
       '</article>';
     }).join("");
 

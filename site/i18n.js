@@ -259,6 +259,8 @@
     "Shop": "Κατάστημα",
     "Blog": "Blog",
     "The shop": "Το κατάστημα",
+    "Or message": "Ή στείλε μήνυμα στο",
+    "to order": "για παραγγελία",
     "Day plan": "Ημέρες πλάνο",
     "Recipes": "Συνταγές",
     "Ingredients costed": "Υλικά υπολογισμένα",

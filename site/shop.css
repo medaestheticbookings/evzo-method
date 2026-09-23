@@ -192,3 +192,10 @@ section:not(.alt) .inside .panel { background: var(--raised); }
 .post-card p, .post-cta p, .book > p, .inside p, .honest li { text-align: left; margin-inline: 0; }
 .book-stats, .post-recipe, .post-recipe p, .post-recipe ol { text-align: left; }
 .shop-hero .sub { text-align: center; }
+
+/* A second way to order. The mail route depends on one mailbox; this does not,
+   and an order that silently vanishes is worse than an ugly extra line. */
+.buy-alt { margin: 10px 0 0; font-size: 13px; color: var(--muted); text-align: left; }
+.buy-alt a { color: var(--yellow); }
+.bundle .buy-alt { color: #5C5220; }
+.bundle .buy-alt a { color: var(--ink); text-decoration: underline; }
