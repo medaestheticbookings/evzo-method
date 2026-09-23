@@ -890,6 +890,38 @@
   // Enter advances the stepper rather than submitting anything.
   $("quiz").addEventListener("submit", function (e) { e.preventDefault(); $("next").click(); });
 
+  /* The sticky action bar. On a phone the price sits several screens below the
+     fold; a visitor who decides to buy anywhere on the page should not have to
+     hunt for the button. It appears once the hero is behind them and hides at
+     the price, where it would only duplicate the real one. */
+  (function () {
+    var bar = $("stickybar");
+    var hero = document.querySelector(".hero");
+    var price = $("pricing");
+    if (!bar || !hero || !("IntersectionObserver" in window)) return;
+
+    var first = (CFG.packages && CFG.packages.length) ? CFG.packages[0] : null;
+    if ($("sb-price")) $("sb-price").textContent = first ? first.priceDisplay : CFG.product.priceDisplay;
+
+    var pastHero = false, atPrice = false;
+    function sync() {
+      var show = pastHero && !atPrice;
+      if (show) {
+        bar.hidden = false;
+        requestAnimationFrame(function () { bar.classList.add("on"); });
+      } else {
+        bar.classList.remove("on");
+        bar.hidden = true;
+      }
+    }
+    new IntersectionObserver(function (e) { pastHero = !e[0].isIntersecting; sync(); },
+      { threshold: 0 }).observe(hero);
+    if (price) {
+      new IntersectionObserver(function (e) { atPrice = e[0].isIntersecting; sync(); },
+        { threshold: 0 }).observe(price);
+    }
+  })();
+
   /* ------------------------------------------------------- home sections */
 
   /* The stats band. Numbers come from site/shop-data.json, which is written by
@@ -902,10 +934,13 @@
     var band = $("stats");
     if (!band || !statTotals) return;
     var t = statTotals;
+    /* Three figures, not four. Each is counted from the repository by
+       ebooks/build.mjs. There is no customer count here because there are no
+       customers yet, and an unverifiable number is the fastest way to lose the
+       trust the rest of this page is built on. */
     var cells = [
-          [t.planDays, T("Day plan")],
-          [t.recipes, T("Recipes")],
-          [t.ingredients, T("Ingredients costed")],
+      [t.planDays, T("Day plan")],
+      [t.recipes, T("Recipes")],
       [t.trainingPlans, T("Training plans")]
     ];
     band.innerHTML = "";

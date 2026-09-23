@@ -70,41 +70,31 @@
 <section class="hero">
   <div class="wrap">
     <span class="label">Personalised monthly meal guide</span>
-    <h1>Your goal. Your food. A plan built around your real life.</h1>
-    <p class="sub">Choose your goal, tell us how you eat, and receive a practical
-    monthly meal guide matched to your preferences, schedule and routine.</p>
+    <h1>Your goal. Your food.<br>A plan built around your real life.</h1>
+    <p class="sub">Answer twelve questions. Get a month of meals built from your
+    own numbers and the food you actually eat.</p>
     <div class="cta-row">
-      <a class="btn" href="#assessment" data-ev="cta_hero">Build my guide</a>
-      <a class="btn-ghost" href="#receive">See what is inside</a>
+      <a class="btn btn-lg" href="#assessment" data-ev="cta_hero">Build my guide</a>
+    </div>
+    <p class="hero-alt"><a href="#receive">See what is inside first</a></p>
+
+    <!-- The trust line and the numbers, together. Four counted figures do not
+         need a section of their own. -->
+    <div class="stats stats-hero" id="stats" data-reveal>
+      <div><b>—</b><span>Day plan</span></div>
+      <div><b>—</b><span>Recipes</span></div>
+      <div><b>—</b><span>Training plans</span></div>
     </div>
     <div class="trust">
       <span>Digital delivery</span>
-      <span>Made around your answers</span>
+      <span>Built from your answers</span>
       <span>No subscription</span>
     </div>
-    <p class="scope"><strong>General wellness guidance — not medical or dietetic care.</strong>
-    We are not dietitians or healthcare professionals. Everything here is an
-    educational estimate.</p>
   </div>
 </section>
 
 
-<!-- 2b. THE NUMBERS — every one of these is counted from the repository by
-     ebooks/build.mjs and written to site/shop-data.json. Nothing here is a
-     marketing figure, which is the whole reason the band is allowed to exist. -->
-<section class="statband" id="numbers">
-  <div class="wrap">
-    <div class="stats" id="stats" data-reveal>
-      <div><b>—</b><span>Day plan</span></div>
-      <div><b>—</b><span>Recipes</span></div>
-      <div><b>—</b><span>Ingredients costed</span></div>
-      <div><b>—</b><span>Training plans</span></div>
-    </div>
-    <p class="note">Counted, not claimed. Every calorie and macro figure behind these
-    numbers is computed from a table of standard published values — none of them is
-    typed by hand and none is estimated by a language model.</p>
-  </div>
-</section>
+
 
 <!-- 6. HOW IT WORKS -->
 <section id="how">
@@ -119,14 +109,15 @@
   </div>
 </section>
 
-<!-- 3. GOAL SELECTION -->
-<section id="goals">
+
+
+<!-- 4. INTERACTIVE GOAL SNAPSHOT -->
+<section id="assessment">
   <div class="wrap">
-    <span class="label">Step one</span>
+    <span class="label">Start here</span>
     <h2>Pick the one you actually want</h2>
-    <p class="lede">Everything after this is shaped by this answer — the calorie
-    range, the protein target and the way the week is built.</p>
-    <div class="goals" data-reveal-stagger role="group" aria-label="Your goal">
+    <p class="lede">Everything after this is shaped by this answer.</p>
+<div class="goals" data-reveal-stagger role="group" aria-label="Your goal">
       <button type="button" class="goal" data-goal="lose" aria-pressed="false">
         <span class="h">Lose fat</span>
         <p>Eat less than you burn, at a pace you can hold, with enough protein to keep you full.</p>
@@ -143,12 +134,7 @@
         <span class="tick">Select</span>
       </button>
     </div>
-  </div>
-</section>
 
-<!-- 4. INTERACTIVE GOAL SNAPSHOT -->
-<section id="assessment">
-  <div class="wrap">
     <span class="label">Step two</span>
     <h2>Your goal snapshot</h2>
     <p class="lede">Twelve short questions. Nothing is stored anywhere and nothing
@@ -621,6 +607,10 @@
 <!-- 9. PRICING -->
 <section id="pricing">
   <div class="wrap">
+    <p class="scope" style="margin-bottom:22px"><strong>General wellness guidance — not
+    medical or dietetic care.</strong> EVZO is not run by dietitians or healthcare
+    professionals. Every figure is an educational estimate from standard published
+    equations.</p>
     <span class="label">The guide</span>
     <h2>Pick how long you want it for</h2>
     <p class="lede">The same guide either way. The longer packages cost less a month
@@ -938,6 +928,18 @@
     </div>
   </div>
 </section>
+
+
+<!-- Sticky action bar, phones only. Hidden until the hero is past. -->
+<div class="stickybar" id="stickybar" hidden>
+  <div class="stickybar-in">
+    <div>
+      <span class="sb-label">28-day guide</span>
+      <span class="sb-price" id="sb-price">—</span>
+    </div>
+    <a class="btn" href="#assessment" data-ev="cta_sticky">Build my guide</a>
+  </div>
+</div>
 
 <footer>
   <div class="wrap">
