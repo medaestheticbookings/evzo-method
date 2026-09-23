@@ -52,6 +52,7 @@
       if (!st) return;
       counted++;
       if (st.kind === "training") totalPlans += st.plans;
+      else if (st.kind === "workbook") { /* counted as a book, not a recipe */ }
       else totalRecipes += st.count;
     });
     $("t-books").textContent = books.length + " " + T("books");
@@ -88,7 +89,13 @@
     $("shelf").innerHTML = books.map(function (b) {
       var s = stats && stats[b.id];
       var stat = "";
-      if (s && s.kind === "training") {
+      if (s && s.kind === "workbook") {
+        stat = '<div class="book-stats">' +
+          '<span><b>' + s.days + '</b> ' + esc(T("days")) + '</span>' +
+          '<span><b>' + s.habits + '</b> ' + esc(T("habits to choose from")) + '</span>' +
+          '<span><b>' + s.reviews + '</b> ' + esc(T("weekly reviews")) + '</span>' +
+        '</div>';
+      } else if (s && s.kind === "training") {
         stat = '<div class="book-stats">' +
           '<span><b>' + s.plans + '</b> ' + esc(T("plans")) + '</span>' +
           '<span><b>' + s.minDays + '–' + s.maxDays + '</b> ' + esc(T("days a week")) + '</span>' +

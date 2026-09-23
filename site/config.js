@@ -190,6 +190,12 @@
 
       books: [
         {
+          id: "workbook", coverTitle: "Three habits, twenty-eight days", name: "The 28-Day Workbook", file: "EVZO-Workbook.pdf",
+          eyebrow: "Build the habit",
+          blurb: "A workbook to write in, not read. Three habits, thirty seconds a day, four weekly reviews — and an honest look at which habits actually fit your life.",
+          stripePriceId: TODO
+        },
+        {
           id: "workouts", coverTitle: "Five plans, no guesswork", name: "Workout Plans", file: "EVZO-Workout-Plans.pdf",
           eyebrow: "Training",
           blurb: "Five plans from three days a week to five, with the calories each session burns estimated from published MET values — and the margin of error printed beside them.",
