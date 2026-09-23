@@ -1,0 +1,120 @@
+/* EVZO — motion
+   =========================================================================
+   Movement that helps a visitor follow the page, not movement for its own
+   sake. Three rules it sticks to:
+
+   1. Nothing moves more than ~18px. Big travel reads as a website showing off;
+      small travel reads as the page settling.
+   2. Nothing animates twice. A section reveals once and is then left alone —
+      re-animating on every scroll past is the thing that makes a page feel
+      cheap and makes people scroll faster to escape it.
+   3. Everything is off under prefers-reduced-motion. For some people this is
+      a nausea trigger, not a preference, and content must never depend on an
+      animation having run.
+
+   Content is visible by default and only hidden once JavaScript confirms it
+   can reveal it again (`html.js-reveal`). Without that, a script failure
+   would leave a blank page — which is how animated sites break in the wild.
+   ====================================================================== */
+
+/* ---- scroll reveal ------------------------------------------------------ */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .55s cubic-bezier(.22,.61,.36,1),
+              transform .55s cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform;
+}
+.js-reveal [data-reveal].in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Children stagger, so a row of cards arrives as a row rather than a block.
+   Capped at six — past that the last card feels like it is lagging. */
+.js-reveal [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .5s cubic-bezier(.22,.61,.36,1),
+              transform .5s cubic-bezier(.22,.61,.36,1);
+}
+.js-reveal [data-reveal-stagger].in > * { opacity: 1; transform: none; }
+.js-reveal [data-reveal-stagger].in > *:nth-child(1) { transition-delay: 0ms }
+.js-reveal [data-reveal-stagger].in > *:nth-child(2) { transition-delay: 70ms }
+.js-reveal [data-reveal-stagger].in > *:nth-child(3) { transition-delay: 140ms }
+.js-reveal [data-reveal-stagger].in > *:nth-child(4) { transition-delay: 210ms }
+.js-reveal [data-reveal-stagger].in > *:nth-child(5) { transition-delay: 280ms }
+.js-reveal [data-reveal-stagger].in > *:nth-child(6) { transition-delay: 350ms }
+
+/* ---- the hero, on load -------------------------------------------------- */
+/* The one thing that animates without being scrolled to. It runs once, fast,
+   and the CTA arrives last so the eye lands on it. */
+.js-reveal .hero .label,
+.js-reveal .hero h1,
+.js-reveal .hero .sub,
+.js-reveal .hero .cta-row,
+.js-reveal .hero .trust {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: evzo-rise .6s cubic-bezier(.22,.61,.36,1) forwards;
+}
+.js-reveal .hero .label   { animation-delay: .05s }
+.js-reveal .hero h1       { animation-delay: .13s }
+.js-reveal .hero .sub     { animation-delay: .23s }
+.js-reveal .hero .cta-row { animation-delay: .33s }
+.js-reveal .hero .trust   { animation-delay: .43s }
+
+@keyframes evzo-rise { to { opacity: 1; transform: none } }
+
+/* ---- counting numbers --------------------------------------------------- */
+/* The stat band counts up when it comes into view. It is the one piece of
+   showmanship on the page and it earns its place: it draws the eye to the
+   figures, which are the brand's whole argument. */
+.stats b { font-variant-numeric: tabular-nums; }
+
+/* ---- interaction -------------------------------------------------------- */
+/* Lifts on hover. Kept to 2px: enough to feel alive, not enough to shove the
+   layout around. Pointer devices only — a tap should never leave a card stuck
+   in a hover state. */
+@media (hover: hover) and (pointer: fine) {
+  .goal, .linkcard, .book, .post-card, .pack, .panel {
+    transition: transform .22s cubic-bezier(.22,.61,.36,1),
+                border-color .22s ease, background-color .22s ease;
+  }
+  .goal:hover, .linkcard:hover, .book:hover, .post-card:hover, .pack:hover {
+    transform: translateY(-2px);
+  }
+  .btn, .btn-ghost { transition: transform .16s ease, background-color .16s ease, border-color .16s ease }
+  .btn:hover, .btn-ghost:hover { transform: translateY(-1px) }
+  .btn:active, .btn-ghost:active { transform: translateY(0) }
+}
+
+/* The questionnaire's option chips, which get pressed a lot. */
+.opt, .seg button { transition: border-color .18s ease, background-color .18s ease }
+
+/* Each question fading in as it replaces the last one, so a twelve-step form
+   feels like one moving thing rather than twelve separate screens. */
+.step.on { animation: evzo-step .34s cubic-bezier(.22,.61,.36,1) }
+@keyframes evzo-step {
+  from { opacity: 0; transform: translateY(10px) }
+  to   { opacity: 1; transform: none }
+}
+
+/* ---- off, completely, when asked ---------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal],
+  .js-reveal [data-reveal-stagger] > *,
+  .js-reveal .hero .label,
+  .js-reveal .hero h1,
+  .js-reveal .hero .sub,
+  .js-reveal .hero .cta-row,
+  .js-reveal .hero .trust {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .step.on { animation: none }
+  .goal:hover, .linkcard:hover, .book:hover, .post-card:hover, .pack:hover,
+  .btn:hover, .btn-ghost:hover { transform: none }
+}
