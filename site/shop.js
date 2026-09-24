@@ -110,11 +110,11 @@
       }
 
       return '<article class="book">' +
-        '<div class="book-cover">' +
-          '<span class="label">' + esc(T(b.eyebrow)) + '</span>' +
-          '<div class="h">' + esc(T(b.coverTitle || b.name)) + '</div>' +
-          '<div class="foot">evzo · ευ ζω</div>' +
-        '</div>' +
+        /* The real cover: a screenshot of page one of the PDF, rendered by
+           tools/covers.mjs. A drawn imitation drifts from the book it is
+           selling, and this one had. */
+        '<img class="book-cover" src="brand/covers/' + esc(b.file.replace(/\.pdf$/, "")) +
+          '.png" alt="' + esc(T(b.name)) + '" width="800" height="1131" loading="lazy">' +
         '<h3>' + esc(T(b.name)) + '</h3>' +
         '<p>' + esc(T(b.blurb)) + '</p>' +
         stat +

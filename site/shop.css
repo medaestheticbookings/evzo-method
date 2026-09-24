@@ -39,7 +39,7 @@ section > .wrap > .lede { margin-bottom: 26px; }
 /* ---- the shelf -------------------------------------------------------- */
 .shelf {
   display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 .book {
   text-align: left;
@@ -50,22 +50,14 @@ section > .wrap > .lede { margin-bottom: 26px; }
 section.alt .book { background: var(--ground); }
 .book:hover { border-top-color: var(--yellow); }
 
-/* A miniature of the real PDF cover: same type, same yellow eyebrow. */
+/* The real cover, as an image. A4 ratio, so it reads as a book rather than a
+   banner, and it is the same artwork the customer downloads. */
 .book-cover {
-  background: var(--ink); border: 1px solid var(--line);
-  padding: 18px 16px 14px; margin-bottom: 16px;
-  display: flex; flex-direction: column; justify-content: space-between;
-  min-height: 132px;
+  display: block; width: 100%; height: auto; aspect-ratio: 794 / 1123;
+  object-fit: cover; margin-bottom: 16px;
+  background: var(--ink); border: 1px solid var(--line-soft);
 }
-.book-cover .label { color: var(--yellow); }
-.book-cover .h {
-  font-family: var(--display); font-size: clamp(20px, 3.4vw, 25px);
-  line-height: 1.02; text-transform: uppercase; margin-top: 10px;
-}
-.book-cover .foot {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--muted); margin-top: 14px;
-}
+
 .book h3 { font-size: 19px; margin: 0 0 6px; }
 .book > p { color: var(--bone-dim); font-size: 15px; line-height: 1.5; margin: 0; }
 

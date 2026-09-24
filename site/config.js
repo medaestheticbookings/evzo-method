@@ -313,10 +313,10 @@
     legal: {
       // These point at the on-page policy sections at the foot of the site.
       // If the page later moves to its own domain, swap them for real URLs.
-      termsUrl: "#terms",
-      privacyUrl: "#privacy",
-      cookieUrl: "#cookies",
-      refundUrl: "#refund",
+      termsUrl: "legal.html#terms",
+      privacyUrl: "legal.html#privacy",
+      cookieUrl: "legal.html#cookies",
+      refundUrl: "legal.html#refund",
       // TODO_OWNER: confirm with a qualified EU consumer-law adviser.
       //
       // A blanket "no refunds on digital products" is NOT valid in the EU on its
