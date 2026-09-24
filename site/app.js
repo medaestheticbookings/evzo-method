@@ -112,6 +112,14 @@
      to a local sink until one is. */
   var ALLOWED_KEYS = ["goal", "step", "value", "currency", "item"];
   function track(name, payload) {
+    /* Consent gate. Nothing reaches a vendor until the visitor has ticked
+       analytics — prior consent is the requirement, and a tracker that fires
+       first and asks afterwards is the thing the fines are for. Events are
+       dropped rather than queued: a queue that flushes on consent still
+       records what someone did before they agreed. */
+    var consent = window.EVZO_CONSENT;
+    if (consent && !consent.allows("analytics")) return;
+
     var safe = {};
     Object.keys(payload || {}).forEach(function (k) {
       if (ALLOWED_KEYS.indexOf(k) !== -1) safe[k] = payload[k];
