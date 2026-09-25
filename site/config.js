@@ -214,6 +214,12 @@
           stripePriceId: TODO
         },
         {
+          id: "budget", coverTitle: "Cheap is a number, not a feeling", name: "Budget Meals", file: "EVZO-Budget-Meals.pdf",
+          eyebrow: "Eating well on very little",
+          blurb: "Twelve Greek and Cypriot plates with the cost of every serving printed on the page — from 45 cents to just over two euro.",
+          stripePriceId: TODO
+        },
+        {
           id: "bowls", coverTitle: "One bowl, thirty grams", name: "High-Protein Bowls", file: "EVZO-Protein-Bowls.pdf",
           eyebrow: "Lunch",
           blurb: "Mediterranean bowls built around the protein first. Most of them one pan, all of them assembled in minutes.",
