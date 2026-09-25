@@ -470,6 +470,27 @@ section > .wrap > .label{text-align:center}
 #assessment .step .hint{text-align:left}
 #assessment .nav-row{justify-content:flex-start}
 
+/* ---------- the two halves of the assessment need air between them --------
+   Step one is three cards, step two is a panel, and they were running
+   straight into each other with the label, the heading and the lede stacked
+   almost touching. Two causes: the goal grid carries no margin of its own,
+   and wrapping step two's intro in #q-intro took its label out of reach of
+   `section > .wrap > .label`, which is what supplies that rhythm everywhere
+   else on the page. Both restored here, with a clear break between the two
+   steps so it reads as two moves rather than one wall. */
+#assessment .goals{margin-top:clamp(26px,3.6vw,36px)}
+
+#q-intro{margin-top:clamp(56px,8.5vw,96px)}
+#q-intro > .label{display:block;text-align:center;margin-bottom:16px}
+#q-intro .lede{margin-top:20px}
+
+#assessment .panel{margin-top:clamp(30px,4.4vw,44px)}
+
+/* Inside the panel: the counter, the progress bar and the question were also
+   sitting closer together than anything else on the page. */
+#assessment .step-head{margin-bottom:14px}
+#assessment .bar{margin-bottom:34px}
+
 /* Result: two centred columns, content left-aligned inside */
 .result-grid{max-width:900px;margin-inline:auto}
 .result-grid .panel{text-align:left}
