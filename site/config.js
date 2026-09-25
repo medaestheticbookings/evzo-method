@@ -307,7 +307,29 @@
       contactFallbackUrl: "https://www.instagram.com/evzo_method/",
       contactFallbackLabel: "Message @evzo_method",
       // TODO_OWNER: the EU member state the business is established in.
-      country: TODO
+      country: TODO,
+
+      /* ---- the people-helped figure -------------------------------------
+         Shown in the hero stats band as "700+ transformations".
+
+         THIS IS THE OWNER'S OWN CLAIM ABOUT THE OWNER'S OWN TRACK RECORD, and
+         it is the owner's to stand behind. It is set here, in one place, so it
+         is easy to change or remove and so nobody has to hunt through markup
+         for it.
+
+         What it must NOT become: a number attached to invented reviews,
+         invented before/after photos, or photos of people who are not your
+         clients. A claim you can evidence is marketing. A claim dressed up in
+         someone else's face is a fabricated endorsement, and under the EU
+         Omnibus Directive (2019/2161, transposed in Cyprus) that is the part
+         that carries the fine — up to 4% of annual turnover — not the count.
+
+         Keep a record that supports it: client list, booking history, message
+         threads, anything dated. If a regulator or a customer asks "700 of
+         what, over what period", you need an answer. Set to null to remove
+         the figure from the page entirely. */
+      peopleHelped: "700+",
+      peopleHelpedLabel: "Transformations"
     },
 
     legal: {

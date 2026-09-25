@@ -942,15 +942,19 @@
     var band = $("stats");
     if (!band || !statTotals) return;
     var t = statTotals;
-    /* Three figures, not four. Each is counted from the repository by
-       ebooks/build.mjs. There is no customer count here because there are no
-       customers yet, and an unverifiable number is the fastest way to lose the
-       trust the rest of this page is built on. */
+    /* Three figures counted from the repository by ebooks/build.mjs, plus the
+       owner's people-helped figure from config when it is set. The counted
+       three cannot drift from the content; the fourth is the owner's own claim
+       and lives in config.business.peopleHelped — see the note there. */
     var cells = [
       [t.planDays, T("Day plan")],
       [t.recipes, T("Recipes")],
       [t.trainingPlans, T("Training plans")]
     ];
+    var helped = CFG.business && CFG.business.peopleHelped;
+    if (helped) {
+      cells.unshift([helped, T(CFG.business.peopleHelpedLabel || "Transformations")]);
+    }
     band.innerHTML = "";
     cells.forEach(function (c) {
       var d1 = document.createElement("div");

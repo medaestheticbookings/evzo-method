@@ -295,6 +295,7 @@
     "Build the habit": "Χτίσε τη συνήθεια",
     "Or message": "Ή στείλε μήνυμα στο",
     "to order": "για παραγγελία",
+    "Transformations": "Μεταμορφώσεις",
     "Day plan": "Ημέρες πλάνο",
     "Recipes": "Συνταγές",
     "Ingredients costed": "Υλικά υπολογισμένα",
@@ -663,9 +664,9 @@
     "You tell us what you will not eat before it is built, and those foods never appear. Every meal also comes with an alternative, so a night you cannot face the plan does not end the week.":
       "Μας λες τι δεν τρως πριν φτιαχτεί, και αυτά δεν εμφανίζονται ποτέ. Κάθε γεύμα έχει και εναλλακτική, ώστε ένα βράδυ που δεν αντέχεις το πλάνο να μην τελειώνει την εβδομάδα.",
 
-    /* fulfilment */
-    "within 24 hours": "εντός 24 ωρών",
-
+    /* fulfilment */
+    "within 24 hours": "εντός 24 ωρών",
+
     /* macro split */
     "How do you like your food to be made up?": "Πώς σου αρέσει να συνθέτεις το φαγητό σου;",
     "Same calories either way — this only changes how they are arranged between protein, carbohydrate and fat. Pick the way of eating you can actually keep up; that matters more than the ratio itself.":
