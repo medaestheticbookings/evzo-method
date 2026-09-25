@@ -35,6 +35,10 @@
     "Pick the one you actually want": "Διάλεξε αυτό που θέλεις πραγματικά",
     "Everything after this is shaped by this answer — the calorie range, the protein target and the way the week is built.":
       "Όλα από εδώ και πέρα διαμορφώνονται από αυτή την απάντηση — το εύρος θερμίδων, ο στόχος πρωτεΐνης και ο τρόπος που χτίζεται η εβδομάδα.",
+    // The page carries the short version; the long one above is kept for the
+    // shop and the guide, which still use it.
+    "Everything after this is shaped by this answer.":
+      "Όλα από εδώ και πέρα διαμορφώνονται από αυτή την απάντηση.",
     "Lose fat": "Χάσιμο λίπους",
     "Maintain weight": "Διατήρηση βάρους",
     "Gain weight": "Αύξηση βάρους",
@@ -540,8 +544,9 @@
     "Nuts": "Ξηροί καρποί",
     "Avocado": "Αβοκάντο",
     "Tahini": "Ταχίνι",
-    "Twelve short questions. Nothing is stored anywhere and nothing is sent to advertising tools.":
-      "Δέκα σύντομες ερωτήσεις. Τίποτα δεν αποθηκεύεται πουθενά και τίποτα δεν στέλνεται σε διαφημιστικά εργαλεία.",
+    "Now the questions": "Τώρα οι ερωτήσεις",
+    "Eleven short ones. Nothing is stored and nothing is sent to advertising tools.":
+      "Έντεκα σύντομες. Τίποτα δεν αποθηκεύεται και τίποτα δεν στέλνεται σε διαφημιστικά εργαλεία.",
 
     /* long-form copy: exclusion notice, preview, FAQ, terms, privacy, refunds */
     "Vegan": "Βίγκαν",

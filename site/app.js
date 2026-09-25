@@ -42,7 +42,10 @@
     track("assessment_started", { goal: S.goal });
   }
 
-  var STEPS = ["goal", "age", "units", "height", "weight", "sex", "activity", "split", "style", "allergies", "foods", "meals"];
+  /* The goal is NOT a step. It is answered by the three cards above the panel,
+     and the panel stays hidden until it is — asking it here as well meant the
+     visitor answered the same question twice in a row. */
+  var STEPS = ["age", "units", "height", "weight", "sex", "activity", "split", "style", "allergies", "foods", "meals"];
 
   /* Tags hidden by each dietary style. A vegan is never asked whether they
      like lamb, and a food hidden here is also cleared from the answers, so a
@@ -214,7 +217,8 @@
      message the user can act on. */
   function stepProblem() {
     var k = STEPS[S.step];
-    if (k === "goal" && !S.goal) return T("Pick a goal to carry on.");
+    // The goal is answered before the panel opens, so it cannot be missing by
+    // the time anyone is in here. Checked again at finish() all the same.
     if (k === "age") {
       var a = num("age");
       if (a === null) return T("Enter your age.");
@@ -260,6 +264,15 @@
 
   /* ---------------------------------------------------------------- result */
   function finish() {
+    /* Belt and braces. The panel cannot open without a goal, but the whole
+       calculation hangs off it, so nothing is estimated from an absent one. */
+    if (!S.goal) {
+      var e = $("err-step");
+      if (e) { e.textContent = T("Pick a goal to carry on."); e.hidden = false; }
+      var cards = document.querySelector(".goals");
+      if (cards && cards.scrollIntoView) cards.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     var input = {
       goal: S.goal === "maintain" ? "maintain" : S.goal,
       sex: S.sex, age: S.age, kg: S.kg, cm: S.cm, activity: S.activity,
@@ -561,7 +574,12 @@
     if (CFG.isSet(CFG.legal.refundPolicyText)) $("faq-refund").textContent = T(CFG.legal.refundPolicyText);
     else unsetMark($("faq-refund"), "legal.refundPolicyText");
 
-    $("faq-scope").textContent = T(CFG.disclaimerFull);
+    /* The full scope note lives in the FAQ on legal.html. The homepage lost its
+       FAQ when it was cut down, so this element is absent there — and an
+       unguarded assignment threw, which aborted the rest of renderConfig and
+       silently left every config-driven value below this line unrendered. */
+    if ($("faq-scope")) $("faq-scope").textContent = T(CFG.disclaimerFull);
+
     $("legal-full").innerHTML = "";
     var strongLead = document.createElement("strong");
     strongLead.textContent = T("Scope: ");
@@ -734,13 +752,32 @@
     S.goal = v;
     all(".goal").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-goal") === v)); });
     all('[data-q="goal"]').forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-v") === v)); });
+    revealQuestions();
     track("goal_selected", { goal: v });
+  }
+
+  /* The questions appear only once there is a goal to shape them. Revealing is
+     one-way: changing the goal afterwards must not collapse answers already
+     given. */
+  function revealQuestions() {
+    var intro = $("q-intro"), panel = $("q-panel");
+    if (!panel || !panel.hidden) return false;
+    if (intro) intro.hidden = false;
+    panel.hidden = false;
+    return true;
   }
 
   all(".goal").forEach(function (b) {
     b.addEventListener("click", function () {
+      var first = $("q-panel") && $("q-panel").hidden;
       setGoal(b.getAttribute("data-goal"));
-      $("assessment").scrollIntoView({ behavior: "smooth", block: "start" });
+      // On the first pick, take them to the questions that just appeared.
+      // On a change of mind, stay put — the panel is already below them.
+      var target = first ? ($("q-intro") || $("assessment")) : $("assessment");
+      if (target && target.scrollIntoView) {
+        var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      }
       trackStartOnce();
     });
   });

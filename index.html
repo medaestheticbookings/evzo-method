@@ -114,7 +114,7 @@
 <!-- 4. INTERACTIVE GOAL SNAPSHOT -->
 <section id="assessment">
   <div class="wrap">
-    <span class="label">Start here</span>
+    <span class="label">Step one</span>
     <h2>Pick the one you actually want</h2>
     <p class="lede">Everything after this is shaped by this answer.</p>
 <div class="goals" data-reveal-stagger role="group" aria-label="Your goal">
@@ -135,35 +135,27 @@
       </button>
     </div>
 
-    <span class="label">Step two</span>
-    <h2>Your goal snapshot</h2>
-    <p class="lede">Twelve short questions. Nothing is stored anywhere and nothing
-    is sent to advertising tools.</p>
+    <!-- Hidden until a goal is picked above. It used to sit open with "what is
+         the goal?" as its first question, which asked the visitor the same
+         thing twice in a row. -->
+    <div id="q-intro" hidden>
+      <span class="label">Step two</span>
+      <h2>Now the questions</h2>
+      <p class="lede">Eleven short ones. Nothing is stored and nothing is sent to advertising tools.</p>
+    </div>
 
-    <div class="panel">
+    <div class="panel" id="q-panel" hidden>
       <div class="step-head" id="step-anchor" style="scroll-margin-top:76px">
-        <span class="label" id="step-count">Question 1 of 12</span>
+        <span class="label" id="step-count">Question 1 of 11</span>
         <button type="button" class="btn-ghost" id="restart" hidden style="min-height:36px;padding:8px 14px;font-size:11px">Start again</button>
       </div>
-      <div class="bar" role="progressbar" aria-labelledby="step-count" aria-valuemin="0" aria-valuemax="100" aria-valuenow="10"><i id="bar" style="width:10%"></i></div>
+      <div class="bar" role="progressbar" aria-labelledby="step-count" aria-valuemin="0" aria-valuemax="100" aria-valuenow="9"><i id="bar" style="width:9%"></i></div>
 
       <form id="quiz" novalidate>
 
         <!-- 1 goal -->
-        <div class="step on" data-step="goal">
-          <fieldset>
-            <legend>What is the goal?</legend>
-            <p class="hint">You can change this at any point without losing your other answers.</p>
-            <div class="opts" role="group" aria-label="Goal">
-              <button type="button" class="opt" data-q="goal" data-v="lose" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t">Lose fat</span><span class="d">A controlled deficit you can actually hold</span></span></button>
-              <button type="button" class="opt" data-q="goal" data-v="maintain" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t">Maintain weight</span><span class="d">Structure without changing the scale</span></span></button>
-              <button type="button" class="opt" data-q="goal" data-v="gain" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t">Gain weight</span><span class="d">A measured surplus, not a free-for-all</span></span></button>
-            </div>
-          </fieldset>
-        </div>
-
-        <!-- 2 age -->
-        <div class="step" data-step="age">
+        <!-- 1 age — the goal is answered by the cards above, not here -->
+        <div class="step on" data-step="age">
           <fieldset>
             <legend>How old are you?</legend>
             <p class="hint">Age changes how many calories your body uses at rest, so the estimate needs it. This guide is for adults only.</p>
