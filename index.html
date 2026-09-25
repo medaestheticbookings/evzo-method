@@ -65,30 +65,79 @@
 
 <main>
 
-<!-- 2. HERO -->
+<!-- 2. HERO
+     Two columns on desktop: the argument on the left, the food on the right.
+     A meal-planning page with no photograph of a meal on it asks people to
+     buy food they cannot picture. The photograph is the product demo. -->
 <section class="hero">
-  <div class="wrap">
-    <span class="label">Personalised monthly meal guide</span>
-    <h1>Your goal. Your food.<br>A plan built around your real life.</h1>
-    <p class="sub">Answer twelve questions. Get a month of meals built from your
-    own numbers and the food you actually eat.</p>
-    <div class="cta-row">
-      <a class="btn btn-lg" href="#assessment" data-ev="cta_hero">Build my guide</a>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="label">Personalised monthly meal guide</span>
+      <h1>Your goal. Your food.<br>A plan built around your real life.</h1>
+      <p class="sub">Answer eleven questions. Get a month of meals built from your
+      own numbers — and from the Greek and Cypriot food you already eat.</p>
+      <div class="cta-row">
+        <a class="btn btn-lg" href="#assessment" data-ev="cta_hero">Build my guide</a>
+        <a class="btn-ghost btn-lg" href="#receive">See what is inside</a>
+      </div>
+      <p class="hero-alt">Takes about three minutes. Nothing to pay to see your numbers.</p>
+      <div class="trust">
+        <span>Digital delivery</span>
+        <span>Built from your answers</span>
+        <span>No subscription</span>
+      </div>
     </div>
-    <p class="hero-alt"><a href="#receive">See what is inside first</a></p>
 
-    <!-- The trust line and the numbers, together. Four counted figures do not
-         need a section of their own. -->
+    <figure class="hero-shot" data-reveal>
+      <picture>
+        <source srcset="site/img/hero.webp" type="image/webp">
+        <img src="site/img/hero.jpg" width="1200" height="950" fetchpriority="high"
+             alt="Grilled pork souvlaki with pita and potatoes on a taverna table">
+      </picture>
+      <figcaption>Real food, portioned to your numbers — not a diet of chicken and rice.</figcaption>
+    </figure>
+  </div>
+
+  <!-- The counted figures sit full width under both columns. -->
+  <div class="wrap">
     <div class="stats stats-hero" id="stats" data-reveal>
       <div><b>700+</b><span>Transformations</span></div>
       <div><b>—</b><span>Day plan</span></div>
       <div><b>—</b><span>Recipes</span></div>
       <div><b>—</b><span>Training plans</span></div>
     </div>
-    <div class="trust">
-      <span>Digital delivery</span>
-      <span>Built from your answers</span>
-      <span>No subscription</span>
+  </div>
+</section>
+
+
+<!-- 2b. THE PROBLEM — one short section of agitation before any asking.
+     People do not buy a meal plan because plans are good. They buy because
+     the last four failed and they can name why. -->
+<section id="problem" class="band">
+  <div class="wrap">
+    <span class="label">Why the last one failed</span>
+    <h2>You did not lack discipline. You had the wrong plan.</h2>
+    <div class="probs" data-reveal-stagger>
+      <div class="prob">
+        <span class="pn">01</span>
+        <h3>It was built for somebody else</h3>
+        <p>A plan off the internet is built for an average that does not exist.
+        Your maintenance calories, your height, your week and your kitchen are
+        not the ones it assumed.</p>
+      </div>
+      <div class="prob">
+        <span class="pn">02</span>
+        <h3>It told you to eat food you do not eat</h3>
+        <p>Kale, quinoa, protein powder, six meals a day. Nobody in Nicosia or
+        Athens eats like that for a month, so by week three you are back to
+        exactly what you ate before.</p>
+      </div>
+      <div class="prob">
+        <span class="pn">03</span>
+        <h3>You were counting, not eating</h3>
+        <p>Weighing every plate is a second job. The portions should already be
+        worked out by the time the plan reaches you.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -102,14 +151,189 @@
     <span class="label">How it works</span>
     <h2>Three steps, then it is in your inbox</h2>
     <div class="steps3" data-reveal-stagger>
-      <div class="s3"><span class="n">01</span><h3>Tell us about your goal and routine</h3><p>The snapshot above, then a longer questionnaire after checkout covering food you like, dislikes, allergies, cooking time and budget.</p></div>
-      <div class="s3"><span class="n">02</span><h3>We match the guide to your answers</h3><p>Your calorie and protein ranges set the structure. Your preferences decide what actually goes in the meals.</p></div>
-      <div class="s3"><span class="n">03</span><h3>Receive your digital guide by email</h3><p id="how-delivery">Delivered as a PDF.</p></div>
+      <div class="s3">
+        <picture>
+          <source srcset="site/img/step-1.webp" type="image/webp">
+          <img class="s3-img" src="site/img/step-1.jpg" width="900" height="620" loading="lazy"
+               alt="A Greek market stall stacked with fresh vegetables">
+        </picture>
+        <span class="n">01</span>
+        <h3>Tell us about your goal and routine</h3>
+        <p>Eleven questions here, then a longer one after checkout covering food you
+        like, dislikes, allergies, cooking time and budget.</p>
+      </div>
+      <div class="s3">
+        <picture>
+          <source srcset="site/img/step-2.webp" type="image/webp">
+          <img class="s3-img" src="site/img/step-2.jpg" width="900" height="620" loading="lazy"
+               alt="Olive oil being poured into a small dish">
+        </picture>
+        <span class="n">02</span>
+        <h3>We match the guide to your answers</h3>
+        <p>Your calorie and protein ranges set the structure. Your preferences decide
+        what actually goes in the meals.</p>
+      </div>
+      <div class="s3">
+        <picture>
+          <source srcset="site/img/step-3.webp" type="image/webp">
+          <img class="s3-img" src="site/img/step-3.jpg" width="900" height="620" loading="lazy"
+               alt="A basket of tomatoes, lemons and vegetables beside a kitchen scale">
+        </picture>
+        <span class="n">03</span>
+        <h3>Receive your digital guide by email</h3>
+        <p id="how-delivery">Delivered as a PDF.</p>
+      </div>
     </div>
   </div>
 </section>
 
 
+
+<!-- 7. WHAT THE CUSTOMER RECEIVES -->
+<section id="receive">
+  <div class="wrap">
+    <span class="label">What you receive</span>
+    <h2>One guide, built around your answers</h2>
+    <div class="receive" data-reveal-stagger>
+      <ul>
+        <li>A personalised 28-day meal structure</li>
+        <li>Your calorie and protein starting ranges</li>
+        <li>Portion guidance for every meal</li>
+        <li>Meal alternatives and food swaps</li>
+        <li>A shopping list organised by aisle</li>
+        <li>Practical guidance for busy days and eating out</li>
+        <li>A simple habit checklist</li>
+        <li>Digital PDF, yours to keep</li>
+      </ul>
+      <!-- A worked day, with the arithmetic showing. The wireframe of grey
+           bars that used to sit here read as an unfinished page; a real day
+           with real figures is the thing that actually sells a meal guide. -->
+      <div class="mock">
+        <div class="day">
+          <div class="day-hd"><b>EVZO</b><span>Week 1 · Day 1</span></div>
+          <div class="day-row">
+            <span class="dm">Breakfast</span>
+            <span class="dn">Greek yoghurt, berries, honey, walnuts</span>
+            <span class="dk">410 kcal · 28 g protein</span>
+          </div>
+          <div class="day-row">
+            <span class="dm">Lunch</span>
+            <span class="dn">Chicken souvlaki bowl, rice, salad</span>
+            <span class="dk">620 kcal · 48 g protein</span>
+          </div>
+          <div class="day-row">
+            <span class="dm">Snack</span>
+            <span class="dn">Two eggs, an apple</span>
+            <span class="dk">230 kcal · 14 g protein</span>
+          </div>
+          <div class="day-row">
+            <span class="dm">Dinner</span>
+            <span class="dn">Baked fish, potatoes, horta</span>
+            <span class="dk">540 kcal · 42 g protein</span>
+          </div>
+          <div class="day-tot">
+            <span>Day total</span><b>1,800 kcal · 132 g protein</b>
+          </div>
+        </div>
+        <span class="cap">An example day at 1,800 kcal. Yours is rebuilt around
+        your own ranges, your allergies and the foods you tick.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 7b. A WEEK OF IT — the appetite section.
+     Six real dishes with their real figures. This does two jobs at once:
+     it makes the food look like food worth eating, and it shows the numbers
+     are attached to every plate rather than to a marketing claim. -->
+<section id="week" class="band">
+  <div class="wrap">
+    <span class="label">A week of it</span>
+    <h2>This is the food. Not a picture of a salad.</h2>
+    <p class="lede">Everything below is Greek and Cypriot cooking most people
+    already make. The figures are computed from the ingredients, not estimated.</p>
+
+    <div class="week-grid" data-reveal-stagger>
+      <figure class="dish">
+        <picture><source srcset="site/img/week-1.webp" type="image/webp">
+          <img src="site/img/week-1.jpg" width="800" height="800" loading="lazy"
+               alt="Greek salad with feta, peppers, tomato and onion"></picture>
+        <figcaption><b>Greek salad, built up</b><span>430 kcal · 18 g protein</span></figcaption>
+      </figure>
+      <figure class="dish">
+        <picture><source srcset="site/img/week-2.webp" type="image/webp">
+          <img src="site/img/week-2.jpg" width="800" height="800" loading="lazy"
+               alt="Sliced grilled chicken over rice with salad"></picture>
+        <figcaption><b>Grilled chicken and rice</b><span>620 kcal · 48 g protein</span></figcaption>
+      </figure>
+      <figure class="dish">
+        <picture><source srcset="site/img/week-3.webp" type="image/webp">
+          <img src="site/img/week-3.jpg" width="800" height="800" loading="lazy"
+               alt="Yoghurt bowl topped with raspberries and strawberries"></picture>
+        <figcaption><b>Yoghurt and fruit</b><span>410 kcal · 28 g protein</span></figcaption>
+      </figure>
+      <figure class="dish">
+        <picture><source srcset="site/img/week-4.webp" type="image/webp">
+          <img src="site/img/week-4.jpg" width="800" height="800" loading="lazy"
+               alt="Grilled sardines with potatoes, tomato and salad"></picture>
+        <figcaption><b>Grilled fish and potatoes</b><span>540 kcal · 42 g protein</span></figcaption>
+      </figure>
+      <figure class="dish">
+        <picture><source srcset="site/img/week-5.webp" type="image/webp">
+          <img src="site/img/week-5.jpg" width="800" height="800" loading="lazy"
+               alt="Bowl of chickpeas with rice, salmon and greens"></picture>
+        <figcaption><b>Chickpeas and greens</b><span>480 kcal · 22 g protein</span></figcaption>
+      </figure>
+      <figure class="dish">
+        <picture><source srcset="site/img/week-6.webp" type="image/webp">
+          <img src="site/img/week-6.jpg" width="800" height="800" loading="lazy"
+               alt="Octopus salad with tomato, cucumber and feta"></picture>
+        <figcaption><b>Octopus salad</b><span>390 kcal · 34 g protein</span></figcaption>
+      </figure>
+    </div>
+    <p class="note">Example dishes at example portions. Your guide uses your own
+    ranges, so the same plate may be larger or smaller.</p>
+  </div>
+</section>
+
+
+<!-- 7c. WHY THE NUMBERS HOLD UP
+     This page has no testimonials, because there are none worth printing yet.
+     The trust it needs has to come from somewhere, so it comes from showing
+     the working — which is also the one thing competitors will not do. -->
+<section id="rigour">
+  <div class="wrap">
+    <span class="label">Why you can trust the figures</span>
+    <h2>Every number here is computed, not claimed</h2>
+    <div class="rig" data-reveal-stagger>
+      <div class="rig-card">
+        <h3>Published equations, named</h3>
+        <p>Your maintenance calories come from the Mifflin–St Jeor equation, and
+        your protein target from body weight. Both are standard and both are
+        stated on your guide, so you can check them.</p>
+      </div>
+      <div class="rig-card">
+        <h3>Calories come from the ingredient</h3>
+        <p>Every figure on every recipe is added up from the ingredient list
+        rather than typed in by hand. That is why the numbers on this page match
+        the numbers in the books.</p>
+      </div>
+      <div class="rig-card">
+        <h3>Ranges, not false precision</h3>
+        <p>You get a range, not a single number pretending to be exact. Anyone
+        quoting you 1,847 calories to the calorie is selling certainty that does
+        not exist.</p>
+      </div>
+      <div class="rig-card">
+        <h3>What this is not</h3>
+        <p>Not medical or dietetic advice, and we do not pretend otherwise. It is
+        educational, it is general, and where it is not right for you the page
+        says so instead of taking your money.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- 4. INTERACTIVE GOAL SNAPSHOT -->
 <section id="assessment">
@@ -556,36 +780,6 @@
 
 
 
-<!-- 7. WHAT THE CUSTOMER RECEIVES -->
-<section id="receive">
-  <div class="wrap">
-    <span class="label">What you receive</span>
-    <h2>One guide, built around your answers</h2>
-    <div class="receive" data-reveal-stagger>
-      <ul>
-        <li>A personalised 28-day meal structure</li>
-        <li>Your calorie and protein starting ranges</li>
-        <li>Portion guidance for every meal</li>
-        <li>Meal alternatives and food swaps</li>
-        <li>A shopping list organised by aisle</li>
-        <li>Practical guidance for busy days and eating out</li>
-        <li>A simple habit checklist</li>
-        <li>Digital PDF, yours to keep</li>
-      </ul>
-      <div class="mock">
-        <div class="doc" aria-hidden="true">
-          <div class="hd"><b>EVZO</b><span>28-DAY GUIDE</span></div>
-          <span class="tag">WEEK 1 · DAY 1</span>
-          <div class="ln a"></div><div class="ln b"></div><div class="ln c"></div>
-          <span class="tag" style="margin-top:14px">PORTIONS</span>
-          <div class="ln c"></div><div class="ln a"></div>
-        </div>
-        <span class="cap">Representative layout of the deliverable. Not real
-        nutritional content — your guide is generated from your own answers.</span>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 
@@ -764,12 +958,17 @@
 
 
 <!-- 12. FINAL CTA -->
-<section class="final">
+<section class="final has-shot">
+  <picture class="final-bg" aria-hidden="true">
+    <source srcset="site/img/cta.webp" type="image/webp">
+    <img src="site/img/cta.jpg" width="1400" height="620" loading="lazy" alt="">
+  </picture>
   <div class="wrap">
     <h2>Your goal. Your food. Your month.</h2>
     <p class="lede">A practical starting structure, matched to your preferences and
     designed for a real schedule.</p>
-    <a class="btn" href="#assessment" data-ev="cta_final">Build my guide</a>
+    <a class="btn btn-lg" href="#assessment" data-ev="cta_final">Build my guide</a>
+    <p class="final-re">Three minutes to your numbers. Nothing to pay to see them.</p>
   </div>
 </section>
 

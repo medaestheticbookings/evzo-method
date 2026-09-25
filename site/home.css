@@ -238,3 +238,176 @@
 .stickybar .btn { min-height: 46px; padding: 12px 20px; }
 @media (min-width: 860px) { .stickybar { display: none } }
 @media (prefers-reduced-motion: reduce) { .stickybar { transition: none } }
+
+
+/* ===========================================================================
+   PHOTOGRAPHY AND THE CONVERSION STRUCTURE
+   ===========================================================================
+   The page had no photograph on it anywhere. For a product about food that is
+   not a style problem, it is a selling problem: nobody can want a meal they
+   cannot see. Everything below exists to put real food on the page and to
+   order the argument the way a stranger actually reads it — what is wrong,
+   what they get, what it looks like, why the numbers can be trusted, and only
+   then the form.
+
+   Rules kept throughout:
+   - Every image ships width and height, so nothing shifts as it loads.
+   - Everything below the fold is loading="lazy"; the hero is fetchpriority
+     high, because it is the largest paint.
+   - Captions are real information, never decoration.
+   ======================================================================== */
+
+/* ---- hero: argument left, food right ----------------------------------- */
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(28px,4vw,56px);
+  align-items:center;
+}
+/* `section > .wrap{text-align:center}` sets the centred rhythm for the whole
+   page and outranks a plain `.hero-grid`, so this has to match its specificity
+   to win. A two-column hero ranged centre reads as a poster, not a page. */
+/* The wrap keeps its own auto margins — it is what centres the column on a
+   wide screen. Only the text inside is un-centred. */
+section > .wrap.hero-grid{text-align:left}
+section > .wrap.hero-grid .label,
+section > .wrap.hero-grid .sub,
+section > .wrap.hero-grid .hero-alt,
+section > .wrap.hero-grid .trust{text-align:left;margin-inline:0}
+.hero-grid .cta-row,
+.hero-grid .trust{justify-content:flex-start}
+.hero-copy .sub{max-width:46ch}
+/* Ranged left in a half-width column, the full-width size is far too big and
+   breaks across four lines. */
+.hero-grid h1{font-size:clamp(31px,3.9vw,49px);text-wrap:pretty}
+
+/* <picture> is inline by default, which leaves a baseline gap under the image
+   and lets the natural width escape the column. */
+.hero-shot picture,.s3 picture,.dish picture{display:block}
+
+.hero-shot{margin:0;position:relative}
+.hero-shot img{
+  display:block;width:100%;height:auto;
+  aspect-ratio:1200/950;object-fit:cover;
+}
+/* The brand's diagonal yellow field, used as a corner rule rather than a
+   whole panel — enough to make the photograph look placed rather than
+   dropped in. */
+.hero-shot::before{
+  content:"";position:absolute;left:-10px;top:-10px;
+  width:84px;height:84px;border-top:4px solid var(--yellow);border-left:4px solid var(--yellow);
+  z-index:1;pointer-events:none;
+}
+.hero-shot figcaption{
+  margin-top:12px;color:var(--muted);font-size:13.5px;line-height:1.5;
+}
+.hero .cta-row .btn-ghost{text-decoration:none}
+.hero-alt{color:var(--muted);font-size:13.5px;margin:16px 0 0}
+
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:1fr}
+  /* The photograph stays BELOW the copy on a phone. Putting it first was
+     tempting, but at this width a 1200x950 image fills the whole viewport and
+     pushes the headline and the button off the screen — the visitor lands on
+     a picture of meat with nothing telling them what the page is. Copy first,
+     then the photograph as proof, then the numbers.
+     It is also cropped shallower here so the next section stays in reach. */
+  .hero-shot img{aspect-ratio:4/3}
+  .hero-shot::before{width:60px;height:60px}
+  .hero-grid h1{font-size:clamp(29px,7.4vw,40px)}
+}
+
+/* ---- the problem band --------------------------------------------------- */
+.band{background:var(--raised)}
+.probs{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:clamp(20px,3vw,32px);margin-top:clamp(30px,4.4vw,44px);text-align:left;
+}
+.prob{border-top:2px solid var(--yellow);padding-top:18px}
+.prob .pn{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--yellow);
+  display:block;margin-bottom:10px;
+}
+.prob h3{font-size:20px;margin-bottom:9px}
+.prob p{margin:0;color:var(--bone-dim);font-size:15.5px;line-height:1.6}
+
+/* ---- how it works, now with photographs --------------------------------- */
+.s3-img{
+  display:block;width:100%;height:auto;aspect-ratio:900/620;object-fit:cover;
+  margin-bottom:16px;
+}
+/* The rule used to sit on top of the text; with a photograph above it, it
+   belongs under the image instead. */
+.s3{border-top:0;padding-top:0}
+.s3 .n{margin-top:2px}
+
+/* ---- the example day, in place of the grey wireframe -------------------- */
+.day{background:var(--ground);border:1px solid var(--line-soft);padding:20px 18px}
+.day-hd{
+  display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid var(--line-soft);padding-bottom:11px;margin-bottom:6px;
+}
+.day-hd b{font-family:var(--display);font-size:17px;letter-spacing:.03em;font-weight:400}
+.day-hd span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.day-row{padding:12px 0;border-bottom:1px solid var(--line-soft)}
+.day-row .dm{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px;
+}
+.day-row .dn{display:block;font-size:15px;color:var(--bone);line-height:1.45}
+.day-row .dk{
+  display:block;margin-top:4px;font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.06em;color:var(--yellow);font-variant-numeric:tabular-nums;
+}
+.day-tot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:14px}
+.day-tot span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.day-tot b{
+  font-family:var(--mono);font-size:13px;color:var(--yellow);font-weight:500;
+  font-variant-numeric:tabular-nums;text-align:right;
+}
+
+/* ---- a week of it: the appetite grid ------------------------------------ */
+.week-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:clamp(14px,2vw,20px);margin-top:clamp(30px,4.4vw,44px);
+}
+.dish{margin:0;background:var(--ground);text-align:left}
+.dish img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover}
+.dish figcaption{padding:14px 15px 16px}
+.dish figcaption b{display:block;font-size:15.5px;font-weight:600;line-height:1.35}
+.dish figcaption span{
+  display:block;margin-top:6px;font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.05em;color:var(--yellow);font-variant-numeric:tabular-nums;
+}
+.note{
+  margin:clamp(20px,3vw,28px) auto 0;max-width:62ch;text-align:center;
+  color:var(--muted);font-size:13px;line-height:1.55;
+}
+
+/* ---- why the numbers hold up -------------------------------------------- */
+.rig{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));
+  gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  margin-top:clamp(30px,4.4vw,44px);text-align:left;
+}
+.rig-card{background:var(--raised);padding:clamp(20px,2.6vw,26px)}
+.rig-card h3{font-size:18px;margin-bottom:10px;color:var(--yellow)}
+.rig-card p{margin:0;color:var(--bone-dim);font-size:15px;line-height:1.6}
+
+/* ---- final call, over a photograph -------------------------------------- */
+.final.has-shot{position:relative;overflow:hidden;isolation:isolate}
+.final-bg{position:absolute;inset:0;z-index:-2;display:block}
+.final-bg img{width:100%;height:100%;object-fit:cover;display:block}
+/* The scrim is what keeps this readable and on-brand. Without it the type
+   sits on a busy photograph and the whole page stops looking deliberate. */
+.final.has-shot::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(11,18,32,.74),rgba(11,18,32,.93));
+}
+.final-re{margin:18px 0 0;color:var(--muted);font-size:13px}
+
+@media (prefers-reduced-motion:no-preference){
+  .dish img,.s3-img{transition:transform .45s cubic-bezier(.22,.61,.36,1)}
+  .dish:hover img{transform:scale(1.035)}
+}
+.dish{overflow:hidden}

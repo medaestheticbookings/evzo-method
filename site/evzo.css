@@ -637,8 +637,10 @@ a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
   .hero .cta-row{flex-direction:column;align-items:stretch}
   .hero .cta-row .btn,.hero .cta-row .btn-ghost{width:100%;text-align:center}
 
-  /* The three cues wrapped into a ragged 3-2-1 shape. One centred column. */
-  .trust{flex-direction:column;align-items:center;gap:9px}
+  /* The three cues wrapped into a ragged 3-2-1 shape. One column instead.
+     Ranged left, not centred: the hero copy beside them is ranged left now,
+     and a centred column next to left-ranged text reads as a mistake. */
+  .trust{flex-direction:column;align-items:flex-start;gap:9px}
 
   /* Footer links were 19px tall, well under the 44px minimum tap target. */
   .foot-links{gap:0 18px}

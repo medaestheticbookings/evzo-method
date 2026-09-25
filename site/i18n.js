@@ -19,6 +19,12 @@
     "Personalised monthly meal guide": "Εξατομικευμένος μηνιαίος οδηγός γευμάτων",
     "Your goal. Your food. A plan built around your real life.":
       "Ο στόχος σου. Το φαγητό σου. Ένα πλάνο φτιαγμένο για την πραγματική σου ζωή.",
+    /* The hero h1 carries a <br>, and i18n swaps one text node at a time,
+       so the combined key above can never match what is in the DOM. Each
+       half needs its own entry. */
+    "Your goal. Your food.": "Ο στόχος σου. Το φαγητό σου.",
+    "A plan built around your real life.":
+      "Ένα πλάνο φτιαγμένο για την πραγματική σου ζωή.",
     "Choose your goal, tell us how you eat, and receive a practical monthly meal guide matched to your preferences, schedule and routine.":
       "Διάλεξε τον στόχο σου, πες μας πώς τρως, και πάρε έναν πρακτικό μηνιαίο οδηγό γευμάτων ταιριασμένο στις προτιμήσεις, το πρόγραμμα και τη ρουτίνα σου.",
     "See what is inside": "Δες τι περιέχει",
@@ -29,6 +35,78 @@
       "Γενική καθοδήγηση ευεξίας — όχι ιατρική ή διαιτολογική φροντίδα.",
     "We are not dietitians or healthcare professionals. Everything here is an educational estimate.":
       "Δεν είμαστε διαιτολόγοι ούτε επαγγελματίες υγείας. Όλα εδώ είναι εκπαιδευτικές εκτιμήσεις.",
+
+    /* hero, the problem band, the week gallery and the rigour cards */
+    "Answer eleven questions. Get a month of meals built from your own numbers — and from the Greek and Cypriot food you already eat.":
+      "Απάντησε σε έντεκα ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα — και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
+    "Takes about three minutes. Nothing to pay to see your numbers.":
+      "Παίρνει περίπου τρία λεπτά. Δεν πληρώνεις τίποτα για να δεις τα νούμερά σου.",
+    "Real food, portioned to your numbers — not a diet of chicken and rice.":
+      "Αληθινό φαγητό, σε μερίδες βασισμένες στα νούμερά σου — όχι δίαιτα με κοτόπουλο και ρύζι.",
+
+    "Why the last one failed": "Γιατί απέτυχε η προηγούμενη",
+    "You did not lack discipline. You had the wrong plan.":
+      "Δεν σου έλειψε η πειθαρχία. Είχες λάθος πλάνο.",
+    "It was built for somebody else": "Ήταν φτιαγμένο για κάποιον άλλον",
+    "A plan off the internet is built for an average that does not exist. Your maintenance calories, your height, your week and your kitchen are not the ones it assumed.":
+      "Ένα πλάνο από το ίντερνετ είναι φτιαγμένο για έναν μέσο όρο που δεν υπάρχει. Οι θερμίδες συντήρησής σου, το ύψος σου, η εβδομάδα σου και η κουζίνα σου δεν είναι αυτές που υπέθεσε.",
+    "It told you to eat food you do not eat": "Σου έλεγε να τρως φαγητά που δεν τρως",
+    "Kale, quinoa, protein powder, six meals a day. Nobody in Nicosia or Athens eats like that for a month, so by week three you are back to exactly what you ate before.":
+      "Κέιλ, κινόα, πρωτεΐνη σε σκόνη, έξι γεύματα τη μέρα. Κανείς στη Λευκωσία ή στην Αθήνα δεν τρώει έτσι για έναν μήνα, οπότε την τρίτη εβδομάδα γυρνάς ακριβώς σε ό,τι έτρωγες πριν.",
+    "You were counting, not eating": "Μετρούσες, δεν έτρωγες",
+    "Weighing every plate is a second job. The portions should already be worked out by the time the plan reaches you.":
+      "Το να ζυγίζεις κάθε πιάτο είναι δεύτερη δουλειά. Οι μερίδες πρέπει να είναι ήδη υπολογισμένες όταν φτάνει το πλάνο σε σένα.",
+
+    "A week of it": "Μια εβδομάδα από αυτό",
+    "This is the food. Not a picture of a salad.":
+      "Αυτό είναι το φαγητό. Όχι μια φωτογραφία σαλάτας.",
+    "Everything below is Greek and Cypriot cooking most people already make. The figures are computed from the ingredients, not estimated.":
+      "Όλα παρακάτω είναι ελληνική και κυπριακή μαγειρική που οι περισσότεροι ήδη κάνουν. Τα νούμερα υπολογίζονται από τα υλικά, δεν είναι εκτιμήσεις.",
+    "Greek salad, built up": "Χωριάτικη, ενισχυμένη",
+    "Grilled chicken and rice": "Κοτόπουλο στη σχάρα με ρύζι",
+    "Yoghurt and fruit": "Γιαούρτι με φρούτα",
+    "Grilled fish and potatoes": "Ψάρι στη σχάρα με πατάτες",
+    "Chickpeas and greens": "Ρεβίθια με χόρτα",
+    "Octopus salad": "Χταποδοσαλάτα",
+    "Example dishes at example portions. Your guide uses your own ranges, so the same plate may be larger or smaller.":
+      "Ενδεικτικά πιάτα σε ενδεικτικές μερίδες. Ο οδηγός σου χρησιμοποιεί τα δικά σου εύρη, οπότε το ίδιο πιάτο μπορεί να είναι μεγαλύτερο ή μικρότερο.",
+
+    "Why you can trust the figures": "Γιατί μπορείς να εμπιστευτείς τα νούμερα",
+    "Every number here is computed, not claimed":
+      "Κάθε νούμερο εδώ υπολογίζεται, δεν το ισχυριζόμαστε",
+    "Published equations, named": "Δημοσιευμένες εξισώσεις, με όνομα",
+    "Your maintenance calories come from the Mifflin–St Jeor equation, and your protein target from body weight. Both are standard and both are stated on your guide, so you can check them.":
+      "Οι θερμίδες συντήρησής σου προκύπτουν από την εξίσωση Mifflin–St Jeor και ο στόχος πρωτεΐνης από το σωματικό βάρος. Και τα δύο είναι καθιερωμένα και αναγράφονται στον οδηγό σου, ώστε να μπορείς να τα ελέγξεις.",
+    "Calories come from the ingredient": "Οι θερμίδες βγαίνουν από το υλικό",
+    "Every figure on every recipe is added up from the ingredient list rather than typed in by hand. That is why the numbers on this page match the numbers in the books.":
+      "Κάθε νούμερο σε κάθε συνταγή αθροίζεται από τη λίστα υλικών, δεν γράφεται στο χέρι. Γι' αυτό τα νούμερα σε αυτή τη σελίδα συμφωνούν με τα νούμερα στα βιβλία.",
+    "Ranges, not false precision": "Εύρη, όχι ψεύτικη ακρίβεια",
+    "You get a range, not a single number pretending to be exact. Anyone quoting you 1,847 calories to the calorie is selling certainty that does not exist.":
+      "Παίρνεις ένα εύρος, όχι έναν αριθμό που προσποιείται ότι είναι ακριβής. Όποιος σου λέει 1.847 θερμίδες στη θερμίδα πουλάει βεβαιότητα που δεν υπάρχει.",
+    "What this is not": "Τι δεν είναι αυτό",
+    "Not medical or dietetic advice, and we do not pretend otherwise. It is educational, it is general, and where it is not right for you the page says so instead of taking your money.":
+      "Δεν είναι ιατρική ή διαιτολογική συμβουλή και δεν προσποιούμαστε το αντίθετο. Είναι εκπαιδευτικό, είναι γενικό, και όπου δεν είναι κατάλληλο για σένα η σελίδα στο λέει αντί να πάρει τα χρήματά σου.",
+
+    /* the example day that replaced the wireframe */
+    "Breakfast": "Πρωινό",
+    "Lunch": "Μεσημεριανό",
+    "Snack": "Σνακ",
+    "Dinner": "Βραδινό",
+    "Day total": "Σύνολο ημέρας",
+    "Greek yoghurt, berries, honey, walnuts": "Γιαούρτι, μούρα, μέλι, καρύδια",
+    "Chicken souvlaki bowl, rice, salad": "Μπολ με σουβλάκι κοτόπουλο, ρύζι, σαλάτα",
+    "Two eggs, an apple": "Δύο αυγά, ένα μήλο",
+    "Baked fish, potatoes, horta": "Ψάρι στον φούρνο, πατάτες, χόρτα",
+    "An example day at 1,800 kcal. Yours is rebuilt around your own ranges, your allergies and the foods you tick.":
+      "Μια ενδεικτική ημέρα στις 1.800 kcal. Η δική σου χτίζεται ξανά γύρω από τα δικά σου εύρη, τις αλλεργίες σου και τα φαγητά που επιλέγεις.",
+
+    /* how it works, reworded for eleven questions */
+    "Eleven questions here, then a longer one after checkout covering food you like, dislikes, allergies, cooking time and budget.":
+      "Έντεκα ερωτήσεις εδώ και μία μεγαλύτερη μετά την αγορά, για φαγητά που σου αρέσουν, τι δεν τρως, αλλεργίες, χρόνο μαγειρέματος και προϋπολογισμό.",
+
+    /* final call */
+    "Three minutes to your numbers. Nothing to pay to see them.":
+      "Τρία λεπτά μέχρι τα νούμερά σου. Δεν πληρώνεις τίποτα για να τα δεις.",
 
     /* goals */
     "Step one": "Βήμα ένα",
