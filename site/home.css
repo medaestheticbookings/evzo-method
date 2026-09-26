@@ -385,12 +385,15 @@ section > .wrap.hero-grid .trust{text-align:left;margin-inline:0}
 }
 
 /* ---- why the numbers hold up -------------------------------------------- */
+/* Four cards, so two columns — not auto-fit, which put three on the top row
+   on a wide screen and left two dead cells beside the fourth. */
 .rig{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
   gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
   margin-top:clamp(30px,4.4vw,44px);text-align:left;
 }
 .rig-card{background:var(--raised);padding:clamp(20px,2.6vw,26px)}
+@media (max-width:640px){ .rig{grid-template-columns:1fr} }
 .rig-card h3{font-size:18px;margin-bottom:10px;color:var(--yellow)}
 .rig-card p{margin:0;color:var(--bone-dim);font-size:15px;line-height:1.6}
 
@@ -411,3 +414,94 @@ section > .wrap.hero-grid .trust{text-align:left;margin-inline:0}
   .dish:hover img{transform:scale(1.035)}
 }
 .dish{overflow:hidden}
+
+
+/* ===========================================================================
+   SIZING AND THE DEVICE RANGE
+   ===========================================================================
+   Two problems this fixes. The photographs were displayed far larger than
+   they needed to be — a 950px-tall hero shot and 800px dish tiles on a laptop
+   is a slideshow, not a page. And the layout only had one breakpoint, so a
+   tablet in portrait got the phone layout with enormous type.
+
+   The aspect ratios stay fixed everywhere so nothing shifts while loading;
+   only the box the image sits in changes.
+   ======================================================================== */
+
+/* ---- the hero shot is capped by height, not width ----------------------
+   Width alone cannot stop a 4:3 image from being two thirds of a laptop
+   screen. Capping the height and letting object-fit crop keeps the dish
+   filling the frame at every size. */
+.hero-shot img{max-height:min(58vh,440px);object-fit:cover}
+
+/* ---- dish tiles: three across, and smaller -----------------------------
+   These were minmax(270px) which gave three enormous tiles on a laptop and
+   two on a tablet. A dish tile is a thumbnail; it does not need to be 300px
+   wide to make someone hungry. */
+.week-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:820px;margin-inline:auto}
+.dish figcaption{padding:11px 12px 13px}
+.dish figcaption b{font-size:14.5px}
+.dish figcaption span{font-size:11px;margin-top:5px}
+
+/* ---- step images ------------------------------------------------------- */
+.steps3{max-width:900px;margin-inline:auto}
+.s3-img{margin-bottom:13px}
+
+/* ---- large desktop ------------------------------------------------------
+   Above about 1200px the measure gets too wide to read comfortably, so the
+   page stops growing rather than stretching. */
+@media (min-width:1200px){
+  .hero-shot img{max-height:470px}
+}
+
+/* ---- tablet, landscape and large phones plus: 900-1100 ------------------ */
+@media (max-width:1100px){
+  .hero-grid{gap:clamp(22px,3vw,36px)}
+  .hero-grid h1{font-size:clamp(30px,4.4vw,42px)}
+  .week-grid{max-width:680px}
+}
+
+/* ---- tablet portrait: iPad at 768-1024 ---------------------------------
+   The single 860px breakpoint dropped an iPad straight to the phone layout.
+   Here the hero stacks but everything else keeps two or three columns,
+   because there is plenty of width for them. */
+@media (max-width:1024px) and (min-width:641px){
+  .hero-grid{grid-template-columns:1fr;gap:26px}
+  .hero-shot img{max-height:min(42vh,340px)}
+  .hero-copy .sub{max-width:62ch}
+  .probs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .rig{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .week-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:600px}
+}
+
+/* ---- phones: iPhone and Android --------------------------------------- */
+@media (max-width:640px){
+  .hero-shot img{aspect-ratio:4/3;max-height:min(38vh,280px)}
+  .hero-shot::before{width:52px;height:52px;left:-7px;top:-7px}
+  /* Two dish tiles across, not one. A single column made the week section
+     six full screens of scrolling on a phone. */
+  .week-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:none}
+  .dish figcaption{padding:9px 10px 11px}
+  .dish figcaption b{font-size:13px;line-height:1.3}
+  .dish figcaption span{font-size:10.5px}
+  .probs{grid-template-columns:1fr;gap:18px}
+  .steps3{grid-template-columns:1fr}
+  .s3-img{max-height:190px;object-fit:cover}
+  .final.has-shot{padding-block:44px}
+}
+
+/* ---- very small: iPhone SE and older Androids at 360px ----------------- */
+@media (max-width:380px){
+  .hero-grid h1{font-size:27px}
+  .week-grid{gap:8px}
+  .dish figcaption b{font-size:12px}
+}
+
+/* ---- landscape phone --------------------------------------------------
+   A phone on its side has about 380px of height. A hero image capped at a
+   percentage of that leaves room for the headline; one capped in pixels
+   does not. */
+@media (max-height:520px) and (orientation:landscape){
+  .hero-shot img{max-height:46vh}
+}

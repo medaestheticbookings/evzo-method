@@ -37,7 +37,7 @@
       "Δεν είμαστε διαιτολόγοι ούτε επαγγελματίες υγείας. Όλα εδώ είναι εκπαιδευτικές εκτιμήσεις.",
 
     /* hero, the problem band, the week gallery and the rigour cards */
-    "Answer eleven questions. Get a month of meals built from your own numbers — and from the Greek and Cypriot food you already eat.":
+    "Answer eleven questions. Get a month of meals built from your own numbers — and from Mediterranean food you will actually want to eat.":
       "Απάντησε σε έντεκα ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα — και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
     "Takes about three minutes. Nothing to pay to see your numbers.":
       "Παίρνει περίπου τρία λεπτά. Δεν πληρώνεις τίποτα για να δεις τα νούμερά σου.",
@@ -60,7 +60,7 @@
     "A week of it": "Μια εβδομάδα από αυτό",
     "This is the food. Not a picture of a salad.":
       "Αυτό είναι το φαγητό. Όχι μια φωτογραφία σαλάτας.",
-    "Everything below is Greek and Cypriot cooking most people already make. The figures are computed from the ingredients, not estimated.":
+    "Everything below is Mediterranean cooking most people already make. The figures are computed from the ingredients, not estimated.":
       "Όλα παρακάτω είναι ελληνική και κυπριακή μαγειρική που οι περισσότεροι ήδη κάνουν. Τα νούμερα υπολογίζονται από τα υλικά, δεν είναι εκτιμήσεις.",
     "Greek salad, built up": "Χωριάτικη, ενισχυμένη",
     "Grilled chicken and rice": "Κοτόπουλο στη σχάρα με ρύζι",
