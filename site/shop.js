@@ -81,7 +81,12 @@
     // It is deliberately NOT presented as a former price: nothing has ever
     // sold at that number, and under the Omnibus Directive those are two
     // different claims.
-    var separately = (books.length * SHOP.singlePriceAmount);
+    // Books may carry their own price — the short prose guides are cheaper
+    // than the recipe collections — so this sums the actual prices rather
+    // than multiplying one of them by the shelf length.
+    var separately = books.reduce(function (sum, b) {
+      return sum + (typeof b.priceAmount === "number" ? b.priceAmount : SHOP.singlePriceAmount);
+    }, 0);
     $("bundle-compare").textContent =
       T("Bought one at a time") + ": €" + separately.toFixed(2) + ".";
 
@@ -119,7 +124,7 @@
         '<p>' + esc(T(b.blurb)) + '</p>' +
         stat +
         '<div class="book-buy">' +
-          '<span class="book-price">' + esc(price) + '</span>' +
+          '<span class="book-price">' + esc(b.priceDisplay || price) + '</span>' +
           '<a class="btn" href="' + buyHref(b.name) + '">' + esc(T("Buy")) + '</a>' +
         '</div>' +
         '<p class="buy-alt">' + esc(T("Or message")) + ' <a href="' + esc(CFG.links.instagram) +

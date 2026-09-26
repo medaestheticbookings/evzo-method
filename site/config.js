@@ -213,6 +213,41 @@
           blurb: "Fourteen egg dishes, from strapatsada to a protein box that needs no reheating. Six eggs is a dinner for four.",
           stripePriceId: TODO
         },
+        /* ---- the prose guides ------------------------------------------
+           Short, read-once books rather than recipe collections, priced lower
+           to match. A book carrying its own priceDisplay overrides the single
+           price everywhere it is shown — shop card, PDF cover and the
+           "bought one at a time" comparison all read from here. */
+        {
+          id: "smoking", coverTitle: "The last cigarette is not the hard part", name: "How to Stop Smoking", file: "EVZO-Quit-Smoking.pdf",
+          eyebrow: "Stopping smoking",
+          blurb: "A ninety-day plan: what withdrawal actually does, why week three is the dangerous one, and the six things that double your odds.",
+          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+        },
+        {
+          id: "drinking", coverTitle: "The question is not whether you can stop", name: "Drinking Less, or Not At All", file: "EVZO-Quit-Drinking.pdf",
+          eyebrow: "Changing your drinking",
+          blurb: "Counting honestly, choosing a target with a number in it, and the four situations where it actually happens. Includes when stopping suddenly is dangerous.",
+          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+        },
+        {
+          id: "emotional", coverTitle: "You are not eating because you are weak", name: "Emotional Eating", file: "EVZO-Emotional-Eating.pdf",
+          eyebrow: "Eating when you are not hungry",
+          blurb: "Three of the most common causes are not emotional at all. Fix those first, then the ten-minute rule for nine o'clock at night.",
+          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+        },
+        {
+          id: "supplements", coverTitle: "Almost none of them", name: "The Only Supplements You Need", file: "EVZO-Supplements.pdf",
+          eyebrow: "What is worth buying",
+          blurb: "Four with real evidence, three that need a blood test first, and the long list you can stop buying. EVZO sells no supplements and takes no commission.",
+          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+        },
+        {
+          id: "produce", coverTitle: "Everything you need to know is in your hands", name: "How to Pick Fruit and Vegetables", file: "EVZO-Picking-Produce.pdf",
+          eyebrow: "At the market",
+          blurb: "Choosing by weight, smell and skin, what is in season in Greece and Cyprus month by month, and the storage that makes it last twice as long.",
+          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+        },
         {
           id: "budget", coverTitle: "Cheap is a number, not a feeling", name: "Budget Meals", file: "EVZO-Budget-Meals.pdf",
           eyebrow: "Eating well on very little",
