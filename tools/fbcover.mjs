@@ -3,23 +3,26 @@
  *   node tools/fbcover.mjs
  *     -> brand/fb-<name>.png     1640 x 856
  *
- * WHY EVERYTHING IS CENTRED, WHICHEVER LAYOUT IT IS.
+ * THE BOTTOM HALF IS UNUSABLE. THAT IS THE WHOLE PROBLEM.
  *
- * A Page cover is not one image, it is two crops of one image that do not
- * agree with each other:
+ * Two things eat a Page cover, and the second one is what ruins most of them.
  *
- *   uploaded    1640 x 856   what Facebook is given
- *   desktop      820 x 312   full width, top and bottom cut
- *   mobile       640 x 360   narrower, so the SIDES are cut
+ * 1. THE CROPS. The uploaded image is 1640 x 856. Desktop shows 820 x 312,
+ *    which is wider than the canvas, so it keeps the full width and cuts
+ *    about 116px off the top and bottom. Mobile shows 640 x 360, which is
+ *    taller, so it keeps the full height and cuts about 59px off each side.
+ *    Between them the surviving region is roughly x 60-1580, y 116-740.
  *
- * Desktop keeps the width and loses height. Mobile keeps the height and
- * loses roughly a fifth off each side. The only region that survives both is
- * the middle, which is why a handsome left-aligned split layout is the one
- * thing that cannot be done here — half of it disappears on a phone.
+ * 2. THE PROFILE PICTURE, which sits ON TOP of the cover, not beside it.
+ *    On desktop it overlaps the bottom LEFT. On mobile it is centred and
+ *    overlaps the bottom MIDDLE. Either way it covers a circle of roughly
+ *    a fifth of the canvas, and on a phone it lands exactly where a centred
+ *    design puts its words.
  *
- * So the variation below is in weight, colour and treatment rather than in
- * where things sit. The lower centre is also kept clear, because the profile
- * picture lands there on mobile.
+ * So everything readable lives in the UPPER MIDDLE: above y = 55%, inside
+ * the horizontal safe range, and the entire bottom 45% is left as
+ * photograph. That is not a composition choice, it is the only region that
+ * is both visible and uncovered on every device.
  * ======================================================================== */
 
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
@@ -51,7 +54,10 @@ const BASE = `
   html,body{width:${W}px;height:${H}px;overflow:hidden;background:#0B1220}
   .wrap{position:relative;width:${W}px;height:${H}px;overflow:hidden}
   .photo{position:absolute;inset:0;background-size:cover;background-position:center 45%}
-  .safe{position:absolute;top:17%;bottom:24%;left:19%;right:19%;
+  /* Upper middle only. The bottom 45% is where the profile picture lands
+     and where the desktop crop is least reliable, so nothing readable goes
+     there. */
+  .safe{position:absolute;top:10%;bottom:45%;left:14%;right:14%;
         display:flex;flex-direction:column;align-items:center;justify-content:center;
         text-align:center}
   .safe svg{width:auto;display:block}
@@ -90,8 +96,8 @@ function band({ photo, headline, sub }) {
     <div class="dom mono">evzomethod.com</div>
   `, `
     .dim{position:absolute;inset:0;background:rgba(11,18,32,.26)}
-    .band{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-          background:#FFE14D;padding:40px 0;box-shadow:0 18px 60px rgba(0,0,0,.35)}
+    .band{position:absolute;left:0;right:0;top:31%;transform:translateY(-50%);
+          background:#FFE14D;padding:38px 0;box-shadow:0 18px 60px rgba(0,0,0,.35)}
     .band-in{display:flex;align-items:center;justify-content:center;gap:40px;
              max-width:1000px;margin:0 auto}
     .band-in svg{height:76px;flex:none}
@@ -99,7 +105,7 @@ function band({ photo, headline, sub }) {
     .txt{text-align:left;max-width:600px}
     h1{font-size:40px;color:#0B1220}
     p{font-size:21px;color:#2A2E17;margin-top:9px}
-    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#fff;
+    .dom{position:absolute;right:70px;top:44px;font-size:20px;color:#fff;
          text-shadow:0 2px 12px rgba(0,0,0,.8)}
   `);
 }
@@ -129,7 +135,7 @@ function bright({ photo, headline, sub }) {
     .card svg{height:66px}
     h1{font-size:42px;color:#fff}
     p{font-size:21px;color:#E7EBF2;max-width:640px}
-    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#FFE14D;
+    .dom{position:absolute;right:70px;top:44px;font-size:20px;color:#FFE14D;
          text-shadow:0 2px 12px rgba(0,0,0,.85)}
   `);
 }
@@ -161,7 +167,7 @@ function strip({ photos, headline, sub }) {
     .rule{width:120px;height:6px;background:#FFE14D}
     h1{font-size:46px;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.6)}
     p{font-size:22px;color:#E7EBF2;max-width:760px}
-    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#FFE14D}
+    .dom{position:absolute;right:70px;top:44px;font-size:20px;color:#FFE14D}
   `);
 }
 
@@ -182,16 +188,19 @@ function typeOnly({ headline, sub }) {
     <div class="dom mono">evzomethod.com</div>
   `, `
     html,body,.wrap{background:#FFE14D}
+    /* The diagonal lives in the BOTTOM of the frame, which the profile
+       picture covers anyway. Across the top it ran straight through the
+       wordmark and turned navy type navy-on-navy. */
     .field{position:absolute;inset:0;background:#0B1220;
-           clip-path:polygon(0 0,100% 0,100% 16%,0 30%)}
-    .field2{position:absolute;inset:0;background:#0B1220;opacity:.10;
-            clip-path:polygon(0 76%,100% 62%,100% 100%,0 100%)}
+           clip-path:polygon(0 100%,100% 100%,100% 58%,0 74%)}
+    .field2{position:absolute;inset:0;background:#0B1220;opacity:.12;
+            clip-path:polygon(0 74%,100% 58%,100% 51%,0 67%)}
     .safe{gap:22px}
     .safe svg{height:84px}
     .rule{width:130px;height:7px;background:#0B1220}
     h1{font-size:50px;color:#0B1220}
     p{font-size:23px;color:#2A2E17;max-width:800px}
-    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#0B1220;opacity:.66}
+    .dom{position:absolute;right:70px;top:44px;font-size:20px;color:#0B1220;opacity:.66}
   `);
 }
 
