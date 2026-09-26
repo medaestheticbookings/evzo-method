@@ -1,32 +1,25 @@
 /* EVZO — Facebook Page cover photos
  * ===========================================================================
  *   node tools/fbcover.mjs
- *     -> brand/fb-cover-market.png
- *     -> brand/fb-cover-spread.png
- *     -> brand/fb-cover-bowl.png
- *     -> brand/fb-cover-plain.png
+ *     -> brand/fb-<name>.png     1640 x 856
  *
- * WHY THE SAFE AREA MATTERS MORE THAN THE SIZE.
+ * WHY EVERYTHING IS CENTRED, WHICHEVER LAYOUT IT IS.
  *
- * A Facebook Page cover is not one image, it is three crops of one image:
+ * A Page cover is not one image, it is two crops of one image that do not
+ * agree with each other:
  *
- *   uploaded        1640 x 856   what you give Facebook
- *   desktop         820 x 312    a wide letterbox out of the middle
- *   mobile          640 x 360    a TALLER, NARROWER crop
+ *   uploaded    1640 x 856   what Facebook is given
+ *   desktop      820 x 312   full width, top and bottom cut
+ *   mobile       640 x 360   narrower, so the SIDES are cut
  *
- * The desktop and mobile crops do not agree. Mobile keeps more height and
- * loses width; desktop keeps width and loses height. So anything that has to
- * be read — the wordmark, the line, the domain — sits inside the central
- * band where BOTH crops overlap, which is roughly the middle 820 x 312 of the
- * 1640 x 856 canvas, scaled up. Everything outside that is photograph only,
- * and it is expected to be cut.
+ * Desktop keeps the width and loses height. Mobile keeps the height and
+ * loses roughly a fifth off each side. The only region that survives both is
+ * the middle, which is why a handsome left-aligned split layout is the one
+ * thing that cannot be done here — half of it disappears on a phone.
  *
- * On a phone the profile picture also sits centred over the bottom of the
- * cover, so the lower-centre is left clear rather than filled with type.
- *
- * The overlay is drawn at 2x and the file is exported at 1640 x 856, which is
- * what Facebook asks for and what stops it re-compressing a smaller image
- * into mush.
+ * So the variation below is in weight, colour and treatment rather than in
+ * where things sit. The lower centre is also kept clear, because the profile
+ * picture lands there on mobile.
  * ======================================================================== */
 
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
@@ -45,93 +38,182 @@ const CHROME = [
 ].find(p => existsSync(p));
 if (!CHROME) { console.error("No Chrome or Edge found."); process.exit(1); }
 
-const logo = readFileSync(join(BRAND, "evzo-wordmark-white.svg"), "utf8");
+const logoWhite = readFileSync(join(BRAND, "evzo-wordmark-white.svg"), "utf8");
+const logoBlack = readFileSync(join(BRAND, "evzo-wordmark-black.svg"), "utf8");
+
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const url = rel => pathToFileURL(join(ROOT, rel)).href;
 
 const W = 1640, H = 856;
 
-/* The overlap of the desktop and mobile crops, as a fraction of the canvas.
-   Type lives inside this and nowhere else. */
-const SAFE = { top: 0.20, bottom: 0.72, left: 0.20, right: 0.80 };
-
-function cover({ photo, headline, sub }) {
-  const bg = photo
-    ? `<div class="photo" style="background-image:url('${url(photo)}')"></div>
-       <div class="tint"></div>`
-    : `<div class="photo plain"></div>`;
-
-  return `<!doctype html><html lang="en"><meta charset="utf-8">
-<link rel="stylesheet" href="${url("site/fonts.css")}">
-<style>
+const BASE = `
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:${W}px;height:${H}px;overflow:hidden;background:#0B1220}
   .wrap{position:relative;width:${W}px;height:${H}px;overflow:hidden}
+  .photo{position:absolute;inset:0;background-size:cover;background-position:center 45%}
+  .safe{position:absolute;top:17%;bottom:24%;left:19%;right:19%;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        text-align:center}
+  .safe svg{width:auto;display:block}
+  h1{font-family:"Anton",system-ui,sans-serif;font-weight:400;text-transform:uppercase;
+     line-height:1.0;letter-spacing:.004em}
+  p{font-family:"Commissioner",system-ui,sans-serif;line-height:1.35}
+  .mono{font-family:"Roboto Mono",ui-monospace,monospace;text-transform:uppercase;
+        letter-spacing:.2em}
+`;
 
-  .photo{position:absolute;inset:0;background-size:cover;background-position:center 42%}
-  .photo.plain{background:#0B1220}
+function shell(inner, extra = "") {
+  return `<!doctype html><html lang="en"><meta charset="utf-8">
+<link rel="stylesheet" href="${url("site/fonts.css")}">
+<style>${BASE}${extra}</style>
+<div class="wrap">${inner}</div></html>`;
+}
 
-  /* Warm the photograph towards the brand yellow without tinting it orange. */
-  .tint{position:absolute;inset:0;background:#FFE14D;mix-blend-mode:soft-light;opacity:.34}
+/* ---- 1. THE YELLOW BAND -------------------------------------------------
+   A solid brand-yellow band straight across the middle with navy type in it.
+   No scrim needed, because the type never touches the photograph. It is the
+   most legible thing possible at thumbnail size and unmistakably one brand.  */
+function band({ photo, headline, sub }) {
+  return shell(`
+    <div class="photo" style="background-image:url('${url(photo)}')"></div>
+    <div class="dim"></div>
+    <div class="band">
+      <div class="band-in">
+        ${logoBlack}
+        <div class="vr"></div>
+        <div class="txt">
+          <h1>${esc(headline)}</h1>
+          <p>${esc(sub)}</p>
+        </div>
+      </div>
+    </div>
+    <div class="dom mono">evzomethod.com</div>
+  `, `
+    .dim{position:absolute;inset:0;background:rgba(11,18,32,.26)}
+    .band{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+          background:#FFE14D;padding:40px 0;box-shadow:0 18px 60px rgba(0,0,0,.35)}
+    .band-in{display:flex;align-items:center;justify-content:center;gap:40px;
+             max-width:1000px;margin:0 auto}
+    .band-in svg{height:76px;flex:none}
+    .vr{width:4px;height:96px;background:#0B1220;opacity:.22;flex:none}
+    .txt{text-align:left;max-width:600px}
+    h1{font-size:40px;color:#0B1220}
+    p{font-size:21px;color:#2A2E17;margin-top:9px}
+    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#fff;
+         text-shadow:0 2px 12px rgba(0,0,0,.8)}
+  `);
+}
 
-  /* Two scrims. A vertical one so the type has ground under it, and a radial
-     one centred on the safe area so the middle is darkest where the words
-     are and the photograph stays visible at the edges that get cropped. */
-  .scrim-v{position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(11,18,32,.52) 0%,rgba(11,18,32,.30) 38%,rgba(11,18,32,.80) 100%)}
-  .scrim-c{position:absolute;inset:0;
-    background:radial-gradient(58% 72% at 50% 44%,rgba(11,18,32,.82) 0%,rgba(11,18,32,.52) 55%,rgba(11,18,32,0) 100%)}
+/* ---- 2. BRIGHT ----------------------------------------------------------
+   Almost no scrim. The photograph is the point; the type sits in a small
+   frosted card so it stays readable without drowning the picture. The old
+   set were all very dark, and dark reads as heavy in a feed.               */
+function bright({ photo, headline, sub }) {
+  return shell(`
+    <div class="photo" style="background-image:url('${url(photo)}')"></div>
+    <div class="veil"></div>
+    <div class="safe">
+      <div class="card">
+        ${logoWhite}
+        <h1>${esc(headline)}</h1>
+        <p>${esc(sub)}</p>
+      </div>
+    </div>
+    <div class="dom mono">evzomethod.com</div>
+  `, `
+    .veil{position:absolute;inset:0;
+      background:radial-gradient(64% 76% at 50% 46%,rgba(11,18,32,.52) 0%,rgba(11,18,32,.16) 62%,rgba(11,18,32,0) 100%)}
+    .card{background:rgba(11,18,32,.62);backdrop-filter:blur(3px);
+          border-top:5px solid #FFE14D;padding:38px 52px 40px;
+          display:flex;flex-direction:column;align-items:center;gap:20px}
+    .card svg{height:66px}
+    h1{font-size:42px;color:#fff}
+    p{font-size:21px;color:#E7EBF2;max-width:640px}
+    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#FFE14D;
+         text-shadow:0 2px 12px rgba(0,0,0,.85)}
+  `);
+}
 
-  /* Everything readable lives in here. */
-  .safe{position:absolute;
-    top:${SAFE.top * 100}%;bottom:${(1 - SAFE.bottom) * 100}%;
-    left:${SAFE.left * 100}%;right:${(1 - SAFE.right) * 100}%;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;gap:26px}
+/* ---- 3. THREE DISHES ----------------------------------------------------
+   A strip of three photographs rather than one, which says "a month of
+   meals" in a way a single plate cannot. The outer two are expected to be
+   cropped on a phone; the middle one carries it.                            */
+function strip({ photos, headline, sub }) {
+  return shell(`
+    <div class="strip">
+      ${photos.map(p => `<div class="cell" style="background-image:url('${url(p)}')"></div>`).join("")}
+    </div>
+    <div class="veil"></div>
+    <div class="safe">
+      ${logoWhite}
+      <div class="rule"></div>
+      <h1>${esc(headline)}</h1>
+      <p>${esc(sub)}</p>
+    </div>
+    <div class="dom mono">evzomethod.com</div>
+  `, `
+    .strip{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+    .cell{background-size:cover;background-position:center}
+    .veil{position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(11,18,32,.42) 0%,rgba(11,18,32,.72) 45%,rgba(11,18,32,.88) 100%)}
+    .safe{gap:22px}
+    .safe svg{height:78px}
+    .rule{width:120px;height:6px;background:#FFE14D}
+    h1{font-size:46px;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+    p{font-size:22px;color:#E7EBF2;max-width:760px}
+    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#FFE14D}
+  `);
+}
 
-  .safe svg{height:96px;width:auto;display:block}
-  .rule{width:132px;height:6px;background:#FFE14D}
-  h1{font-family:"Anton",system-ui,sans-serif;font-weight:400;
-     font-size:54px;line-height:1.02;color:#fff;text-transform:uppercase;
-     letter-spacing:.005em;max-width:1000px;text-shadow:0 2px 14px rgba(0,0,0,.55)}
-  p{font-family:"Commissioner",system-ui,sans-serif;font-size:26px;line-height:1.35;
-    color:#E7EBF2;max-width:900px;text-shadow:0 1px 10px rgba(0,0,0,.6)}
-
-  /* Bottom-right, out of the way of the profile picture, which sits
-     bottom-centre on a phone and bottom-left on desktop. */
-  .domain{position:absolute;right:76px;bottom:46px;
-    font-family:"Roboto Mono",ui-monospace,monospace;font-size:22px;
-    letter-spacing:.18em;text-transform:uppercase;color:#FFE14D;
-    text-shadow:0 1px 8px rgba(0,0,0,.7)}
-</style>
-<div class="wrap">
-  ${bg}
-  <div class="scrim-v"></div>
-  <div class="scrim-c"></div>
-  <div class="safe">
-    ${logo}
-    <div class="rule"></div>
-    <h1>${esc(headline)}</h1>
-    <p>${esc(sub)}</p>
-  </div>
-  <div class="domain">evzomethod.com</div>
-</div>
-</html>`;
+/* ---- 4. TYPE ONLY -------------------------------------------------------
+   No photograph at all. Brand yellow, navy type, the diagonal field from the
+   book covers. It will never be mistaken for a stock-photo page, and it is
+   the one that survives being shrunk to any size.                            */
+function typeOnly({ headline, sub }) {
+  return shell(`
+    <div class="field"></div>
+    <div class="field2"></div>
+    <div class="safe">
+      ${logoBlack}
+      <div class="rule"></div>
+      <h1>${esc(headline)}</h1>
+      <p>${esc(sub)}</p>
+    </div>
+    <div class="dom mono">evzomethod.com</div>
+  `, `
+    html,body,.wrap{background:#FFE14D}
+    .field{position:absolute;inset:0;background:#0B1220;
+           clip-path:polygon(0 0,100% 0,100% 16%,0 30%)}
+    .field2{position:absolute;inset:0;background:#0B1220;opacity:.10;
+            clip-path:polygon(0 76%,100% 62%,100% 100%,0 100%)}
+    .safe{gap:22px}
+    .safe svg{height:84px}
+    .rule{width:130px;height:7px;background:#0B1220}
+    h1{font-size:50px;color:#0B1220}
+    p{font-size:23px;color:#2A2E17;max-width:800px}
+    .dom{position:absolute;right:64px;bottom:40px;font-size:20px;color:#0B1220;opacity:.66}
+  `);
 }
 
 const VARIANTS = [
-  { name: "market", photo: "photos/market.jpg",
-    headline: "Your goal. Your food.",
-    sub: "A 28-day meal plan built from your own numbers." },
-  { name: "spread", photo: "photos/spread.jpg",
-    headline: "Real food, portioned properly",
-    sub: "Mediterranean cooking with every calorie worked out." },
-  { name: "bowl", photo: "photos/chickpeas.jpg",
-    headline: "Not a diet. A structure that holds.",
-    sub: "Eleven questions, then a month of meals that fit your life." },
-  { name: "plain", photo: null,
-    headline: "Your goal. Your food.",
-    sub: "A 28-day meal plan built from your own numbers." }
+  { file: "fb-band", html: band({
+      photo: "photos/spread.jpg",
+      headline: "Your goal. Your food.",
+      sub: "A 28-day meal plan built from your own numbers." }) },
+
+  { file: "fb-bright", html: bright({
+      photo: "photos/fish-grilled.jpg",
+      headline: "Not a diet. A structure that holds.",
+      sub: "Mediterranean food, with every calorie already worked out." }) },
+
+  { file: "fb-three", html: strip({
+      photos: ["photos/salad-greek.jpg", "photos/chicken-grilled.jpg", "photos/yogurt-bowl.jpg"],
+      headline: "A month of meals that fit your life",
+      sub: "Eleven questions. Then food you already cook, portioned to you." }) },
+
+  { file: "fb-type", html: typeOnly({
+      headline: "Every number computed, not claimed",
+      sub: "Personalised 28-day meal plans. Mediterranean food, real arithmetic." }) }
 ];
 
 const tmp = join(ROOT, ".fb-tmp");
@@ -146,9 +228,9 @@ function run(cmd, args) {
 }
 
 for (const v of VARIANTS) {
-  const src = join(tmp, v.name + ".html");
-  const out = join(BRAND, "fb-cover-" + v.name + ".png");
-  writeFileSync(src, cover(v), "utf8");
+  const src = join(tmp, v.file + ".html");
+  const out = join(BRAND, v.file + ".png");
+  writeFileSync(src, v.html, "utf8");
   await run(CHROME, [
     "--headless=new", "--disable-gpu", "--hide-scrollbars",
     "--force-device-scale-factor=1",
@@ -157,9 +239,9 @@ for (const v of VARIANTS) {
     "--screenshot=" + out,
     pathToFileURL(src).href
   ]);
-  console.log("wrote brand/fb-cover-" + v.name + ".png");
+  console.log("wrote brand/" + v.file + ".png");
 }
 
 rmSync(tmp, { recursive: true, force: true });
-console.log(`\n${W}x${H}. Upload as-is — Facebook crops to 820x312 on desktop and`);
-console.log("640x360 on mobile, and everything readable sits inside the overlap.");
+console.log(`\n${W}x${H}. Everything readable sits in the centre, which is the`);
+console.log("only part that survives both the desktop and the mobile crop.");
