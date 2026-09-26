@@ -1,0 +1,740 @@
+{
+  "_note": "Two single-ingredient books: oats and eggs. Same rule as every other content file here — quantities are written by hand, every calorie and macro figure is computed by build.mjs from foods.json. Nothing in the prose may state a number that is not derived from that arithmetic.",
+  "recipes": [
+    {
+      "id": "oa-overnight-classic",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "The one you make at night",
+      "greek": "Αυτό που φτιάχνεις το βράδυ",
+      "servings": 1,
+      "time": "4 minutes, then overnight",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "yoghurt_0", "g": 150 },
+        { "food": "milk_semi", "g": 100 },
+        { "food": "berries", "g": 80 },
+        { "food": "honey", "g": 10 }
+      ],
+      "method": [
+        "Oats, yoghurt and milk into a jar. Stir properly — the dry pocket at the bottom is the reason people give up on this.",
+        "Lid on, fridge, overnight. It will look too wet. It is not.",
+        "Berries and honey in the morning, not the night before, or the fruit bleeds into everything."
+      ],
+      "why": "Breakfast is the meal most often skipped and then paid for at eleven o'clock. This one is made when you are not hungry and not in a hurry, which is the only reliable way to eat it.",
+      "swaps": [
+        "Frozen berries work and cost a third as much — add them at night, they thaw perfectly.",
+        "Grated apple instead of berries, with cinnamon."
+      ]
+    },
+    {
+      "id": "oa-protein-overnight",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Thirty grams before you are awake",
+      "greek": "Τριάντα γραμμάρια πριν ξυπνήσεις",
+      "servings": 1,
+      "time": "4 minutes, then overnight",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "protein_powder", "g": 30 },
+        { "food": "milk_semi", "g": 200 },
+        { "food": "peanut_butter", "g": 15 },
+        { "food": "banana", "g": 100 }
+      ],
+      "method": [
+        "Whisk the powder into the milk first, on its own. Added to the oats dry it clumps and stays clumped.",
+        "Stir in the oats and peanut butter, jar it, fridge overnight.",
+        "Slice the banana over it in the morning."
+      ],
+      "why": "Most people eat almost no protein before midday and then try to make it up at dinner, which does not work as well. This puts a third of the day's protein in before anything else has happened.",
+      "swaps": [
+        "Any powder — check your own tub, scoops differ by brand.",
+        "Tahini instead of peanut butter if you want it less sweet."
+      ]
+    },
+    {
+      "id": "oa-chia-pudding",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Oats and chia, no dairy",
+      "greek": "Βρώμη και chia, χωρίς γαλακτοκομικά",
+      "servings": 1,
+      "time": "5 minutes, then overnight",
+      "ingredients": [
+        { "food": "oats_dry", "g": 50 },
+        { "food": "chia", "g": 20 },
+        { "food": "soy_milk", "g": 250 },
+        { "food": "pumpkin_seeds", "g": 15 },
+        { "food": "berries", "g": 80 },
+        { "food": "honey", "g": 10 }
+      ],
+      "method": [
+        "Chia into the soy milk first and stir twice, five minutes apart. One stir and you get a lump with dry seeds inside it.",
+        "Oats in, jar, fridge overnight.",
+        "Seeds and berries on top in the morning."
+      ],
+      "why": "Soy is the one plant milk with protein worth counting — most almond milks have almost none. Chia does the thickening that yoghurt does elsewhere in this book.",
+      "swaps": [
+        "Maple syrup instead of honey to keep it fully plant-based.",
+        "Oat milk if soy is not for you, but expect less protein."
+      ]
+    },
+    {
+      "id": "oa-baked-chocolate",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Baked oats that taste like cake",
+      "greek": "Βρώμη στον φούρνο σαν κέικ",
+      "servings": 1,
+      "time": "25 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "egg", "g": 55 },
+        { "food": "milk_semi", "g": 120 },
+        { "food": "protein_powder", "g": 20 },
+        { "food": "banana", "g": 80 },
+        { "food": "dark_chocolate", "g": 15 }
+      ],
+      "method": [
+        "Blitz everything except the chocolate. A stick blender in a jug is enough.",
+        "Pour into a small oven dish, push the chopped chocolate in, 180°C for twenty minutes.",
+        "Let it sit five minutes. Straight out of the oven it is molten and you will burn your mouth."
+      ],
+      "why": "The texture is the point. People who will not eat porridge will eat this, and it carries the same oats.",
+      "swaps": [
+        "Cocoa powder instead of the chocolate for fewer calories.",
+        "Make four on Sunday, refrigerate, eat cold during the week."
+      ]
+    },
+    {
+      "id": "oa-savoury-egg-feta",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Savoury oats, the version nobody tries",
+      "greek": "Αλμυρή βρώμη",
+      "servings": 1,
+      "time": "12 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 50 },
+        { "food": "egg", "g": 110 },
+        { "food": "feta", "g": 30 },
+        { "food": "spinach", "g": 60 },
+        { "food": "olive_oil", "g": 6 },
+        { "food": "herbs", "g": 2 }
+      ],
+      "method": [
+        "Cook the oats in water with salt, like a thin polenta. Six minutes, stirring.",
+        "Wilt the spinach through at the end, crumble in the feta.",
+        "Two eggs on top, fried or poached, and the oil over everything."
+      ],
+      "why": "Oats are a grain, not a dessert. Treated like rice they carry eggs and cheese as well as they carry honey — and it is the version that keeps people eating them past February.",
+      "swaps": [
+        "Halloumi instead of feta, grilled hard.",
+        "A spoon of yoghurt stirred in at the end makes it creamier for almost nothing."
+      ]
+    },
+    {
+      "id": "oa-yoghurt-walnut-honey",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Yoghurt, walnuts, honey, oats",
+      "greek": "Γιαούρτι, καρύδι, μέλι, βρώμη",
+      "servings": 1,
+      "time": "4 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 40 },
+        { "food": "yoghurt_2", "g": 200 },
+        { "food": "walnuts", "g": 15 },
+        { "food": "honey", "g": 12 },
+        { "food": "apple", "g": 120 }
+      ],
+      "method": [
+        "Toast the oats dry in a pan for three minutes until they smell of biscuit. This is the whole difference.",
+        "Yoghurt in a bowl, oats over, grated apple through it.",
+        "Walnuts and honey last."
+      ],
+      "why": "The oldest breakfast on this island, weighed. Untoasted and unweighed it is the same bowl with twice the honey.",
+      "swaps": [
+        "0% yoghurt saves calories and loses some of the texture. Worth it some weeks, not others.",
+        "Almonds or pumpkin seeds instead of walnuts."
+      ]
+    },
+    {
+      "id": "oa-pancakes-banana",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Three-ingredient oat pancakes",
+      "greek": "Τηγανίτες βρώμης",
+      "servings": 1,
+      "time": "15 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "egg", "g": 110 },
+        { "food": "banana", "g": 120 },
+        { "food": "milk_semi", "g": 60 },
+        { "food": "honey", "g": 8 }
+      ],
+      "method": [
+        "Blend oats, eggs, banana and milk to a batter. Leave it five minutes to thicken.",
+        "Small pancakes in a dry non-stick pan, medium heat. Big ones tear when you turn them.",
+        "Stack, honey over."
+      ],
+      "why": "No flour, no sugar, no baking powder, and they hold together because the egg and the blended oat do the work. This is the recipe that makes a Sunday feel like a treat without costing a Sunday.",
+      "swaps": [
+        "Berries pressed into the batter in the pan.",
+        "Yoghurt instead of honey on top, which roughly doubles the protein."
+      ]
+    },
+    {
+      "id": "oa-halloumi-tomato",
+      "book": "oats",
+      "slot": "lunch",
+      "title": "Oat porridge with halloumi and tomato",
+      "greek": "Χυλός βρώμης με χαλλούμι",
+      "servings": 1,
+      "time": "14 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 50 },
+        { "food": "halloumi", "g": 60 },
+        { "food": "tomato", "g": 120 },
+        { "food": "olive_oil", "g": 6 },
+        { "food": "herbs", "g": 2 }
+      ],
+      "method": [
+        "Oats in salted water, six minutes, looser than porridge.",
+        "Halloumi dry-grilled until it is properly marked. No oil in the pan — it releases its own.",
+        "Tomato chopped raw through the oats, halloumi on top, oil over."
+      ],
+      "why": "Closer to trahana than to porridge, and that is the point: this is a bowl a Cypriot kitchen already understands.",
+      "swaps": [
+        "Anari or a soft white cheese instead of halloumi.",
+        "A poached egg on top instead of the cheese."
+      ]
+    },
+    {
+      "id": "oa-shake-peanut",
+      "book": "oats",
+      "slot": "snack",
+      "title": "The shake for people who cannot eat enough",
+      "greek": "Το σέικ για όσους δεν προλαβαίνουν",
+      "servings": 1,
+      "time": "3 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "milk_whole", "g": 300 },
+        { "food": "peanut_butter", "g": 30 },
+        { "food": "banana", "g": 120 },
+        { "food": "protein_powder", "g": 30 }
+      ],
+      "method": [
+        "Blend the oats alone for ten seconds first, to flour. Otherwise it drinks like gravel.",
+        "Everything else in, blend properly.",
+        "Drink it alongside a meal, not instead of one."
+      ],
+      "why": "Liquid calories go past the fullness that solid food creates. If you struggle to gain weight, this is the single most useful thing in this book — and if you are trying to lose, it is the one page to skip.",
+      "swaps": [
+        "Semi-skimmed milk takes a meaningful number of calories out.",
+        "Dates instead of banana."
+      ]
+    },
+    {
+      "id": "oa-apple-cinnamon",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Apple and cinnamon, on the hob",
+      "greek": "Μήλο και κανέλα",
+      "servings": 1,
+      "time": "9 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "apple", "g": 150 },
+        { "food": "milk_semi", "g": 200 },
+        { "food": "walnuts", "g": 12 },
+        { "food": "honey", "g": 8 }
+      ],
+      "method": [
+        "Grate the apple, skin on, and cook it with the oats and milk from cold.",
+        "Seven minutes on low, stirring. Cinnamon in at the end, generously.",
+        "Walnuts and honey over."
+      ],
+      "why": "Grated apple dissolves into the porridge and sweetens it, so the honey is a finish rather than the sugar source. A whole apple is under 100 calories and adds real bulk.",
+      "swaps": [
+        "Pear does the same thing.",
+        "Water instead of milk if you want it lighter, with yoghurt stirred in at the end."
+      ]
+    },
+    {
+      "id": "oa-skyr-dates-tahini",
+      "book": "oats",
+      "slot": "snack",
+      "title": "Skyr, dates and tahini",
+      "greek": "Σκιρ, χουρμάδες και ταχίνι",
+      "servings": 1,
+      "time": "4 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 40 },
+        { "food": "skyr", "g": 170 },
+        { "food": "dates", "g": 30 },
+        { "food": "tahini", "g": 15 }
+      ],
+      "method": [
+        "Toast the oats dry, three minutes.",
+        "Chop the dates small — whole ones sink and you get one sweet mouthful and four plain ones.",
+        "Everything folded through the skyr, tahini rippled on top."
+      ],
+      "why": "Tahini and dates is an old pairing here and it is a genuinely good one: the sesame keeps the sweetness from being flat. Skyr carries the protein so this eats like dessert and behaves like a meal.",
+      "swaps": [
+        "0% Greek yoghurt instead of skyr.",
+        "Two dates instead of three if the calories matter that week."
+      ]
+    },
+    {
+      "id": "oa-bars-nobake",
+      "book": "oats",
+      "slot": "snack",
+      "title": "No-bake oat bars",
+      "greek": "Μπάρες βρώμης χωρίς ψήσιμο",
+      "servings": 8,
+      "time": "15 minutes, then 2 hours in the fridge",
+      "ingredients": [
+        { "food": "oats_dry", "g": 200 },
+        { "food": "peanut_butter", "g": 120 },
+        { "food": "honey", "g": 80 },
+        { "food": "dates", "g": 100 },
+        { "food": "dark_chocolate", "g": 60 }
+      ],
+      "method": [
+        "Warm the peanut butter and honey together until they pour.",
+        "Blitz the dates to a paste, mix everything with the oats, press hard into a lined tin. Press harder than feels necessary or they crumble.",
+        "Melted chocolate over, two hours in the fridge, cut into eight."
+      ],
+      "why": "A shop-bought oat bar is mostly syrup. This is the same idea with the sugar you chose, and knowing the per-bar figure is what stops the second one being automatic.",
+      "swaps": [
+        "Tahini instead of peanut butter.",
+        "Skip the chocolate layer to take the calories down noticeably."
+      ]
+    },
+    {
+      "id": "oa-oatmilk-seeds",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Oat milk, oats, seeds",
+      "greek": "Γάλα βρώμης, βρώμη, σπόροι",
+      "servings": 1,
+      "time": "8 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "oat_milk", "g": 250 },
+        { "food": "pumpkin_seeds", "g": 20 },
+        { "food": "banana", "g": 100 }
+      ],
+      "method": [
+        "Oats and oat milk from cold, six minutes on low.",
+        "Toast the seeds in a dry pan while it cooks — thirty seconds past when you think they are done.",
+        "Banana sliced over, seeds last so they stay crisp."
+      ],
+      "why": "Fully plant-based and no powder involved. The seeds are doing the protein work here, which is why they are weighed rather than scattered.",
+      "swaps": [
+        "Sunflower seeds are cheaper and close enough.",
+        "Soy milk instead of oat milk if you want more protein."
+      ]
+    },
+    {
+      "id": "oa-soy-berries",
+      "book": "oats",
+      "slot": "breakfast",
+      "title": "Plant protein oats",
+      "greek": "Βρώμη με φυτική πρωτεΐνη",
+      "servings": 1,
+      "time": "8 minutes",
+      "ingredients": [
+        { "food": "oats_dry", "g": 60 },
+        { "food": "soy_milk", "g": 250 },
+        { "food": "protein_powder", "g": 25 },
+        { "food": "berries", "g": 80 },
+        { "food": "almonds", "g": 12 }
+      ],
+      "method": [
+        "Cook the oats in the soy milk, six minutes.",
+        "Off the heat before the powder goes in. Boiled protein powder goes grainy.",
+        "Berries and chopped almonds over."
+      ],
+      "why": "The plant-based bowl that actually reaches the protein other breakfasts get from dairy. Cook the powder and you ruin the texture — that is the only technical thing on this page.",
+      "swaps": [
+        "Whey works the same way if dairy is not an issue for you.",
+        "Frozen berries, stirred in hot so they collapse into it."
+      ]
+    },
+
+    {
+      "id": "eg-strapatsada",
+      "book": "eggs",
+      "slot": "breakfast",
+      "title": "Strapatsada",
+      "greek": "Στραπατσάδα",
+      "servings": 1,
+      "time": "15 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 165 },
+        { "food": "tomato", "g": 250 },
+        { "food": "feta", "g": 40 },
+        { "food": "onion", "g": 40 },
+        { "food": "olive_oil", "g": 8 },
+        { "food": "herbs", "g": 2 }
+      ],
+      "method": [
+        "Grate the tomatoes and cook them down hard with the onion until the water has gone. Eight minutes, and do not rush it — wet tomato makes wet eggs.",
+        "Beaten eggs in, heat low, move them slowly.",
+        "Off the heat while still glossy, feta crumbled over, oregano."
+      ],
+      "why": "The dish half of Greece eats in August, and it needs no rebuilding at all — three eggs, a quarter kilo of tomatoes and measured oil is already a good meal. The only common mistake is a pour of oil instead of a spoon.",
+      "swaps": [
+        "Tinned chopped tomatoes out of season, reduced harder.",
+        "Two eggs plus a handful of whites keeps the volume and cuts the fat."
+      ]
+    },
+    {
+      "id": "eg-shakshuka",
+      "book": "eggs",
+      "slot": "lunch",
+      "title": "Eggs poached in tomato and pepper",
+      "greek": "Αυγά ποσέ σε ντομάτα και πιπεριά",
+      "servings": 1,
+      "time": "22 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 165 },
+        { "food": "passata", "g": 250 },
+        { "food": "pepper_red", "g": 120 },
+        { "food": "onion", "g": 60 },
+        { "food": "olive_oil", "g": 10 },
+        { "food": "feta", "g": 30 },
+        { "food": "garlic", "g": 6 }
+      ],
+      "method": [
+        "Peppers and onion in the oil, ten minutes, until they are soft and sweet rather than browned.",
+        "Passata, garlic, cumin and paprika in, simmer until it thickens enough to hold a hollow.",
+        "Three hollows, an egg in each, lid on, six minutes. Feta over at the end."
+      ],
+      "why": "A pan of vegetables with eggs set into it — most of the volume is nearly free, and the eggs make it a meal rather than a side.",
+      "swaps": [
+        "A tin of chickpeas in with the sauce turns one portion into two.",
+        "Serve with a rusk rather than bread to keep it from disappearing in two bites."
+      ]
+    },
+    {
+      "id": "eg-spinach-feta-omelette",
+      "book": "eggs",
+      "slot": "breakfast",
+      "title": "Spinach and feta omelette",
+      "greek": "Ομελέτα με σπανάκι και φέτα",
+      "servings": 1,
+      "time": "10 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 165 },
+        { "food": "spinach", "g": 100 },
+        { "food": "feta", "g": 40 },
+        { "food": "olive_oil", "g": 6 }
+      ],
+      "method": [
+        "Wilt the spinach first and get the water out of it. Wet spinach is why omelettes fall apart.",
+        "Eggs in, low heat, pull the edges into the middle.",
+        "Feta down one half, fold, thirty seconds more."
+      ],
+      "why": "The default. Ten minutes, one pan, and the protein of a chicken breast. If nothing else in this book sticks, this one should.",
+      "swaps": [
+        "Mushrooms instead of spinach, cooked hard so they colour.",
+        "Halloumi instead of feta, in small cubes."
+      ]
+    },
+    {
+      "id": "eg-boiled-paximadi",
+      "book": "eggs",
+      "slot": "lunch",
+      "title": "Boiled eggs on a rusk",
+      "greek": "Βραστά αυγά σε παξιμάδι",
+      "servings": 1,
+      "time": "10 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "paximadi", "g": 60 },
+        { "food": "tomato", "g": 150 },
+        { "food": "olive_oil", "g": 8 },
+        { "food": "olives_kalamata", "g": 20 }
+      ],
+      "method": [
+        "Eight minutes for the eggs from boiling, then straight into cold water.",
+        "Wet the rusk under the tap for three seconds only, then grate the tomato over it and let it sit two minutes.",
+        "Eggs halved on top, oil, olives, salt."
+      ],
+      "why": "Dakos with the protein put back. It takes ten minutes, travels in a box, and does not need reheating — which is most of why people eat badly at work.",
+      "swaps": [
+        "Tinned tuna instead of one of the eggs.",
+        "Anari or cottage cheese crumbled over."
+      ]
+    },
+    {
+      "id": "eg-white-scramble-turkey",
+      "book": "eggs",
+      "slot": "breakfast",
+      "title": "Whites and turkey, for the lean weeks",
+      "greek": "Ασπράδια με γαλοπούλα",
+      "servings": 1,
+      "time": "12 minutes",
+      "ingredients": [
+        { "food": "egg_white", "g": 250 },
+        { "food": "turkey_mince", "g": 100 },
+        { "food": "pepper_red", "g": 100 },
+        { "food": "onion", "g": 40 },
+        { "food": "olive_oil", "g": 5 }
+      ],
+      "method": [
+        "Brown the mince properly first, then the peppers and onion in with it.",
+        "Whites in, heat low, keep them moving. They set faster than whole eggs and turn rubbery in seconds.",
+        "Off the heat while still soft."
+      ],
+      "why": "Almost all of the calories here are protein, which makes this the page to use in a hard deficit. It is not better than a whole-egg breakfast — the yolk carries most of the nutrition — it is just leaner.",
+      "swaps": [
+        "Two whole eggs plus 150 g of whites is the better everyday version.",
+        "Chicken mince or leftover roast chicken instead of turkey."
+      ]
+    },
+    {
+      "id": "eg-avocado-sourdough",
+      "book": "eggs",
+      "slot": "breakfast",
+      "title": "Egg and avocado on sourdough",
+      "greek": "Αυγό και αβοκάντο σε ψωμί προζύμι",
+      "servings": 1,
+      "time": "10 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "sourdough", "g": 70 },
+        { "food": "avocado", "g": 80 },
+        { "food": "olive_oil", "g": 4 },
+        { "food": "lemon_juice", "g": 10 }
+      ],
+      "method": [
+        "Toast the bread hard. Soft toast under wet avocado is a bad texture.",
+        "Mash the avocado with the lemon and plenty of salt, directly on the toast.",
+        "Two eggs on top, however you like them, oil over."
+      ],
+      "why": "The café version of this costs eleven euros and usually arrives with one egg. Half an avocado is around 130 calories — worth knowing, because a whole one on top of a normal breakfast is where this dish quietly goes wrong.",
+      "swaps": [
+        "Poached instead of fried takes the oil out entirely.",
+        "Cottage cheese under the avocado adds protein for very little."
+      ]
+    },
+    {
+      "id": "eg-baked-mushroom-halloumi",
+      "book": "eggs",
+      "slot": "lunch",
+      "title": "Baked eggs with mushrooms and halloumi",
+      "greek": "Αυγά στον φούρνο με μανιτάρια και χαλλούμι",
+      "servings": 1,
+      "time": "25 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 165 },
+        { "food": "mushrooms", "g": 200 },
+        { "food": "halloumi", "g": 50 },
+        { "food": "olive_oil", "g": 8 },
+        { "food": "garlic", "g": 5 }
+      ],
+      "method": [
+        "Mushrooms in a hot dry pan first, no oil, until they squeak and then colour. This drives the water off and is the difference between good and grey.",
+        "Oil and garlic in at the end, tip into an oven dish.",
+        "Three hollows, eggs in, halloumi over, 190°C for twelve minutes."
+      ],
+      "why": "Two hundred grams of mushrooms is about 44 calories and fills a dish. Volume from vegetables, protein from eggs and cheese — that is the whole structure.",
+      "swaps": [
+        "Spinach folded through the mushrooms.",
+        "Feta instead of halloumi, added after baking."
+      ]
+    },
+    {
+      "id": "eg-muffins",
+      "book": "eggs",
+      "slot": "snack",
+      "title": "Egg cups for the week",
+      "greek": "Αυγά μάφιν για τη βδομάδα",
+      "servings": 6,
+      "time": "30 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 330 },
+        { "food": "pepper_red", "g": 150 },
+        { "food": "spinach", "g": 100 },
+        { "food": "feta", "g": 90 },
+        { "food": "olive_oil", "g": 6 }
+      ],
+      "method": [
+        "Chop everything small and squeeze the water out of the wilted spinach.",
+        "Beat the eggs with salt and pepper, stir the rest through, fill six oiled muffin holes.",
+        "180°C for twenty minutes. They deflate as they cool — that is normal."
+      ],
+      "why": "Three days of breakfasts made in half an hour on a Sunday. The reason people eat pastry at nine in the morning is that nothing else is ready.",
+      "swaps": [
+        "Any leftover cooked vegetable works.",
+        "Add 100 g of chopped cooked chicken for a meaningful protein jump."
+      ]
+    },
+    {
+      "id": "eg-frittata",
+      "book": "eggs",
+      "slot": "dinner",
+      "title": "Potato and courgette frittata",
+      "greek": "Φριτάτα με πατάτα και κολοκύθι",
+      "servings": 4,
+      "time": "35 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 330 },
+        { "food": "potato", "g": 300 },
+        { "food": "courgette", "g": 200 },
+        { "food": "onion", "g": 80 },
+        { "food": "olive_oil", "g": 20 },
+        { "food": "parmesan", "g": 30 }
+      ],
+      "method": [
+        "Potatoes sliced thin and cooked gently in the oil with the onion, twelve minutes, lid on.",
+        "Courgette in for three more, then the beaten eggs and cheese.",
+        "Low heat until the edges set, then under a hot grill for three minutes to finish the top."
+      ],
+      "why": "A dinner for four out of six eggs and what was in the drawer. Cold the next day it is better than it was hot, which is not true of many things.",
+      "swaps": [
+        "Sweet potato instead of potato.",
+        "Skip the parmesan and add feta at the end instead."
+      ]
+    },
+    {
+      "id": "eg-salad-yoghurt",
+      "book": "eggs",
+      "slot": "lunch",
+      "title": "Egg salad without the mayonnaise",
+      "greek": "Αυγοσαλάτα χωρίς μαγιονέζα",
+      "servings": 1,
+      "time": "12 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 165 },
+        { "food": "yoghurt_0", "g": 100 },
+        { "food": "cucumber", "g": 100 },
+        { "food": "bread_wholemeal", "g": 60 },
+        { "food": "lemon_juice", "g": 10 },
+        { "food": "herbs", "g": 3 }
+      ],
+      "method": [
+        "Eggs boiled eight minutes, cooled, chopped rough rather than mashed.",
+        "Yoghurt, lemon, mustard, salt and a lot of dill. Taste it before it goes near the eggs.",
+        "Fold, don't stir. On the bread, or in a lettuce leaf."
+      ],
+      "why": "Mayonnaise is about 680 calories per 100 g; strained yoghurt is about 59. The dressing is where nearly every sandwich filling goes wrong, and it is the easiest thing in the kitchen to change.",
+      "swaps": [
+        "A teaspoon of real mayonnaise stirred into the yoghurt gets the flavour back for very little.",
+        "In a wholemeal pitta instead of on bread."
+      ]
+    },
+    {
+      "id": "eg-fried-rice-prawn",
+      "book": "eggs",
+      "slot": "dinner",
+      "title": "Egg fried rice with prawns",
+      "greek": "Ρύζι τηγανητό με αυγό και γαρίδες",
+      "servings": 1,
+      "time": "15 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "rice_dry", "g": 70 },
+        { "food": "prawns", "g": 120 },
+        { "food": "sweetcorn", "g": 80 },
+        { "food": "olive_oil", "g": 8 },
+        { "food": "garlic", "g": 5 }
+      ],
+      "method": [
+        "Cold rice only. Rice cooked the day before and chilled fries; fresh rice steams and goes to paste.",
+        "Prawns hard and fast, out. Eggs scrambled in the same pan, out.",
+        "Rice in with the garlic, three minutes without stirring so it catches, everything back in, soy sauce."
+      ],
+      "why": "The takeaway version is about a plate of oil. This one is weighed, carries 120 g of prawns, and takes less time than the delivery would.",
+      "swaps": [
+        "Chicken or tofu instead of prawns.",
+        "Half the rice and double the vegetables on a rest day."
+      ]
+    },
+    {
+      "id": "eg-cilbir",
+      "book": "eggs",
+      "slot": "breakfast",
+      "title": "Poached eggs on garlic yoghurt",
+      "greek": "Αυγά ποσέ σε γιαούρτι με σκόρδο",
+      "servings": 1,
+      "time": "12 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "yoghurt_0", "g": 200 },
+        { "food": "butter", "g": 12 },
+        { "food": "garlic", "g": 5 },
+        { "food": "paximadi", "g": 40 }
+      ],
+      "method": [
+        "Yoghurt out of the fridge early and mixed with crushed garlic and salt — cold yoghurt under a hot egg is unpleasant.",
+        "Two eggs poached four minutes, drained properly on paper.",
+        "Butter melted with paprika until it foams, poured over. Rusk on the side."
+      ],
+      "why": "Two hundred grams of strained yoghurt carries about 20 g of protein before the eggs are counted. The butter is the one indulgent thing on the page and it is weighed for exactly that reason.",
+      "swaps": [
+        "Olive oil warmed with paprika instead of butter.",
+        "Chilli flakes if you want it hot."
+      ]
+    },
+    {
+      "id": "eg-tuna-box",
+      "book": "eggs",
+      "slot": "lunch",
+      "title": "The protein box",
+      "greek": "Το κουτί πρωτεΐνης",
+      "servings": 1,
+      "time": "12 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "tuna_tin", "g": 100 },
+        { "food": "beans_white_tin", "g": 120 },
+        { "food": "tomato", "g": 100 },
+        { "food": "olive_oil", "g": 8 },
+        { "food": "lemon_juice", "g": 15 }
+      ],
+      "method": [
+        "Eggs boiled and cooled while you rinse and drain the beans.",
+        "Everything into a box, oil and lemon over, salt and oregano.",
+        "It keeps two days and gets better on the second."
+      ],
+      "why": "No cooking beyond boiling water, nothing that needs reheating, and the protein of a full dinner. This page exists for the days that would otherwise end in a bakery.",
+      "swaps": [
+        "Chickpeas instead of white beans.",
+        "Tuna in oil rather than water if the calories are not the issue that week."
+      ]
+    },
+    {
+      "id": "eg-pita-halloumi",
+      "book": "eggs",
+      "slot": "breakfast",
+      "title": "Egg and halloumi in a pitta",
+      "greek": "Αυγό και χαλλούμι σε πίτα",
+      "servings": 1,
+      "time": "10 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "pitta_wholemeal", "g": 70 },
+        { "food": "halloumi", "g": 50 },
+        { "food": "tomato", "g": 80 }
+      ],
+      "method": [
+        "Halloumi in a dry pan first. It gives up enough fat to cook the eggs in.",
+        "Eggs into the same pan, broken and moved once so they stay in sheets.",
+        "Pitta warmed, filled, tomato in last so it does not steam everything."
+      ],
+      "why": "What the bakery sells is the same idea with pastry instead of pitta and no egg. Five minutes and it is in your hand, which is the only thing the bakery was really offering.",
+      "swaps": [
+        "A wholemeal wrap instead of pitta.",
+        "Add a handful of rocket, which costs nothing and makes it feel like lunch."
+      ]
+    }
+  ]
+}

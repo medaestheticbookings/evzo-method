@@ -1,0 +1,563 @@
+{
+  "_note": "The budget book. Every recipe is built from ingredients that are cheap ALL year, not cheap in August — tins, pulses, eggs, thighs, root vegetables. Costs are computed by ebooks/nutrition.mjs from prices.json; nothing here has a price typed into it by hand.",
+  "recipes": [
+    {
+      "id": "bu-fakes",
+      "book": "budget",
+      "slot": "dinner",
+      "title": "Fakes, the whole week's dinner",
+      "greek": "Φακές",
+      "servings": 4,
+      "time": "10 minutes, then 40 unattended",
+      "ingredients": [
+        {
+          "food": "lentils_dry",
+          "g": 300
+        },
+        {
+          "food": "onion",
+          "g": 150
+        },
+        {
+          "food": "carrot",
+          "g": 150
+        },
+        {
+          "food": "garlic",
+          "g": 12
+        },
+        {
+          "food": "passata",
+          "g": 200
+        },
+        {
+          "food": "olive_oil",
+          "g": 45
+        },
+        {
+          "food": "herbs",
+          "g": 5
+        }
+      ],
+      "method": [
+        "Rinse the lentils. No soaking — they are the one pulse that does not need it, which is half of why they are here.",
+        "Soften the onion, carrot and garlic in the oil for a good eight minutes. This is not a step to hurry; it is where a cheap pot of food stops tasting cheap.",
+        "Lentils, passata, bay leaf, and water to cover by three fingers.",
+        "Simmer 35 to 40 minutes. Add hot water if it tightens.",
+        "Vinegar and salt at the end, off the heat. Salt early and the skins stay hard."
+      ],
+      "why": "This is the cheapest complete dinner in the book and it is not close. A bag of lentils costs less than a coffee and feeds four people twice. The carrot and onion are not garnish — they are what stop it tasting like a punishment, and they cost about twenty cents.",
+      "swaps": [
+        "A tin of chopped tomatoes instead of passata, if that is what is open.",
+        "Serve with a 30 g slice of feta to lift the protein and the taste at once."
+      ]
+    },
+    {
+      "id": "bu-fasolada",
+      "book": "budget",
+      "slot": "dinner",
+      "title": "Fasolada from tins",
+      "greek": "Φασολάδα από κονσέρβα",
+      "servings": 4,
+      "time": "25 minutes",
+      "ingredients": [
+        {
+          "food": "beans_white_tin",
+          "g": 720
+        },
+        {
+          "food": "onion",
+          "g": 150
+        },
+        {
+          "food": "carrot",
+          "g": 150
+        },
+        {
+          "food": "passata",
+          "g": 400
+        },
+        {
+          "food": "olive_oil",
+          "g": 45
+        },
+        {
+          "food": "herbs",
+          "g": 5
+        }
+      ],
+      "method": [
+        "Soften the onion and carrot in the oil until they have given up. Ten minutes.",
+        "Passata in, cook it down for five so it stops tasting raw.",
+        "Beans in, drained and rinsed. Water to loosen.",
+        "Fifteen minutes at a bare simmer. Crush a few beans against the side of the pot — that is what thickens it, not flour.",
+        "Salt and a hard squeeze of lemon at the end."
+      ],
+      "why": "The dried version is cheaper still, but it needs soaking overnight and an hour and a half on the hob, and a recipe you do not cook is not cheap at any price. Tins cost roughly twice the dry weight and turn this into a Tuesday.",
+      "swaps": [
+        "Dried beans if you plan a day ahead: 300 g dry replaces the three tins and saves about a euro fifty.",
+        "A tin of sardines stirred in at the end takes it from a side to a dinner."
+      ]
+    },
+    {
+      "id": "bu-revithia",
+      "book": "budget",
+      "slot": "dinner",
+      "title": "Chickpeas in the oven, lemon and onion",
+      "greek": "Ρεβίθια στον φούρνο",
+      "servings": 4,
+      "time": "5 minutes, then 45 in the oven",
+      "ingredients": [
+        {
+          "food": "chickpeas_tin",
+          "g": 720
+        },
+        {
+          "food": "onion",
+          "g": 200
+        },
+        {
+          "food": "lemon_juice",
+          "g": 40
+        },
+        {
+          "food": "olive_oil",
+          "g": 45
+        },
+        {
+          "food": "herbs",
+          "g": 5
+        }
+      ],
+      "method": [
+        "Chickpeas drained, onion sliced thick, everything into a dish with the oil and a cup of water.",
+        "Rosemary, salt, pepper. Cover with foil.",
+        "180°C for 30 minutes covered, then 15 uncovered so the top catches.",
+        "All the lemon goes on at the end, not before — cooked lemon juice turns flat."
+      ],
+      "why": "Four ingredients and an oven. Nothing has to be watched, chopped fine or browned, which makes it the recipe most likely to survive a bad week. Chickpeas are also the pulse that reheats best, so it is better on Wednesday than it was on Monday.",
+      "swaps": [
+        "Dried chickpeas, soaked overnight: 280 g dry for the three tins.",
+        "Throw in a sliced red pepper if one is going soft in the drawer."
+      ]
+    },
+    {
+      "id": "bu-strapatsada",
+      "book": "budget",
+      "slot": "breakfast",
+      "title": "Strapatsada, counted properly",
+      "greek": "Στραπατσάδα",
+      "servings": 2,
+      "time": "12 minutes",
+      "ingredients": [
+        {
+          "food": "egg",
+          "g": 220
+        },
+        {
+          "food": "tomato",
+          "g": 400
+        },
+        {
+          "food": "olive_oil",
+          "g": 20
+        },
+        {
+          "food": "feta",
+          "g": 60
+        },
+        {
+          "food": "herbs",
+          "g": 3
+        }
+      ],
+      "method": [
+        "Grate the tomatoes into a pan with the oil. Grating, not chopping — you want pulp, not chunks swimming in water.",
+        "Cook hard for eight to ten minutes until it stops being watery and starts being sauce. This is the entire recipe; everything else takes two minutes.",
+        "Eggs straight in, beaten, heat low. Stir slowly and take it off while it still looks slightly underdone.",
+        "Feta crumbled over at the table."
+      ],
+      "why": "Four eggs and three tomatoes is the cheapest 30 g of protein you can put in front of two people, and unlike most cheap breakfasts it is not made of sugar. The feta is optional on the cost and not optional on the taste.",
+      "swaps": [
+        "A 400 g tin of chopped tomatoes out of season, cooked down the same way — cheaper than sad winter tomatoes and better.",
+        "Leave the feta out and it drops about 25 cents and 90 calories a serving."
+      ]
+    },
+    {
+      "id": "bu-omeleta",
+      "book": "budget",
+      "slot": "lunch",
+      "title": "Potato and onion omelette",
+      "greek": "Ομελέτα με πατάτα",
+      "servings": 2,
+      "time": "25 minutes",
+      "ingredients": [
+        {
+          "food": "egg",
+          "g": 220
+        },
+        {
+          "food": "potato",
+          "g": 300
+        },
+        {
+          "food": "onion",
+          "g": 100
+        },
+        {
+          "food": "olive_oil",
+          "g": 25
+        },
+        {
+          "food": "herbs",
+          "g": 3
+        }
+      ],
+      "method": [
+        "Potatoes in 5 mm slices, onion the same. Into the pan with the oil on a low heat, lid on, 15 minutes. You are softening them, not frying them.",
+        "Beaten eggs in, heat low, lid back on.",
+        "Eight minutes until it is set at the edges and barely wobbling in the middle.",
+        "Slide it onto a plate. Eat it warm rather than hot — it is better and it always has been."
+      ],
+      "why": "A whole lunch for two out of a potato, half an onion and four eggs. It is also the best cold food in the book: wrapped in foil it is a lunch box that does not need a microwave, which quietly solves the most expensive meal of most people's week.",
+      "swaps": [
+        "Any vegetable that needs using — courgette, pepper, the last of a bag of spinach.",
+        "Two of the four eggs as whites only, if you want the same protein for fewer calories."
+      ]
+    },
+    {
+      "id": "bu-tuna-beans",
+      "book": "budget",
+      "slot": "lunch",
+      "title": "Tuna and white bean salad",
+      "greek": "Σαλάτα με τόνο και φασόλια",
+      "servings": 2,
+      "time": "6 minutes, no cooking",
+      "ingredients": [
+        {
+          "food": "tuna_tin",
+          "g": 240
+        },
+        {
+          "food": "beans_white_tin",
+          "g": 240
+        },
+        {
+          "food": "onion",
+          "g": 60
+        },
+        {
+          "food": "tomato",
+          "g": 150
+        },
+        {
+          "food": "lemon_juice",
+          "g": 20
+        },
+        {
+          "food": "olive_oil",
+          "g": 20
+        },
+        {
+          "food": "herbs",
+          "g": 3
+        }
+      ],
+      "method": [
+        "Slice the onion as thin as you can and leave it in the lemon juice for five minutes. That is what takes the harshness out — skip it and the whole bowl tastes of raw onion.",
+        "Everything else into the bowl, tuna flaked in last so it stays in pieces.",
+        "Oil, salt, pepper, parsley if there is any."
+      ],
+      "why": "No hob, no oven, six minutes, and it is the highest protein-per-euro plate in the book. This is the recipe for the evening you were going to order something because you could not face cooking.",
+      "swaps": [
+        "Chickpeas instead of white beans.",
+        "Sardines instead of tuna — cheaper per gram of protein and considerably better for you."
+      ]
+    },
+    {
+      "id": "bu-sardines",
+      "book": "budget",
+      "slot": "lunch",
+      "title": "Sardines on barley rusk",
+      "greek": "Σαρδέλες σε παξιμάδι",
+      "servings": 2,
+      "time": "5 minutes",
+      "ingredients": [
+        {
+          "food": "sardines_tin",
+          "g": 180
+        },
+        {
+          "food": "paximadi",
+          "g": 120
+        },
+        {
+          "food": "tomato",
+          "g": 200
+        },
+        {
+          "food": "olive_oil",
+          "g": 15
+        },
+        {
+          "food": "herbs",
+          "g": 3
+        }
+      ],
+      "method": [
+        "Wet the rusks briefly under the tap. Briefly — three seconds, not ten. They should soften, not collapse.",
+        "Grate the tomato over them and let it sit two minutes.",
+        "Sardines on top, oil, oregano, pepper."
+      ],
+      "why": "Dakos with the protein put back in. Tinned sardines are the most underrated food in any Greek supermarket: they cost less per gram of protein than chicken breast, they need no cooking, and they keep in a cupboard for three years.",
+      "swaps": [
+        "Bread instead of rusk, toasted hard.",
+        "Mackerel tins where you can find them — same idea, richer."
+      ]
+    },
+    {
+      "id": "bu-traybake",
+      "book": "budget",
+      "slot": "dinner",
+      "title": "Lemon chicken thighs and potatoes, one tray",
+      "greek": "Κοτόπουλο λεμονάτο στο ταψί",
+      "servings": 4,
+      "time": "10 minutes, then an hour in the oven",
+      "ingredients": [
+        {
+          "food": "chicken_thigh",
+          "g": 600
+        },
+        {
+          "food": "potato",
+          "g": 800
+        },
+        {
+          "food": "onion",
+          "g": 200
+        },
+        {
+          "food": "lemon_juice",
+          "g": 40
+        },
+        {
+          "food": "olive_oil",
+          "g": 40
+        },
+        {
+          "food": "herbs",
+          "g": 5
+        }
+      ],
+      "method": [
+        "Potatoes in wedges, onion in thick wedges, everything in one tray with the oil, half the lemon, oregano, salt and a cup of water.",
+        "200°C, 40 minutes.",
+        "Turn the potatoes, push the chicken to the top, another 20 minutes so the skin side colours.",
+        "The rest of the lemon over it as it comes out."
+      ],
+      "why": "Thigh is roughly half the price of breast, has more flavour, and is far harder to ruin. It is also the cut that survives being reheated, which is the actual test of a cheap recipe.",
+      "swaps": [
+        "Drumsticks are cheaper again if you do not mind the bone.",
+        "Swap half the potato for carrot and it costs less and lands about 120 calories lighter a serving."
+      ]
+    },
+    {
+      "id": "bu-giouvetsi",
+      "book": "budget",
+      "slot": "dinner",
+      "title": "Chicken mince and rice, one pot",
+      "greek": "Κιμάς κοτόπουλο με ρύζι",
+      "servings": 4,
+      "time": "30 minutes",
+      "ingredients": [
+        {
+          "food": "chicken_mince",
+          "g": 500
+        },
+        {
+          "food": "rice_dry",
+          "g": 300
+        },
+        {
+          "food": "passata",
+          "g": 400
+        },
+        {
+          "food": "onion",
+          "g": 150
+        },
+        {
+          "food": "olive_oil",
+          "g": 30
+        },
+        {
+          "food": "herbs",
+          "g": 5
+        }
+      ],
+      "method": [
+        "Brown the mince hard in the oil and do not stir it for the first two minutes. Colour is flavour and it is free.",
+        "Onion in, five minutes.",
+        "Passata, cinnamon stick if you have one, and 600 ml of water. Bring it up.",
+        "Rice in, lid on, 18 minutes on the lowest heat. Do not lift the lid.",
+        "Off the heat, lid on, ten minutes more. That last ten is what stops it being wet."
+      ],
+      "why": "Chicken mince is the cheapest meat by weight in most Greek and Cypriot supermarkets and almost nobody buys it. One pot, one hob ring, and four dinners at a cost that competes with pasta.",
+      "swaps": [
+        "Pork mince works and is usually cheaper still.",
+        "Bulgur instead of rice: same money, more fibre, and it is harder to overcook."
+      ]
+    },
+    {
+      "id": "bu-pasta-lentil",
+      "book": "budget",
+      "slot": "dinner",
+      "title": "Pasta with lentil sauce",
+      "greek": "Μακαρόνια με σάλτσα φακής",
+      "servings": 4,
+      "time": "45 minutes, mostly unattended",
+      "ingredients": [
+        {
+          "food": "pasta_dry",
+          "g": 320
+        },
+        {
+          "food": "lentils_dry",
+          "g": 150
+        },
+        {
+          "food": "passata",
+          "g": 500
+        },
+        {
+          "food": "onion",
+          "g": 150
+        },
+        {
+          "food": "carrot",
+          "g": 120
+        },
+        {
+          "food": "garlic",
+          "g": 12
+        },
+        {
+          "food": "olive_oil",
+          "g": 30
+        },
+        {
+          "food": "herbs",
+          "g": 5
+        }
+      ],
+      "method": [
+        "Onion, carrot and garlic chopped small, into the oil for ten minutes.",
+        "Lentils, passata, 400 ml water, bay. Simmer 30 minutes until the lentils have gone soft and the sauce has gone thick.",
+        "Pasta in salted water, drained a minute early, finished in the sauce with a splash of its water.",
+        "Pepper, oregano, and a little grated cheese if you have it."
+      ],
+      "why": "A bolognese with no meat in it that nobody at the table will comment on. Brown lentils collapse into exactly the texture mince has, for about a fifth of the price, and they bring the protein score of a plate of pasta up from the floor.",
+      "swaps": [
+        "Half lentils, half beef mince, if the household is not convinced.",
+        "A tin of chopped tomatoes plus a spoon of tomato paste instead of passata."
+      ]
+    },
+    {
+      "id": "bu-spanakorizo",
+      "book": "budget",
+      "slot": "dinner",
+      "title": "Spanakorizo with egg and feta",
+      "greek": "Σπανακόρυζο με αυγό και φέτα",
+      "servings": 4,
+      "time": "30 minutes",
+      "ingredients": [
+        {
+          "food": "spinach",
+          "g": 600
+        },
+        {
+          "food": "rice_dry",
+          "g": 200
+        },
+        {
+          "food": "onion",
+          "g": 150
+        },
+        {
+          "food": "olive_oil",
+          "g": 40
+        },
+        {
+          "food": "lemon_juice",
+          "g": 30
+        },
+        {
+          "food": "egg",
+          "g": 220
+        },
+        {
+          "food": "feta",
+          "g": 120
+        },
+        {
+          "food": "herbs",
+          "g": 5
+        }
+      ],
+      "method": [
+        "Onion in the oil until soft. Spring onion too if you have it.",
+        "Spinach in by the handful, letting each one collapse before the next. Frozen goes straight in from the bag.",
+        "Rice and 500 ml of water. Lid on, 18 minutes on low.",
+        "Off the heat, dill and all the lemon. Make four wells, crack an egg into each, lid on for six minutes.",
+        "It should be wet, not dry. That is the dish, not a mistake.",
+        "Feta on top at the table."
+      ],
+      "why": "Frozen spinach is a third of the price of fresh, loses nothing that matters, and does not go slimy in the drawer on day three. This costs less than a euro a plate and does not look or taste like it.",
+      "swaps": [
+        "Any greens — chard, the tops of beetroot, wild horta if somebody brings you some.",
+        "Leave the eggs out and it is 30 cents cheaper and a side dish rather than a dinner."
+      ]
+    },
+    {
+      "id": "bu-oats",
+      "book": "budget",
+      "slot": "breakfast",
+      "title": "The one-euro breakfast",
+      "greek": "Το πρωινό του ενός ευρώ",
+      "servings": 1,
+      "time": "3 minutes, then overnight",
+      "ingredients": [
+        {
+          "food": "oats_dry",
+          "g": 60
+        },
+        {
+          "food": "milk_semi",
+          "g": 150
+        },
+        {
+          "food": "yoghurt_0",
+          "g": 100
+        },
+        {
+          "food": "banana",
+          "g": 100
+        },
+        {
+          "food": "peanut_butter",
+          "g": 15
+        }
+      ],
+      "method": [
+        "Oats, milk and yoghurt in a jar. Stir properly — the dry pocket at the bottom is why people give up on this.",
+        "Lid on, fridge, overnight.",
+        "Banana and peanut butter in the morning. Not the night before, unless you want brown banana."
+      ],
+      "why": "Compare it to what it replaces: a coffee and a pastry on the way to work is about three euro and 25 g of protein short. This is made the night before, costs about a third of that, and is the one change in this book that pays for the book inside a month.",
+      "swaps": [
+        "Frozen berries instead of banana — add them at night and they thaw perfectly.",
+        "Water instead of milk if money is genuinely tight. It saves about 20 cents and you will not love it."
+      ]
+    }
+  ]
+}

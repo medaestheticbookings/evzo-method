@@ -1,0 +1,70 @@
+{
+  "_note": "Four weeks of structures for the 30-Day Meal Variety Bundle. Each day names recipes by id from recipes.json; build.mjs pulls the computed per-serving figures and builds each week's shopping list by adding up the ingredients actually used. Nothing is repeated within a week, and no dinner repeats across two consecutive weeks.",
+
+  "weeks": [
+    {
+      "n": 1,
+      "theme": "Get the structure in",
+      "intro": "Week one is deliberately repetitive at breakfast and varied at dinner. The morning should stop being a decision; the evening is where the variety earns its keep.",
+      "days": [
+        { "day": "Monday",    "breakfast": "yoghurt-bowl",    "lunch": "chicken-bulgur",       "dinner": "fish-tray",             "snack": "snack-cottage" },
+        { "day": "Tuesday",   "breakfast": "yoghurt-bowl",    "lunch": "chicken-bulgur",       "dinner": "lemon-chicken-potatoes","snack": "snack-eggs-olives" },
+        { "day": "Wednesday", "breakfast": "eggs-tomato",     "lunch": "greek-salad-protein",  "dinner": "beef-orzo",             "snack": "snack-cottage" },
+        { "day": "Thursday",  "breakfast": "yoghurt-bowl",    "lunch": "lentil-soup",          "dinner": "lemon-chicken-potatoes","snack": "snack-toast-tahini" },
+        { "day": "Friday",    "breakfast": "overnight-oats",  "lunch": "tuna-white-beans",     "dinner": "prawn-lemon-rice",      "snack": "snack-eggs-olives" },
+        { "day": "Saturday",  "breakfast": "eggs-tomato",     "lunch": "halloumi-bowl",        "dinner": "pork-souvlaki",         "snack": "snack-cottage" },
+        { "day": "Sunday",    "breakfast": "overnight-oats",  "lunch": "greek-salad-protein",  "dinner": "gemista",               "snack": "snack-toast-tahini" }
+      ]
+    },
+    {
+      "n": 2,
+      "theme": "Cook once, eat twice",
+      "intro": "This week leans on the two batch recipes. Sunday and Wednesday are the only evenings that need real cooking; everything else is reheating something you already weighed.",
+      "days": [
+        { "day": "Monday",    "breakfast": "overnight-oats",  "lunch": "lentil-soup",          "dinner": "salmon-greens",         "snack": "snack-cottage" },
+        { "day": "Tuesday",   "breakfast": "yoghurt-bowl",    "lunch": "lentil-soup",          "dinner": "briam",                 "snack": "snack-eggs-olives" },
+        { "day": "Wednesday", "breakfast": "eggs-tomato",     "lunch": "tuna-white-beans",     "dinner": "beef-orzo",             "snack": "snack-toast-tahini" },
+        { "day": "Thursday",  "breakfast": "overnight-oats",  "lunch": "chicken-bulgur",       "dinner": "beef-orzo",             "snack": "snack-cottage" },
+        { "day": "Friday",    "breakfast": "yoghurt-bowl",    "lunch": "chicken-bulgur",       "dinner": "fish-tray",             "snack": "snack-eggs-olives" },
+        { "day": "Saturday",  "breakfast": "eggs-tomato",     "lunch": "halloumi-bowl",        "dinner": "pork-souvlaki",         "snack": "snack-cottage" },
+        { "day": "Sunday",    "breakfast": "overnight-oats",  "lunch": "greek-salad-protein",  "dinner": "lemon-chicken-potatoes","snack": "snack-toast-tahini" }
+      ]
+    },
+    {
+      "n": 3,
+      "theme": "The week it usually breaks",
+      "intro": "Week three is where the scale slows and the plan gets abandoned. Every dinner here is under twenty-five minutes, on purpose. Boredom and effort are what actually end diets, not hunger.",
+      "days": [
+        { "day": "Monday",    "breakfast": "yoghurt-bowl",    "lunch": "tuna-white-beans",     "dinner": "prawn-lemon-rice",      "snack": "snack-cottage" },
+        { "day": "Tuesday",   "breakfast": "eggs-tomato",     "lunch": "greek-salad-protein",  "dinner": "salmon-greens",         "snack": "snack-eggs-olives" },
+        { "day": "Wednesday", "breakfast": "overnight-oats",  "lunch": "lentil-soup",          "dinner": "fish-tray",             "snack": "snack-cottage" },
+        { "day": "Thursday",  "breakfast": "yoghurt-bowl",    "lunch": "lentil-soup",          "dinner": "pork-souvlaki",         "snack": "snack-toast-tahini" },
+        { "day": "Friday",    "breakfast": "eggs-tomato",     "lunch": "chicken-bulgur",       "dinner": "prawn-lemon-rice",      "snack": "snack-eggs-olives" },
+        { "day": "Saturday",  "breakfast": "overnight-oats",  "lunch": "chicken-bulgur",       "dinner": "gemista",               "snack": "snack-cottage" },
+        { "day": "Sunday",    "breakfast": "yoghurt-bowl",    "lunch": "halloumi-bowl",        "dinner": "briam",                 "snack": "snack-toast-tahini" }
+      ]
+    },
+    {
+      "n": 4,
+      "theme": "Run it without looking",
+      "intro": "By now the portions are in your hands rather than on the scale. This week mixes everything and asks you to weigh only three things: oil, rice or pasta, and anything from a jar.",
+      "days": [
+        { "day": "Monday",    "breakfast": "overnight-oats",  "lunch": "greek-salad-protein",  "dinner": "beef-orzo",             "snack": "snack-eggs-olives" },
+        { "day": "Tuesday",   "breakfast": "yoghurt-bowl",    "lunch": "tuna-white-beans",     "dinner": "lemon-chicken-potatoes","snack": "snack-cottage" },
+        { "day": "Wednesday", "breakfast": "eggs-tomato",     "lunch": "chicken-bulgur",       "dinner": "salmon-greens",         "snack": "snack-toast-tahini" },
+        { "day": "Thursday",  "breakfast": "overnight-oats",  "lunch": "chicken-bulgur",       "dinner": "briam",                 "snack": "snack-cottage" },
+        { "day": "Friday",    "breakfast": "yoghurt-bowl",    "lunch": "halloumi-bowl",        "dinner": "fish-tray",             "snack": "snack-eggs-olives" },
+        { "day": "Saturday",  "breakfast": "eggs-tomato",     "lunch": "lentil-soup",          "dinner": "pork-souvlaki",         "snack": "snack-toast-tahini" },
+        { "day": "Sunday",    "breakfast": "overnight-oats",  "lunch": "lentil-soup",          "dinner": "gemista",               "snack": "snack-cottage" }
+      ]
+    }
+  ],
+
+  "rules": [
+    { "t": "Weigh three things, eyeball the rest", "d": "Oil, anything dry (rice, pasta, oats, bulgur), and anything from a jar. Vegetables and salad never need a scale." },
+    { "t": "Protein first, every meal", "d": "Decide the protein, then build around it. A meal without one is a snack that costs you a meal's calories." },
+    { "t": "One plate, then put the pot away", "d": "Serve in the kitchen, eat at the table. The second helping is a decision made by proximity, not hunger." },
+    { "t": "Swap freely inside a slot", "d": "Any dinner here can replace any other dinner. The week is a structure, not a prescription." },
+    { "t": "Two meals off a week is the plan, not a failure", "d": "Twenty-eight days of this has room for a Friday out. What it does not have room for is abandoning the other twenty-six." }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "_note": "Recipes for the Protein Bowls and Protein Dinners books. Same shape as recipes.json; build.mjs computes every figure from foods.json. The 'book' field decides which ebook a recipe appears in.",
+
+  "recipes": [
+    { "id": "bowl-chicken-lemon", "book": "bowls", "slot": "bowl", "title": "The lemon chicken bowl", "greek": "Μπολ με κοτόπουλο λεμονάτο", "servings": 1, "time": "15 minutes",
+      "ingredients": [ {"food":"chicken_breast","g":150},{"food":"quinoa_dry","g":50},{"food":"cucumber","g":100},{"food":"tomato","g":100},{"food":"yoghurt_0","g":60},{"food":"olive_oil","g":10},{"food":"lemon_juice","g":20},{"food":"herbs","g":2} ],
+      "method": ["Quinoa on, 15 minutes.","Chicken in strips, hot pan, 4 minutes a side, lemon at the end.","Build it cold to hot: quinoa, salad, chicken, yoghurt thinned with lemon over the top."],
+      "why": "The bowl the whole category is built on. Lean protein, a weighed grain, and a yoghurt sauce doing the job mayonnaise usually does for four times the calories.",
+      "swaps": ["Bulgur instead of quinoa, same dry weight.","Prawns instead of chicken, 150 g, two minutes."] },
+
+    { "id": "bowl-tuna-bean", "book": "bowls", "slot": "bowl", "title": "The five-minute tin bowl", "greek": "Μπολ κονσέρβας σε 5 λεπτά", "servings": 1, "time": "5 minutes",
+      "ingredients": [ {"food":"tuna_tin","g":100},{"food":"beans_white_tin","g":120},{"food":"sweetcorn","g":60},{"food":"tomato","g":100},{"food":"onion","g":30},{"food":"olive_oil","g":8},{"food":"lemon_juice","g":15},{"food":"herbs","g":2} ],
+      "method": ["Drain the tins properly.","Everything in a bowl.","Oil measured last, lemon over the top."],
+      "why": "No pan, no heat, no thinking. This is the bowl for the evening you would otherwise order something.",
+      "swaps": ["Chickpeas instead of white beans.","Add a boiled egg if you want it to hold longer."] },
+
+    { "id": "bowl-souvlaki", "book": "bowls", "slot": "bowl", "title": "Souvlaki in a bowl", "greek": "Σουβλάκι σε μπολ", "servings": 1, "time": "15 minutes",
+      "ingredients": [ {"food":"pork_tenderloin","g":150},{"food":"potato","g":180},{"food":"yoghurt_2","g":80},{"food":"cucumber","g":80},{"food":"tomato","g":100},{"food":"onion","g":30},{"food":"olive_oil","g":10},{"food":"garlic","g":3},{"food":"herbs","g":3} ],
+      "method": ["Potatoes in wedges, oven or air fryer, 25 minutes.","Pork in strips on a hot griddle, 3 minutes a side.","Tzatziki from the yoghurt, grated cucumber squeezed dry and the garlic."],
+      "why": "Everything a souvlaki plate gives you, minus the pitta and the fryer. Tenderloin is 143 calories per 100 g; the same plate with pork belly is over 500.",
+      "swaps": ["Chicken breast instead of pork.","Skip the potato for a lower-carb version and double the salad."] },
+
+    { "id": "bowl-feta-chickpea", "book": "bowls", "slot": "bowl", "title": "The chickpea and feta bowl", "greek": "Μπολ με ρεβίθια και φέτα", "servings": 1, "time": "10 minutes",
+      "ingredients": [ {"food":"chickpeas_tin","g":200},{"food":"feta","g":50},{"food":"spinach","g":80},{"food":"pepper_red","g":80},{"food":"tomato","g":80},{"food":"olive_oil","g":10},{"food":"lemon_juice","g":15},{"food":"herbs","g":2} ],
+      "method": ["Chickpeas in a hot dry pan until they start to split — that is the whole trick.","Spinach in for thirty seconds, off.","Everything into the bowl, feta and lemon last."],
+      "why": "Vegetarian and still worth eating. Crisping the chickpeas changes the texture enough that nobody misses the meat.",
+      "swaps": ["White beans instead of chickpeas.","Halloumi instead of feta, 50 g, pan-fried dry."] },
+
+    { "id": "bowl-salmon-rice", "book": "bowls", "slot": "bowl", "title": "Salmon and rice, cold or hot", "greek": "Σολομός με ρύζι", "servings": 1, "time": "20 minutes",
+      "ingredients": [ {"food":"salmon","g":130},{"food":"rice_dry","g":60},{"food":"cucumber","g":100},{"food":"avocado","g":40},{"food":"edamame","g":80},{"food":"lemon_juice","g":15},{"food":"herbs","g":2} ],
+      "method": ["Rice on.","Salmon skin-side down in a dry pan, five minutes, one on the flesh.","Everything assembled cold around the hot fish, lemon over."],
+      "why": "No oil goes in the pan, because salmon and avocado between them carry about 20 g of fat already. That is the decision that keeps this bowl where it should be.",
+      "swaps": ["Tinned tuna if you want it cheaper and leaner.","Cucumber and beetroot instead of avocado if you are cutting fat."] },
+
+    { "id": "bowl-beef-bulgur", "book": "bowls", "slot": "bowl", "title": "Beef and bulgur, made Sunday", "greek": "Μοσχάρι με πλιγούρι", "servings": 4, "time": "25 minutes",
+      "ingredients": [ {"food":"beef_mince_5","g":500},{"food":"bulgur_dry","g":200},{"food":"passata","g":200},{"food":"onion","g":120},{"food":"pepper_red","g":150},{"food":"olive_oil","g":25},{"food":"garlic","g":9},{"food":"herbs","g":4} ],
+      "method": ["Brown the mince hard, in two batches.","Onion, pepper, garlic, passata, ten minutes.","Bulgur cooked separately, four boxes, lids on while hot."],
+      "why": "Four lunches made in one pan on a Sunday. The mince at 5% fat is what keeps a 500-calorie bowl at nearly 40 g of protein.",
+      "swaps": ["Turkey mince instead of beef.","Lentils, 200 g dry, for a vegetarian version."] },
+
+    { "id": "bowl-halloumi-quinoa", "book": "bowls", "slot": "bowl", "title": "Halloumi and roasted vegetable bowl", "greek": "Μπολ με χαλούμι και ψητά", "servings": 1, "time": "25 minutes",
+      "ingredients": [ {"food":"halloumi","g":60},{"food":"quinoa_dry","g":50},{"food":"aubergine","g":120},{"food":"courgette","g":120},{"food":"pepper_red","g":100},{"food":"olive_oil","g":10},{"food":"lemon_juice","g":15},{"food":"herbs","g":3} ],
+      "method": ["Vegetables at 200°C for 20 minutes, oil tossed through with your hands, not poured over.","Quinoa on at the same time.","Halloumi in a dry pan for the last two minutes, 60 g weighed."],
+      "why": "Halloumi is 321 calories per 100 g, so the portion is the recipe. Sixty grams is a proper serving and the vegetables do the filling.",
+      "swaps": ["Feta, uncooked, same weight.","Add 100 g of chicken if the protein is too low for your day."] },
+
+    { "id": "bowl-egg-avocado", "book": "bowls", "slot": "bowl", "title": "The breakfast bowl that is not sweet", "greek": "Πρωινό μπολ, όχι γλυκό", "servings": 1, "time": "10 minutes",
+      "ingredients": [ {"food":"egg","g":110},{"food":"cottage_cheese","g":100},{"food":"avocado","g":40},{"food":"tomato","g":100},{"food":"sourdough","g":50},{"food":"herbs","g":2} ],
+      "method": ["Eggs soft-boiled, six and a half minutes exactly.","Everything else into the bowl cold.","Bread toasted, cut into fingers, on the side."],
+      "why": "Thirty grams of protein at breakfast, which is where most people are short. Cottage cheese does the heavy lifting for about 100 calories.",
+      "swaps": ["Skyr instead of cottage cheese.","No bread — double the tomato and add a second egg."] },
+
+    { "id": "bowl-prawn-noodle", "book": "bowls", "slot": "bowl", "title": "Prawn and lemon noodle bowl", "greek": "Μπολ με γαρίδες και νουντλς", "servings": 1, "time": "12 minutes",
+      "ingredients": [ {"food":"prawns","g":150},{"food":"noodles_rice","g":60},{"food":"broccoli","g":120},{"food":"carrot","g":60},{"food":"garlic","g":6},{"food":"olive_oil","g":8},{"food":"lemon_juice","g":20},{"food":"herbs","g":2} ],
+      "method": ["Noodles in boiling water off the heat, four minutes.","Garlic in the oil thirty seconds, prawns two minutes, broccoli and carrot in with a splash of water.","Drained noodles through the pan, lemon off the heat."],
+      "why": "Prawns are 24 g of protein per 100 g with almost no fat, which is why this bowl lands near 400 calories while still being a full plate of food.",
+      "swaps": ["Chicken breast, sliced thin, 150 g.","Courgette ribbons instead of noodles for the lower-carb split."] },
+
+    { "id": "bowl-lentil-feta", "book": "bowls", "slot": "bowl", "title": "Warm lentil bowl", "greek": "Ζεστό μπολ με φακές", "servings": 2, "time": "30 minutes",
+      "ingredients": [ {"food":"lentils_dry","g":150},{"food":"feta","g":60},{"food":"beetroot","g":150},{"food":"spinach","g":100},{"food":"walnuts","g":20},{"food":"olive_oil","g":15},{"food":"lemon_juice","g":20},{"food":"herbs","g":3} ],
+      "method": ["Lentils 25 minutes, drained, still holding their shape.","Spinach wilted in the residual heat.","Beetroot, feta, walnuts and lemon on top."],
+      "why": "Seventy-five grams of dry lentils per person is 19 g of protein before the feta. The walnuts are weighed because 20 g is 131 calories and a handful is easily double.",
+      "swaps": ["Almonds instead of walnuts.","Chickpeas, two tins drained, if you have no time to boil lentils."] },
+
+    { "id": "bowl-turkey-rice", "book": "bowls", "slot": "bowl", "title": "Turkey and rice, the plain one", "greek": "Γαλοπούλα με ρύζι", "servings": 4, "time": "20 minutes",
+      "ingredients": [ {"food":"turkey_mince","g":600},{"food":"rice_dry","g":200},{"food":"green_beans","g":300},{"food":"passata","g":150},{"food":"onion","g":100},{"food":"olive_oil","g":20},{"food":"herbs","g":4} ],
+      "method": ["Rice on.","Turkey browned with the onion, passata in, ten minutes.","Beans steamed over the rice pot. Four boxes."],
+      "why": "The boring one that works. Lean turkey mince is 27 g of protein per 100 g, and this is the bowl to build a week of lunches on when you are cutting.",
+      "swaps": ["Chicken mince instead of turkey.","Swap the rice for 400 g of potatoes across the four boxes."] },
+
+    { "id": "bowl-skyr-berry", "book": "bowls", "slot": "bowl", "title": "The high-protein sweet bowl", "greek": "Γλυκό μπολ με πρωτεΐνη", "servings": 1, "time": "3 minutes",
+      "ingredients": [ {"food":"skyr","g":200},{"food":"berries","g":100},{"food":"granola","g":25},{"food":"almonds","g":10},{"food":"honey","g":7} ],
+      "method": ["Skyr first so you see the portion.","Berries, then granola, then almonds.","Honey off a teaspoon."],
+      "why": "The bowl people photograph and get wrong: granola is 471 calories per 100 g, so 25 g is the portion and the skyr is what makes it a meal rather than a dessert.",
+      "swaps": ["Greek yoghurt 0% instead of skyr.","Half a scoop of protein powder stirred in if you train in the morning."] },
+
+
+    { "id": "din-chicken-oregano", "book": "dinners", "slot": "dinner", "title": "Oregano chicken with tomatoes", "greek": "Κοτόπουλο ριγανάτο", "servings": 4, "time": "35 minutes",
+      "ingredients": [ {"food":"chicken_breast","g":700},{"food":"tomato","g":500},{"food":"potato","g":500},{"food":"olive_oil","g":30},{"food":"garlic","g":12},{"food":"lemon_juice","g":40},{"food":"herbs","g":6} ],
+      "method": ["Potatoes in thick wedges, 200°C, 15 minutes head start.","Chicken, tomatoes and garlic in, oil weighed over the top.","Twenty minutes. Lemon and oregano out of the oven, not in it."],
+      "why": "The weeknight tray. Chicken breast is the highest protein score of any meat at about 19 g per 100 calories, which is why it carries a plate that also has potatoes on it.",
+      "swaps": ["Thighs instead of breast, 800 g, ten minutes longer.","Sweet potato instead of potato."] },
+
+    { "id": "din-fish-plaki", "book": "dinners", "slot": "dinner", "title": "Psari plaki, weighed", "greek": "Ψάρι πλακί", "servings": 4, "time": "45 minutes",
+      "ingredients": [ {"food":"cod","g":700},{"food":"passata","g":400},{"food":"onion","g":200},{"food":"carrot","g":150},{"food":"potato","g":400},{"food":"olive_oil","g":35},{"food":"garlic","g":12},{"food":"herbs","g":5} ],
+      "method": ["Onion, carrot and garlic soft in the oil first.","Passata, potatoes, 200 ml water, 20 minutes on the hob.","Fish laid on top, lid on, 12 minutes. Do not stir after the fish goes in."],
+      "why": "White fish at 105 calories per 100 g is the cheapest way to build a 40 g protein dinner. The oil is the only thing in this dish that can push it anywhere.",
+      "swaps": ["Sea bass or hake, same weight.","Add a tin of white beans for a heavier plate."] },
+
+    { "id": "din-stuffed-peppers", "book": "dinners", "slot": "dinner", "title": "Peppers stuffed with turkey", "greek": "Πιπεριές γεμιστές με γαλοπούλα", "servings": 4, "time": "55 minutes",
+      "ingredients": [ {"food":"pepper_red","g":800},{"food":"turkey_mince","g":500},{"food":"rice_dry","g":120},{"food":"passata","g":250},{"food":"onion","g":120},{"food":"feta","g":80},{"food":"olive_oil","g":25},{"food":"herbs","g":5} ],
+      "method": ["Turkey browned with the onion, rice and passata in, five minutes.","Peppers filled three-quarters — rice doubles.","180°C, 40 minutes, feta crumbled on for the last eight."],
+      "why": "Gemista's leaner cousin. Holding the rice at 30 g dry per person is what keeps this a protein dinner rather than a rice dish with a vegetable around it.",
+      "swaps": ["Beef mince 5% instead of turkey.","Bulgur instead of rice, same dry weight."] },
+
+    { "id": "din-pastitsio-light", "book": "dinners", "slot": "dinner", "title": "Pastitsio, rebuilt", "greek": "Παστίτσιο, ξαναχτισμένο", "servings": 6, "time": "70 minutes",
+      "ingredients": [ {"food":"beef_mince_5","g":800},{"food":"pasta_dry","g":300},{"food":"passata","g":500},{"food":"yoghurt_2","g":400},{"food":"egg","g":110},{"food":"parmesan","g":60},{"food":"onion","g":150},{"food":"olive_oil","g":30},{"food":"garlic","g":9},{"food":"herbs","g":6} ],
+      "method": ["Mince browned hard, onion, garlic, passata, 30 minutes.","Pasta cooked two minutes under, mixed into the sauce.","Top: yoghurt whisked with the eggs and parmesan, poured over. 180°C, 30 minutes."],
+      "why": "The bechamel is the whole problem with pastitsio — butter, flour and full-fat milk before the cheese. Strained yoghurt with egg sets the same way for a fraction of the fat.",
+      "swaps": ["Lamb instead of beef for a Sunday version, and expect it heavier.","Lentils, 300 g dry cooked, for vegetarian."] },
+
+    { "id": "din-steak-greens", "book": "dinners", "slot": "dinner", "title": "Steak, greens, potatoes", "greek": "Μπριζόλα με χόρτα και πατάτες", "servings": 2, "time": "25 minutes",
+      "ingredients": [ {"food":"beef_steak","g":300},{"food":"potato","g":400},{"food":"spinach","g":250},{"food":"garlic","g":6},{"food":"olive_oil","g":18},{"food":"lemon_juice","g":20},{"food":"herbs","g":3} ],
+      "method": ["Potatoes boiled, then crushed with a fork and a little of the oil.","Steak in a very hot dry pan, three minutes a side, rest it five.","Spinach wilted in the steak pan with the garlic."],
+      "why": "Lean steak is 30 g of protein per 100 g. The pan stays dry because the steak has its own fat, and the oil goes on the potatoes where you can taste it.",
+      "swaps": ["Pork tenderloin instead of steak, four minutes a side.","Green beans or horta instead of spinach."] },
+
+    { "id": "din-chicken-yog-bake", "book": "dinners", "slot": "dinner", "title": "Yoghurt-baked chicken", "greek": "Κοτόπουλο στο γιαούρτι", "servings": 4, "time": "40 minutes, plus marinating",
+      "ingredients": [ {"food":"chicken_thigh","g":800},{"food":"yoghurt_2","g":250},{"food":"lemon_juice","g":40},{"food":"garlic","g":12},{"food":"bulgur_dry","g":200},{"food":"courgette","g":300},{"food":"olive_oil","g":20},{"food":"herbs","g":6} ],
+      "method": ["Thighs in yoghurt, lemon, garlic and paprika for an hour or overnight.","210°C, 30 minutes, the yoghurt goes golden and holds the moisture in.","Bulgur and pan-charred courgette alongside."],
+      "why": "Yoghurt is the marinade that replaces oil: it tenderises, it browns, and 250 g across four portions adds 45 calories a plate instead of 200.",
+      "swaps": ["Chicken breast, 700 g, 22 minutes only.","Rice or couscous instead of bulgur, same dry weight."] },
+
+    { "id": "din-bean-stew", "book": "dinners", "slot": "dinner", "title": "Fasolada with something in it", "greek": "Φασολάδα με ουσία", "servings": 4, "time": "45 minutes",
+      "ingredients": [ {"food":"beans_white_tin","g":600},{"food":"chicken_mince","g":400},{"food":"passata","g":300},{"food":"carrot","g":200},{"food":"onion","g":150},{"food":"olive_oil","g":30},{"food":"garlic","g":9},{"food":"herbs","g":6} ],
+      "method": ["Mince browned, then the vegetables and garlic.","Passata, beans and 500 ml water, 30 minutes.","Salt at the end, olive oil measured over the bowls."],
+      "why": "Fasolada is a national dish and about 9 g of protein a bowl. The chicken mince takes it past 30 g without changing what it tastes like.",
+      "swaps": ["Leave the mince out and add a third tin of beans for the vegetarian version.","Turkey mince instead of chicken."] },
+
+    { "id": "din-prawn-saganaki", "book": "dinners", "slot": "dinner", "title": "Prawn saganaki, portioned", "greek": "Γαρίδες σαγανάκι", "servings": 2, "time": "20 minutes",
+      "ingredients": [ {"food":"prawns","g":300},{"food":"passata","g":250},{"food":"feta","g":60},{"food":"onion","g":80},{"food":"garlic","g":6},{"food":"olive_oil","g":15},{"food":"sourdough","g":100},{"food":"herbs","g":3} ],
+      "method": ["Onion and garlic in the oil, passata in, ten minutes to thicken.","Prawns two minutes, no longer.","Feta crumbled over off the heat. One slice of bread each, weighed."],
+      "why": "The taverna version arrives swimming in oil with a basket of bread. The dish itself is lean — it is the bread and the pour that decide the number.",
+      "swaps": ["Mussels instead of prawns.","No bread, serve over 150 g of potatoes each."] },
+
+    { "id": "din-lamb-sunday", "book": "dinners", "slot": "dinner", "title": "Sunday lamb that still fits", "greek": "Κυριακάτικο αρνί", "servings": 6, "time": "2 hours",
+      "ingredients": [ {"food":"lamb_leg","g":1200},{"food":"potato","g":900},{"food":"lemon_juice","g":60},{"food":"garlic","g":18},{"food":"olive_oil","g":30},{"food":"green_beans","g":400},{"food":"herbs","g":8} ],
+      "method": ["Lamb scored, garlic pushed in, lemon and oregano all over. 160°C, 90 minutes covered.","Potatoes in for the last 45 minutes, uncovered, 200°C.","Beans steamed. Skim the tray before serving — that is where the fat is."],
+      "why": "Lamb is the most calorie-dense meat here at 258 per 100 g. Nobody is asking you to skip Sunday; 200 g a person with the tray skimmed is what makes it fit.",
+      "swaps": ["Pork shoulder, same method.","Halve the potatoes and double the beans if it is a heavy week."] },
+
+    { "id": "din-veg-moussaka", "book": "dinners", "slot": "dinner", "title": "Moussaka without the frying", "greek": "Μουσακάς χωρίς τηγάνι", "servings": 6, "time": "80 minutes",
+      "ingredients": [ {"food":"aubergine","g":900},{"food":"beef_mince_5","g":700},{"food":"passata","g":500},{"food":"yoghurt_2","g":400},{"food":"egg","g":110},{"food":"parmesan","g":50},{"food":"onion","g":150},{"food":"olive_oil","g":35},{"food":"herbs","g":6} ],
+      "method": ["Aubergine sliced, brushed with the weighed oil, roasted at 220°C — never fried. Fried aubergine drinks 200 g of oil.","Mince and passata, 30 minutes.","Layered, yoghurt-and-egg top, 180°C for 35 minutes."],
+      "why": "Traditional moussaka is roughly 800 calories a portion, and almost half of that is the oil the aubergine absorbed in the pan. Roasting is the entire difference.",
+      "swaps": ["Courgette instead of aubergine.","Lentils instead of mince, 300 g dry cooked."] },
+
+    { "id": "din-chicken-souvla", "book": "dinners", "slot": "dinner", "title": "Chicken souvla at home", "greek": "Κοτόπουλο σούβλα", "servings": 4, "time": "35 minutes, plus marinating",
+      "ingredients": [ {"food":"chicken_thigh","g":800},{"food":"lemon_juice","g":60},{"food":"olive_oil","g":25},{"food":"garlic","g":12},{"food":"cabbage","g":400},{"food":"carrot","g":200},{"food":"pitta_wholemeal","g":240},{"food":"herbs","g":6} ],
+      "method": ["Thighs in lemon, oil, garlic and oregano, an hour minimum.","Hot griddle or barbecue, turning, 20 minutes.","Cabbage and carrot shredded with lemon — the salad that belongs with it."],
+      "why": "Souvla is one of the leanest things in Cypriot cooking once the skin is off. One pitta each is the only decision that matters here.",
+      "swaps": ["Pork tenderloin instead of chicken.","No pitta, double the cabbage salad."] },
+
+    { "id": "din-tofu-tomato", "book": "dinners", "slot": "dinner", "title": "Tofu in tomato, for the sceptics", "greek": "Τόφου με ντομάτα", "servings": 2, "time": "20 minutes",
+      "ingredients": [ {"food":"tofu_firm","g":300},{"food":"passata","g":300},{"food":"onion","g":100},{"food":"pepper_red","g":150},{"food":"olive_oil","g":15},{"food":"garlic","g":6},{"food":"bulgur_dry","g":100},{"food":"herbs","g":4} ],
+      "method": ["Tofu pressed dry and torn, not cubed — torn edges catch colour.","Very hot dry pan until browned, then out.","Sauce built in the same pan, tofu back in for the last two minutes."],
+      "why": "Tofu is 17 g of protein per 100 g and tastes of whatever you put it in. Pressing and tearing it is the difference between this working and not.",
+      "swaps": ["Halloumi instead of tofu, 200 g.","Chickpeas, two tins, if tofu is not for you."] }
+  ]
+}

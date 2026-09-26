@@ -1,0 +1,144 @@
+{
+  "_note": "Recipes for the Fat Loss Dishes and Weight Gain books. The fat-loss set is chosen for volume per calorie and a protein score above 10; the gain set is chosen for calories that go down easily. build.mjs computes every figure from foods.json and prints the score on each page, so both claims are checkable rather than asserted.",
+
+  "recipes": [
+    { "id": "fl-chicken-cabbage", "book": "fatloss", "slot": "dinner", "title": "The plate you cannot finish", "greek": "Το πιάτο που δεν τελειώνεις", "servings": 2, "time": "20 minutes",
+      "ingredients": [ {"food":"chicken_breast","g":300},{"food":"cabbage","g":400},{"food":"carrot","g":200},{"food":"pepper_red","g":150},{"food":"olive_oil","g":12},{"food":"garlic","g":6},{"food":"lemon_juice","g":20},{"food":"herbs","g":3} ],
+      "method": ["Everything shredded thin. Thin is the whole recipe — it cooks fast and eats slowly.","Very hot pan, vegetables first, hard, three minutes.","Chicken in strips for four minutes, lemon off the heat."],
+      "why": "Nearly a kilo of food between two people for the calories of one takeaway starter. Volume is what makes a deficit survivable; hunger is what ends it.",
+      "swaps": ["Prawns instead of chicken.","Add 40 g dry rice each if it is a training day."] },
+
+    { "id": "fl-egg-white-scramble", "book": "fatloss", "slot": "breakfast", "title": "The big breakfast that is not big", "greek": "Μεγάλο πρωινό, μικρός αριθμός", "servings": 1, "time": "8 minutes",
+      "ingredients": [ {"food":"egg","g":110},{"food":"cottage_cheese","g":80},{"food":"mushrooms","g":150},{"food":"spinach","g":100},{"food":"tomato","g":150},{"food":"herbs","g":2} ],
+      "method": ["Mushrooms in a dry non-stick pan until they squeak and brown.","Tomato and spinach in, then the beaten eggs.","Cottage cheese stirred through off the heat — it melts into a sauce."],
+      "why": "A plate that takes ten minutes to eat for under 350 calories, with 30 g of protein. Cottage cheese instead of cheese is the swap doing most of the work.",
+      "swaps": ["Two egg whites plus one whole egg if you want it leaner still.","Add a slice of sourdough on a training morning."] },
+
+    { "id": "fl-tuna-salad-big", "book": "fatloss", "slot": "lunch", "title": "The lunchbox that fills the box", "greek": "Το μεσημεριανό που γεμίζει", "servings": 1, "time": "8 minutes",
+      "ingredients": [ {"food":"tuna_tin","g":120},{"food":"lettuce","g":100},{"food":"cucumber","g":150},{"food":"tomato","g":150},{"food":"beetroot","g":100},{"food":"sweetcorn","g":60},{"food":"yoghurt_0","g":60},{"food":"lemon_juice","g":15},{"food":"herbs","g":2} ],
+      "method": ["Everything chopped bigger than you think.","Dressing: yoghurt, lemon, mustard, pepper. No oil in this one.","Tuna on top, not stirred through, so it still looks like a meal."],
+      "why": "Six hundred grams of food for around 300 calories and 35 g of protein. The dressing is where salads usually go wrong — three tablespoons of oil is 350 calories on its own.",
+      "swaps": ["Chicken breast, 120 g, instead of tuna.","Add a boiled egg for another 80 calories."] },
+
+    { "id": "fl-courgette-bolognese", "book": "fatloss", "slot": "dinner", "title": "Bolognese without the bowl of pasta", "greek": "Μπολονέζ χωρίς το βουνό ζυμαρικών", "servings": 4, "time": "35 minutes",
+      "ingredients": [ {"food":"beef_mince_5","g":600},{"food":"courgette","g":800},{"food":"passata","g":500},{"food":"pasta_dry","g":120},{"food":"onion","g":150},{"food":"garlic","g":9},{"food":"olive_oil","g":20},{"food":"parmesan","g":40},{"food":"herbs","g":5} ],
+      "method": ["Mince browned hard in two batches, then onion, garlic and passata, 25 minutes.","Courgette in ribbons or spirals, raw, into the warm bowls.","Sauce over the top, 30 g dry pasta each cooked and stirred through. Parmesan weighed."],
+      "why": "Not a no-carb dish — a right-carb one. Thirty grams of dry pasta is enough to make it taste like the real thing; the courgette makes the bowl the size your eyes expect.",
+      "swaps": ["Turkey mince instead of beef.","All pasta, 70 g dry each, on a training day."] },
+
+    { "id": "fl-soup-volume", "book": "fatloss", "slot": "lunch", "title": "The soup that ends the 4pm raid", "greek": "Η σούπα που κόβει την πείνα", "servings": 4, "time": "35 minutes",
+      "ingredients": [ {"food":"chicken_breast","g":400},{"food":"cauliflower","g":500},{"food":"carrot","g":300},{"food":"onion","g":150},{"food":"green_beans","g":200},{"food":"lemon_juice","g":40},{"food":"olive_oil","g":20},{"food":"garlic","g":9},{"food":"herbs","g":5} ],
+      "method": ["Vegetables and garlic softened in the oil, 1.5 litres of water or stock.","Twenty minutes, then half the cauliflower blended back in — that is what makes it creamy with no cream.","Chicken poached in the pot for the last ten minutes, shredded, lemon at the end."],
+      "why": "Hot, salty, and about 250 calories a bowl with 28 g of protein. Soup is the most under-used tool in a deficit because it takes twenty minutes to eat.",
+      "swaps": ["Turkey or leftover roast chicken.","Add a tin of white beans for a heavier lunch."] },
+
+    { "id": "fl-cod-veg-tray", "book": "fatloss", "slot": "dinner", "title": "Twenty minutes, four hundred calories", "greek": "Είκοσι λεπτά, τετρακόσιες θερμίδες", "servings": 2, "time": "22 minutes",
+      "ingredients": [ {"food":"cod","g":320},{"food":"broccoli","g":250},{"food":"pepper_red","g":200},{"food":"tomato","g":200},{"food":"potato","g":250},{"food":"olive_oil","g":15},{"food":"lemon_juice","g":25},{"food":"herbs","g":3} ],
+      "method": ["Potatoes sliced thin, 200°C, ten minutes head start.","Vegetables in, oil tossed through, eight minutes.","Cod on top, eight minutes, lemon out of the oven."],
+      "why": "Cod is 105 calories per 100 g and 23 g of protein — a protein score above 20, the best on the whole list. This is the dinner for the day that got away from you.",
+      "swaps": ["Any white fish, same weight.","Prawns, 300 g, in for the last five minutes."] },
+
+    { "id": "fl-yog-savoury", "book": "fatloss", "slot": "snack", "title": "The savoury yoghurt fix", "greek": "Αλμυρό γιαούρτι", "servings": 1, "time": "3 minutes",
+      "ingredients": [ {"food":"yoghurt_0","g":170},{"food":"cucumber","g":120},{"food":"carrot","g":80},{"food":"garlic","g":2},{"food":"herbs","g":2} ],
+      "method": ["Yoghurt with grated garlic, dill, salt and pepper.","Cucumber and carrot in batons.","Dip. That is it."],
+      "why": "About 150 calories, 18 g of protein, and it takes ten minutes to eat because you are dipping. Hummus with the same vegetables is three times the calories.",
+      "swaps": ["Cottage cheese instead of yoghurt.","Add 30 g of hummus if you want it richer — that is 71 calories more."] },
+
+    { "id": "fl-prawn-salad", "book": "fatloss", "slot": "lunch", "title": "Prawn and watermelon plate", "greek": "Γαρίδες με καρπούζι", "servings": 2, "time": "10 minutes",
+      "ingredients": [ {"food":"prawns","g":250},{"food":"watermelon","g":400},{"food":"cucumber","g":200},{"food":"feta","g":50},{"food":"lettuce","g":80},{"food":"lemon_juice","g":20},{"food":"olive_oil","g":10},{"food":"herbs","g":3} ],
+      "method": ["Prawns hot and fast, two minutes, then cooled.","Watermelon and cucumber in big cubes.","Feta crumbled, lemon and oil, mint through it."],
+      "why": "Nine hundred grams of food between two for about 250 calories each. Watermelon is 30 calories per 100 g and does the job of a carbohydrate on a hot evening.",
+      "swaps": ["Chicken instead of prawns.","Orange instead of watermelon out of season."] },
+
+    { "id": "fl-cauliflower-bake", "book": "fatloss", "slot": "dinner", "title": "The cauliflower bake that is not sad", "greek": "Κουνουπίδι στον φούρνο", "servings": 4, "time": "45 minutes",
+      "ingredients": [ {"food":"cauliflower","g":800},{"food":"chicken_mince","g":500},{"food":"passata","g":400},{"food":"mozzarella_light","g":120},{"food":"onion","g":120},{"food":"garlic","g":9},{"food":"olive_oil","g":20},{"food":"herbs","g":5} ],
+      "method": ["Cauliflower in big florets, roasted 200°C for 20 minutes — roasted, never boiled.","Mince and passata in the pan, 15 minutes.","Layered, light mozzarella over, 15 minutes."],
+      "why": "The dish that proves vegetables are not the punishment. Roasting rather than boiling is the difference between this and every diet cauliflower dish you have abandoned.",
+      "swaps": ["Broccoli instead of cauliflower.","Lentils, 250 g dry cooked, for vegetarian."] },
+
+    { "id": "fl-chicken-lettuce-wrap", "book": "fatloss", "slot": "lunch", "title": "Wraps without the wrap", "greek": "Τυλιχτό χωρίς την πίτα", "servings": 2, "time": "15 minutes",
+      "ingredients": [ {"food":"chicken_breast","g":300},{"food":"lettuce","g":200},{"food":"tomato","g":150},{"food":"onion","g":50},{"food":"yoghurt_0","g":100},{"food":"garlic","g":3},{"food":"lemon_juice","g":20},{"food":"herbs","g":3} ],
+      "method": ["Chicken in strips, hot pan, paprika and oregano, no oil needed in a good non-stick.","Tzatziki from yoghurt, garlic and lemon.","Big lettuce leaves as the wrap, filled at the table."],
+      "why": "A shop wrap is 350 calories before anything goes in it. This is 260 for the whole meal with 40 g of protein.",
+      "swaps": ["One wholemeal pitta between two if lettuce feels like a punishment.","Pork tenderloin instead of chicken."] },
+
+    { "id": "fl-baked-oats", "book": "fatloss", "slot": "breakfast", "title": "Baked oats that count", "greek": "Βρώμη στον φούρνο", "servings": 1, "time": "25 minutes",
+      "ingredients": [ {"food":"oats_dry","g":40},{"food":"egg","g":55},{"food":"skyr","g":120},{"food":"banana","g":60},{"food":"berries","g":80},{"food":"protein_powder","g":15} ],
+      "method": ["Everything but the berries blended.","Berries stirred in, into a dish, 180°C for 20 minutes.","Eat it warm. It sets like a pudding."],
+      "why": "Around 400 calories and over 30 g of protein — a breakfast that eats like dessert. Most baked oats recipes online are 700 calories because of the nut butter and the syrup.",
+      "swaps": ["No powder — 50 g more skyr, and it is still 25 g of protein.","Apple instead of banana."] },
+
+    { "id": "fl-steak-salad", "book": "fatloss", "slot": "dinner", "title": "Steak salad, properly dressed", "greek": "Σαλάτα με μπριζόλα", "servings": 2, "time": "18 minutes",
+      "ingredients": [ {"food":"beef_steak","g":260},{"food":"lettuce","g":150},{"food":"tomato","g":200},{"food":"cucumber","g":150},{"food":"beetroot","g":120},{"food":"yoghurt_0","g":60},{"food":"olive_oil","g":10},{"food":"lemon_juice","g":20},{"food":"herbs","g":3} ],
+      "method": ["Steak in a hot dry pan, three minutes a side, rested five, sliced across.","Salad built big and rough.","Dressing: yoghurt, lemon, mustard, the weighed oil."],
+      "why": "Steak is not a problem food. Two hundred and sixty grams of lean steak between two people is 78 g of protein and the salad keeps the plate honest.",
+      "swaps": ["Chicken thigh if steak is not in the budget.","Add 150 g of potatoes each on a training day."] },
+
+
+    { "id": "wg-oat-shake", "book": "gain", "slot": "shake", "title": "The shake that is actually a meal", "greek": "Το σέικ που είναι γεύμα", "servings": 1, "time": "3 minutes",
+      "ingredients": [ {"food":"oats_dry","g":80},{"food":"milk_whole","g":400},{"food":"peanut_butter","g":30},{"food":"banana","g":120},{"food":"protein_powder","g":30},{"food":"honey","g":15} ],
+      "method": ["Everything in the blender, oats first so they break down.","Thirty seconds.","Drink it alongside a meal, never instead of one."],
+      "why": "Around 1,000 calories in a glass, which is the whole point. If you struggle to gain, the problem is almost never your metabolism — it is that solid food fills you up before the calories are in.",
+      "swaps": ["Semi-skimmed milk if whole is too rich, for about 55 calories less.","Dates instead of honey."] },
+
+    { "id": "wg-pasta-mince", "book": "gain", "slot": "dinner", "title": "The pasta that means it", "greek": "Ζυμαρικά που μετράνε", "servings": 2, "time": "30 minutes",
+      "ingredients": [ {"food":"pasta_dry","g":200},{"food":"beef_mince_5","g":400},{"food":"passata","g":400},{"food":"parmesan","g":50},{"food":"olive_oil","g":30},{"food":"onion","g":100},{"food":"garlic","g":9},{"food":"herbs","g":4} ],
+      "method": ["Mince browned, sauce built, 20 minutes.","One hundred grams of dry pasta each — weigh it, upwards this time.","Parmesan and the oil stirred through at the end, off the heat."],
+      "why": "In a surplus the oil is your friend: 30 g adds 265 calories and makes everything taste better. Same dish as the fat-loss version, portioned in the opposite direction.",
+      "swaps": ["Add 100 g of ricotta for another 170 calories.","Chicken mince if beef sits heavy."] },
+
+    { "id": "wg-rice-chicken-big", "book": "gain", "slot": "lunch", "title": "The lunchbox for gaining", "greek": "Το φαγητό για αύξηση", "servings": 4, "time": "25 minutes",
+      "ingredients": [ {"food":"chicken_thigh","g":800},{"food":"rice_dry","g":320},{"food":"olive_oil","g":45},{"food":"pepper_red","g":200},{"food":"onion","g":120},{"food":"avocado","g":200},{"food":"garlic","g":9},{"food":"herbs","g":4} ],
+      "method": ["Rice on, 80 g dry a box.","Thighs — not breast — in the pan with the vegetables.","Avocado sliced into each box cold, oil weighed over the rice."],
+      "why": "Thighs instead of breast, rice at 80 g dry instead of 50, avocado on top. Three small decisions that add about 350 calories a box without adding bulk you have to chew through.",
+      "swaps": ["Beef instead of chicken.","Add a boiled egg to each box."] },
+
+    { "id": "wg-eggs-big-breakfast", "book": "gain", "slot": "breakfast", "title": "Breakfast for someone who trains", "greek": "Πρωινό για προπόνηση", "servings": 1, "time": "12 minutes",
+      "ingredients": [ {"food":"egg","g":165},{"food":"sourdough","g":100},{"food":"avocado","g":80},{"food":"halloumi","g":60},{"food":"tomato","g":150},{"food":"olive_oil","g":10},{"food":"herbs","g":2} ],
+      "method": ["Halloumi in a dry pan, then the eggs in the same pan.","Bread toasted, two thick slices.","Avocado smashed with lemon and salt over the bread, eggs and halloumi on top."],
+      "why": "About 900 calories and 45 g of protein before 9am. Gaining is a breakfast problem for most people — skipping it costs a third of the day's calories.",
+      "swaps": ["Feta instead of halloumi.","Add 200 ml of whole milk on the side."] },
+
+    { "id": "wg-yog-gain-bowl", "book": "gain", "slot": "snack", "title": "The between-meals bowl", "greek": "Το ενδιάμεσο μπολ", "servings": 1, "time": "3 minutes",
+      "ingredients": [ {"food":"yoghurt_2","g":250},{"food":"granola","g":60},{"food":"peanut_butter","g":20},{"food":"honey","g":15},{"food":"dates","g":40},{"food":"walnuts","g":20} ],
+      "method": ["Yoghurt, then everything else on top.","Peanut butter warmed for ten seconds so it pours.","Eat it between lunch and dinner, not after dinner."],
+      "why": "Six hundred-odd calories that take three minutes. In a surplus, the snack is not a treat — it is the meal that makes the week's numbers work.",
+      "swaps": ["Almond butter instead of peanut.","Full-fat yoghurt for another 100 calories."] },
+
+    { "id": "wg-lamb-rice", "book": "gain", "slot": "dinner", "title": "Lamb and rice, no apologies", "greek": "Αρνί με ρύζι", "servings": 4, "time": "90 minutes",
+      "ingredients": [ {"food":"lamb_leg","g":900},{"food":"rice_dry","g":320},{"food":"passata","g":300},{"food":"onion","g":150},{"food":"olive_oil","g":40},{"food":"garlic","g":12},{"food":"almonds","g":60},{"food":"herbs","g":6} ],
+      "method": ["Lamb browned, then slow with the passata and 500 ml water, 70 minutes.","Rice cooked in the last of the sauce so it takes the fat up.","Toasted almonds over the top."],
+      "why": "Lamb is the most calorie-dense meat in the book at 258 per 100 g, and here that is the feature. This plate is roughly 900 calories without feeling like a challenge.",
+      "swaps": ["Beef shin, same method, longer.","Bulgur instead of rice."] },
+
+    { "id": "wg-tuna-pasta-cold", "book": "gain", "slot": "lunch", "title": "Cold pasta that travels", "greek": "Κρύα ζυμαρικά για έξω", "servings": 2, "time": "15 minutes",
+      "ingredients": [ {"food":"pasta_dry","g":180},{"food":"tuna_tin","g":200},{"food":"olives_kalamata","g":60},{"food":"feta","g":80},{"food":"tomato","g":200},{"food":"olive_oil","g":30},{"food":"lemon_juice","g":20},{"food":"herbs","g":3} ],
+      "method": ["Pasta cooked, rinsed cold, tossed in half the oil immediately so it does not clag.","Everything else in.","Better after two hours in the fridge."],
+      "why": "The box you can eat at a desk or on a site. Ninety grams of dry pasta each plus the oil and feta puts it near 750 calories without needing a microwave.",
+      "swaps": ["Chicken instead of tuna.","Add a tin of chickpeas for another 250 calories across the two."] },
+
+    { "id": "wg-french-toast", "book": "gain", "slot": "breakfast", "title": "Protein french toast", "greek": "Αυγόφετες με πρωτεΐνη", "servings": 1, "time": "10 minutes",
+      "ingredients": [ {"food":"sourdough","g":100},{"food":"egg","g":110},{"food":"milk_whole","g":100},{"food":"protein_powder","g":15},{"food":"peanut_butter","g":20},{"food":"banana","g":120},{"food":"honey","g":15} ],
+      "method": ["Eggs, milk and powder whisked; bread soaked properly, both sides.","Medium heat, three minutes a side — high heat burns the outside and leaves the middle raw.","Banana, peanut butter and honey on top."],
+      "why": "Roughly 800 calories and 40 g of protein from ordinary breakfast things. Gaining weight on real food is mostly about topping what you already eat, not eating differently.",
+      "swaps": ["Wholemeal bread instead of sourdough.","Skip the powder and use a third egg."] },
+
+    { "id": "wg-chicken-orzo-bake", "book": "gain", "slot": "dinner", "title": "Chicken orzo bake", "greek": "Κοτόπουλο με κριθαράκι", "servings": 4, "time": "60 minutes",
+      "ingredients": [ {"food":"chicken_thigh","g":800},{"food":"pasta_dry","g":320},{"food":"passata","g":400},{"food":"parmesan","g":80},{"food":"onion","g":150},{"food":"olive_oil","g":40},{"food":"garlic","g":12},{"food":"herbs","g":5} ],
+      "method": ["Thighs browned in the oil, taken out.","Orzo, passata, 700 ml stock into the same dish, chicken back on top.","190°C, 35 minutes, parmesan for the last ten."],
+      "why": "One dish, four portions, about 850 calories each. Orzo absorbs the fat rather than leaving it in the tray, which is exactly what you want when the goal is up rather than down.",
+      "swaps": ["Rice instead of orzo.","Add 100 g of feta through it at the end."] },
+
+    { "id": "wg-overnight-gain", "book": "gain", "slot": "breakfast", "title": "Overnight oats, gaining version", "greek": "Βρώμη για αύξηση", "servings": 1, "time": "2 minutes, plus overnight",
+      "ingredients": [ {"food":"oats_dry","g":90},{"food":"milk_whole","g":250},{"food":"yoghurt_2","g":150},{"food":"peanut_butter","g":25},{"food":"dates","g":40},{"food":"walnuts","g":20},{"food":"honey","g":10} ],
+      "method": ["Oats, milk, yoghurt, dates chopped, into a jar.","Peanut butter and walnuts in the morning.","Make two jars at a time. The second one is tomorrow's."],
+      "why": "The easiest 900 calories in the book, eaten cold, before you are properly awake. If mornings are where your appetite is worst, this is the fix.",
+      "swaps": ["Kefir instead of milk.","Dried figs instead of dates."] },
+
+    { "id": "wg-rice-pudding", "book": "gain", "slot": "snack", "title": "Rizogalo, built for a surplus", "greek": "Ρυζόγαλο για αύξηση", "servings": 4, "time": "35 minutes",
+      "ingredients": [ {"food":"rice_dry","g":150},{"food":"milk_whole","g":900},{"food":"honey","g":60},{"food":"protein_powder","g":30},{"food":"walnuts","g":40},{"food":"dark_chocolate","g":40} ],
+      "method": ["Rice and milk on the lowest heat, 30 minutes, stirred often.","Off the heat before the powder goes in, or it splits.","Honey, walnuts, grated chocolate on top. Cold from the fridge is better."],
+      "why": "Dessert that does a job. Four portions at around 450 calories each with 15 g of protein — the snack for the evening you know you undershot.",
+      "swaps": ["Semi-skimmed milk to take about 100 calories off each.","Leave the powder out; it is 60 calories and 8 g of protein a portion."] }
+  ]
+}

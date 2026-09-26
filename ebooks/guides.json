@@ -1,0 +1,648 @@
+{
+  "_note": "The prose guides. Each is read once front to back and then used. Every one carries a safety page as page 3 — before the contents are acted on, not buried at the back. For the alcohol guide that page is not a formality: unsupervised withdrawal from heavy daily drinking can kill, and a book that skipped it would be dangerous.",
+  "guides": [
+    {
+      "book": "smoking",
+      "name": "EVZO-Quit-Smoking",
+      "file": "EVZO — How to Stop Smoking",
+      "accent": "#5BC8F5",
+      "eyebrow": "Stopping smoking",
+      "coverTitle": "The last cigarette is not the hard part",
+      "coverTitleEl": "Το τελευταίο τσιγάρο δεν είναι το δύσκολο",
+      "coverSub": "A practical plan for the first ninety days — what actually happens in your body, what the cravings are really doing, and the six things that double your odds.",
+      "band": [["Format", "Read once, use daily"], ["Built for", "Ninety days"], ["Medical advice", "No"]],
+      "contentsTitle": "What is in here",
+      "contentsNote": "General information, not medical advice. Stop-smoking medicines and nicotine replacement are genuinely effective and are available in Cyprus and Greece from a pharmacist or your doctor. This book is about the behaviour around them, not a replacement for them.",
+
+      "safetyLabel": "Read this first",
+      "safetyTitle": "What this book is, and what it is not",
+      "safetyLede": "Stopping smoking abruptly is safe. That is worth saying plainly, because it is the opposite of the alcohol advice, and people confuse the two.",
+      "safety": [
+        { "t": "You do not need to taper", "d": "There is no medical danger in stopping tobacco outright, and the evidence favours a clean quit date over gradual reduction for most people. Cutting down without a date is the most common way to quit forever without ever quitting." },
+        { "t": "Get the medicines, they work", "d": "Nicotine replacement roughly doubles your chance of success, and prescription options do better still. This is the single highest-return thing in this book and it is not in this book — it is at a pharmacy. Ask about patches plus a fast-acting form together; the combination beats either alone." },
+        { "t": "Talk to a doctor if any of these apply", "d": "You are pregnant or breastfeeding, you have heart disease, you take medication for depression, schizophrenia or bipolar disorder, or you take theophylline, clozapine or olanzapine. That last group matters: stopping smoking changes how fast your liver clears those drugs, so the dose may need adjusting even though nothing about the drug changed." },
+        { "t": "This book does not do the medical part", "d": "It is about the ninety days of behaviour around the decision — the triggers, the evenings, the third week, the first drink with friends. Use it alongside real cessation support, not instead of it." }
+      ],
+      "safetyNote": "18+. If you feel persistently low, hopeless or unsafe during a quit attempt, that is a reason to speak to a doctor, not to start smoking again.",
+
+      "introLabel": "Before day one",
+      "introTitle": "Why willpower keeps losing",
+      "introLede": "Most people have already quit several times. That is not failure, it is data — and almost everyone has been fighting the wrong thing.",
+      "introBody": [
+        "Nicotine leaves your body in about three days. The physical dependence — the part that is genuinely chemical — is over inside a fortnight. If cigarettes were only a chemical habit, quitting would be a rough long weekend and then nothing.",
+        "What lasts is the other thing: twenty, forty, sixty times a day for years, you paired a feeling with an action. Stress, then smoke. Coffee, then smoke. Finished a task, then smoke. Left the building, then smoke. That is thousands of repetitions of a loop, and the loop does not care that the chemical has gone.",
+        "This is good news, because a loop can be broken deliberately in a way that a chemical craving cannot be argued with. The rest of this book is how."
+      ],
+
+      "chapters": [
+        {
+          "title": "Set the date, and make it real",
+          "summary": "Choosing a day and stacking it in your favour",
+          "lede": "A quit date two weeks out beats one tomorrow, and beats one 'soon' by an enormous margin.",
+          "body": [
+            { "t": "Pick a day, not a week", "d": "Write the actual date somewhere you will see it. A vague intention to stop 'after the holidays' has no edge to it, and a decision with no edge is not a decision." },
+            { "t": "Give yourself two weeks to prepare", "d": "Long enough to get nicotine replacement, tell people and do the work in the next chapter. Short enough that you do not lose interest." },
+            { "t": "Do not pick your worst week", "d": "Not the week of a deadline, a move or a family crisis. Quitting is easier when the rest of your life is boring, and there is no prize for doing it on hard mode." },
+            { "t": "Tell five people", "d": "Not for encouragement — for friction. A quit nobody knows about can be abandoned silently, and that is exactly what makes it easy to abandon." }
+          ],
+          "action": "Put the date in your phone now, with an alarm. Tell one person today."
+        },
+        {
+          "title": "Map the loop before you break it",
+          "summary": "Finding out what your cigarettes are actually for",
+          "lede": "You do not smoke twenty cigarettes. You smoke five or six different cigarettes, several times each, and they are not the same problem.",
+          "body": [
+            { "t": "Keep a tally for three days", "d": "Before your quit date, write down the time and the trigger for every cigarette. Do not change anything, just record. Three days is enough and most people are surprised by day two." },
+            { "t": "You will find clusters", "d": "The waking one. The coffee one. The after-eating one. The break-with-colleagues one. The driving one. The drinking one. The stress one. Each needs a different answer, which is why one big act of willpower fails — it is trying to solve six problems with one tool." },
+            { "t": "Rank them by difficulty", "d": "Most people find two or three they would barely miss and one or two they cannot imagine giving up. That last group is where all your planning should go, and where most people do none." }
+          ],
+          "list": {
+            "label": "The six that catch most people",
+            "items": [
+              "The first one of the day — the one most tied to physical dependence",
+              "With coffee — pure association, and it breaks faster than you expect",
+              "After eating — fills the gap that used to end the meal",
+              "The work break — often really about leaving the building and the company",
+              "With alcohol — by far the most common single cause of relapse",
+              "Under stress — the one you must have a replacement for before you need it"
+            ]
+          },
+          "action": "Start the three-day tally today, even if your quit date is a fortnight away."
+        },
+        {
+          "title": "The first seventy-two hours",
+          "summary": "What actually happens, hour by hour",
+          "lede": "The worst of it is short, sharp and predictable — and knowing the shape of it is most of what gets people through it.",
+          "body": [
+            { "t": "Hours 4 to 24", "d": "Cravings arrive in waves. A wave peaks in three to five minutes and then passes whether you smoke or not. That is the most useful fact in this book: you are never more than five minutes from the other side of one." },
+            { "t": "Days 1 to 3", "d": "The hardest stretch. Irritability, poor sleep, trouble concentrating, and genuine hunger. All of it is real, none of it is permanent, and all of it is worse if you are also tired and hungry — so eat properly and go to bed early. This is not the week to also start a diet." },
+            { "t": "Days 3 to 10", "d": "Physical withdrawal fades. A cough often appears or worsens for a week or two, which alarms people into thinking they have made themselves ill. It is the lungs starting to clear and it is a sign of repair, not damage." },
+            { "t": "Week 3", "d": "The dangerous one. The physical part is over, you feel fine, and that is precisely when people decide one cigarette would be harmless. It is not — and the next chapter is about why." }
+          ],
+          "action": "Time one craving today, before you quit. Watch it peak and go. You will use that fact all month."
+        },
+        {
+          "title": "There is no such thing as one",
+          "summary": "Why a single cigarette restarts everything",
+          "lede": "Almost every failed quit ends the same way: not with a decision to smoke again, but with a decision that one would not count.",
+          "body": [
+            { "t": "One re-lights the loop", "d": "The pairing you have spent three weeks weakening gets one strong repetition, and the wiring you were dismantling is rebuilt in an evening. The physical dose barely matters; the confirmation that smoking is still available matters enormously." },
+            { "t": "The bargain is always the same shape", "d": "'Just this once', 'special occasion', 'I've been good'. Recognise the sentence and you can see it coming. It is not a craving, it is a negotiation, and you can decline a negotiation." },
+            { "t": "If it happens, it is a lapse, not a failure", "d": "The single worst response to one cigarette is to decide the quit is over and buy a packet. Note the trigger, plan for it, and carry on the same day. A quit with one cigarette in it is still a quit." }
+          ],
+          "action": "Decide now, in advance, what you will say when someone offers you one. Out loud. The sentence you have rehearsed is the one you will use."
+        },
+        {
+          "title": "Alcohol, the other half of the problem",
+          "summary": "The single most common cause of relapse",
+          "lede": "More quits die in a bar than anywhere else, and almost nobody plans for it.",
+          "body": [
+            { "t": "Drinking removes the part of you that decided", "d": "It is not that alcohol makes you crave nicotine. It is that alcohol makes the bargain in the last chapter sound completely reasonable." },
+            { "t": "Avoid the first month if you can", "d": "Not forever. One month. Most people who protect the first four weeks of drinking occasions get through the rest comfortably." },
+            { "t": "If you go, go with a plan", "d": "Nicotine gum in your pocket before you leave. A drink in your smoking hand. Stand with the people who are not going outside. Leave earlier than you would like. None of this is heroic and all of it works." }
+          ],
+          "action": "Look at the next four weekends. Decide now which drinking occasions you will skip."
+        },
+        {
+          "title": "What to do with your hands, your mouth and your breaks",
+          "summary": "Replacing the ritual, not just the nicotine",
+          "lede": "A large part of what you will miss is not the cigarette. It is the ten minutes outside and the thing to do with your hands.",
+          "body": [
+            { "t": "Keep the break, lose the cigarette", "d": "The single biggest mistake is cancelling the break along with the smoke, so that quitting also costs you the only ten minutes you got to yourself all day. Still go outside. Still stop working. Take a coffee, take a walk around the block." },
+            { "t": "Something to hold", "d": "Keys, a coin, worry beads — this is what komboloi have been for in Greece for a century and they work for exactly this reason." },
+            { "t": "Something in the mouth", "d": "Sugar-free gum, sunflower seeds, cold water, an apple. The oral part is real and it is easy to satisfy." },
+            { "t": "Expect appetite", "d": "Nicotine suppresses hunger and speeds metabolism slightly, and both effects end. Some weight gain is normal and it is a fraction of the health cost of smoking. Eat protein at breakfast, keep cut vegetables where the cigarettes used to be, and deal with weight in two months' time rather than now." }
+          ],
+          "action": "Buy the gum, the seeds and the thing for your hands before your quit date, not on it."
+        },
+        {
+          "title": "Ninety days, and what you get back",
+          "summary": "The repair timeline, and how to keep going",
+          "lede": "The changes are faster and larger than most people believe, and knowing them is genuinely motivating on a bad evening.",
+          "body": [
+            { "t": "Within days", "d": "Carbon monoxide clears and blood oxygen normalises. Taste and smell begin to return within about forty-eight hours, which is why food is strange and often better in the first week." },
+            { "t": "Within weeks to months", "d": "Circulation and lung function improve measurably. Stairs get easier. The morning cough settles. Skin recovers some colour." },
+            { "t": "Within a year", "d": "Excess risk of coronary heart disease falls to roughly half that of a continuing smoker. It keeps falling for years after that." },
+            { "t": "Keep a reason list", "d": "Write down, now, the three real reasons — not the health-poster ones, the actual ones. The money, the child, the smell in the car, the breathlessness on the hill. Read it on the bad evenings. Motivation is not something you have, it is something you re-read." }
+          ],
+          "action": "Write your three reasons on the back of this page and photograph it."
+        }
+      ],
+
+      "endTitle": "The only two rules",
+      "endLede": "Everything in this book collapses into two sentences, and if you remember nothing else, remember these.",
+      "endBody": [
+        "One: a craving is a wave, not a state. It peaks in three to five minutes and it goes whether or not you smoke. You have never once in your life had a craving that did not end.",
+        "Two: there is no such thing as one cigarette. Not for you, not now. The moment that sentence sounds reasonable is the moment to recognise it as the relapse it is.",
+        "And if you have already tried and failed several times — most people who succeed did too. The average successful quit is not the first attempt. It is roughly the sixth. You are not bad at this; you are partway through it."
+      ],
+      "endNote": "18+. General information, not medical advice. Nicotine replacement and prescription stop-smoking medicines are effective and are available from pharmacists and doctors in Cyprus and Greece — ask about them. If you are pregnant, breastfeeding, or take medication for a mental health condition, speak to your doctor before changing anything."
+    },
+
+    {
+      "book": "drinking",
+      "name": "EVZO-Quit-Drinking",
+      "file": "EVZO — Drinking Less, or Not At All",
+      "accent": "#C6A1F0",
+      "eyebrow": "Changing your drinking",
+      "coverTitle": "The question is not whether you can stop",
+      "coverTitleEl": "Το θέμα δεν είναι αν μπορείς να σταματήσεις",
+      "coverSub": "An honest guide to drinking less or not at all — including the one situation where stopping suddenly is genuinely dangerous, and how to tell if that is you.",
+      "band": [["Format", "Read once, use daily"], ["Built for", "Ninety days"], ["Medical advice", "No"]],
+      "contentsTitle": "What is in here",
+      "contentsNote": "General information, not medical advice, and not a treatment programme. If you drink heavily every day, read the safety page opposite before you act on anything else in this book.",
+
+      "safetyLabel": "Read this before anything else",
+      "safetyTitle": "Stopping suddenly can be dangerous. This page is not a formality.",
+      "safetyLede": "Unlike tobacco, alcohol is a drug the body physically adapts to, and abrupt withdrawal in a heavy dependent drinker can cause seizures and delirium tremens. Both are medical emergencies and both can be fatal.",
+      "safety": [
+        { "t": "Who this applies to", "d": "Broadly: if you drink heavily most days, if you have ever had withdrawal shakes, sweats or nausea in the morning that a drink relieved, if you drink to stop feeling ill rather than to feel good, or if you have ever had a withdrawal seizure. If any of that is familiar, do not stop on your own." },
+        { "t": "What to do instead", "d": "See a doctor first. Medically supervised withdrawal is routine, it is available in Cyprus and Greece through your GP or a public health service, and it is not a moral event — it is a medication schedule. Reducing under supervision is safe. Stopping alone when your body is dependent is the one genuinely risky thing in this book." },
+        { "t": "Warning signs during withdrawal", "d": "Shaking that worsens, heavy sweating, racing heart, vomiting, hallucinations, confusion about where you are, or any seizure. Any of those means emergency medical help immediately, not waiting until morning." },
+        { "t": "If that is not you", "d": "Most people reading this are not physically dependent. They drink more than they want to, on more evenings than they intended, and would like that to stop. For them the rest of this book applies directly and stopping is safe." }
+      ],
+      "safetyNote": "18+. General information, not medical advice. If alcohol is affecting your health, work or relationships, a doctor is the right first call and the conversation is more routine than you think.",
+
+      "introLabel": "Before you change anything",
+      "introTitle": "Honesty first, and it does not have to be dramatic",
+      "introLede": "You do not have to decide you are an alcoholic to decide you are drinking more than you want to. Most people are stuck between those two ideas and it is why nothing changes.",
+      "introBody": [
+        "There is an unhelpful idea that drinking has two settings: fine, or a serious problem requiring a serious identity. Almost nobody is at either end. Most people are somewhere in the middle, drinking on more evenings than they planned, in larger amounts than they noticed, and feeling vaguely worse than they should.",
+        "You do not need a label to change. You need an accurate count, a reason, and a plan for the four or five situations where it actually happens.",
+        "And it is worth knowing that the advice has shifted. There is no longer a recognised amount of alcohol that is positively good for you — the old 'a glass of red is healthy' finding did not survive better studies. The honest position is that less is better and none is best, which is not a moral claim, just what the evidence now says."
+      ],
+
+      "chapters": [
+        {
+          "title": "Count properly, once",
+          "summary": "Finding out what you actually drink",
+          "lede": "Almost everyone underestimates, and almost nobody is lying. The units are simply not what people think they are.",
+          "body": [
+            { "t": "Home measures are not measures", "d": "A generous glass of wine poured at home is frequently two of what a study would call a drink. A 'whisky' can be three. Before you change anything, pour what you normally pour into a measuring jug once and look at it." },
+            { "t": "Count a week, not a night", "d": "The relevant number is the weekly total. Two glasses on five evenings is more alcohol than an obvious heavy Saturday, and it is the one people do not notice because no single evening looked like anything." },
+            { "t": "Write it down for one week without changing it", "d": "Same method as the smoking book and for the same reason. You cannot plan around a number you have guessed. Record the day, the amount and the reason." },
+            { "t": "The calories, since this is an EVZO book", "d": "Alcohol is 7 calories a gram — closer to fat than to sugar. A large glass of wine is around 200 calories, a pint of beer around 180 to 240, and a spirit with a mixer around 150. Five drinks across a week is roughly a thousand calories that arrive without any food attached, and they are the calories least likely to make you feel full." }
+          ],
+          "action": "Start the one-week count tonight. Do not change anything yet — the count is the intervention."
+        },
+        {
+          "title": "Decide what you are actually aiming at",
+          "summary": "Less, or none, and why the choice matters",
+          "lede": "Vagueness is what kills this. 'Cutting down' is not a target; it is a feeling.",
+          "body": [
+            { "t": "Moderation, stated as a number", "d": "For example: no more than four drinks in a week, none on weeknights, never more than two in an evening. Written down, in advance, before the evening starts. A limit you decide at eight o'clock on a Friday is not a limit." },
+            { "t": "None, for a defined period", "d": "Thirty, sixty or ninety days. Easier than moderation for many people, because it removes the negotiation entirely — there is nothing to decide each time, and deciding each time is the expensive part." },
+            { "t": "Which to pick", "d": "If you found the count unsettling, or you have repeatedly broken your own limits, a defined period of none is easier than it sounds and far easier than policing a limit nightly. If your drinking is genuinely occasional and you just want it lower, moderation with a written number works." },
+            { "t": "Do not pick 'see how it goes'", "d": "That is the version everyone has already tried." }
+          ],
+          "action": "Write your target as a sentence with a number in it, and a date it runs until."
+        },
+        {
+          "title": "The four situations",
+          "summary": "Where the drinking actually happens",
+          "lede": "Like cigarettes, drinking is not one habit. It is four or five different ones wearing the same glass.",
+          "body": [
+            { "t": "The wind-down", "d": "The one at the end of the working day, which is about the transition rather than the alcohol. It is the easiest to replace and the most automatic. Replace the ritual: the same chair, the same ten minutes, a different glass." },
+            { "t": "The social one", "d": "Where not drinking is visible and people ask. Have your answer ready and make it boring: 'I'm off it for a bit', 'I'm driving', 'not tonight'. A boring answer ends the conversation; an interesting one continues it." },
+            { "t": "The emotional one", "d": "After a bad day, an argument, bad news. This is the one that needs an actual alternative decided in advance, because in the moment you will not invent one. It is also the one most worth talking to someone about." },
+            { "t": "The celebration", "d": "Weddings, name days, holidays. Decide in advance and specifically: what you will drink, how many, and when you will leave. 'I'll see' is how a two-drink plan becomes six." }
+          ],
+          "list": {
+            "label": "Replacements that hold up in company",
+            "items": [
+              "Soda water with a lot of lime, in a proper glass",
+              "Alcohol-free beer — genuinely good now, and it looks like a beer",
+              "Tonic and bitters",
+              "Coffee, which nobody in Greece or Cyprus finds strange at any hour",
+              "Anything at all, as long as your hand is holding a glass"
+            ]
+          },
+          "action": "Name your four situations on paper. Write one replacement beside each."
+        },
+        {
+          "title": "The first three weeks",
+          "summary": "What changes, and when",
+          "lede": "The early changes are physical and they arrive fast, which is useful because the psychological ones take longer.",
+          "body": [
+            { "t": "Sleep, within about a week", "d": "Alcohol gets you to sleep faster and then wrecks the second half of the night by suppressing REM. Most people sleep worse for the first two or three nights without it and then noticeably better. Expect the dip; it is short and it is not a reason to go back." },
+            { "t": "Mornings, almost immediately", "d": "The low-grade flatness that a lot of regular drinkers assume is just how mornings feel is often just alcohol. This is the change people report first and value most." },
+            { "t": "Weight, within a month", "d": "Removing five drinks a week is roughly a thousand calories, and it also removes the food that comes with drinking — which is usually more calories than the drink was." },
+            { "t": "Mood, in both directions", "d": "Alcohol is a depressant, and regular drinking makes anxiety worse over a timescale long enough that people blame everything else. It often lifts in the second or third week. But if low mood is severe or persistent, that is a conversation with a doctor, not something to wait out." }
+          ],
+          "action": "Write down how you feel on the morning of day one. Read it on day twenty-one."
+        },
+        {
+          "title": "The people around you",
+          "summary": "Handling the social cost honestly",
+          "lede": "The hardest part of drinking less in Greece and Cyprus is rarely the alcohol. It is the table.",
+          "body": [
+            { "t": "Expect mild resistance, and do not take it personally", "d": "When someone stops drinking, other people hear a comment on their own drinking even when none was made. Keep it about you, keep it short, and change the subject." },
+            { "t": "Do not announce a philosophy", "d": "'I'm taking a break' closes the topic. 'Alcohol is poison and I've decided to live differently' opens an argument you will lose and then drink at the end of." },
+            { "t": "Keep going out", "d": "The version of this that fails is the one where you stop drinking and also stop seeing anyone, get bored and lonely by week three, and go back. Go to the same places. Order something else." },
+            { "t": "Find one person who knows the real reason", "d": "Not five. One, who you can message at nine on a Friday." }
+          ],
+          "action": "Tell one person the real version this week."
+        },
+        {
+          "title": "If you drink anyway",
+          "summary": "The response that decides everything",
+          "lede": "What you do the morning after a slip matters more than the slip.",
+          "body": [
+            { "t": "One evening is one evening", "d": "It is not evidence that you cannot do this. It is evidence about a specific situation you had not planned for — which is information, and information is the thing you were short of." },
+            { "t": "Write down what actually happened", "d": "Where, who with, what time, what feeling preceded it. That is the plan for next time, and it is genuinely useful in a way that guilt is not." },
+            { "t": "Do not restart the clock as a punishment", "d": "Counting days is motivating right up until it becomes a reason to give up entirely after one night. Carry on from today." },
+            { "t": "But if it keeps happening", "d": "Three or four failed attempts at your own limit is not a character problem, it is a sign that you need more than a book. A GP conversation is the ordinary next step and it is far less dramatic than people imagine." }
+          ],
+          "action": "Decide now what your first action will be the morning after a slip. Write it down while it is hypothetical."
+        }
+      ],
+
+      "endTitle": "What this actually asks of you",
+      "endLede": "Not an identity, not a lifetime vow. A number, a date and a plan for four situations.",
+      "endBody": [
+        "Most people who change their drinking successfully never call themselves anything. They counted honestly for a week, picked a target with a number in it, decided in advance what they would do in the four situations where it actually happens, and got through the first three weeks.",
+        "The evidence has moved and it is worth saying plainly: there is no amount of alcohol that is positively good for health. Less is better and none is best. That is not a judgement about anybody — it is just the current state of the science, and you are allowed to act on it without joining anything.",
+        "And if the safety page at the front described you, the most useful thing in this entire book is on that page. Start there."
+      ],
+      "endNote": "18+. General information, not medical advice, and not a treatment programme. Do not stop suddenly if you are physically dependent — see the safety page. If alcohol is affecting your health, work or relationships, speak to your doctor or a public health service in Cyprus or Greece."
+    },
+
+    {
+      "book": "emotional",
+      "name": "EVZO-Emotional-Eating",
+      "file": "EVZO — Emotional Eating",
+      "accent": "#FF8FA3",
+      "eyebrow": "Eating when you are not hungry",
+      "coverTitle": "You are not eating because you are weak",
+      "coverTitleEl": "Δεν τρως επειδή είσαι αδύναμος",
+      "coverSub": "What emotional eating actually is, why three of the most common causes are not emotional at all, and what to do at nine o'clock at night when it starts.",
+      "band": [["Format", "Read once, use daily"], ["Built for", "Everyday use"], ["Medical advice", "No"]],
+      "contentsTitle": "What is in here",
+      "contentsNote": "General information about eating behaviour, not treatment for an eating disorder. The safety page opposite explains the difference and what to do if it is the second one.",
+
+      "safetyLabel": "Read this first",
+      "safetyTitle": "Where this book stops",
+      "safetyLede": "Emotional eating and an eating disorder are different things, and this book is only about the first. Confusing them wastes time that matters.",
+      "safety": [
+        { "t": "This book is for", "d": "Eating when you are not hungry, in response to stress, boredom, loneliness or the end of a hard day. Eating past comfortable in front of the television. The nine o'clock cupboard. Common, ordinary, and very workable." },
+        { "t": "This book is not for", "d": "Eating large amounts with a sense of being out of control and unable to stop, regularly, followed by shame. Vomiting, laxatives, or compensating with punishing exercise. Severe restriction. Food and body thoughts occupying most of your day. Those are eating disorders, they are medical conditions, and they respond well to proper treatment." },
+        { "t": "If that second paragraph is familiar", "d": "Please speak to a doctor or a clinical psychologist. Eating disorders have the highest mortality of any mental health condition and they are also genuinely treatable — the outcomes are far better with help and far worse without it. There is nothing shameful in the conversation and it is not reserved for people at a particular weight." },
+        { "t": "A note on the rest of this book", "d": "Nothing here asks you to restrict, earn, compensate or punish. If you find yourself using any of it that way, stop and read this page again." }
+      ],
+      "safetyNote": "18+. General information, not medical or psychological treatment. Not suitable if you have a current or past eating disorder without support from your clinician.",
+
+      "introLabel": "Start here",
+      "introTitle": "Three of the causes are not emotional",
+      "introLede": "Before treating this as a feelings problem, rule out the three physical causes — because for a large number of people that is the entire answer.",
+      "introBody": [
+        "The standard advice for emotional eating goes straight to feelings: journal, breathe, sit with the discomfort. Sometimes that is right. But a great deal of what gets called emotional eating is a body that has been underfed, under-slept or under-proteined all day, arriving at nine o'clock with an entirely physical demand and no emotion involved at all.",
+        "You cannot mindfulness your way out of genuine hunger, and trying to is how people conclude they are broken.",
+        "So the order in this book is deliberate: first fix the three physical causes, which is fast and mechanical. Then, if it is still happening, work on the actual emotional part — which is real, and which the first step makes far easier to see clearly."
+      ],
+
+      "chapters": [
+        {
+          "title": "The three physical causes, first",
+          "summary": "Sleep, protein and the underfed day",
+          "lede": "Fix these before anything else. For a lot of people the problem stops here.",
+          "body": [
+            { "t": "Sleep", "d": "One short night measurably raises ghrelin, the hunger hormone, and lowers leptin, the fullness one. It also damages exactly the part of decision-making you were relying on at nine in the evening. A person on five hours' sleep is not weak-willed about biscuits; they are hungry and impaired, which is a different problem with a different solution." },
+            { "t": "Protein", "d": "Protein is the most filling of the three macronutrients by a wide margin. A day built on bread, coffee and fruit leaves you technically fed and physiologically unsatisfied. Thirty grams at breakfast is the single most effective change most people can make to evening eating, and it is the one that feels least related to it." },
+            { "t": "The underfed day", "d": "The most common pattern behind a nine o'clock binge is a 400-calorie lunch eaten standing up. If you eat 900 calories before six and 1,400 after, that is not emotional — that is arithmetic catching up with you. The evening is not the problem; the day is." },
+            { "t": "Do these for two weeks before concluding anything", "d": "Eight hours, protein at breakfast, a lunch that is actually a meal. If the evening eating persists after two weeks of that, it is emotional and the rest of this book applies." }
+          ],
+          "action": "Tonight: decide what your protein breakfast is tomorrow. Eggs, yoghurt, whatever — decide it now, not in the morning."
+        },
+        {
+          "title": "Name what it actually is",
+          "summary": "Five different feelings, one behaviour",
+          "lede": "'Emotional eating' is not one thing, and the useful move is to find out which one yours is.",
+          "body": [
+            { "t": "Boredom", "d": "By far the most common and the least discussed. Not a feeling that needs to be honoured — a feeling that needs something to do. It shows up most in front of a screen and it is answered by an activity, not by insight." },
+            { "t": "Stress and the need to stop", "d": "Eating is a reliable pause. For many people the food is a way of ending the working day, and the meaning is 'I am off now', not 'I am hungry'. Find another full stop and this one loosens quickly." },
+            { "t": "Loneliness", "d": "The hardest one and the one food genuinely does soothe for about ten minutes. It also needs the most honest answer, because the alternative is not a carrot stick, it is a phone call." },
+            { "t": "Reward", "d": "'I've earned this.' Worth examining, because if food is the only reward in your week, removing it without replacing it will not hold, and should not." },
+            { "t": "Avoidance", "d": "Eating instead of doing the thing you are dreading. Notice whether the cupboard opens whenever a particular task appears." }
+          ],
+          "action": "The next time it starts, write one word before you eat: bored, stressed, lonely, reward, avoiding. Just the word. Eat afterwards if you still want to."
+        },
+        {
+          "title": "The pause, and why ten minutes works",
+          "summary": "The single most useful technique",
+          "lede": "You are not trying to stop yourself. You are trying to put a gap between the urge and the hand.",
+          "body": [
+            { "t": "Ten minutes, and you are allowed to eat afterwards", "d": "This is essential: it is not a refusal, it is a delay. A refusal starts a fight you will lose about a third of the time and then feel terrible about. A delay costs nothing and is easy to agree to." },
+            { "t": "Why it works", "d": "Urges are waves, exactly like the cravings in the smoking book. Most pass inside ten minutes on their own. The ones that do not were probably hunger, and you should eat." },
+            { "t": "Fill the ten minutes with something physical", "d": "Leave the room. Walk round the block. Do the washing up. Anything that changes where your body is. Sitting in the same chair being mindful about biscuits mostly does not work." },
+            { "t": "Then eat if you want to", "d": "And if you do, eat it on a plate, sitting down, without a screen. Not as a punishment — because eating it properly is what makes it register, and food eaten out of a packet in front of a television barely counts as having happened." }
+          ],
+          "action": "Agree the ten-minute rule with yourself now, in writing, while it is easy."
+        },
+        {
+          "title": "Change the room, not your character",
+          "summary": "Why environment beats willpower every time",
+          "lede": "Every serious piece of research on this says the same thing: what is within reach matters more than what you intend.",
+          "body": [
+            { "t": "Do not keep the trigger food in the house", "d": "This is not weakness and it is not a permanent renunciation. A decision made once at the supermarket is worth about twenty decisions made at nine at night, and you are far better at deciding in a supermarket." },
+            { "t": "Make the good option the easy one", "d": "Cut vegetables at eye level. Yoghurt at the front. The biscuits, if they are there at all, in a high cupboard in a sealed box. Friction in one direction, ease in the other." },
+            { "t": "Eat away from the screen", "d": "People eat substantially more in front of a television and remember it substantially less. This single change does more than most deliberate restriction." },
+            { "t": "One place for eating", "d": "The table. Not the sofa, not standing at the counter, not the car. It sounds trivial; it is one of the most effective things in this book." }
+          ],
+          "action": "Move one food tonight. Out of the house, or out of sight."
+        },
+        {
+          "title": "Stop the aftermath",
+          "summary": "The part that does the real damage",
+          "lede": "The biscuits are not what causes the problem. The three days that follow are.",
+          "body": [
+            { "t": "The spiral is the mechanism", "d": "Eat more than intended, feel ashamed, decide the day is ruined, eat the rest, restrict tomorrow to compensate, arrive at tomorrow evening extremely hungry, repeat. The single evening was trivial. The loop is what changes anything." },
+            { "t": "Do not compensate", "d": "No skipping breakfast, no punishing exercise, no 'being good' tomorrow. Compensation is the fuel of the cycle: it guarantees the underfed day from chapter one, which guarantees the next evening." },
+            { "t": "Next meal, normal", "d": "That is the whole recovery. The next meal, at the normal time, of the normal size. Nothing else is required and nothing else helps." },
+            { "t": "Drop the moral vocabulary", "d": "Food is not good or bad and you were not naughty. Applying moral weight to eating is what turns an ordinary evening into a shame event, and shame reliably produces more of the behaviour, never less." }
+          ],
+          "action": "Say the sentence out loud once: 'next meal, normal.' It is what you will need at seven tomorrow morning."
+        },
+        {
+          "title": "What to actually eat when you do",
+          "summary": "Practical, since this is a food company",
+          "lede": "If you are going to eat in the evening — and many people will, most evenings — it may as well be something that stops.",
+          "body": [
+            { "t": "Protein stops, sugar does not", "d": "Greek yoghurt, a couple of eggs, cottage cheese, a tin of tuna. These end an evening. A packet of biscuits extends it, because it barely registers as food to the system that decides whether you are done." },
+            { "t": "Volume helps", "d": "A very large bowl of something light — fruit with yoghurt, vegetables with hummus, popcorn — satisfies the wanting-to-eat far better than a small amount of something dense, and the brain responds to volume more than it should." },
+            { "t": "Plan the evening snack rather than resisting it", "d": "A deliberate 200-calorie thing at nine o'clock, decided in advance and eaten on a plate, is a completely different event from the same food eaten out of the packet at half past ten having sworn not to." },
+            { "t": "And sometimes just eat the thing", "d": "Not every evening needs managing. A slice of cake on a Sunday with people you like is not a lapse, it is the point. The problem was never the cake." }
+          ],
+          "action": "Decide tonight what your planned evening snack is, and put it on a plate."
+        }
+      ],
+
+      "endTitle": "The short version",
+      "endLede": "Six lines, and they are in order for a reason.",
+      "endBody": [
+        "Sleep, protein at breakfast, a real lunch. Two weeks of that before you conclude the problem is emotional, because for a large number of people it was never emotional at all.",
+        "Then: name the feeling in one word, wait ten minutes with permission to eat afterwards, change the room rather than your character, and above all stop the aftermath — next meal, normal, no compensating.",
+        "And if what is actually happening is bigger than this book, the safety page at the front is the most useful page in it. Eating disorders are treatable and the results are much better with help. Asking is the whole of the hard part."
+      ],
+      "endNote": "18+. General information, not medical or psychological treatment. If eating feels out of control, or is accompanied by purging, severe restriction, or thoughts that occupy most of your day, please speak to a doctor or a clinical psychologist."
+    },
+
+    {
+      "book": "supplements",
+      "name": "EVZO-Supplements",
+      "file": "EVZO — The Only Supplements You Need",
+      "accent": "#FFB347",
+      "eyebrow": "What is worth buying",
+      "coverTitle": "Almost none of them",
+      "coverTitleEl": "Σχεδόν κανένα",
+      "coverSub": "A short, blunt audit of the supplement shelf: the four with real evidence, the three worth taking only if a blood test says so, and the long list you can stop buying today.",
+      "band": [["Format", "Read once"], ["Sells supplements", "No"], ["Medical advice", "No"]],
+      "contentsTitle": "What is in here",
+      "contentsNote": "EVZO does not sell supplements and has no affiliate arrangement with anyone who does. That is worth stating, because almost every other guide to this question is written by someone with a shelf to clear.",
+
+      "safetyLabel": "Read this first",
+      "safetyTitle": "Four rules before you buy anything",
+      "safetyLede": "Supplements are not regulated like medicines. That is the single most important fact on this page and it shapes everything else.",
+      "safety": [
+        { "t": "More is not safer", "d": "The fat-soluble vitamins — A, D, E and K — accumulate, and overdose is genuinely possible. Vitamin D in particular has a real upper limit, and taking very large doses because a little was good is a recognised route to harm." },
+        { "t": "Do not supplement iron without a blood test", "d": "This one matters. Iron overload damages the liver and heart, the symptoms of too much overlap with the symptoms of too little, and haemochromatosis is common enough in Mediterranean populations to be worth ruling out. Test, then treat. Never the other way round." },
+        { "t": "Tell your doctor what you take", "d": "Real interactions exist. Vitamin K affects warfarin. St John's wort interferes with a long list including the contraceptive pill and antidepressants. High-dose fish oil affects clotting. 'Natural' means nothing about whether something interacts with a drug." },
+        { "t": "Pregnancy is different", "d": "Folic acid before and during early pregnancy is a genuine, evidence-backed exception with a clear benefit, and vitamin A supplements should be avoided. If you are pregnant or planning to be, that conversation belongs with a doctor or midwife, not a book." }
+      ],
+      "safetyNote": "18+. General information, not medical advice. Nothing here is a recommendation for you specifically, and nothing here should replace a blood test or a doctor.",
+
+      "introLabel": "The honest answer",
+      "introTitle": "The shelf is mostly a business",
+      "introLede": "The global supplement market is worth well over a hundred billion euro. It is not that large because the products work that well.",
+      "introBody": [
+        "A supplement industry that size exists because supplements are profitable to sell, cheap to make, and require no proof of effect before going on a shelf. In the EU a food supplement does not have to demonstrate that it does anything; it only has to be safe and labelled correctly.",
+        "So the honest answer to 'what supplements do I need' is: for most people eating a reasonably varied diet, almost none. That is not a fashionable answer and it is not one anyone can make money from, which is roughly why you have not heard it much.",
+        "What follows is the short list that survives scrutiny, the shorter list that depends on a blood test, and the long list you can stop buying. Nothing in this book is for sale."
+      ],
+
+      "chapters": [
+        {
+          "title": "Vitamin D, the one that genuinely applies here",
+          "summary": "The exception worth taking seriously",
+          "lede": "Counter-intuitively, deficiency is common across Greece and Cyprus despite the sunshine — and this is the supplement with the strongest everyday case.",
+          "body": [
+            { "t": "Why sunny countries are deficient", "d": "Because people avoid midday sun, work indoors, wear sunscreen and cover up — all sensible for skin cancer risk, and all of it reduces synthesis. Southern European deficiency rates are consistently higher than people expect and often higher than in northern countries where supplementation is routine." },
+            { "t": "Who should think about it", "d": "Anyone who works indoors, anyone who covers most of their skin, anyone with darker skin living at higher latitudes, older adults, and almost everybody between November and March." },
+            { "t": "What is reasonable", "d": "Typical general guidance sits around 10 to 20 micrograms (400 to 800 IU) a day for adults, and national advice varies. A blood test tells you where you actually are, and it is cheap. Very high doses are not better and have their own risks." },
+            { "t": "What it does and does not do", "d": "The evidence for bone and muscle health is solid. The evidence for the enormous list of other claims made for it is much weaker. Take it for the reason it is established, not for the reasons it is marketed." }
+          ],
+          "action": "Ask for a vitamin D level at your next blood test. It is usually a tick box on a form you were having anyway."
+        },
+        {
+          "title": "Creatine, the most studied and the most misunderstood",
+          "summary": "Cheap, effective, and not a steroid",
+          "lede": "If you train at all, this is the one supplement with an evidence base that would embarrass most of the shelf.",
+          "body": [
+            { "t": "What it actually is", "d": "A compound your body already makes and that you already eat in meat and fish. Supplementing raises muscle stores above what diet alone typically achieves. It is not a hormone, it is not a steroid, and it is not banned in anything." },
+            { "t": "What it does", "d": "Reliable small improvements in strength, power and training volume across hundreds of trials. The effect is real and it is modest — it makes good training slightly better; it does not replace training." },
+            { "t": "How to take it", "d": "Three to five grams of creatine monohydrate a day, at any time, with or without food. No loading phase needed. Monohydrate is the form everything was tested on and the cheapest; the expensive variants exist to be sold, not because they work better." },
+            { "t": "The myths", "d": "It does not damage healthy kidneys — this has been looked for repeatedly and not found. It is not only for men. The weight gained in the first weeks is water inside the muscle, not fat. If you have kidney disease, ask your doctor, as with anything." }
+          ],
+          "action": "If you lift weights and buy one thing from this book, it is a tub of plain creatine monohydrate."
+        },
+        {
+          "title": "Protein powder, which is food",
+          "summary": "Convenient, unnecessary, occasionally useful",
+          "lede": "It is not a supplement in any meaningful sense. It is dried food, and it should be judged on price per gram of protein like anything else.",
+          "body": [
+            { "t": "You do not need it", "d": "Every gram of protein it provides is available from eggs, yoghurt, fish, pulses and meat. Nobody has ever been deficient in protein powder." },
+            { "t": "When it earns its place", "d": "When hitting a protein target from food is genuinely difficult — a large target, a small appetite, long days away from a kitchen, or a vegan diet where the target is harder to reach." },
+            { "t": "Judge it on cost per gram of protein", "d": "That is the only honest comparison, and it is the calculation the budget book applies to food. Whey at 22 euro a kilo and 78% protein is about 2.8 cents a gram — cheaper than chicken breast, dearer than eggs, roughly the same as lentils." },
+            { "t": "Ignore the rest of the label", "d": "The amino acid blends, the added enzymes, the timing windows. Protein is protein, total daily intake is what matters, and the anabolic window turned out to be several hours wide rather than thirty minutes." }
+          ],
+          "action": "Work out your cost per gram of protein for the tub you own and compare it with eggs. It is a useful shock either way."
+        },
+        {
+          "title": "Omega-3, but probably from fish",
+          "summary": "Worth it if you do not eat oily fish",
+          "lede": "A real nutrient with real evidence, and one that most people in Greece and Cyprus could get from a tin.",
+          "body": [
+            { "t": "Food first, and it is cheap food", "d": "Two portions of oily fish a week covers it. Sardines and mackerel are among the cheapest protein in any Greek supermarket, which makes this the rare case where the food is cheaper than the supplement as well as better." },
+            { "t": "When a capsule makes sense", "d": "If you genuinely do not eat fish. Then look for the EPA and DHA content on the back rather than the fish oil total on the front — the two are frequently very different numbers, and that gap is where the marketing lives." },
+            { "t": "Vegan sources", "d": "Algae oil provides EPA and DHA directly. Flax and chia provide ALA, which converts poorly, so they are not a substitute." },
+            { "t": "Do not take very high doses casually", "d": "High-dose fish oil affects clotting and matters if you take blood thinners or are having surgery." }
+          ],
+          "action": "Put two tins of sardines in the trolley this week. It is the cheaper half of this chapter."
+        },
+        {
+          "title": "The three that depend entirely on a blood test",
+          "summary": "Iron, B12 and folate",
+          "lede": "These are the ones where guessing is not neutral — taking them unnecessarily can do actual harm.",
+          "body": [
+            { "t": "Iron", "d": "Deficiency is genuinely common, especially in menstruating women, and genuinely worth correcting — fatigue, breathlessness and poor training all improve. But supplementing without deficiency is a bad idea, and overload is serious. Test first, always, and take what the result indicates rather than what a shelf suggests." },
+            { "t": "Vitamin B12", "d": "Only found in animal foods. If you are vegan, this is not optional and it is not a preference — long-term deficiency causes irreversible nerve damage. Supplement it or use reliably fortified foods. Also worth checking if you are over sixty, take metformin, or take long-term acid-reducing medication, all of which impair absorption." },
+            { "t": "Folate", "d": "Important before and during early pregnancy, where the evidence is unambiguous. For everyone else, leafy greens and pulses do the job." },
+            { "t": "The pattern", "d": "All three are nutrients where the right answer is a number from a laboratory rather than a guess from a book. A blood test costs less than three months of the wrong supplement." }
+          ],
+          "action": "If you are vegan and not taking B12, fix that this week. It is the one genuinely urgent line in this book."
+        },
+        {
+          "title": "The list you can stop buying",
+          "summary": "Where the money actually goes",
+          "lede": "None of these are scandals. They are simply things the evidence does not support for a healthy person eating normally.",
+          "body": [
+            { "t": "Multivitamins", "d": "Large trials in well-nourished populations have repeatedly failed to show benefit for healthy adults. They are not harmful; they are mostly expensive insurance against a risk you do not have." },
+            { "t": "Fat burners and metabolism boosters", "d": "The effects are trivial where they exist at all, and the active ingredient is almost always caffeine — which you can buy as coffee for a fraction of the price." },
+            { "t": "Detox teas and cleanses", "d": "Your liver and kidneys do this continuously and they are not waiting for a tea. Many of these products work by being laxatives, which is not detoxification." },
+            { "t": "BCAAs, glutamine, testosterone boosters, collagen for muscle", "d": "BCAAs add nothing if you eat enough protein. Glutamine has no meaningful effect in healthy people. Over-the-counter testosterone boosters do not raise testosterone to any degree that matters. Collagen may have some evidence for skin and joints; for building muscle it is a poor-quality protein." },
+            { "t": "Apple cider vinegar, greens powders, most of the rest", "d": "Small or no effects, generally studied badly, and always more expensive than the vegetables they are standing in for." }
+          ],
+          "list": {
+            "label": "The honest summary",
+            "items": [
+              "Worth it for many: vitamin D",
+              "Worth it if you train: creatine monohydrate",
+              "Worth it if you cannot reach your protein from food: protein powder",
+              "Worth it if you do not eat oily fish: omega-3",
+              "Only with a blood test: iron, B12, folate",
+              "Everything else: buy vegetables instead"
+            ]
+          },
+          "action": "Take everything you currently own off the shelf, put it on the table, and check it against the six lines above."
+        }
+      ],
+
+      "endTitle": "What the money is better spent on",
+      "endLede": "Add up what a year of the shelf costs, then read this page.",
+      "endBody": [
+        "Sleep costs nothing. Protein at breakfast costs about forty cents. Two tins of sardines a week costs two euro twenty. Vegetables cost less than the greens powder standing in for them. Walking is free, and lifting something heavy twice a week can be done in a park.",
+        "Every one of those has a larger effect on how you look, feel and perform than the entire supplement aisle combined, and all of them together cost less than one premium tub of anything.",
+        "The reason nobody tells you this is that there is no margin in it. EVZO does not sell supplements and takes no commission from anyone who does, which is the only reason this book could be this short."
+      ],
+      "endNote": "18+. General information, not medical advice. Do not start, stop or change a supplement alongside prescribed medication without speaking to your doctor or pharmacist. Test before supplementing iron."
+    },
+
+    {
+      "book": "produce",
+      "name": "EVZO-Picking-Produce",
+      "file": "EVZO — How to Pick Fruit and Vegetables",
+      "accent": "#7BC96F",
+      "eyebrow": "At the market and the supermarket",
+      "coverTitle": "Everything you need to know is in your hands",
+      "coverTitleEl": "Όλα όσα χρειάζεσαι είναι στα χέρια σου",
+      "coverSub": "How to choose produce by weight, smell, skin and sound — what is actually in season in Greece and Cyprus month by month, and how to store it so it lasts twice as long.",
+      "band": [["Format", "Read once, use weekly"], ["Built for", "The market"], ["Medical advice", "No"]],
+      "contentsTitle": "What is in here",
+      "contentsNote": "Seasons here are for Greece and Cyprus. A month either side is normal depending on altitude and the year, and a good greengrocer will always know better than a book.",
+
+      "safetyLabel": "Before the market",
+      "safetyTitle": "Four things that are true of everything",
+      "safetyLede": "Almost all of picking produce is four rules applied to different objects. Learn these and the rest of the book is detail.",
+      "safety": [
+        { "t": "Heavy for its size is the best single signal", "d": "It means water content, which means juice and freshness. It works for citrus, melons, cucumbers, aubergines, peppers and squash. Pick up two of the same size and buy the heavier one — that one move will improve your shopping more than anything else in this book." },
+            { "t": "Smell it, at the stem end", "d": "Ripe fruit smells like itself. A melon, a peach, a strawberry or a tomato with no smell at the stem will taste of nothing, whatever it looks like. If it smells fermented or sharp, it has gone the other way." },
+        { "t": "Firm with a slight give, not soft", "d": "Press gently with the pad of your thumb, near the stem. No give means unripe. A small yielding dent means ready. A soft patch that stays pressed means past it. Never press with a fingertip — that is what bruises fruit for the next person." },
+        { "t": "Look at the stem and the leaves, not the fruit", "d": "The fastest way to judge age is the part nobody markets. A green, pliable stem and crisp leaves mean recent. Dry, brown, shrivelled or mouldy stems mean it has been sitting, whatever the fruit looks like." }
+      ],
+      "safetyNote": "Wash produce before eating. Food that is mouldy, slimy or smells fermented goes in the bin — with soft fruit, mould spreads invisibly and cutting it off is not enough.",
+
+      "introLabel": "Why this matters",
+      "introTitle": "The cheapest food is the food in season",
+      "introLede": "Seasonality is usually sold as an ethical idea. It is really a price and flavour idea, which is a much better argument.",
+      "introBody": [
+        "Produce in season is grown nearby, in volume, without heating or long storage. It costs a fraction of the same item in February and it tastes like the thing it is meant to taste like. A tomato in August and a tomato in January are two different products sold under one name.",
+        "This is also where most household food waste comes from. People buy out of season, it disappoints, it sits in the drawer, it gets thrown away — and the money went in the bin along with it.",
+        "So this book has three parts: how to choose by hand, what is actually in season here month by month, and how to store it so that what you bought is still good on Thursday."
+      ],
+
+      "chapters": [
+        {
+          "title": "Tomatoes, peppers and the summer fruit",
+          "summary": "The ones most often bought badly",
+          "lede": "These are the items where the difference between a good choice and a bad one is largest.",
+          "body": [
+            { "t": "Tomatoes", "d": "Smell the stem end — that is where the aroma is. Look for a green, fresh crown and skin that is taut rather than shiny and hard. Weight matters. Never refrigerate them: below about 12°C the compounds that make a tomato taste like a tomato stop being produced and do not come back. A cold tomato is a permanently ruined tomato." },
+            { "t": "Peppers", "d": "Heavy, glossy, firm shoulders, and a green springy stem. Count the lobes on the base if you like: three-lobed peppers tend to be slightly firmer and better for cooking, four-lobed slightly sweeter and better raw. Wrinkles near the stem mean age." },
+            { "t": "Aubergines", "d": "Heavy for size and the skin should spring back when pressed. The green cap should be fresh, not dry. Lighter aubergines have more seed and more bitterness. Small and firm beats large and spongy every time." },
+            { "t": "Melon and watermelon", "d": "Watermelon: a large creamy-yellow field spot where it lay on the ground, a dull rather than shiny skin, and a deep hollow sound when tapped. Melon: smell the stem end, which should be sweet and obvious, and the opposite end should give very slightly under the thumb." },
+            { "t": "Peaches, apricots, figs", "d": "Smell first, always. Colour tells you about the variety, not the ripeness. Figs should be heavy, slightly soft, with a bent neck and a small split at the base — a split fig is ready, not damaged." }
+          ],
+          "action": "Next time you buy tomatoes, smell three before choosing. The difference is immediate once you have done it once."
+        },
+        {
+          "title": "Leaves, herbs and the greens",
+          "summary": "Horta, spinach, lettuce and the bunch herbs",
+          "lede": "These go over faster than anything else and are the most commonly wasted item in the drawer.",
+          "body": [
+            { "t": "Look at the cut end", "d": "On any bunch — horta, spinach, chard, parsley — the cut stems tell the truth. Pale, wet and slightly slimy means days old. Clean and dry-cut means recent." },
+            { "t": "Weight and spring in lettuce", "d": "A good lettuce is heavy for its size and the leaves resist slightly when pressed. Rust-coloured edges mean age. Any smell at all means it has begun to break down." },
+            { "t": "Herbs are bought by the bunch, not the packet", "d": "In Greece and Cyprus the bunch is a fraction of the price of the supermarket plastic box, and it is fresher. Buy it, and treat it like flowers — see the storage chapter." },
+            { "t": "Frozen spinach is not a compromise", "d": "It is picked and frozen within hours, keeps everything that matters, costs about a third of fresh, and does not turn to slime on day three. For anything cooked, it is the better buy and it is not close." }
+          ],
+          "action": "Buy the bunch instead of the packet this week and compare the price per gram. It is usually four or five times cheaper."
+        },
+        {
+          "title": "Roots, onions and the things that keep",
+          "summary": "The cheap base of every week",
+          "lede": "These are the least glamorous items in the shop and the ones that make eating cheaply possible.",
+          "body": [
+            { "t": "Potatoes", "d": "Firm all over, dry skin, no green tinge and no sprouts. Green means light exposure and solanine, which is bitter and mildly toxic — cut it out generously or leave it. Buy loose rather than in plastic, which traps moisture and rots them." },
+            { "t": "Onions and garlic", "d": "Both should be rock hard with dry papery skin and no give at the neck, which is where they rot first. Any softness at the top or a damp patch means it is already going. Sprouting garlic is edible but bitter." },
+            { "t": "Carrots", "d": "Firm and snappable. A bendy carrot has lost water and will be woody. If the tops are still on they should be green and fresh — but remove them before storing or they will pull moisture out of the root." },
+            { "t": "Cabbage", "d": "Heavy for its size and tightly packed, with squeaky outer leaves. The heaviest cabbage of a given size is always the right one, and cabbage is the cheapest vegetable in the shop by a wide margin." }
+          ],
+          "action": "Weigh two cabbages of the same size in your hands. Buy the heavy one. That is the whole technique."
+        },
+        {
+          "title": "The year, month by month",
+          "summary": "What is actually in season in Greece and Cyprus",
+          "lede": "Prices follow this calendar closely. So does flavour.",
+          "body": [
+            { "t": "January to March", "d": "Oranges, mandarins, lemons at their absolute best and cheapest. Cabbage, cauliflower, broccoli, leeks, celery, fennel, spinach, horta, wild greens. Artichokes arrive around February and March. This is soup and greens season, and it is the cheapest quarter of the year." },
+            { "t": "April to June", "d": "Strawberries in April and May. Broad beans, peas, artichokes, new potatoes, courgettes, cucumbers. Apricots and cherries from late May. The first real tomatoes appear in June, not before." },
+            { "t": "July to September", "d": "The peak. Tomatoes, peppers, aubergines, courgettes, okra, melons, watermelon, peaches, figs, grapes. Everything is at its cheapest and best, and this is when it is worth cooking things you intend to freeze." },
+            { "t": "October to December", "d": "Grapes and figs end. Pomegranates, quinces, apples, pears, the first citrus around November. Pumpkin, cauliflower, broccoli, spinach, leeks, celery root. Olives are harvested and the new oil appears — this is when to buy it." }
+          ],
+          "list": {
+            "label": "The rule that follows from all of that",
+            "items": [
+              "If it is expensive, it is out of season — and it will also taste worse",
+              "Buy the thing that is piled highest at the market; that is what came in this morning",
+              "Frozen is the honest answer out of season, not an imported fresh version at four times the price",
+              "Tinned tomatoes beat fresh tomatoes for eight months of the year, for cooking"
+            ]
+          },
+          "action": "Before your next shop, look at what month it is and pick two things from that list."
+        },
+        {
+          "title": "Storage, which is where the money is saved",
+          "summary": "How to make it last twice as long",
+          "lede": "Most produce is thrown away not because it was bad but because it was stored wrong for three days.",
+          "body": [
+            { "t": "Not in the fridge, ever", "d": "Tomatoes, potatoes, onions, garlic, aubergines, basil, bananas and unripe stone fruit. Cold ruins tomato flavour permanently, turns potato starch to sugar, and makes basil go black overnight." },
+            { "t": "In the fridge, but dry", "d": "Leaves, herbs, berries and mushrooms all rot from moisture. Line the drawer with a tea towel or kitchen paper. Do not wash anything until you are about to eat it — washing then storing is the single most common way to lose a punnet of berries." },
+            { "t": "Herbs like flowers", "d": "Parsley, coriander, dill and mint: trim the stems and stand the bunch in a glass of water in the fridge with a bag loosely over the top. They last a fortnight instead of four days. Basil does the same but stays on the counter, never in the fridge." },
+            { "t": "Keep these apart", "d": "Apples, bananas, tomatoes and melons release ethylene, which ripens everything near them. Keep them away from potatoes, onions and leaves. A banana in the fruit bowl is why the rest of the bowl went over so fast." },
+            { "t": "Onions and potatoes are not friends", "d": "Stored together, the onions accelerate sprouting in the potatoes. Both want dark, dry and airy — but separately, and not in plastic." }
+          ],
+          "action": "Move the tomatoes out of your fridge tonight, and stand your herbs in a glass of water."
+        },
+        {
+          "title": "The market, and how to actually use it",
+          "summary": "Laiki, timing and the quiet rules",
+          "lede": "The street market is cheaper and better than the supermarket, and most people use it slightly wrong.",
+          "body": [
+            { "t": "Go early or go last", "d": "Early for the best of everything. The last half hour for the prices, when sellers would rather discount than carry it home. Never the middle, which has neither." },
+            { "t": "Do not touch, ask", "d": "At a market stall the seller picks for you and that is the custom. Say what it is for and when you will eat it — 'for today' or 'for the weekend' — and you will get better fruit than you would have chosen yourself." },
+            { "t": "Buy what is piled highest", "d": "The mountain is what arrived this morning and what is in season. The sad half-crate at the end of the stall is neither." },
+            { "t": "One stall, repeatedly", "d": "Going back to the same seller is worth more than any technique in this book. They will start putting the good things aside for you, which no supermarket has ever done for anybody." }
+          ],
+          "action": "Find out which day your local laiki runs, and go once before nine in the morning."
+        }
+      ],
+
+      "endTitle": "Four sentences, and the rest is practice",
+      "endLede": "If you remember nothing else from this book, these carry almost all of the value.",
+      "endBody": [
+        "Heavy for its size. Smell the stem. Firm with a slight give. Look at the stem and the leaves, not the fruit.",
+        "Then buy what is in season, because it is cheaper and it tastes better and those two things are the same fact. And store it properly, because most of the produce people throw away was fine when they bought it.",
+        "None of this needs expertise. It needs you to pick the thing up before you buy it, which is the one step almost everybody skips."
+      ],
+      "endNote": "Seasons are for Greece and Cyprus and vary by a month either way with altitude and weather. Wash produce before eating. When in doubt about mould or smell, throw it out."
+    }
+  ]
+}

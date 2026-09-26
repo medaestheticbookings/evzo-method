@@ -4,9 +4,16 @@
 # it is downloadable by anyone, so the rule here is an allow-list in spirit:
 # only the files the website actually serves belong in it.
 
-# The ebooks are the product. Publishing the PDFs gives them away, and the
-# recipe source is what they are built from.
-ebooks/
+# The ebooks are the PRODUCT, so the PDFs stay out. Their SOURCE does not:
+# on 26 Sep a script deleted 600 lines of ebooks/build.mjs and there was no
+# committed copy to restore from, because this rule covered the whole folder.
+# It cost most of a day to reconstruct from session transcripts.
+#
+# So: ignore the output, track everything that produces it.
+ebooks/*
+!ebooks/*.mjs
+!ebooks/*.json
+ebooks/*.pdf
 
 # Instagram source material and working images — not part of the website.
 photos/
@@ -14,8 +21,9 @@ posts/
 build/
 content/
 
-# Build tooling and internal notes stay on the machine.
-tools/
+# Build tooling is source too, and for the same reason. The notes stay local.
+!tools/
+tools/*.log
 PROJECT.md
 POSTING-SCHEDULE.md
 BETA-OUTREACH.md

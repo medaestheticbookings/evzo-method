@@ -1003,7 +1003,7 @@
 
   (function () {
     if (!$("stats")) return;
-    fetch("site/shop-data.json", { cache: "no-store" })
+    fetch("/site/shop-data.json", { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) {
         if (!d || !d.totals) throw new Error("no totals");

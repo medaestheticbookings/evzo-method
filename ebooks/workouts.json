@@ -1,0 +1,240 @@
+{
+  "_note": "Workout plans. MET values are from the Compendium of Physical Activities (Ainsworth et al.), the standard published reference. NO calorie figure is written in this file — build.mjs computes every one of them with kcal = MET x 3.5 x kg / 200 x minutes, the standard equation, for the reference bodyweights below. Change a MET or a duration here and every printed figure changes with it.",
+
+  "_method": {
+    "formula": "kcal = MET x 3.5 x bodyweight_kg / 200 x minutes",
+    "referenceWeightsKg": [60, 75, 90],
+    "accuracy": "These are population averages. An individual can sit 20-30% either side of them depending on fitness, muscle mass, sex, temperature and how hard the session is actually worked. Wearables are no better: chest straps are reasonable for steady cardio and poor for weights, and wrist trackers routinely overestimate."
+  },
+
+  "activities": {
+    "lift_vigorous":   { "label": "Weights, hard sets", "met": 6.0 },
+    "lift_moderate":   { "label": "Weights, moderate", "met": 3.5 },
+    "circuit":         { "label": "Circuit training", "met": 7.2 },
+    "calisthenics":    { "label": "Bodyweight, vigorous", "met": 8.0 },
+    "hiit":            { "label": "Intervals, hard", "met": 8.0 },
+    "walk_easy":       { "label": "Walking, 5 km/h", "met": 3.5 },
+    "walk_brisk":      { "label": "Walking, brisk 6.4 km/h", "met": 5.0 },
+    "walk_incline":    { "label": "Walking uphill or treadmill incline", "met": 6.5 },
+    "run_slow":        { "label": "Running, 8 km/h", "met": 8.3 },
+    "run_steady":      { "label": "Running, 10 km/h", "met": 9.8 },
+    "cycle":           { "label": "Cycling, moderate", "met": 7.5 },
+    "swim":            { "label": "Swimming, moderate", "met": 5.8 },
+    "row":             { "label": "Rowing machine, moderate", "met": 7.0 },
+    "stairs":          { "label": "Stair climbing", "met": 8.8 },
+    "rope":            { "label": "Skipping rope", "met": 11.8 },
+    "mobility":        { "label": "Stretching and mobility", "met": 2.3 },
+    "football":        { "label": "Football, casual", "met": 7.0 },
+    "padel":           { "label": "Padel or tennis, doubles", "met": 6.0 }
+  },
+
+  "plans": [
+    {
+      "id": "full3",
+      "name": "Three days, full body",
+      "greek": "Τρεις μέρες, όλο το σώμα",
+      "level": "Start here",
+      "daysPerWeek": 3,
+      "who": "Anyone in their first six months of lifting, and anyone coming back after a long gap. Three sessions is enough to make progress and few enough that you will actually do them.",
+      "sessions": [
+        {
+          "name": "Day A",
+          "blocks": [
+            { "activity": "mobility", "minutes": 6, "note": "Warm up. Bike or brisk walk, then the joints you are about to use." },
+            { "activity": "lift_vigorous", "minutes": 38, "note": "Goblet squat 3x8 · Dumbbell bench or press-up 3x8 · One-arm row 3x10 each · Romanian deadlift 3x10 · Plank 3x30s" },
+            { "activity": "walk_brisk", "minutes": 12, "note": "Finish walking. It costs almost nothing in recovery and it adds up across a week." }
+          ]
+        },
+        {
+          "name": "Day B",
+          "blocks": [
+            { "activity": "mobility", "minutes": 6, "note": "Same warm-up." },
+            { "activity": "lift_vigorous", "minutes": 38, "note": "Romanian deadlift 3x8 · Lat pulldown or assisted pull-up 3x8 · Dumbbell shoulder press 3x10 · Split squat 3x10 each · Hanging or lying leg raise 3x10" },
+            { "activity": "walk_brisk", "minutes": 12, "note": "Same finish." }
+          ]
+        },
+        {
+          "name": "Day C",
+          "blocks": [
+            { "activity": "mobility", "minutes": 6, "note": "Same warm-up." },
+            { "activity": "lift_vigorous", "minutes": 36, "note": "Leg press or back squat 3x10 · Incline dumbbell press 3x10 · Cable or band row 3x12 · Lateral raise 3x12 · Calf raise 3x15" },
+            { "activity": "walk_brisk", "minutes": 15, "note": "Longer finish on the last day of the week." }
+          ]
+        }
+      ],
+      "progression": "Add one repetition per set each week until you reach the top of the range, then add weight and drop back to the bottom. That is the whole of progressive overload and it is the only thing that makes a programme work.",
+      "notes": [
+        "Rest 90 seconds between sets. Less and the next set suffers; more and the session runs long and you stop going.",
+        "Two to three sets left in the tank on the first working set, one on the last. Training to failure on everything is how beginners get sore rather than strong."
+      ]
+    },
+    {
+      "id": "upper_lower4",
+      "name": "Four days, upper and lower",
+      "greek": "Τέσσερις μέρες, πάνω και κάτω",
+      "level": "Six months in",
+      "daysPerWeek": 4,
+      "who": "Once three full-body days stop being enough to fit the work in. Two upper, two lower, with a day off between each pair.",
+      "sessions": [
+        {
+          "name": "Upper 1 — push focus",
+          "blocks": [
+            { "activity": "mobility", "minutes": 7, "note": "Shoulders and thoracic spine before anything overhead." },
+            { "activity": "lift_vigorous", "minutes": 48, "note": "Bench press 4x6 · Incline dumbbell press 3x10 · Overhead press 3x8 · Cable row 3x12 · Lateral raise 3x15 · Triceps pushdown 3x12" }
+          ]
+        },
+        {
+          "name": "Lower 1 — squat focus",
+          "blocks": [
+            { "activity": "mobility", "minutes": 7, "note": "Hips and ankles." },
+            { "activity": "lift_vigorous", "minutes": 46, "note": "Back squat 4x6 · Romanian deadlift 3x8 · Leg press 3x12 · Leg curl 3x12 · Calf raise 4x12 · Plank 3x45s" },
+            { "activity": "walk_easy", "minutes": 10, "note": "Walk it off rather than sitting straight down." }
+          ]
+        },
+        {
+          "name": "Upper 2 — pull focus",
+          "blocks": [
+            { "activity": "mobility", "minutes": 7, "note": "Same as Upper 1." },
+            { "activity": "lift_vigorous", "minutes": 48, "note": "Pull-up or lat pulldown 4x8 · Barbell row 3x8 · Incline dumbbell press 3x10 · Face pull 3x15 · Biceps curl 3x12 · Rear delt fly 3x15" }
+          ]
+        },
+        {
+          "name": "Lower 2 — hinge focus",
+          "blocks": [
+            { "activity": "mobility", "minutes": 7, "note": "Hamstrings and lower back." },
+            { "activity": "lift_vigorous", "minutes": 46, "note": "Deadlift 4x5 · Front squat or hack squat 3x8 · Bulgarian split squat 3x10 each · Leg extension 3x15 · Hanging leg raise 3x12" },
+            { "activity": "walk_easy", "minutes": 10, "note": "Same." }
+          ]
+        }
+      ],
+      "progression": "Run each lift for four weeks adding weight, then take a lighter week before starting again. If a top set stalls twice in a row, drop 10% and build back — that is not a setback, it is the normal shape of getting stronger.",
+      "notes": [
+        "Two minutes rest on the heavy compound lifts, 60 to 90 seconds on everything else.",
+        "If you can only make three of the four sessions in a week, do Upper 1, Lower 1 and whichever of the other two you missed most recently."
+      ]
+    },
+    {
+      "id": "home",
+      "name": "No gym, no equipment",
+      "greek": "Χωρίς γυμναστήριο, χωρίς εξοπλισμό",
+      "level": "Anywhere",
+      "daysPerWeek": 3,
+      "who": "Travel weeks, August, a closed gym, or a year of not having joined one. Bodyweight only, and it works for longer than people expect.",
+      "sessions": [
+        {
+          "name": "Full body A",
+          "blocks": [
+            { "activity": "mobility", "minutes": 5, "note": "Joints through their range, no static stretching before." },
+            { "activity": "calisthenics", "minutes": 28, "note": "Press-ups 4xAMRAP · Bodyweight squat 4x20 · Split squat 3x12 each · Inverted row under a table 3xAMRAP · Plank 3x45s" },
+            { "activity": "walk_brisk", "minutes": 20, "note": "Out of the door straight after." }
+          ]
+        },
+        {
+          "name": "Full body B",
+          "blocks": [
+            { "activity": "mobility", "minutes": 5, "note": "Same." },
+            { "activity": "calisthenics", "minutes": 26, "note": "Pike press-up 4x8 · Single-leg hip thrust 3x12 each · Walking lunge 3x20 · Superman hold 3x30s · Side plank 3x30s each" },
+            { "activity": "walk_brisk", "minutes": 20, "note": "Same." }
+          ]
+        },
+        {
+          "name": "Conditioning",
+          "blocks": [
+            { "activity": "mobility", "minutes": 5, "note": "Longer warm-up before intervals, not shorter." },
+            { "activity": "hiit", "minutes": 18, "note": "30 seconds hard, 90 seconds easy, twelve rounds. Stairs, hill, skipping rope or burpees — the medium does not matter, the effort does." },
+            { "activity": "walk_easy", "minutes": 12, "note": "Cool down properly. Stopping dead after intervals is how people feel awful for an hour." }
+          ]
+        }
+      ],
+      "progression": "Add repetitions, then slow the lowering phase to three seconds, then move to a harder variation — feet elevated press-ups, then one-arm progressions. Bodyweight training runs out of road much later than people claim.",
+      "notes": [
+        "AMRAP means as many repetitions as possible with good form, stopping two short of failure.",
+        "If press-ups are not possible yet, do them with hands on a table. That is not a lesser exercise, it is the same exercise at the right load."
+      ]
+    },
+    {
+      "id": "walking",
+      "name": "The walking plan",
+      "greek": "Το πλάνο περπατήματος",
+      "level": "Fat loss",
+      "daysPerWeek": 6,
+      "who": "The most underrated thing on this list. Walking does not make you hungry the way hard cardio does, it needs no recovery, and it can be done every day for years.",
+      "sessions": [
+        {
+          "name": "Weekday walk",
+          "blocks": [
+            { "activity": "walk_brisk", "minutes": 45, "note": "One block or three of fifteen minutes — the total is what counts. Brisk means you can talk but would rather not sing." }
+          ]
+        },
+        {
+          "name": "Incline day",
+          "blocks": [
+            { "activity": "walk_incline", "minutes": 40, "note": "A hill, or a treadmill at 10 to 12% and a speed you can hold without holding on. Holding the handles takes most of the cost out of it." }
+          ]
+        },
+        {
+          "name": "Long weekend walk",
+          "blocks": [
+            { "activity": "walk_easy", "minutes": 90, "note": "Easy pace, coast road or mountain. This is the one that makes the weekly total look serious." }
+          ]
+        }
+      ],
+      "progression": "Add five minutes a week to the weekday walk until you reach an hour, then add a day rather than more time. Consistency beats intensity here by a wide margin.",
+      "notes": [
+        "Walking is worth doing alongside lifting, not instead of it. It burns calories; lifting is what keeps the muscle while you lose weight.",
+        "Steps targets work because they are visible, not because 10,000 is magic. Whatever your current daily average is, add two thousand."
+      ]
+    },
+    {
+      "id": "ppl5",
+      "name": "Five days, push pull legs",
+      "greek": "Πέντε μέρες, push pull legs",
+      "level": "Two years in",
+      "daysPerWeek": 5,
+      "who": "Only worth it if you are already recovering well from four days, sleeping properly and eating enough. Five days of poor sessions is worse than three good ones.",
+      "sessions": [
+        {
+          "name": "Push",
+          "blocks": [
+            { "activity": "mobility", "minutes": 8, "note": "Shoulders, thoracic spine, wrists." },
+            { "activity": "lift_vigorous", "minutes": 52, "note": "Bench press 4x6 · Overhead press 4x8 · Incline dumbbell press 3x10 · Lateral raise 4x15 · Triceps pushdown 3x12 · Overhead triceps extension 3x12" }
+          ]
+        },
+        {
+          "name": "Pull",
+          "blocks": [
+            { "activity": "mobility", "minutes": 8, "note": "Lats and elbows." },
+            { "activity": "lift_vigorous", "minutes": 52, "note": "Deadlift 3x5 · Pull-up 4x8 · Barbell row 3x10 · Face pull 3x15 · Biceps curl 4x12 · Shrug 3x12" }
+          ]
+        },
+        {
+          "name": "Legs",
+          "blocks": [
+            { "activity": "mobility", "minutes": 8, "note": "Hips and ankles, properly." },
+            { "activity": "lift_vigorous", "minutes": 54, "note": "Back squat 4x6 · Romanian deadlift 4x8 · Leg press 3x12 · Leg curl 3x12 · Leg extension 3x15 · Calf raise 4x15" }
+          ]
+        },
+        {
+          "name": "Upper, lighter",
+          "blocks": [
+            { "activity": "mobility", "minutes": 7, "note": "Short." },
+            { "activity": "lift_moderate", "minutes": 45, "note": "Incline dumbbell press 4x12 · Chest-supported row 4x12 · Dumbbell shoulder press 3x12 · Cable fly 3x15 · Rear delt fly 3x15 · Arms, your choice, 4 sets" }
+          ]
+        },
+        {
+          "name": "Conditioning and mobility",
+          "blocks": [
+            { "activity": "mobility", "minutes": 10, "note": "The session most people skip, and the one that keeps the other four available." },
+            { "activity": "row", "minutes": 20, "note": "Steady, conversational. Bike or swim instead if you prefer." },
+            { "activity": "walk_brisk", "minutes": 20, "note": "Outside." }
+          ]
+        }
+      ],
+      "progression": "Four weeks building, one week at 60% of the volume. Skip the lighter week and it eventually takes itself, usually as an injury.",
+      "notes": [
+        "This is a lot of volume. It only works on top of enough food and seven to eight hours of sleep.",
+        "If two sessions a week are consistently rushed, you are on the wrong plan. Go back to four days and do them properly."
+      ]
+    }
+  ]
+}

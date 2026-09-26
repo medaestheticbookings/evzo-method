@@ -1,0 +1,499 @@
+{
+  "_note": "Quantities are per recipe, in grams, for the stated number of servings. build.mjs divides by servings and multiplies against foods.json. No macro figure is written by hand anywhere in this file.",
+
+  "recipes": [
+    {
+      "id": "yoghurt-bowl",
+      "slot": "breakfast",
+      "title": "The bowl that holds until lunch",
+      "greek": "Το μπολ που κρατάει μέχρι το μεσημέρι",
+      "servings": 1,
+      "time": "3 minutes",
+      "ingredients": [
+        { "food": "yoghurt_2", "g": 200 },
+        { "food": "berries", "g": 80 },
+        { "food": "almonds", "g": 15 },
+        { "food": "honey", "g": 7 }
+      ],
+      "method": [
+        "Yoghurt into the bowl first, so you can see how much you actually took.",
+        "Berries on top, almonds on top of those.",
+        "Honey last, one teaspoon, off the spoon rather than poured."
+      ],
+      "why": "Most breakfasts are carbohydrate wearing a health label. This one is built on 20 g of protein before you add anything, which is the difference between eating again at 10am and not thinking about food until lunch.",
+      "swaps": [
+        "No berries — a chopped apple works and costs almost the same.",
+        "Dairy-free — 200 g of soya yoghurt, but check the protein on the tub; most have a third of the protein."
+      ]
+    },
+    {
+      "id": "eggs-tomato",
+      "slot": "breakfast",
+      "title": "Eggs, tomato, bread",
+      "greek": "Αυγά, ντομάτα, ψωμί",
+      "servings": 1,
+      "time": "8 minutes",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "tomato", "g": 150 },
+        { "food": "bread_wholemeal", "g": 40 },
+        { "food": "olive_oil", "g": 7 },
+        { "food": "herbs", "g": 1 }
+      ],
+      "method": [
+        "Tomatoes into a hot pan with half the oil. Leave them alone until they collapse.",
+        "Two eggs straight in, break the yolks, take it off while they still look slightly underdone.",
+        "One slice of bread. The rest of the oil goes on the bread, not in the pan."
+      ],
+      "why": "Two eggs is about 14 g of protein and 157 calories. The oil is where breakfast usually gets away from people — a free pour into a pan is 25 g, which is 220 calories you did not taste.",
+      "swaps": [
+        "Three eggs if you train in the morning.",
+        "Swap the bread for 150 g of potatoes if you want the same shape with fewer calories."
+      ]
+    },
+    {
+      "id": "overnight-oats",
+      "slot": "breakfast",
+      "title": "Oats you make the night before",
+      "greek": "Βρώμη από το προηγούμενο βράδυ",
+      "servings": 1,
+      "time": "2 minutes, plus overnight",
+      "ingredients": [
+        { "food": "oats_dry", "g": 50 },
+        { "food": "yoghurt_0", "g": 150 },
+        { "food": "milk_semi", "g": 80 },
+        { "food": "banana", "g": 60 },
+        { "food": "walnuts", "g": 10 }
+      ],
+      "method": [
+        "Oats, yoghurt and milk in a jar. Stir once.",
+        "Fridge overnight.",
+        "Banana and walnuts in the morning, not the night before, or the banana turns grey."
+      ],
+      "why": "The decision is made the night before, which is the whole point. Nobody weighs oats at 7am.",
+      "swaps": [
+        "No banana — berries, same weight.",
+        "Nut allergy — leave the walnuts out and add 20 g more yoghurt."
+      ]
+    },
+
+    {
+      "id": "chicken-bulgur",
+      "slot": "lunch",
+      "title": "Chicken and bulgur, built for the fridge",
+      "greek": "Κοτόπουλο με πλιγούρι",
+      "servings": 4,
+      "time": "25 minutes",
+      "ingredients": [
+        { "food": "chicken_breast", "g": 600 },
+        { "food": "bulgur_dry", "g": 240 },
+        { "food": "courgette", "g": 300 },
+        { "food": "pepper_red", "g": 200 },
+        { "food": "onion", "g": 120 },
+        { "food": "olive_oil", "g": 40 },
+        { "food": "lemon_juice", "g": 30 },
+        { "food": "herbs", "g": 5 }
+      ],
+      "method": [
+        "Bulgur in twice its volume of boiling water, lid on, off the heat, 12 minutes.",
+        "Vegetables in a hot pan with half the oil until they take colour.",
+        "Chicken cut into strips, in last, four minutes a side.",
+        "Everything into one bowl with the lemon and the rest of the oil. Four boxes."
+      ],
+      "why": "This is the Sunday recipe that decides your Tuesday. Four portions made once, weighed once, and the week stops being a series of decisions.",
+      "swaps": [
+        "Bulgur to rice, gram for gram dry.",
+        "Chicken to prawns, same weight, but add them in the last two minutes only."
+      ]
+    },
+    {
+      "id": "greek-salad-protein",
+      "slot": "lunch",
+      "title": "Greek salad that is actually a meal",
+      "greek": "Χωριάτικη που χορταίνει",
+      "servings": 2,
+      "time": "10 minutes",
+      "ingredients": [
+        { "food": "tomato", "g": 300 },
+        { "food": "cucumber", "g": 200 },
+        { "food": "onion", "g": 60 },
+        { "food": "feta", "g": 80 },
+        { "food": "olives_kalamata", "g": 40 },
+        { "food": "chicken_breast", "g": 240 },
+        { "food": "olive_oil", "g": 20 },
+        { "food": "herbs", "g": 3 }
+      ],
+      "method": [
+        "Cut everything into pieces big enough to need a fork.",
+        "Feta on top in one slab, not crumbled — you eat less of it that way and taste it more.",
+        "Chicken sliced over. Oil measured, not poured."
+      ],
+      "why": "A traditional horiatiki is a fine side and a poor lunch: about 8 g of protein for 400 calories. Adding chicken turns the same plate into something that holds you for four hours.",
+      "swaps": [
+        "Chicken to a tin of tuna, drained.",
+        "Vegetarian — 150 g of chickpeas instead of the chicken."
+      ]
+    },
+    {
+      "id": "lentil-soup",
+      "slot": "lunch",
+      "title": "Fakes that does not need bread",
+      "greek": "Φακές που δεν θέλουν ψωμί",
+      "servings": 4,
+      "time": "40 minutes",
+      "ingredients": [
+        { "food": "lentils_dry", "g": 320 },
+        { "food": "onion", "g": 150 },
+        { "food": "carrot", "g": 200 },
+        { "food": "passata", "g": 200 },
+        { "food": "garlic", "g": 12 },
+        { "food": "olive_oil", "g": 30 },
+        { "food": "herbs", "g": 5 }
+      ],
+      "method": [
+        "Onion, carrot and garlic in the oil until soft.",
+        "Lentils, passata and 1.5 litres of water. Forty minutes, low.",
+        "Salt at the end. Salt at the start keeps lentils hard."
+      ],
+      "why": "Eighty grams of dry lentils per person is 20 g of protein and a bowl you cannot finish quickly. The oil is measured because a Greek kitchen pour is 90 g and that is 800 calories across the pot.",
+      "swaps": [
+        "Add 100 g of rice to the pot for a heavier version.",
+        "Serve with 30 g of feta on top instead of bread."
+      ]
+    },
+    {
+      "id": "tuna-white-beans",
+      "slot": "lunch",
+      "title": "Tuna and beans, no cooking",
+      "greek": "Τόνος με φασόλια",
+      "servings": 2,
+      "time": "5 minutes",
+      "ingredients": [
+        { "food": "tuna_tin", "g": 200 },
+        { "food": "beans_white_tin", "g": 240 },
+        { "food": "onion", "g": 50 },
+        { "food": "tomato", "g": 150 },
+        { "food": "olive_oil", "g": 15 },
+        { "food": "lemon_juice", "g": 20 },
+        { "food": "herbs", "g": 2 }
+      ],
+      "method": [
+        "Drain both tins properly. The liquid is where the tinny taste lives.",
+        "Everything in a bowl, lemon and oil last.",
+        "Better after an hour in the fridge."
+      ],
+      "why": "The meal for the day you have no time and no energy. Forty grams of protein, five minutes, no pan.",
+      "swaps": [
+        "Chickpeas instead of white beans.",
+        "Add 60 g of bread if it is your training day."
+      ]
+    },
+    {
+      "id": "halloumi-bowl",
+      "slot": "lunch",
+      "title": "Halloumi bowl, portioned honestly",
+      "greek": "Χαλούμι με μέτρο",
+      "servings": 2,
+      "time": "15 minutes",
+      "ingredients": [
+        { "food": "halloumi", "g": 120 },
+        { "food": "quinoa_dry", "g": 100 },
+        { "food": "aubergine", "g": 250 },
+        { "food": "pepper_red", "g": 150 },
+        { "food": "olive_oil", "g": 20 },
+        { "food": "lemon_juice", "g": 15 },
+        { "food": "herbs", "g": 3 }
+      ],
+      "method": [
+        "Quinoa on, 15 minutes.",
+        "Aubergine and pepper in a very hot dry pan first, oil after they have coloured — aubergine drinks oil if you add it too early.",
+        "Halloumi last, dry pan, one minute a side. 60 g each, weighed."
+      ],
+      "why": "Halloumi is 321 calories per 100 g, most of it fat. It is not off the menu; it is a portion decision. Sixty grams is a proper serving and 193 calories.",
+      "swaps": [
+        "Feta instead, 60 g, no pan needed.",
+        "Add 100 g of chicken if 60 g of halloumi is not enough protein for you."
+      ]
+    },
+
+    {
+      "id": "lemon-chicken-potatoes",
+      "slot": "dinner",
+      "title": "Lemonato, rebuilt",
+      "greek": "Λεμονάτο, ξαναχτισμένο",
+      "servings": 4,
+      "time": "50 minutes",
+      "ingredients": [
+        { "food": "chicken_thigh", "g": 800 },
+        { "food": "potato", "g": 600 },
+        { "food": "olive_oil", "g": 30 },
+        { "food": "lemon_juice", "g": 80 },
+        { "food": "garlic", "g": 12 },
+        { "food": "herbs", "g": 5 }
+      ],
+      "method": [
+        "Skin off the thighs. That is about 40 calories each you will not miss under the lemon.",
+        "Potatoes in thick wedges — more crust per gram, so less oil does the same job.",
+        "One tray, 200°C, 40 minutes, 200 ml of stock in the bottom.",
+        "The 30 g of oil is weighed. A normal pour into a tray is 90 to 100 g."
+      ],
+      "why": "The Sunday dish with the oil measured instead of poured. Same taste, roughly 400 calories lighter per plate. The lemon, garlic and oregano were always the ones doing the work.",
+      "swaps": [
+        "Chicken breast instead of thigh, 700 g, and take it out ten minutes earlier.",
+        "Sweet potato instead of potato, same weight."
+      ]
+    },
+    {
+      "id": "gemista",
+      "slot": "dinner",
+      "title": "Gemista with the rice under control",
+      "greek": "Γεμιστά με μετρημένο ρύζι",
+      "servings": 4,
+      "time": "70 minutes",
+      "ingredients": [
+        { "food": "tomato", "g": 800 },
+        { "food": "pepper_red", "g": 400 },
+        { "food": "rice_dry", "g": 160 },
+        { "food": "beef_mince_5", "g": 400 },
+        { "food": "onion", "g": 150 },
+        { "food": "olive_oil", "g": 40 },
+        { "food": "herbs", "g": 6 }
+      ],
+      "method": [
+        "Hollow the tomatoes and peppers, keep the pulp.",
+        "Mince browned with the onion, then the rice and the pulp, five minutes.",
+        "Fill them three-quarters, not to the top. Rice doubles.",
+        "180°C, 60 minutes, foil for the first 40."
+      ],
+      "why": "Traditional gemista is a rice dish with a vegetable around it. Adding 400 g of mince and holding the rice at 40 g dry per person turns it into a dinner with 30 g of protein.",
+      "swaps": [
+        "Vegetarian — 400 g of lentils, already cooked, instead of the mince.",
+        "Bulgur instead of rice, same dry weight."
+      ]
+    },
+    {
+      "id": "fish-tray",
+      "slot": "dinner",
+      "title": "Fish in a tray, twenty minutes",
+      "greek": "Ψάρι στο ταψί",
+      "servings": 2,
+      "time": "20 minutes",
+      "ingredients": [
+        { "food": "sea_bass", "g": 300 },
+        { "food": "courgette", "g": 250 },
+        { "food": "tomato", "g": 200 },
+        { "food": "potato", "g": 300 },
+        { "food": "olive_oil", "g": 20 },
+        { "food": "lemon_juice", "g": 30 },
+        { "food": "herbs", "g": 3 }
+      ],
+      "method": [
+        "Potatoes sliced thin, 10 minutes head start at 200°C.",
+        "Everything else on top, fish last.",
+        "Twelve minutes. The fish is done when it stops looking glassy."
+      ],
+      "why": "White fish is the highest protein score on the whole list — about 19 g of protein per 100 calories. If a day needs rescuing, this is the dinner that does it.",
+      "swaps": [
+        "Cod, same weight, one minute longer.",
+        "Prawns, 250 g, in for the last five minutes only."
+      ]
+    },
+    {
+      "id": "pork-souvlaki",
+      "slot": "dinner",
+      "title": "Souvlaki you make at home",
+      "greek": "Σουβλάκι στο σπίτι",
+      "servings": 4,
+      "time": "25 minutes, plus marinating",
+      "ingredients": [
+        { "food": "pork_tenderloin", "g": 700 },
+        { "food": "pitta_wholemeal", "g": 240 },
+        { "food": "yoghurt_2", "g": 200 },
+        { "food": "cucumber", "g": 150 },
+        { "food": "tomato", "g": 200 },
+        { "food": "onion", "g": 80 },
+        { "food": "olive_oil", "g": 25 },
+        { "food": "lemon_juice", "g": 40 },
+        { "food": "garlic", "g": 9 },
+        { "food": "herbs", "g": 5 }
+      ],
+      "method": [
+        "Pork in lemon, oregano and half the oil for an hour, or overnight.",
+        "Tzatziki: yoghurt, grated cucumber squeezed dry, garlic, the rest of the oil.",
+        "Hot griddle, three minutes a side.",
+        "One pitta each, not two. Everything else piles on top."
+      ],
+      "why": "Tenderloin is the lean cut most people never buy — 143 calories per 100 g against 518 for pork belly. The shop version is the same meat with three times the oil and a second pitta.",
+      "swaps": [
+        "Chicken breast instead of pork, same weight.",
+        "No pitta — serve it over 200 g of salad each and save 160 calories."
+      ]
+    },
+    {
+      "id": "briam",
+      "slot": "dinner",
+      "title": "Briam with something to hold it",
+      "greek": "Μπριάμ με πρωτεΐνη",
+      "servings": 4,
+      "time": "60 minutes",
+      "ingredients": [
+        { "food": "courgette", "g": 400 },
+        { "food": "aubergine", "g": 400 },
+        { "food": "potato", "g": 400 },
+        { "food": "tomato", "g": 300 },
+        { "food": "onion", "g": 150 },
+        { "food": "olive_oil", "g": 45 },
+        { "food": "feta", "g": 120 },
+        { "food": "chicken_thigh", "g": 500 },
+        { "food": "herbs", "g": 6 }
+      ],
+      "method": [
+        "Everything sliced to the same thickness, or the courgette dissolves while the potato is still raw.",
+        "One tray, oil weighed over the top, toss with your hands.",
+        "190°C, 50 minutes. Feta crumbled over for the last 8."
+      ],
+      "why": "Briam on its own is a side pretending to be dinner — about 9 g of protein a plate. The chicken is not an optional extra here, it is what makes it a meal; the feta is what makes you want to eat it.",
+      "swaps": [
+        "Leave the chicken out and it goes back to being a side for four.",
+        "Halloumi instead of feta, 100 g."
+      ]
+    },
+    {
+      "id": "prawn-lemon-rice",
+      "slot": "dinner",
+      "title": "Prawns, lemon, rice",
+      "greek": "Γαρίδες με ρύζι λεμονάτο",
+      "servings": 2,
+      "time": "20 minutes",
+      "ingredients": [
+        { "food": "prawns", "g": 300 },
+        { "food": "rice_dry", "g": 120 },
+        { "food": "spinach", "g": 200 },
+        { "food": "garlic", "g": 9 },
+        { "food": "olive_oil", "g": 18 },
+        { "food": "lemon_juice", "g": 30 },
+        { "food": "herbs", "g": 3 }
+      ],
+      "method": [
+        "Rice on.",
+        "Garlic in the oil, thirty seconds, no colour.",
+        "Prawns two minutes, spinach in after them, lemon off the heat."
+      ],
+      "why": "Prawns are 24 g of protein per 100 g and almost no fat, which is why the oil and the rice are both weighed here. They are the two things that decide the number.",
+      "swaps": [
+        "Cod instead of prawns, 300 g, four minutes.",
+        "Cauliflower rice if you are on the lower-carb split."
+      ]
+    },
+    {
+      "id": "beef-orzo",
+      "slot": "dinner",
+      "title": "Youvetsi without the second helping",
+      "greek": "Γιουβέτσι με το ένα πιάτο",
+      "servings": 4,
+      "time": "80 minutes",
+      "ingredients": [
+        { "food": "beef_mince_5", "g": 600 },
+        { "food": "pasta_dry", "g": 240 },
+        { "food": "passata", "g": 400 },
+        { "food": "onion", "g": 150 },
+        { "food": "garlic", "g": 9 },
+        { "food": "olive_oil", "g": 25 },
+        { "food": "herbs", "g": 5 }
+      ],
+      "method": [
+        "Brown the mince hard, in batches. Crowded mince steams and tastes of nothing.",
+        "Onion, garlic, passata, 600 ml water, 45 minutes low.",
+        "Orzo in for the last 12 minutes, straight into the sauce."
+      ],
+      "why": "Sixty grams of dry pasta per person looks small in the pot and correct on the plate. The mince at 5% fat does the rest — 600 g gives every plate 36 g of protein.",
+      "swaps": [
+        "Lamb instead of beef if it is Sunday, but expect it to be heavier.",
+        "Rice instead of orzo, same dry weight."
+      ]
+    },
+    {
+      "id": "salmon-greens",
+      "slot": "dinner",
+      "title": "Salmon and greens on a plate",
+      "greek": "Σολομός με χόρτα",
+      "servings": 2,
+      "time": "18 minutes",
+      "ingredients": [
+        { "food": "salmon", "g": 260 },
+        { "food": "green_beans", "g": 300 },
+        { "food": "potato", "g": 300 },
+        { "food": "olive_oil", "g": 15 },
+        { "food": "lemon_juice", "g": 25 },
+        { "food": "herbs", "g": 3 }
+      ],
+      "method": [
+        "Potatoes boiled, then crushed with a fork, not mashed.",
+        "Salmon skin-side down in a dry non-stick pan, five minutes, one minute on the flesh.",
+        "Beans steamed. Oil and lemon over everything at the table."
+      ],
+      "why": "Salmon carries its own fat, which is why almost no oil goes in the pan. This is the plate to know by heart: one protein, one carbohydrate weighed, one vegetable you can eat freely.",
+      "swaps": [
+        "Sea bass or cod, same weight, and add 5 g more oil.",
+        "Sweet potato instead of potato."
+      ]
+    },
+
+    {
+      "id": "snack-cottage",
+      "slot": "snack",
+      "title": "The 4pm answer",
+      "greek": "Η απάντηση στις 4",
+      "servings": 1,
+      "time": "1 minute",
+      "ingredients": [
+        { "food": "cottage_cheese", "g": 150 },
+        { "food": "tomato", "g": 100 },
+        { "food": "herbs", "g": 1 }
+      ],
+      "method": [
+        "On a plate, not out of the tub.",
+        "Pepper, oregano, done."
+      ],
+      "why": "Sixteen grams of protein for about 165 calories. The afternoon cupboard raid is almost always a lunch with no protein in it, caught up with you.",
+      "swaps": ["Greek yoghurt 0%, 170 g, if you want it sweeter."]
+    },
+    {
+      "id": "snack-eggs-olives",
+      "slot": "snack",
+      "title": "Two eggs and ten olives",
+      "greek": "Δύο αυγά και δέκα ελιές",
+      "servings": 1,
+      "time": "10 minutes, boiled in advance",
+      "ingredients": [
+        { "food": "egg", "g": 110 },
+        { "food": "olives_kalamata", "g": 30 }
+      ],
+      "method": [
+        "Boil six at a time on Sunday. They keep a week.",
+        "Ten olives is a portion. The bowl is not a portion."
+      ],
+      "why": "Twelve grams of protein that needs no fridge at work and no decision at 4pm, because the decision was made on Sunday.",
+      "swaps": ["A tin of sardines instead, drained, if you want it to hold longer."]
+    },
+    {
+      "id": "snack-toast-tahini",
+      "slot": "snack",
+      "title": "Toast, tahini, banana",
+      "greek": "Ψωμί με ταχίνι και μπανάνα",
+      "servings": 1,
+      "time": "3 minutes",
+      "ingredients": [
+        { "food": "bread_wholemeal", "g": 40 },
+        { "food": "tahini", "g": 15 },
+        { "food": "banana", "g": 60 }
+      ],
+      "method": [
+        "One slice, toasted.",
+        "Tahini measured with a teaspoon — 15 g is one heaped one, and free-handed it is easily 40 g."
+      ],
+      "why": "The pre-training snack. Tahini is 595 calories per 100 g, so this one lives or dies on the spoon.",
+      "swaps": ["Peanut butter, same weight, same warning about the spoon."]
+    }
+  ]
+}

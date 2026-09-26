@@ -118,7 +118,7 @@
         /* The real cover: a screenshot of page one of the PDF, rendered by
            tools/covers.mjs. A drawn imitation drifts from the book it is
            selling, and this one had. */
-        '<img class="book-cover" src="brand/covers/' + esc(b.file.replace(/\.pdf$/, "")) +
+        '<img class="book-cover" src="/brand/covers/' + esc(b.file.replace(/\.pdf$/, "")) +
           '.png" alt="' + esc(T(b.name)) + '" width="800" height="1131" loading="lazy">' +
         '<h3>' + esc(T(b.name)) + '</h3>' +
         '<p>' + esc(T(b.blurb)) + '</p>' +
@@ -159,7 +159,7 @@
 
   /* shop-data.json is generated; if it is missing the page still renders,
      just without the counts. Better a card with no figure than a made-up one. */
-  fetch("site/shop-data.json", { cache: "no-store" })
+  fetch("/site/shop-data.json", { cache: "no-store" })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (d) { render(d && d.books); })
     .catch(function () { render(null); });

@@ -1,0 +1,77 @@
+{
+  "_note": "The 28-day habit workbook. Content only — build.mjs draws it. The daily prompts are deliberately small: a habit that takes more than about two minutes on a bad day is a habit that stops. Nothing here promises a weight-loss rate or a result; the workbook tracks behaviour, because behaviour is the only thing a person can actually do on a given Tuesday.",
+
+  "habits": [
+    { "key": "protein", "label": "Protein at every meal", "why": "The one that does the most work. A meal built around protein keeps you full for hours; one built around bread does not." },
+    { "key": "water", "label": "Water before coffee", "why": "Attaches a new habit to one you already have. Most people are mildly dehydrated by mid-morning and read it as hunger." },
+    { "key": "veg", "label": "Vegetables twice", "why": "Volume and fibre for almost no calories. Two of your meals carry something green, red or leafy." },
+    { "key": "move", "label": "Thirty minutes moving", "why": "Walking counts. It does not need to be training, it needs to happen." },
+    { "key": "kitchen", "label": "Kitchen closed after dinner", "why": "Evening eating is rarely hunger. Naming a closing time removes the decision instead of asking you to win it every night." }
+  ],
+
+  "setup": [
+    { "t": "Pick your three", "d": "Five habits are listed. Choose three. Not five — three. Everyone who picks five is choosing to fail at two of them by Thursday, and the failure spreads." },
+    { "t": "Write when, not whether", "d": "«Water before coffee» works because it names a moment that already happens. «Drink more water» does not. Write the moment next to each habit you chose." },
+    { "t": "Decide what counts", "d": "Define the smallest version that still earns a tick. Thirty minutes moving on a good day; ten minutes round the block on a bad one. A habit you can do at your worst is a habit that survives." },
+    { "t": "Put this where you will see it", "d": "On the fridge, or a photo of today's row on your phone. A workbook in a drawer is a workbook you filled in for four days." }
+  ],
+
+  "rules": [
+    { "t": "Never miss twice", "d": "The single most useful rule in this book. One missed day is an accident and changes nothing. Two in a row is the beginning of stopping. You are not aiming for a perfect month — you are aiming to never miss two days running." },
+    { "t": "Tick it the moment you do it", "d": "Not at bedtime. Filling in the day from memory turns a tracker into a diary, and diaries get abandoned first." },
+    { "t": "A bad day is data", "d": "The note column is the most valuable part of this book. «Skipped lunch, ate everything at 9pm» tells you more about what to change than any number on a scale." },
+    { "t": "Weigh once a week, not daily", "d": "Daily weight measures salt, sleep and what time you went to the toilet. Weekly, same day, same time, before eating — that is the number that means something." },
+    { "t": "Twenty-one days is a myth", "d": "The research it comes from found a range of 18 to 254 days, averaging about 66. Four weeks will not make a habit automatic. It will tell you whether the habit fits your life, which is the thing worth knowing." }
+  ],
+
+  "days": [
+    "Write down what you ate yesterday, from memory. Not to judge it — to see how much of a normal day you can actually recall.",
+    "Weigh one thing today. Anything. Just to see what the portion you would have poured actually is.",
+    "Eat your protein first at one meal. Notice whether you still want all of the rest.",
+    "Put a glass of water where you make your coffee. That is the whole task.",
+    "Find one meal you already eat that is nearly right, and name the one change that would fix it.",
+    "Eat the same breakfast as yesterday. Boring breakfasts are a feature: one less decision.",
+    "First weekly review. Turn the page.",
+
+    "Add a vegetable to a meal that has none. Frozen counts.",
+    "Go for a walk without your phone playing anything. Ten minutes is enough.",
+    "Find out what a real portion of the carbohydrate you eat most looks like. Weigh it once.",
+    "Eat before you shop, and make a list before you leave. Both, not one.",
+    "Name the time your kitchen closes tonight, before dinner. Say it out loud.",
+    "Cook one thing you can eat twice. Tomorrow is the point.",
+    "Second weekly review. Turn the page.",
+
+    "Halfway. Read your three habits again and be honest about which one is not working.",
+    "Change the habit that is not working, or change when you do it. Do not just try harder.",
+    "Have the thing you have been avoiding, weighed, as part of a normal day. Nothing is banned.",
+    "Walk somewhere you would normally drive. One trip.",
+    "Eat a meal with no screen. Notice how much faster you usually eat.",
+    "Plan tomorrow's lunch tonight. It takes two minutes and removes the worst decision of the day.",
+    "Third weekly review. Turn the page.",
+
+    "Tell one person what you are doing. Not for encouragement — so it exists outside your head.",
+    "Repeat the best meal of the last three weeks. You already know which one.",
+    "Look back at your notes. Find the pattern in the bad days. It is almost always the same pattern.",
+    "Do the smallest version of all three habits today, even if the day goes wrong. Especially then.",
+    "Cook something that takes longer than usual, on purpose. Skill compounds.",
+    "Write down which single habit you would keep if you could only keep one.",
+    "Last day. Fourth weekly review, then the last page."
+  ],
+
+  "review": {
+    "title": "End of week",
+    "questions": [
+      "How many days did you hit each habit? Count the ticks, do not estimate.",
+      "Which habit was easiest? That is the one to keep.",
+      "Which day went wrong, and what actually happened? Look at your notes, not your memory.",
+      "What is the one change for next week? One. Not a new plan."
+    ],
+    "note": "Weight is optional and goes here, once a week, same day and time, before eating. Leave it blank if you would rather not — the ticks matter more than the number, and a month of good weeks with a flat scale is still a month of good weeks."
+  },
+
+  "end": [
+    { "t": "Count them", "d": "Add up the ticks for each habit across all four weeks. The habit with the most is the one that fits your life. Keep it, stop tracking it, and let it become ordinary." },
+    { "t": "Keep one, add one", "d": "Do not start another five. Keep the one that worked, add one new habit, and run another four weeks. That is slower than you want and faster than starting again in January." },
+    { "t": "The scale is a lagging indicator", "d": "Habits move first, weight follows weeks later. If the ticks are there and the scale is not moving yet, the answer is usually to wait rather than to change everything." }
+  ]
+}
