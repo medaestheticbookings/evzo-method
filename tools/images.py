@@ -28,7 +28,7 @@ os.makedirs(OUT, exist_ok=True)
 
 # name, w, h, vertical_focus (0 = top, .5 = centre, 1 = bottom)
 JOBS = [
-    ("chickpeas",       "hero",         1100,  900, 0.50),
+    ("spread",          "hero",         1100,  900, 0.50),
     ("salad-greek",     "week-1",        660,  660, 0.50),
     ("chicken-grilled", "week-2",        660,  660, 0.50),
     ("yogurt-bowl",     "week-3",        660,  660, 0.50),

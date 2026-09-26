@@ -41,8 +41,8 @@
       "Απάντησε σε έντεκα ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα — και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
     "Takes about three minutes. Nothing to pay to see your numbers.":
       "Παίρνει περίπου τρία λεπτά. Δεν πληρώνεις τίποτα για να δεις τα νούμερά σου.",
-    "Real food, portioned to your numbers — not a diet of chicken and rice.":
-      "Αληθινό φαγητό, σε μερίδες βασισμένες στα νούμερά σου — όχι δίαιτα με κοτόπουλο και ρύζι.",
+    "The food is ordinary Mediterranean cooking. The portions are the part built for you.":
+      "Το φαγητό είναι συνηθισμένη μεσογειακή μαγειρική. Οι μερίδες είναι το κομμάτι που φτιάχνεται για σένα.",
 
     "Why the last one failed": "Γιατί απέτυχε η προηγούμενη",
     "You did not lack discipline. You had the wrong plan.":
