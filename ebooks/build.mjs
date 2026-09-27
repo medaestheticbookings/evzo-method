@@ -179,10 +179,39 @@ p { margin: 0 0 3.4mm; font-size: 10.5pt; line-height: 1.55; }
     #0B1220 78%);
 }
 
-/* Books with no photograph of their own fall back to this rather than to a
-   stock image that means nothing. It is the same layout, with the colour
-   doing the work the picture would have done. */
+/* Books with no photograph of their own get COVER ART MADE FROM THEIR OWN
+   CONTENTS instead of a stock plate of food that has nothing to do with
+   them. A workbook gets its own 28-day grid, the training book gets the
+   weekly minutes of its five plans drawn as bars, the quit guide gets its
+   ninety days as a dot field. Every figure in them is real, which is the
+   same rule the insides follow.
+
+   It is also simply better than a flat colour: at thumbnail size a texture
+   reads as a designed object where a gradient reads as a missing image. */
 .cover-plain { position: absolute; inset: 0; }
+
+/* Starts below the figure chip and stops above the title. At 26mm the
+   grid ran straight under the chip and behind the wordmark. */
+.cover-art { position: absolute; left: 0; right: 0; top: 62mm; bottom: 104mm; padding: 0 17mm; }
+
+/* 28 squares, four rows of seven, some marked. */
+.art-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4mm; height: 100%; }
+.art-grid i { border: 0.6mm solid currentColor; opacity: .30; border-radius: 0.8mm; }
+.art-grid i.on { opacity: 1; background: currentColor; }
+
+/* Five bars, one per plan, heights from the real weekly minutes. */
+.art-bars { display: flex; align-items: flex-end; gap: 6mm; height: 100%; }
+.art-bars div { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.art-bars b { display: block; background: currentColor; opacity: .92; }
+.art-bars span {
+  font-family: "Roboto Mono", monospace; font-size: 7.5pt; letter-spacing: .1em;
+  margin-top: 2.5mm; opacity: .75;
+}
+
+/* Ninety dots. The first few are filled: the days already done. */
+.art-dots { display: grid; grid-template-columns: repeat(15, 1fr); gap: 3mm; align-content: center; height: 100%; }
+.art-dots i { aspect-ratio: 1; border-radius: 50%; border: 0.6mm solid currentColor; opacity: .28; }
+.art-dots i.on { opacity: 1; background: currentColor; border-color: currentColor; }
 .cover-plain::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(11,18,32,.10) 0%, rgba(11,18,32,.72) 52%, #0B1220 88%);
@@ -414,7 +443,7 @@ const photoUrl = rel => pathToFileURL(join(HERE, "..", rel)).href;
    at A4 and seen a thousand times at about 200 pixels wide on the shop page,
    so the title is set enormous and anything that could not survive that
    reduction has been removed rather than made smaller. */
-function cover({ eyebrow, title, titleEl, sub, price, accent, figure, figureLabel, photo }) {
+function cover({ eyebrow, title, titleEl, sub, price, accent, figure, figureLabel, photo, art }) {
   const c = accent || "#FFE14D";
   const bg = photo
     ? `<div class="cover-photo" style="background-image:url('${photoUrl(photo)}')"></div>
@@ -422,7 +451,22 @@ function cover({ eyebrow, title, titleEl, sub, price, accent, figure, figureLabe
        <div class="cover-scrim"></div>`
     : `<div class="cover-plain" style="background:${c}"></div>`;
 
+  /* Cover art drawn from the book's own figures, for the books with no
+     honest photograph. Nothing decorative: the counts are the real ones. */
+  const artHtml = !art ? "" : `<div class="cover-art" style="color:#0B1220">${
+    art.kind === "grid"
+      ? `<div class="art-grid">${Array.from({ length: art.total }, (_, i) =>
+           `<i class="${i < art.done ? "on" : ""}"></i>`).join("")}</div>`
+      : art.kind === "bars"
+      ? `<div class="art-bars">${art.rows.map(r =>
+           `<div><b style="height:${Math.round((r.value / Math.max(...art.rows.map(x => x.value))) * 100)}%"></b>
+              <span>${esc(r.label)}</span></div>`).join("")}</div>`
+      : `<div class="art-dots">${Array.from({ length: art.total }, (_, i) =>
+           `<i class="${i < art.done ? "on" : ""}"></i>`).join("")}</div>`
+  }</div>`;
+
   return page(`<div class="cover-wrap">${bg}</div>
+  ${artHtml}
 
   <div class="cover-inner">
     <div class="cover-top">
@@ -743,15 +787,18 @@ function bookWorkouts() {
   const weekly = totals[plans[0].id].week;
   return [cover({
     eyebrow: "Training",
+    accent: "#E85D6B", figure: String(plans.length), figureLabel: "Plans",
+    // The five plans drawn at their real weekly minutes. There is no honest
+    // training photograph in photos/, and a plate of food would say nothing
+    // about this book -- its own numbers say everything.
+    art: { kind: "bars", rows: plans.map(pl => ({
+      label: pl.daysPerWeek + "D",
+      value: totals[pl.id].week.minutes
+    })) },
     title: "Five plans, no guesswork",
     titleEl: "Πέντε πλάνα, χωρίς μαντεψιές",
     sub: plans.length + " workout plans from three days a week to five, with the calories each session burns estimated from published MET values — and the margin of error printed next to them.",
     price: "@evzo_method",
-    band: [
-      ["Plans", String(plans.length)],
-      ["Days a week", Math.min(...plans.map(x => x.daysPerWeek)) + "\\u2013" + Math.max(...plans.map(x => x.daysPerWeek))],
-      ["Activities costed", String(Object.keys(W.activities).length)]
-    ]
   }), contents, intro, ...planPages, reference, end, shopPage("workouts", num++)].join("\n");
 }
 
@@ -857,15 +904,14 @@ function bookWorkbook() {
 
   return [cover({
     eyebrow: "The 28-day workbook",
+    accent: "#9B8CFF", figure: "28", figureLabel: "Days to write in",
+    // Its own calendar, the first week filled. No photograph states what
+    // this book is more plainly than the grid you are about to write in.
+    art: { kind: "grid", total: 28, done: 7 },
     title: "Three habits, twenty-eight days",
     titleEl: "\u03a4\u03c1\u03b5\u03b9\u03c2 \u03c3\u03c5\u03bd\u03ae\u03b8\u03b5\u03b9\u03b5\u03c2, \u03b5\u03b9\u03ba\u03bf\u03c3\u03b9\u03bf\u03ba\u03c4\u03ce \u03bc\u03ad\u03c1\u03b5\u03c2",
     sub: "A workbook to write in, not to read. Thirty seconds a day, four weekly reviews, and one honest look at which habits actually fit your life.",
     price: "@evzo_method",
-    band: [
-      ["Days", "28"],
-      ["Habits", "3 of " + H.length],
-      ["Weekly reviews", "4"]
-    ]
   }), intro, setup, ...weeks, end, shopPage("workbook", num++)].join("\n");
 }
 
@@ -1284,7 +1330,8 @@ function bookGuide(def) {
     eyebrow: def.eyebrow, title: def.coverTitle, titleEl: def.coverTitleEl,
     sub: def.coverSub, price: guidePrice(def.book), accent: def.accent,
     figure: String(def.chapters.length), figureLabel: "chapters",
-    photo: COVER_PHOTOS[def.book]
+    photo: COVER_PHOTOS[def.book],
+    art: def.art
   }), contents, safety, intro, ...chapters, end, shopPage(def.book, n++)].join("\n");
 }
 
