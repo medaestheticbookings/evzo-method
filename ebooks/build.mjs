@@ -129,12 +129,12 @@ body {
 
 h1, h2, h3, .h { font-family: "Anton", "Arial Narrow", sans-serif; font-weight: 400; letter-spacing: .01em; margin: 0; text-transform: uppercase; }
 h1 { font-size: 46pt; line-height: .96; }
-h2 { font-size: 24pt; line-height: 1.02; }
-h3 { font-size: 13pt; line-height: 1.1; }
-p { margin: 0 0 3.4mm; font-size: 10.5pt; line-height: 1.55; }
-.lede { font-size: 12pt; line-height: 1.5; color: #3B455A; }
+h2 { font-size: 27pt; line-height: 1.02; }
+h3 { font-size: 14.5pt; line-height: 1.1; }
+p { margin: 0 0 3.4mm; font-size: 12pt; line-height: 1.55; }
+.lede { font-size: 13.5pt; line-height: 1.5; color: #3B455A; }
 .dark .lede { color: #C8CEDA; }
-.label { font-family: "Roboto Mono", monospace; font-size: 7.6pt; letter-spacing: .22em; text-transform: uppercase; color: #7A849A; display: block; }
+.label { font-family: "Roboto Mono", monospace; font-size: 8.4pt; letter-spacing: .22em; text-transform: uppercase; color: #7A849A; display: block; }
 .yellow { color: #C9AE33; }
 .dark .yellow { color: #FFE14D; }
 .rule { height: 2px; background: #FFE14D; margin: 5mm 0; }
@@ -212,6 +212,10 @@ p { margin: 0 0 3.4mm; font-size: 10.5pt; line-height: 1.55; }
 .art-dots { display: grid; grid-template-columns: repeat(15, 1fr); gap: 3mm; align-content: center; height: 100%; }
 .art-dots i { aspect-ratio: 1; border-radius: 50%; border: 0.6mm solid currentColor; opacity: .28; }
 .art-dots i.on { opacity: 1; background: currentColor; border-color: currentColor; }
+
+/* Drawn cover art (the struck-out cigarette). Sized to the art box so it
+   survives the 200px shop thumbnail, which is where covers are really seen. */
+.art-svg { width: 100%; height: 100%; display: block; }
 .cover-plain::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(11,18,32,.10) 0%, rgba(11,18,32,.72) 52%, #0B1220 88%);
@@ -267,13 +271,13 @@ p { margin: 0 0 3.4mm; font-size: 10.5pt; line-height: 1.55; }
 
 /* recipe */
 .recipe-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm; }
-.recipe-head .greek { font-size: 10pt; color: #7A849A; margin-top: 1.5mm; }
+.recipe-head .greek { font-size: 11pt; color: #7A849A; margin-top: 1.5mm; }
 .time { font-family: "Roboto Mono", monospace; font-size: 8pt; letter-spacing: .14em; color: #7A849A; white-space: nowrap; text-transform: uppercase; }
 .macros { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid #DDE1E8; margin: 5mm 0 6mm; }
 .macros div { padding: 3.2mm 3mm; border-right: 1px solid #DDE1E8; }
 .macros div:last-child { border-right: 0; }
-.macros b { font-family: "Anton", sans-serif; font-size: 16pt; display: block; margin-top: 1mm; font-weight: 400; }
-.macros .k { font-family: "Roboto Mono", monospace; font-size: 6.8pt; letter-spacing: .16em; color: #7A849A; text-transform: uppercase; }
+.macros b { font-family: "Anton", sans-serif; font-size: 18pt; display: block; margin-top: 1mm; font-weight: 400; }
+.macros .k { font-family: "Roboto Mono", monospace; font-size: 7.4pt; letter-spacing: .16em; color: #7A849A; text-transform: uppercase; }
 .macros .hi b { color: #0B1220; }
 /* The cost strip, budget book only. Deliberately the same shape as the macro
    strip above it, because it is the same kind of fact: a number computed from
@@ -285,14 +289,14 @@ p { margin: 0 0 3.4mm; font-size: 10.5pt; line-height: 1.55; }
 .cost .label { font-size: 6.6pt; }
 .cols { display: grid; grid-template-columns: 62mm 1fr; gap: 9mm; }
 .ing { list-style: none; margin: 0; padding: 0; }
-.ing li { display: flex; justify-content: space-between; gap: 4mm; font-size: 10pt; padding: 1.6mm 0; border-bottom: 1px solid #EDEFF3; }
-.ing li span:last-child { font-family: "Roboto Mono", monospace; font-size: 9pt; color: #3B455A; white-space: nowrap; }
+.ing li { display: flex; justify-content: space-between; gap: 4mm; font-size: 11.5pt; padding: 1.6mm 0; border-bottom: 1px solid #EDEFF3; }
+.ing li span:last-child { font-family: "Roboto Mono", monospace; font-size: 10.5pt; color: #3B455A; white-space: nowrap; }
 ol.method { margin: 0; padding-left: 5mm; }
-ol.method li { font-size: 10.5pt; line-height: 1.5; margin-bottom: 2.6mm; }
+ol.method li { font-size: 12pt; line-height: 1.5; margin-bottom: 2.6mm; }
 .why { background: #F4F6F9; border-left: 2px solid #FFE14D; padding: 4mm 5mm; margin-top: 6mm; }
-.why p { margin: 0; font-size: 10pt; }
+.why p { margin: 0; font-size: 11.5pt; }
 .swaps { margin-top: 5mm; }
-.swaps li { font-size: 9.6pt; line-height: 1.45; margin-bottom: 1.6mm; color: #3B455A; }
+.swaps li { font-size: 11pt; line-height: 1.45; margin-bottom: 1.6mm; color: #3B455A; }
 .pagenum { position: absolute; bottom: 9mm; right: 17mm; font-family: "Roboto Mono", monospace; font-size: 8pt; color: #9AA3B4; }
 .brandfoot { position: absolute; bottom: 8mm; left: 17mm; }
 .brandfoot svg { height: 4.4mm; width: auto; display: block; }
@@ -300,7 +304,7 @@ ol.method li { font-size: 10.5pt; line-height: 1.5; margin-bottom: 2.6mm; }
 /* shop page */
 .shoplist { border-top: 1px solid #2A3550; }
 .shopitem { display: flex; justify-content: space-between; align-items: center; gap: 8mm; padding: 3.6mm 0; border-bottom: 1px solid #2A3550; }
-.shopitem h3 { font-size: 14pt; }
+.shopitem h3 { font-size: 15.5pt; }
 .shopprice { font-family: "Roboto Mono", monospace; font-size: 10pt; color: #FFE14D; white-space: nowrap; }
 .shopcta { display: flex; justify-content: space-between; align-items: center; gap: 8mm; background: #FFE14D; color: #0B1220; padding: 6mm 7mm; margin-top: 9mm; }
 .shopcta .label { color: #6E6224; }
@@ -461,6 +465,19 @@ function cover({ eyebrow, title, titleEl, sub, price, accent, figure, figureLabe
       ? `<div class="art-bars">${art.rows.map(r =>
            `<div><b style="height:${Math.round((r.value / Math.max(...art.rows.map(x => x.value))) * 100)}%"></b>
               <span>${esc(r.label)}</span></div>`).join("")}</div>`
+      : art.kind === "nosmoking"
+      // Drawn rather than dotted: the book is about stopping, and a struck-out
+      // cigarette says that at thumbnail size where ninety dots cannot.
+      ? `<svg class="art-svg" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid meet"
+              fill="none" stroke="currentColor" aria-hidden="true">
+           <rect x="18" y="62" width="196" height="30" rx="4" fill="currentColor" opacity=".92" stroke="none"/>
+           <rect x="214" y="62" width="50" height="30" rx="4" fill="currentColor" opacity=".45" stroke="none"/>
+           <line x1="214" y1="62" x2="214" y2="92" stroke-width="3" opacity=".9"/>
+           <path d="M40 46c0-12 14-12 14-24M70 46c0-12 14-12 14-24M100 46c0-12 14-12 14-24"
+                 stroke-width="4" stroke-linecap="round" opacity=".55"/>
+           <circle cx="150" cy="77" r="62" stroke-width="10" opacity=".95"/>
+           <line x1="106" y1="33" x2="194" y2="121" stroke-width="10" stroke-linecap="round" opacity=".95"/>
+         </svg>`
       : `<div class="art-dots">${Array.from({ length: art.total }, (_, i) =>
            `<i class="${i < art.done ? "on" : ""}"></i>`).join("")}</div>`
   }</div>`;

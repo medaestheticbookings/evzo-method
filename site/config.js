@@ -180,35 +180,38 @@
        book. Until they are filled in, the shop's buttons fall back to an
        email order, which is honest while fulfilment is still manual. */
     ebooks: {
-      // TODO_OWNER: the public shop URL once EVZO has a domain, e.g.
-      // "https://evzo.gr/shop". Until then the books and buttons fall back to
-      // links.instagram, which is somewhere a reader can actually arrive.
-      shopUrl: TODO,
+      // Set 27 Sep 2026. The books' back pages and the shop buttons now point
+      // here instead of the Instagram DM.
+      shopUrl: "https://evzomethod.com/shop/",
       currency: "EUR",
       singlePriceAmount: 9.99,
       singlePriceDisplay: "\u20AC9.99",
 
       books: [
         {
-          id: "workbook", coverTitle: "Three habits, twenty-eight days", name: "The 28-Day Workbook", file: "EVZO-Workbook.pdf",
+          id: "workbook",
+          category: "workouts", coverTitle: "Three habits, twenty-eight days", name: "The 28-Day Workbook", file: "EVZO-Workbook.pdf",
           eyebrow: "Build the habit",
           blurb: "A workbook to write in, not read. Three habits, thirty seconds a day, four weekly reviews — and an honest look at which habits actually fit your life.",
           stripePriceId: TODO
         },
         {
-          id: "workouts", coverTitle: "Five plans, no guesswork", name: "Workout Plans", file: "EVZO-Workout-Plans.pdf",
+          id: "workouts",
+          category: "workouts", coverTitle: "Five plans, no guesswork", name: "Workout Plans", file: "EVZO-Workout-Plans.pdf",
           eyebrow: "Training",
           blurb: "Five plans from three days a week to five, with the calories each session burns estimated from published MET values — and the margin of error printed beside them.",
           stripePriceId: TODO
         },
         {
-          id: "oats", coverTitle: "Oats, fourteen ways", name: "Oat Recipes", file: "EVZO-Oat-Recipes.pdf",
+          id: "oats",
+          category: "nutrition", coverTitle: "Oats, fourteen ways", name: "Oat Recipes", file: "EVZO-Oat-Recipes.pdf",
           eyebrow: "Breakfast",
           blurb: "Fourteen ways to eat oats that are not porridge \u2014 overnight jars, baked oats, savoury bowls, pancakes and bars.",
           stripePriceId: TODO
         },
         {
-          id: "eggs", coverTitle: "The cheapest protein there is", name: "Egg Recipes", file: "EVZO-Egg-Recipes.pdf",
+          id: "eggs",
+          category: "nutrition", coverTitle: "The cheapest protein there is", name: "Egg Recipes", file: "EVZO-Egg-Recipes.pdf",
           eyebrow: "The cheapest protein there is",
           blurb: "Fourteen egg dishes, from strapatsada to a protein box that needs no reheating. Six eggs is a dinner for four.",
           stripePriceId: TODO
@@ -219,67 +222,78 @@
            price everywhere it is shown — shop card, PDF cover and the
            "bought one at a time" comparison all read from here. */
         {
-          id: "smoking", coverTitle: "The last cigarette is not the hard part", name: "How to Stop Smoking", file: "EVZO-Quit-Smoking.pdf",
+          id: "smoking",
+          category: "habits", coverTitle: "The last cigarette is not the hard part", name: "How to Stop Smoking", file: "EVZO-Quit-Smoking.pdf",
           eyebrow: "Stopping smoking",
           blurb: "A ninety-day plan: what withdrawal actually does, why week three is the dangerous one, and the six things that double your odds.",
           priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
         },
         {
-          id: "drinking", coverTitle: "The question is not whether you can stop", name: "Drinking Less, or Not At All", file: "EVZO-Quit-Drinking.pdf",
+          id: "drinking",
+          category: "habits", coverTitle: "The question is not whether you can stop", name: "Drinking Less, or Not At All", file: "EVZO-Quit-Drinking.pdf",
           eyebrow: "Changing your drinking",
           blurb: "Counting honestly, choosing a target with a number in it, and the four situations where it actually happens. Includes when stopping suddenly is dangerous.",
           priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
         },
         {
-          id: "emotional", coverTitle: "You are not eating because you are weak", name: "Emotional Eating", file: "EVZO-Emotional-Eating.pdf",
+          id: "emotional",
+          category: "habits", coverTitle: "You are not eating because you are weak", name: "Emotional Eating", file: "EVZO-Emotional-Eating.pdf",
           eyebrow: "Eating when you are not hungry",
           blurb: "Three of the most common causes are not emotional at all. Fix those first, then the ten-minute rule for nine o'clock at night.",
           priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
         },
         {
-          id: "supplements", coverTitle: "Almost none of them", name: "The Only Supplements You Need", file: "EVZO-Supplements.pdf",
+          id: "supplements",
+          category: "habits", coverTitle: "Almost none of them", name: "The Only Supplements You Need", file: "EVZO-Supplements.pdf",
           eyebrow: "What is worth buying",
           blurb: "Four with real evidence, three that need a blood test first, and the long list you can stop buying. EVZO sells no supplements and takes no commission.",
           priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
         },
         {
-          id: "produce", coverTitle: "Everything you need to know is in your hands", name: "How to Pick Fruit and Vegetables", file: "EVZO-Picking-Produce.pdf",
+          id: "produce",
+          category: "habits", coverTitle: "Everything you need to know is in your hands", name: "How to Pick Fruit and Vegetables", file: "EVZO-Picking-Produce.pdf",
           eyebrow: "At the market",
           blurb: "Choosing by weight, smell and skin, what is in season in Greece and Cyprus month by month, and the storage that makes it last twice as long.",
           priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
         },
         {
-          id: "budget", coverTitle: "Cheap is a number, not a feeling", name: "Budget Meals", file: "EVZO-Budget-Meals.pdf",
+          id: "budget",
+          category: "nutrition", coverTitle: "Cheap is a number, not a feeling", name: "Budget Meals", file: "EVZO-Budget-Meals.pdf",
           eyebrow: "Eating well on very little",
           blurb: "Twelve Greek and Cypriot plates with the cost of every serving printed on the page — from 45 cents to just over two euro.",
           stripePriceId: TODO
         },
         {
-          id: "bowls", coverTitle: "One bowl, thirty grams", name: "High-Protein Bowls", file: "EVZO-Protein-Bowls.pdf",
+          id: "bowls",
+          category: "nutrition", coverTitle: "One bowl, thirty grams", name: "High-Protein Bowls", file: "EVZO-Protein-Bowls.pdf",
           eyebrow: "Lunch",
           blurb: "Mediterranean bowls built around the protein first. Most of them one pan, all of them assembled in minutes.",
           stripePriceId: TODO
         },
         {
-          id: "dinners", coverTitle: "Dinners that hold", name: "High-Protein Dinners", file: "EVZO-Protein-Dinners.pdf",
+          id: "dinners",
+          category: "nutrition", coverTitle: "Dinners that hold", name: "High-Protein Dinners", file: "EVZO-Protein-Dinners.pdf",
           eyebrow: "Dinner",
           blurb: "Greek and Cypriot dinners rebuilt so the protein is the point \u2014 including the ones you were told to give up.",
           stripePriceId: TODO
         },
         {
-          id: "fatloss", coverTitle: "Full plates, fewer calories", name: "Fat Loss Dishes", file: "EVZO-Fat-Loss-Dishes.pdf",
+          id: "fatloss",
+          category: "nutrition", coverTitle: "Full plates, fewer calories", name: "Fat Loss Dishes", file: "EVZO-Fat-Loss-Dishes.pdf",
           eyebrow: "Losing weight",
           blurb: "Meals built for volume, sorted by calories. Full plates, because hunger is what ends diets.",
           stripePriceId: TODO
         },
         {
-          id: "gain", coverTitle: "Eating more, on purpose", name: "Weight Gain", file: "EVZO-Weight-Gain.pdf",
+          id: "gain",
+          category: "nutrition", coverTitle: "Eating more, on purpose", name: "Weight Gain", file: "EVZO-Weight-Gain.pdf",
           eyebrow: "Gaining weight",
           blurb: "Calorie-dense meals and shakes for people who genuinely struggle to gain, built on real food.",
           stripePriceId: TODO
         },
         {
-          id: "healthy", coverTitle: "Real food, weighed once", name: "Healthy Recipes", file: "EVZO-Healthy-Recipes.pdf",
+          id: "healthy",
+          category: "nutrition", coverTitle: "Real food, weighed once", name: "Healthy Recipes", file: "EVZO-Healthy-Recipes.pdf",
           eyebrow: "The starter collection",
           blurb: "The collection offered at checkout. Breakfasts, lunches, dinners and snacks with every figure on the page.",
           stripePriceId: TODO

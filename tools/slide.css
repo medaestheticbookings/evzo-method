@@ -318,3 +318,71 @@ body.story{height:1920px}
   display:block;font-size:18px;line-height:1.28;color:var(--bone-dim);
   margin-top:7px;max-width:250px;
 }
+
+/* ---------- square (1080×1080, 1:1) — feed ads ----------
+   Same brand furniture, tighter vertical room, so the type scale steps down
+   rather than the padding collapsing. */
+body.square{height:1080px}
+.slide.square{height:1080px;padding:64px var(--pad)}
+.slide.square .bd{padding:26px 0}
+.slide.square .hd{padding-bottom:20px}
+.slide.square h1{font-size:74px}
+.slide.square h1.sm{font-size:60px}
+.slide.square .stmt{font-size:62px}
+.slide.square p{font-size:27px;margin-top:22px}
+.slide.square .eyebrow{font-size:15px;margin-bottom:15px}
+.slide.square .items{margin-top:20px}
+.slide.square .item{padding:17px 0}
+.slide.square .pull{padding:24px 26px;margin-top:24px}
+.slide.square .pull p{font-size:26px}
+
+/* An ad is one frame — a counter and a swipe cue both lie about that. */
+.slide.square .hd .ctr{display:none}
+
+/* ---------- tick / cross list ---------- */
+.checks{display:flex;flex-direction:column;gap:0;margin-top:30px}
+.chk{display:grid;grid-template-columns:58px 1fr;gap:22px;align-items:baseline;
+     padding:24px 0;border-bottom:1px solid var(--line-soft)}
+.chk:first-child{border-top:1px solid var(--line-soft)}
+.chk .mk{font-size:36px;line-height:1;font-weight:700}
+.chk.yes .mk{color:var(--olive)}
+.chk.no .mk{color:#FF8A6B}
+.chk .tx{font-size:31px;line-height:1.28;color:var(--bone)}
+.chk.no .tx{color:var(--bone-dim)}
+.slide.square .chk{padding:17px 0;grid-template-columns:48px 1fr;gap:18px}
+.slide.square .chk .tx{font-size:27px}
+.slide.square .chk .mk{font-size:30px}
+
+/* ---------- direct-response offer frame ---------- */
+.pin{display:table;align-self:flex-start;font-family:var(--mono);font-weight:500;font-size:17px;
+     letter-spacing:.18em;text-transform:uppercase;color:var(--ink);
+     background:var(--olive);padding:8px 15px 7px;margin-bottom:34px}
+.offer-body{display:flex;gap:40px;align-items:flex-start}
+.offer-copy{flex:1;min-width:0}
+.offer-copy h2{font-size:56px;line-height:1.02}
+.gr .offer-copy h2{font-family:var(--greek);font-weight:800;font-size:50px;line-height:1.08;letter-spacing:-.01em}
+.kicker{font-family:var(--mono);font-size:18px;letter-spacing:.1em;text-transform:uppercase;
+        color:var(--bone-dim);margin-top:22px;max-width:none;line-height:1.5}
+.offer-price{display:flex;align-items:baseline;gap:18px;margin-top:34px;flex-wrap:wrap}
+.offer-price .free{font-family:var(--display);font-size:82px;line-height:1;color:var(--olive)}
+.gr .offer-price .free{font-family:var(--greek);font-weight:800;font-size:70px}
+.offer-price .pnote{font-family:var(--mono);font-size:19px;letter-spacing:.08em;color:var(--bone-dim)}
+.incl{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:11px}
+.incl li{font-size:27px;line-height:1.3;color:var(--bone);padding-left:34px;position:relative}
+.incl li::before{content:"✓";position:absolute;left:0;color:var(--olive);font-weight:700}
+.spots{font-family:var(--mono);font-size:19px;letter-spacing:.12em;text-transform:uppercase;
+       color:var(--bone);margin-top:34px;max-width:none}
+.deadline{font-family:var(--display);font-size:34px;letter-spacing:.02em;text-transform:uppercase;
+          color:var(--olive);margin-top:14px;max-width:none}
+.gr .deadline{font-family:var(--greek);font-weight:800;font-size:30px}
+.portrait{width:340px;height:340px;border-radius:50%;background-size:cover;
+          background-position:center;flex:none;border:3px solid var(--olive)}
+.slide.square .offer-copy h2{font-size:46px}
+.slide.square .gr .offer-copy h2,.gr .slide.square .offer-copy h2{font-size:42px}
+.slide.square .offer-price .free{font-size:66px}
+.slide.square .incl li{font-size:24px}
+.slide.square .kicker{font-size:16px;margin-top:16px}
+.slide.square .portrait{width:250px;height:250px}
+.slide.square .pin{margin-bottom:22px}
+.slide.square .spots{margin-top:24px;font-size:17px}
+.slide.square .deadline{font-size:28px}

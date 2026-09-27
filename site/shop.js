@@ -26,7 +26,14 @@
   /* Where a buy button goes. Stripe is not connected yet and fulfilment is
      manual, so rather than a dead button or a fake checkout the fallback is a
      pre-filled email — which is the process that actually exists today. */
-  function buyHref(label) {
+  /* Order of preference:
+       1. the book's own Stripe Payment Link  (book.checkoutUrl)
+       2. the shop-wide checkout              (ebooks.shopUrl)
+       3. a pre-filled order email            — the process that exists today
+     Pass the book object to get (1); a bare label still works for the bundle. */
+  function buyHref(book) {
+    var label = typeof book === "string" ? book : book.name;
+    if (typeof book === "object" && CFG.isSet(book.checkoutUrl)) return esc(book.checkoutUrl);
     if (CFG.isSet(SHOP.shopUrl)) return esc(SHOP.shopUrl);
     var to = CFG.business && CFG.business.supportEmail;
     if (!to) return esc(CFG.links.instagram);
@@ -72,10 +79,9 @@
     $("bundle-note").textContent = T(bundle.blurb);
     $("bundle-buy").textContent = T("Get the whole library");
     $("bundle-buy").href = buyHref(bundle.name);
-    if ($("bundle-alt")) {
-      $("bundle-alt").innerHTML = esc(T("Or message")) + ' <a href="' + esc(CFG.links.instagram) +
-        '" target="_blank" rel="noopener noreferrer">@evzo_method</a> ' + esc(T("to order"));
-    }
+    // The "or message us to order" fallback was removed 27 Sep 2026: the buy
+    // button is the only route, so the card does not offer a second one.
+    if ($("bundle-alt")) $("bundle-alt").remove();
 
     // Stated as a comparison with buying them separately, which is what it is.
     // It is deliberately NOT presented as a former price: nothing has ever
@@ -89,6 +95,42 @@
     }, 0);
     $("bundle-compare").textContent =
       T("Bought one at a time") + ": €" + separately.toFixed(2) + ".";
+
+    /* --- category tabs ---------------------------------------------------
+       Fifteen covers in one grid is a wall. The tabs are built from the
+       categories actually present, so a category with no books never appears
+       and adding one to config.js is the only step needed. */
+    var CATS = [
+      ["all",       "All"],
+      ["nutrition", "Nutrition"],
+      ["workouts",  "Workouts"],
+      ["habits",    "Habits"]
+    ];
+    var tabsHost = $("shelf-tabs");
+    if (tabsHost) {
+      var present = CATS.filter(function (c) {
+        return c[0] === "all" || books.some(function (b) { return b.category === c[0]; });
+      });
+      tabsHost.innerHTML = present.map(function (c, i) {
+        return '<button type="button" class="shelf-tab" data-cat="' + c[0] + '"' +
+               ' aria-pressed="' + (i === 0) + '">' + esc(T(c[1])) + '</button>';
+      }).join("");
+
+      if (!tabsHost.dataset.bound) {
+        tabsHost.dataset.bound = "1";
+        tabsHost.addEventListener("click", function (e) {
+          var btn = e.target.closest(".shelf-tab");
+          if (!btn) return;
+          var cat = btn.dataset.cat;
+          [].forEach.call(tabsHost.querySelectorAll(".shelf-tab"), function (b) {
+            b.setAttribute("aria-pressed", String(b === btn));
+          });
+          [].forEach.call($("shelf").querySelectorAll(".book"), function (card) {
+            card.hidden = !(cat === "all" || card.dataset.cat === cat);
+          });
+        });
+      }
+    }
 
     /* --- the shelf --- */
     $("shelf").innerHTML = books.map(function (b) {
@@ -114,7 +156,8 @@
         '</div>';
       }
 
-      return '<article class="book">' +
+      return '<article class="book" data-cat="' + esc(b.category || "") +
+             '" data-buy="' + buyHref(b) + '">' +
         /* The real cover: a screenshot of page one of the PDF, rendered by
            tools/covers.mjs. A drawn imitation drifts from the book it is
            selling, and this one had. */
@@ -125,12 +168,23 @@
         stat +
         '<div class="book-buy">' +
           '<span class="book-price">' + esc(b.priceDisplay || price) + '</span>' +
-          '<a class="btn" href="' + buyHref(b.name) + '">' + esc(T("Buy")) + '</a>' +
+          '<a class="btn" href="' + buyHref(b) + '">' + esc(T("Buy")) + '</a>' +
         '</div>' +
-        '<p class="buy-alt">' + esc(T("Or message")) + ' <a href="' + esc(CFG.links.instagram) +
-          '" target="_blank" rel="noopener noreferrer">@evzo_method</a> ' + esc(T("to order")) + '</p>' +
       '</article>';
     }).join("");
+
+    /* The whole card is clickable, not just the button — people click covers.
+       Delegated, so it survives re-render; ignores clicks that already landed
+       on a link so the Buy button keeps its own behaviour. */
+    var grid = $("shelf");
+    if (grid && !grid.dataset.clickBound) {
+      grid.dataset.clickBound = "1";
+      grid.addEventListener("click", function (e) {
+        if (e.target.closest("a")) return;
+        var card = e.target.closest(".book[data-buy]");
+        if (card) window.location.href = card.dataset.buy;
+      });
+    }
 
     /* --- the questions people actually ask --- */
     var ful = CFG.fulfilment || {};

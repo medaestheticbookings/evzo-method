@@ -69,7 +69,10 @@ mark{background:var(--yellow);color:var(--ink);padding:1px 6px;font-weight:600}
 
 h1,h2,h3{text-wrap:balance;margin:0}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,6.4vw,58px);line-height:1;text-transform:uppercase}
-h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4.8vw,40px);line-height:1.02;text-transform:uppercase}
+/* Section titles carry the brand yellow — set 27 Sep 2026. The accent is the
+   one thing every EVZO surface shares, so the headings use it rather than
+   plain white. */
+h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4.8vw,40px);line-height:1.02;text-transform:uppercase;color:var(--yellow)}
 h3{font-family:var(--display);font-weight:400;font-size:clamp(20px,3vw,25px);line-height:1.06;text-transform:uppercase}
 
 section{padding-block:clamp(44px,7vw,72px)}
@@ -722,3 +725,19 @@ a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
   background: var(--warn); color: var(--ink); font-family: var(--mono); font-size: 12px;
   letter-spacing: .1em; text-transform: uppercase; padding: 10px 14px; margin-bottom: 16px;
 }
+
+/* ---- shop category tabs ---------------------------------------------------
+   Added 27 Sep 2026. Filters the shelf client-side; every book stays in the
+   DOM and is only hidden, so nothing has to re-render and the cards keep
+   their click handler. */
+.shelf-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.shelf-tab{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+  background:transparent;color:var(--muted);
+  border:1px solid var(--line);padding:9px 16px;cursor:pointer;
+  transition:color .18s ease,border-color .18s ease,background-color .18s ease;
+}
+.shelf-tab:hover{color:var(--bone);border-color:var(--yellow)}
+.shelf-tab[aria-pressed="true"]{background:var(--yellow);border-color:var(--yellow);
+  color:var(--ink);font-weight:500}
+.shelf-tab:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}

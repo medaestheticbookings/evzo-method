@@ -225,6 +225,54 @@ const TYPES = {
     <span style="display:block;width:160px;height:6px;background:#FFE14D;margin:30px auto"></span>
     <span style="display:block;font-family:${s.lang === "el" ? "var(--greek);font-weight:800" : "var(--display)"};font-size:${s.lang === "el" ? 130 : 170}px;line-height:.9;color:#FFE14D;text-transform:uppercase;text-align:center;max-width:820px;letter-spacing:.01em">${esc(s.word).split(String.fromCharCode(10)).join("<br>")}</span>`,
 
+  // Tick/cross list. No numbers — these are pillars, not a sequence.
+  checks: (s) => `
+    ${s.eyebrow ? `<span class="eyebrow">${esc(s.eyebrow)}</span>` : ""}
+    <h2>${rich(s.headline)}</h2>
+    <div class="checks">
+      ${s.rows
+        .map(
+          (r) => `<div class="chk ${r.ok === false ? "no" : "yes"}">
+            <span class="mk">${r.ok === false ? "✕" : "✓"}</span>
+            <span class="tx">${rich(r.text)}</span>
+          </div>`
+        )
+        .join("")}
+    </div>
+    ${s.foot ? `<p class="wide sm">${rich(s.foot)}</p>` : ""}`,
+
+  // Direct-response offer frame: pin, fault-reversal headline, what you get,
+  // then the two lines that create urgency. Portrait is optional — a face
+  // lifts this format, but only a real one.
+  offer: (s) => `
+    <span class="pin">${esc(s.pin || "")}</span>
+    <div class="offer-body">
+      <div class="offer-copy">
+        <h2>${rich(s.headline)}</h2>
+        ${s.kicker ? `<p class="kicker">${rich(s.kicker)}</p>` : ""}
+        <div class="offer-price">
+          <span class="free">${esc(s.price || "ΔΩΡΕΑΝ")}</span>
+          ${s.priceNote ? `<span class="pnote">${esc(s.priceNote)}</span>` : ""}
+        </div>
+        ${
+          s.includes
+            ? `<ul class="incl">${s.includes
+                .map((i) => `<li>${rich(i)}</li>`)
+                .join("")}</ul>`
+            : ""
+        }
+        ${s.spots ? `<p class="spots">${esc(s.spots)}</p>` : ""}
+        ${s.deadline ? `<p class="deadline">${esc(s.deadline)}</p>` : ""}
+      </div>
+      ${
+        s.portrait
+          ? `<div class="portrait" style="background-image:url('file:///${path
+              .join(ROOT, s.portrait)
+              .replace(/\\/g, "/")}')"></div>`
+          : ""
+      }
+    </div>`,
+
   // Closing slide. Asks for exactly one thing.
   cta: (s) => `
     ${s.eyebrow ? `<span class="eyebrow">${esc(s.eyebrow)}</span>` : ""}
@@ -241,21 +289,26 @@ function page(slide, post, index, total, format) {
 
   const last = index === total - 1;
   const story = format === "story";
-  const cue = slide.cue || (story ? "" : last ? "SAVE" : "SWIPE →");
+  const square = format === "square";
+  const cue = slide.cue !== undefined ? slide.cue : story || square ? "" : last ? "SAVE" : "SWIPE →";
 
   // A photo slide paints the image full-bleed behind everything, so the path
   // has to be absolute: the page itself is written to build/_tmp.
+  // photoPos / photoZoom reframe the shot — used to push a brand label or a
+  // distracting element out of frame rather than lose the photograph.
   const photo = slide.photo
     ? `<div class="photo-bg" style="background-image:url('file:///${path
         .join(ROOT, slide.photo)
-        .replace(/\\/g, "/")}')"></div>`
+        .replace(/\\/g, "/")}')${slide.photoPos ? `;background-position:${slide.photoPos}` : ""}${
+        slide.photoZoom ? `;background-size:${slide.photoZoom}` : ""
+      }"></div>`
     : "";
 
   return `<!doctype html>
 <html lang="${slide.lang === "el" ? "el" : "en"}">
 <head><meta charset="utf-8"><style>${CSS}</style></head>
-<body${story ? ' class="story"' : ""}>
-<div class="slide${story ? " story" : ""}${slide.lang === "el" ? " gr" : ""}${slide.type === "hero" ? " poster" : ""}${slide.type === "hlcover" ? " cover" : ""}${photo ? " photoslide" : ""}${slide.type === "portion" || slide.type === "photohero" ? " card" : ""}">
+<body${story ? ' class="story"' : square ? ' class="square"' : ""}>
+<div class="slide${story ? " story" : ""}${square ? " square" : ""}${slide.lang === "el" ? " gr" : ""}${slide.type === "hero" ? " poster" : ""}${slide.type === "hlcover" ? " cover" : ""}${photo ? " photoslide" : ""}${slide.type === "portion" || slide.type === "photohero" ? " card" : ""}">
   ${photo}
   <div class="hd">
     <span class="mark">EVZO</span>
@@ -316,7 +369,7 @@ async function main() {
         page(slide, post, i, total, format),
         file,
         path.join(tmp, `${post.id}-${i}.html`),
-        format === "story" ? 1920 : 1440
+        format === "story" ? 1920 : format === "square" ? 1080 : 1440
       );
       n++;
       process.stdout.write(`  ${path.relative(ROOT, file)}\n`);
@@ -325,7 +378,7 @@ async function main() {
     for (let i = 0; i < jobs.length; i += 4) {
       await Promise.all(jobs.slice(i, i + 4).map((j) => j()));
     }
-    console.log(`${post.id} — ${total} ${format === "story" ? "stories" : "slides"}`);
+    console.log(`${post.id} — ${total} ${format === "story" ? "stories" : "slides"} (${format})`);
   }
 
   if (!process.env.KEEP_TMP) rmSync(tmp, { recursive: true, force: true });
