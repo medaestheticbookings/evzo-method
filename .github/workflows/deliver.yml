@@ -1,0 +1,47 @@
+# EVZO ebook delivery. Checks Stripe for new sales and emails the PDFs.
+# The script and how it works: delivery/deliver.mjs
+name: Deliver ebooks
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"      # GitHub's minimum; busy days it can run late
+  workflow_dispatch:            # "Run workflow" button, to deliver right now
+
+# One run at a time, so two runs can never email the same sale.
+concurrency:
+  group: deliver
+  cancel-in-progress: false
+
+permissions:
+  contents: write               # to commit delivery/delivered.txt
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Send new orders
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EVZO_PDF_KEY: ${{ secrets.EVZO_PDF_KEY }}
+        run: |
+          if [ -z "$STRIPE_SECRET_KEY" ]; then echo "Stripe not connected yet, nothing to do."; exit 0; fi
+          node delivery/deliver.mjs
+
+      - name: Remember what was sent
+        if: always()
+        run: |
+          if [ -z "$(git status --porcelain delivery/delivered.txt)" ]; then exit 0; fi
+          git config user.name "evzo-delivery"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add delivery/delivered.txt
+          git commit -m "Delivered ebook orders [skip ci]"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          exit 1

@@ -2,7 +2,7 @@
  * site/config.js, plus one for the whole-library bundle, then writes each
  * link into config.js as `checkoutUrl` so the shop's Buy buttons use it.
  *
- *   STRIPE_SECRET_KEY=sk_test_... WORKER_URL=https://evzo-delivery.<you>.workers.dev node setup-stripe.mjs
+ *   node setup-stripe.mjs      (reads STRIPE_SECRET_KEY from .dev.vars)
  *
  * Safe to re-run: it remembers what it made in stripe-links.json and only
  * creates a new price/link when a book's price has changed. Run it with a
@@ -18,10 +18,13 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const CONFIG_PATH = join(HERE, "..", "site", "config.js");
 const CONFIG = createRequire(import.meta.url)(CONFIG_PATH);
 
-const KEY = process.env.STRIPE_SECRET_KEY;
-const WORKER = (process.env.WORKER_URL || "").replace(/\/$/, "");
-if (!/^sk_(test|live)_/.test(KEY || "")) exit("Set STRIPE_SECRET_KEY to your sk_test_... or sk_live_... key.");
-if (!/^https:\/\//.test(WORKER)) exit("Set WORKER_URL to the deployed Worker, e.g. https://evzo-delivery.you.workers.dev");
+const VARS = join(HERE, ".dev.vars");
+const KEY = process.env.STRIPE_SECRET_KEY ||
+  ((existsSync(VARS) ? readFileSync(VARS, "utf8") : "").match(/^STRIPE_SECRET_KEY=(.+)$/m) || [])[1];
+if (!/^sk_(test|live)_/.test((KEY || "").trim())) exit("Put STRIPE_SECRET_KEY=sk_test_... or sk_live_... in .dev.vars.");
+// After paying, buyers land on the site's own thank-you page. The PDFs follow
+// by email from deliver.mjs within a few minutes.
+const THANKS = CONFIG.site.baseUrl.replace(/\/$/, "") + "/shop/thanks.html";
 const MODE = KEY.startsWith("sk_live_") ? "live" : "test";
 const STATE_PATH = join(HERE, `stripe-links.${MODE}.json`);
 const state = existsSync(STATE_PATH) ? JSON.parse(readFileSync(STATE_PATH, "utf8")) : {};
@@ -41,8 +44,8 @@ const products = [
 // Shown on the Stripe checkout page, beside the Pay button. EU law: a digital
 // download starts immediately only with the buyer's express consent and their
 // acknowledgement that the 14-day withdrawal right is lost.
-const WAIVER = "By paying you ask for immediate access to the PDF and acknowledge that you lose " +
-  "your 14-day right of withdrawal once the download is available.";
+const WAIVER = "By paying you ask for the PDF to be emailed to you straight away and acknowledge " +
+  "that you lose your 14-day right of withdrawal once it has been sent.";
 
 for (const p of products) {
   const cents = Math.round(p.amount * 100);
@@ -69,7 +72,7 @@ for (const p of products) {
     const link = await api("POST", "payment_links", {
       "line_items[0][price]": price.id, "line_items[0][quantity]": 1,
       "after_completion[type]": "redirect",
-      "after_completion[redirect][url]": WORKER + "/thanks?session_id={CHECKOUT_SESSION_ID}",
+      "after_completion[redirect][url]": THANKS,
       "custom_text[submit][message]": WAIVER,
       allow_promotion_codes: "true",
       "metadata[evzo_id]": p.id
@@ -104,7 +107,7 @@ if (MODE === "live" || process.argv.includes("--write-test-links")) {
 async function api(method, path, fields) {
   const res = await fetch("https://api.stripe.com/v1/" + path, {
     method,
-    headers: { Authorization: "Bearer " + KEY, "Content-Type": "application/x-www-form-urlencoded" },
+    headers: { Authorization: "Bearer " + KEY.trim(), "Content-Type": "application/x-www-form-urlencoded" },
     body: fields ? new URLSearchParams(fields) : undefined
   });
   const json = await res.json();

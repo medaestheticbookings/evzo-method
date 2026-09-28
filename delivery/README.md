@@ -1,101 +1,62 @@
-# EVZO — automatic PDF delivery
+# EVZO, automatic PDF delivery
 
-Customer taps **Buy** → pays on Stripe → lands on a page with a **Download PDF**
-button, and gets the same links by email within seconds. There are no manual
-steps, and this works for every book in the shop and for the whole-library bundle.
-
-```
-shop Buy button ──► Stripe Payment Link ──► paid
-                                             ├─► redirect  → Worker /thanks  → Download buttons (instant)
-                                             └─► webhook   → Worker /webhook → email with links (Resend)
-Download links → Worker /dl → PDF from a private R2 bucket (signed link, valid 72 h)
-```
-
-Files: `worker.js` (the whole backend), `setup-stripe.mjs` (creates every product,
-price and Payment Link from `site/config.js`), `upload-pdfs.mjs` (puts the PDFs
-in the private bucket).
-
-## One-time setup (about 20 minutes)
-
-You need three free accounts: **Stripe**, **Cloudflare** and **Resend**.
-
-### 1. Cloudflare — deploy the Worker
+Customer taps **Buy** → pays on Stripe → lands on `evzomethod.com/shop/thanks.html`
+→ within about 5–15 minutes gets an email from `books@evzomethod.com` with the
+PDF(s) **attached**. No server and nothing to pay for except Stripe's card fee.
 
 ```
-cd C:\Users\marco\evzo\delivery
-npm install
-npx wrangler login
-npx wrangler r2 bucket create evzo-pdfs
-npm run upload
-npx wrangler deploy
+shop Buy button ──► Stripe Payment Link ──► paid ──► redirect to shop/thanks.html
+GitHub Actions, every 5 min ──► deliver.mjs ──► asks Stripe for new paid sessions
+                                             └─► emails the PDFs via Resend
 ```
 
-`deploy` prints the Worker address, e.g. `https://evzo-delivery.<you>.workers.dev`.
-You need it in steps 3 and 4.
+| File | Job |
+|---|---|
+| `deliver.mjs` | the whole delivery; run by `.github/workflows/deliver.yml` |
+| `encrypt-pdfs.mjs` | encrypts the PDFs into `books/*.enc` (the repo is public) |
+| `set-secrets.mjs` | copies the keys from `.dev.vars` into GitHub secrets, unprinted |
+| `setup-stripe.mjs` | creates every Stripe product, price and Payment Link from `site/config.js` |
+| `delivered.txt` | hashed list of orders already sent, committed by the workflow |
+| `.dev.vars` | the secret keys on this PC. Git-ignored, never commit it |
 
-### 2. Resend — the email sender
+Which PDFs each purchase unlocks lives in Stripe product metadata (`evzo_files`),
+written by `setup-stripe.mjs`, so `site/config.js` stays the only catalogue.
 
-1. resend.com → **Domains → Add domain** → `evzomethod.com`.
-2. It shows 3–4 DNS records. Add them in **Namecheap → evzomethod.com → Advanced DNS**.
-   Wait until Resend shows **Verified**.
-3. **API Keys → Create** → copy it.
+## Status (28 Sep 2026)
 
-### 3. Secrets
+- Resend: done. `evzomethod.com` verified, key in `.dev.vars` and GitHub.
+- PDFs: encrypted into `books/`, key in `.dev.vars` and GitHub.
+- **Stripe: not connected.** Until `STRIPE_SECRET_KEY` is a GitHub secret the
+  workflow runs and does nothing.
 
-```
-npx wrangler secret put STRIPE_SECRET_KEY        # sk_test_... for now
-npx wrangler secret put RESEND_API_KEY
-npx wrangler secret put DOWNLOAD_SIGNING_SECRET  # any long random text; never change it once live
-```
+## Connecting Stripe
 
-Stripe → **Developers → Webhooks → Add endpoint**:
-- URL: `https://evzo-delivery.<you>.workers.dev/webhook`
-- Events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`
-
-Copy its **signing secret** (`whsec_...`) and add it:
-
-```
-npx wrangler secret put STRIPE_WEBHOOK_SECRET
-```
-
-### 4. Create the payment links (test mode first)
-
-PowerShell:
-
-```
-$env:STRIPE_SECRET_KEY="sk_test_..."; $env:WORKER_URL="https://evzo-delivery.<you>.workers.dev"; npm run stripe
-```
-
-Open any link it prints, pay with card `4242 4242 4242 4242` (any future
-date, any CVC), and use your own email. You should see the download page and
-get the email. `npm run logs` shows what the Worker is doing live.
-
-### 5. Go live
-
-Test mode and live mode are separate in Stripe, so repeat with live keys:
-
-1. `npx wrangler secret put STRIPE_SECRET_KEY` → `sk_live_...`
-2. Add the same webhook endpoint in **live** mode, then
-   `npx wrangler secret put STRIPE_WEBHOOK_SECRET` → the live `whsec_...`
-3. `$env:STRIPE_SECRET_KEY="sk_live_..."; npm run stripe`. In live mode this
-   also **writes every link into `site/config.js`** as `checkoutUrl`, and the
-   shop's Buy buttons pick them up.
-4. Commit and push the site as usual.
-
-Then set `fulfilment.mode` to `"automatic"` in `site/config.js`, because
-delivery really is instant now.
+1. Put the key in `.dev.vars` as `STRIPE_SECRET_KEY=sk_test_...` (test first).
+2. `node set-secrets.mjs`
+3. `node setup-stripe.mjs`, open a printed link, pay with `4242 4242 4242 4242`,
+   any future date, any CVC, your own email.
+4. GitHub → Actions → **Deliver ebooks** → **Run workflow** (or wait 5 minutes).
+   The email should arrive with the PDF attached.
+5. Go live: repeat 1–3 with `sk_live_...`. In live mode `setup-stripe.mjs` also
+   writes every link into `site/config.js` as `checkoutUrl`; commit and push.
 
 ## Day to day
 
 | Change | Run |
 |---|---|
-| Rebuilt the PDFs | `node ebooks/build.mjs` then `npm run upload` |
-| Changed a price or added a book in `config.js` | `npm run stripe` (live key), then push the site |
-| Customer says the link expired | Stripe → Payments → the payment → copy the session ID → send them `https://evzo-delivery.<you>.workers.dev/thanks?session_id=cs_live_...`, which gives them fresh buttons |
+| Rebuilt the PDFs | `node ebooks/build.mjs`, `node delivery/encrypt-pdfs.mjs`, commit, push |
+| Changed a price or added a book in `config.js` | `node delivery/setup-stripe.mjs` (live key), encrypt, push |
+| Customer never got it | Actions tab → latest **Deliver ebooks** run log; resend by hand from Resend → Emails |
+| Send right now instead of waiting | Actions → Deliver ebooks → Run workflow |
+
+A failed delivery turns the Actions run red, and GitHub emails the account owner.
+
+GitHub pauses scheduled workflows in a repo with no commits for 60 days. The
+site gets pushed far more often than that, but if sales ever stop arriving,
+check Actions → Deliver ebooks is still enabled.
 
 ## Not covered
 
-The **personalised 28-day meal guide (€39.99)** is not a ready-made PDF. It is
-built for each person from their answers, so there is nothing on file to send
-the moment they pay. It stays manual until plan generation exists (see
-`site/INTEGRATION.md` §3–4).
+The **personalised 28-day meal guide (€39.99)** is built per person from their
+answers, so there is no ready-made PDF to send. It stays manual until plan
+generation exists (see `site/INTEGRATION.md` §3–4).

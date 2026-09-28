@@ -3,12 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy",
-    "upload": "node upload-pdfs.mjs",
-    "stripe": "node setup-stripe.mjs",
-    "logs": "wrangler tail"
-  },
-  "devDependencies": {
-    "wrangler": "^4"
+    "deliver": "node deliver.mjs",
+    "encrypt": "node encrypt-pdfs.mjs",
+    "secrets": "node set-secrets.mjs",
+    "stripe": "node setup-stripe.mjs"
   }
 }
