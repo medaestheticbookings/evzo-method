@@ -1,0 +1,19 @@
+# EVZO PDF delivery — Cloudflare Worker. See README.md for the one-time setup.
+name = "evzo-delivery"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+# Must be an address on a domain verified in Resend (evzomethod.com).
+MAIL_FROM = "EVZO <books@evzomethod.com>"
+SUPPORT_EMAIL = "evzo.method@outlook.com"
+SITE_URL = "https://evzomethod.com"
+LINK_HOURS = "72"
+
+# The PDFs. Private: nothing in this bucket is public, the Worker is the only way in.
+[[r2_buckets]]
+binding = "PDFS"
+bucket_name = "evzo-pdfs"
+
+[observability]
+enabled = true

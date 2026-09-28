@@ -78,7 +78,7 @@
     $("bundle-price").textContent = bundle.priceDisplay + " " + T("for all") + " " + books.length;
     $("bundle-note").textContent = T(bundle.blurb);
     $("bundle-buy").textContent = T("Get the whole library");
-    $("bundle-buy").href = buyHref(bundle.name);
+    $("bundle-buy").href = buyHref(bundle);
     // The "or message us to order" fallback was removed 27 Sep 2026: the buy
     // button is the only route, so the card does not offer a second one.
     if ($("bundle-alt")) $("bundle-alt").remove();
