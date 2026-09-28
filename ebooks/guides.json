@@ -1,15 +1,15 @@
 {
-  "_note": "The prose guides. Each is read once front to back and then used. Every one carries a safety page as page 3 — before the contents are acted on, not buried at the back. For the alcohol guide that page is not a formality: unsupervised withdrawal from heavy daily drinking can kill, and a book that skipped it would be dangerous.",
+  "_note": "The prose guides. Each is read once front to back and then used. Every one carries a safety page as page 3, before the contents are acted on, not buried at the back. For the alcohol guide that page is not a formality: unsupervised withdrawal from heavy daily drinking can kill, and a book that skipped it would be dangerous.",
   "guides": [
     {
       "book": "smoking",
       "name": "EVZO-Quit-Smoking",
-      "file": "EVZO — How to Stop Smoking",
+      "file": "EVZO, How to Stop Smoking",
       "accent": "#5BC8F5",
       "eyebrow": "Stopping smoking",
       "coverTitle": "The last cigarette is not the hard part",
       "coverTitleEl": "Το τελευταίο τσιγάρο δεν είναι το δύσκολο",
-      "coverSub": "A practical plan for the first ninety days — what actually happens in your body, what the cravings are really doing, and the six things that double your odds.",
+      "coverSub": "A practical plan for the first ninety days, what actually happens in your body, what the cravings are really doing, and the six things that double your odds.",
       "band": [
         [
           "Format",
@@ -36,7 +36,7 @@
         },
         {
           "t": "Get the medicines, they work",
-          "d": "Nicotine replacement roughly doubles your chance of success, and prescription options do better still. This is the single highest-return thing in this book and it is not in this book — it is at a pharmacy. Ask about patches plus a fast-acting form together; the combination beats either alone."
+          "d": "Nicotine replacement roughly doubles your chance of success, and prescription options do better still. This is the single highest-return thing in this book and it is not in this book, it is at a pharmacy. Ask about patches plus a fast-acting form together; the combination beats either alone."
         },
         {
           "t": "Talk to a doctor if any of these apply",
@@ -44,15 +44,15 @@
         },
         {
           "t": "This book does not do the medical part",
-          "d": "It is about the ninety days of behaviour around the decision — the triggers, the evenings, the third week, the first drink with friends. Use it alongside real cessation support, not instead of it."
+          "d": "It is about the ninety days of behaviour around the decision, the triggers, the evenings, the third week, the first drink with friends. Use it alongside real cessation support, not instead of it."
         }
       ],
       "safetyNote": "18+. If you feel persistently low, hopeless or unsafe during a quit attempt, that is a reason to speak to a doctor, not to start smoking again.",
       "introLabel": "Before day one",
       "introTitle": "Why willpower keeps losing",
-      "introLede": "Most people have already quit several times. That is not failure, it is data — and almost everyone has been fighting the wrong thing.",
+      "introLede": "Most people have already quit several times. That is not failure, it is data, and almost everyone has been fighting the wrong thing.",
       "introBody": [
-        "Nicotine leaves your body in about three days. The physical dependence — the part that is genuinely chemical — is over inside a fortnight. If cigarettes were only a chemical habit, quitting would be a rough long weekend and then nothing.",
+        "Nicotine leaves your body in about three days. The physical dependence, the part that is genuinely chemical, is over inside a fortnight. If cigarettes were only a chemical habit, quitting would be a rough long weekend and then nothing.",
         "What lasts is the other thing: twenty, forty, sixty times a day for years, you paired a feeling with an action. Stress, then smoke. Coffee, then smoke. Finished a task, then smoke. Left the building, then smoke. That is thousands of repetitions of a loop, and the loop does not care that the chemical has gone.",
         "This is good news, because a loop can be broken deliberately in a way that a chemical craving cannot be argued with. The rest of this book is how."
       ],
@@ -76,7 +76,7 @@
             },
             {
               "t": "Tell five people",
-              "d": "Not for encouragement — for friction. A quit nobody knows about can be abandoned silently, and that is exactly what makes it easy to abandon."
+              "d": "Not for encouragement, for friction. A quit nobody knows about can be abandoned silently, and that is exactly what makes it easy to abandon."
             }
           ],
           "action": "Put the date in your phone now, with an alarm. Tell one person today."
@@ -92,7 +92,7 @@
             },
             {
               "t": "You will find clusters",
-              "d": "The waking one. The coffee one. The after-eating one. The break-with-colleagues one. The driving one. The drinking one. The stress one. Each needs a different answer, which is why one big act of willpower fails — it is trying to solve six problems with one tool."
+              "d": "The waking one. The coffee one. The after-eating one. The break-with-colleagues one. The driving one. The drinking one. The stress one. Each needs a different answer, which is why one big act of willpower fails, it is trying to solve six problems with one tool."
             },
             {
               "t": "Rank them by difficulty",
@@ -102,12 +102,12 @@
           "list": {
             "label": "The six that catch most people",
             "items": [
-              "The first one of the day — the one most tied to physical dependence",
-              "With coffee — pure association, and it breaks faster than you expect",
-              "After eating — fills the gap that used to end the meal",
-              "The work break — often really about leaving the building and the company",
-              "With alcohol — by far the most common single cause of relapse",
-              "Under stress — the one you must have a replacement for before you need it"
+              "The first one of the day, the one most tied to physical dependence",
+              "With coffee, pure association, and it breaks faster than you expect",
+              "After eating, fills the gap that used to end the meal",
+              "The work break, often really about leaving the building and the company",
+              "With alcohol, by far the most common single cause of relapse",
+              "Under stress, the one you must have a replacement for before you need it"
             ]
           },
           "action": "Start the three-day tally today, even if your quit date is a fortnight away."
@@ -115,7 +115,7 @@
         {
           "title": "The first seventy-two hours",
           "summary": "What actually happens, hour by hour",
-          "lede": "The worst of it is short, sharp and predictable — and knowing the shape of it is most of what gets people through it.",
+          "lede": "The worst of it is short, sharp and predictable, and knowing the shape of it is most of what gets people through it.",
           "body": [
             {
               "t": "Hours 4 to 24",
@@ -123,7 +123,7 @@
             },
             {
               "t": "Days 1 to 3",
-              "d": "The hardest stretch. Irritability, poor sleep, trouble concentrating, and genuine hunger. All of it is real, none of it is permanent, and all of it is worse if you are also tired and hungry — so eat properly and go to bed early. This is not the week to also start a diet."
+              "d": "The hardest stretch. Irritability, poor sleep, trouble concentrating, and genuine hunger. All of it is real, none of it is permanent, and all of it is worse if you are also tired and hungry, so eat properly and go to bed early. This is not the week to also start a diet."
             },
             {
               "t": "Days 3 to 10",
@@ -131,7 +131,7 @@
             },
             {
               "t": "Week 3",
-              "d": "The dangerous one. The physical part is over, you feel fine, and that is precisely when people decide one cigarette would be harmless. It is not — and the next chapter is about why."
+              "d": "The dangerous one. The physical part is over, you feel fine, and that is precisely when people decide one cigarette would be harmless. It is not, and the next chapter is about why."
             }
           ],
           "action": "Time one craving today, before you quit. Watch it peak and go. You will use that fact all month."
@@ -187,7 +187,7 @@
             },
             {
               "t": "Something to hold",
-              "d": "Keys, a coin, worry beads — this is what komboloi have been for in Greece for a century and they work for exactly this reason."
+              "d": "Keys, a coin, worry beads, this is what komboloi have been for in Greece for a century and they work for exactly this reason."
             },
             {
               "t": "Something in the mouth",
@@ -219,7 +219,7 @@
             },
             {
               "t": "Keep a reason list",
-              "d": "Write down, now, the three real reasons — not the health-poster ones, the actual ones. The money, the child, the smell in the car, the breathlessness on the hill. Read it on the bad evenings. Motivation is not something you have, it is something you re-read."
+              "d": "Write down, now, the three real reasons, not the health-poster ones, the actual ones. The money, the child, the smell in the car, the breathlessness on the hill. Read it on the bad evenings. Motivation is not something you have, it is something you re-read."
             }
           ],
           "action": "Write your three reasons on the back of this page and photograph it."
@@ -230,9 +230,9 @@
       "endBody": [
         "One: a craving is a wave, not a state. It peaks in three to five minutes and it goes whether or not you smoke. You have never once in your life had a craving that did not end.",
         "Two: there is no such thing as one cigarette. Not for you, not now. The moment that sentence sounds reasonable is the moment to recognise it as the relapse it is.",
-        "And if you have already tried and failed several times — most people who succeed did too. The average successful quit is not the first attempt. It is roughly the sixth. You are not bad at this; you are partway through it."
+        "And if you have already tried and failed several times, most people who succeed did too. The average successful quit is not the first attempt. It is roughly the sixth. You are not bad at this; you are partway through it."
       ],
-      "endNote": "18+. General information, not medical advice. Nicotine replacement and prescription stop-smoking medicines are effective and are available from pharmacists and doctors in Cyprus and Greece — ask about them. If you are pregnant, breastfeeding, or take medication for a mental health condition, speak to your doctor before changing anything.",
+      "endNote": "18+. General information, not medical advice. Nicotine replacement and prescription stop-smoking medicines are effective and are available from pharmacists and doctors in Cyprus and Greece, ask about them. If you are pregnant, breastfeeding, or take medication for a mental health condition, speak to your doctor before changing anything.",
       "art": {
         "kind": "nosmoking"
       }
@@ -240,12 +240,12 @@
     {
       "book": "drinking",
       "name": "EVZO-Quit-Drinking",
-      "file": "EVZO — Drinking Less, or Not At All",
+      "file": "EVZO, Drinking Less, or Not At All",
       "accent": "#C6A1F0",
       "eyebrow": "Changing your drinking",
       "coverTitle": "The question is not whether you can stop",
       "coverTitleEl": "Το θέμα δεν είναι αν μπορείς να σταματήσεις",
-      "coverSub": "An honest guide to drinking less or not at all — including the one situation where stopping suddenly is genuinely dangerous, and how to tell if that is you.",
+      "coverSub": "An honest guide to drinking less or not at all, including the one situation where stopping suddenly is genuinely dangerous, and how to tell if that is you.",
       "band": [
         [
           "Format",
@@ -272,7 +272,7 @@
         },
         {
           "t": "What to do instead",
-          "d": "See a doctor first. Medically supervised withdrawal is routine, it is available in Cyprus and Greece through your GP or a public health service, and it is not a moral event — it is a medication schedule. Reducing under supervision is safe. Stopping alone when your body is dependent is the one genuinely risky thing in this book."
+          "d": "See a doctor first. Medically supervised withdrawal is routine, it is available in Cyprus and Greece through your GP or a public health service, and it is not a moral event, it is a medication schedule. Reducing under supervision is safe. Stopping alone when your body is dependent is the one genuinely risky thing in this book."
         },
         {
           "t": "Warning signs during withdrawal",
@@ -290,7 +290,7 @@
       "introBody": [
         "There is an unhelpful idea that drinking has two settings: fine, or a serious problem requiring a serious identity. Almost nobody is at either end. Most people are somewhere in the middle, drinking on more evenings than they planned, in larger amounts than they noticed, and feeling vaguely worse than they should.",
         "You do not need a label to change. You need an accurate count, a reason, and a plan for the four or five situations where it actually happens.",
-        "And it is worth knowing that the advice has shifted. There is no longer a recognised amount of alcohol that is positively good for you — the old 'a glass of red is healthy' finding did not survive better studies. The honest position is that less is better and none is best, which is not a moral claim, just what the evidence now says."
+        "And it is worth knowing that the advice has shifted. There is no longer a recognised amount of alcohol that is positively good for you, the old 'a glass of red is healthy' finding did not survive better studies. The honest position is that less is better and none is best, which is not a moral claim, just what the evidence now says."
       ],
       "chapters": [
         {
@@ -312,10 +312,10 @@
             },
             {
               "t": "The calories, since this is an EVZO book",
-              "d": "Alcohol is 7 calories a gram — closer to fat than to sugar. A large glass of wine is around 200 calories, a pint of beer around 180 to 240, and a spirit with a mixer around 150. Five drinks across a week is roughly a thousand calories that arrive without any food attached, and they are the calories least likely to make you feel full."
+              "d": "Alcohol is 7 calories a gram, closer to fat than to sugar. A large glass of wine is around 200 calories, a pint of beer around 180 to 240, and a spirit with a mixer around 150. Five drinks across a week is roughly a thousand calories that arrive without any food attached, and they are the calories least likely to make you feel full."
             }
           ],
-          "action": "Start the one-week count tonight. Do not change anything yet — the count is the intervention."
+          "action": "Start the one-week count tonight. Do not change anything yet, the count is the intervention."
         },
         {
           "title": "Decide what you are actually aiming at",
@@ -328,7 +328,7 @@
             },
             {
               "t": "None, for a defined period",
-              "d": "Thirty, sixty or ninety days. Easier than moderation for many people, because it removes the negotiation entirely — there is nothing to decide each time, and deciding each time is the expensive part."
+              "d": "Thirty, sixty or ninety days. Easier than moderation for many people, because it removes the negotiation entirely, there is nothing to decide each time, and deciding each time is the expensive part."
             },
             {
               "t": "Which to pick",
@@ -367,7 +367,7 @@
             "label": "Replacements that hold up in company",
             "items": [
               "Soda water with a lot of lime, in a proper glass",
-              "Alcohol-free beer — genuinely good now, and it looks like a beer",
+              "Alcohol-free beer, genuinely good now, and it looks like a beer",
               "Tonic and bitters",
               "Coffee, which nobody in Greece or Cyprus finds strange at any hour",
               "Anything at all, as long as your hand is holding a glass"
@@ -390,7 +390,7 @@
             },
             {
               "t": "Weight, within a month",
-              "d": "Removing five drinks a week is roughly a thousand calories, and it also removes the food that comes with drinking — which is usually more calories than the drink was."
+              "d": "Removing five drinks a week is roughly a thousand calories, and it also removes the food that comes with drinking, which is usually more calories than the drink was."
             },
             {
               "t": "Mood, in both directions",
@@ -430,7 +430,7 @@
           "body": [
             {
               "t": "One evening is one evening",
-              "d": "It is not evidence that you cannot do this. It is evidence about a specific situation you had not planned for — which is information, and information is the thing you were short of."
+              "d": "It is not evidence that you cannot do this. It is evidence about a specific situation you had not planned for, which is information, and information is the thing you were short of."
             },
             {
               "t": "Write down what actually happened",
@@ -452,15 +452,15 @@
       "endLede": "Not an identity, not a lifetime vow. A number, a date and a plan for four situations.",
       "endBody": [
         "Most people who change their drinking successfully never call themselves anything. They counted honestly for a week, picked a target with a number in it, decided in advance what they would do in the four situations where it actually happens, and got through the first three weeks.",
-        "The evidence has moved and it is worth saying plainly: there is no amount of alcohol that is positively good for health. Less is better and none is best. That is not a judgement about anybody — it is just the current state of the science, and you are allowed to act on it without joining anything.",
+        "The evidence has moved and it is worth saying plainly: there is no amount of alcohol that is positively good for health. Less is better and none is best. That is not a judgement about anybody, it is just the current state of the science, and you are allowed to act on it without joining anything.",
         "And if the safety page at the front described you, the most useful thing in this entire book is on that page. Start there."
       ],
-      "endNote": "18+. General information, not medical advice, and not a treatment programme. Do not stop suddenly if you are physically dependent — see the safety page. If alcohol is affecting your health, work or relationships, speak to your doctor or a public health service in Cyprus or Greece."
+      "endNote": "18+. General information, not medical advice, and not a treatment programme. Do not stop suddenly if you are physically dependent, see the safety page. If alcohol is affecting your health, work or relationships, speak to your doctor or a public health service in Cyprus or Greece."
     },
     {
       "book": "emotional",
       "name": "EVZO-Emotional-Eating",
-      "file": "EVZO — Emotional Eating",
+      "file": "EVZO, Emotional Eating",
       "accent": "#FF8FA3",
       "eyebrow": "Eating when you are not hungry",
       "coverTitle": "You are not eating because you are weak",
@@ -496,7 +496,7 @@
         },
         {
           "t": "If that second paragraph is familiar",
-          "d": "Please speak to a doctor or a clinical psychologist. Eating disorders have the highest mortality of any mental health condition and they are also genuinely treatable — the outcomes are far better with help and far worse without it. There is nothing shameful in the conversation and it is not reserved for people at a particular weight."
+          "d": "Please speak to a doctor or a clinical psychologist. Eating disorders have the highest mortality of any mental health condition and they are also genuinely treatable, the outcomes are far better with help and far worse without it. There is nothing shameful in the conversation and it is not reserved for people at a particular weight."
         },
         {
           "t": "A note on the rest of this book",
@@ -506,11 +506,11 @@
       "safetyNote": "18+. General information, not medical or psychological treatment. Not suitable if you have a current or past eating disorder without support from your clinician.",
       "introLabel": "Start here",
       "introTitle": "Three of the causes are not emotional",
-      "introLede": "Before treating this as a feelings problem, rule out the three physical causes — because for a large number of people that is the entire answer.",
+      "introLede": "Before treating this as a feelings problem, rule out the three physical causes, because for a large number of people that is the entire answer.",
       "introBody": [
         "The standard advice for emotional eating goes straight to feelings: journal, breathe, sit with the discomfort. Sometimes that is right. But a great deal of what gets called emotional eating is a body that has been underfed, under-slept or under-proteined all day, arriving at nine o'clock with an entirely physical demand and no emotion involved at all.",
         "You cannot mindfulness your way out of genuine hunger, and trying to is how people conclude they are broken.",
-        "So the order in this book is deliberate: first fix the three physical causes, which is fast and mechanical. Then, if it is still happening, work on the actual emotional part — which is real, and which the first step makes far easier to see clearly."
+        "So the order in this book is deliberate: first fix the three physical causes, which is fast and mechanical. Then, if it is still happening, work on the actual emotional part, which is real, and which the first step makes far easier to see clearly."
       ],
       "chapters": [
         {
@@ -528,14 +528,14 @@
             },
             {
               "t": "The underfed day",
-              "d": "The most common pattern behind a nine o'clock binge is a 400-calorie lunch eaten standing up. If you eat 900 calories before six and 1,400 after, that is not emotional — that is arithmetic catching up with you. The evening is not the problem; the day is."
+              "d": "The most common pattern behind a nine o'clock binge is a 400-calorie lunch eaten standing up. If you eat 900 calories before six and 1,400 after, that is not emotional, that is arithmetic catching up with you. The evening is not the problem; the day is."
             },
             {
               "t": "Do these for two weeks before concluding anything",
               "d": "Eight hours, protein at breakfast, a lunch that is actually a meal. If the evening eating persists after two weeks of that, it is emotional and the rest of this book applies."
             }
           ],
-          "action": "Tonight: decide what your protein breakfast is tomorrow. Eggs, yoghurt, whatever — decide it now, not in the morning."
+          "action": "Tonight: decide what your protein breakfast is tomorrow. Eggs, yoghurt, whatever, decide it now, not in the morning."
         },
         {
           "title": "Name what it actually is",
@@ -544,7 +544,7 @@
           "body": [
             {
               "t": "Boredom",
-              "d": "By far the most common and the least discussed. Not a feeling that needs to be honoured — a feeling that needs something to do. It shows up most in front of a screen and it is answered by an activity, not by insight."
+              "d": "By far the most common and the least discussed. Not a feeling that needs to be honoured, a feeling that needs something to do. It shows up most in front of a screen and it is answered by an activity, not by insight."
             },
             {
               "t": "Stress and the need to stop",
@@ -584,7 +584,7 @@
             },
             {
               "t": "Then eat if you want to",
-              "d": "And if you do, eat it on a plate, sitting down, without a screen. Not as a punishment — because eating it properly is what makes it register, and food eaten out of a packet in front of a television barely counts as having happened."
+              "d": "And if you do, eat it on a plate, sitting down, without a screen. Not as a punishment, because eating it properly is what makes it register, and food eaten out of a packet in front of a television barely counts as having happened."
             }
           ],
           "action": "Agree the ten-minute rule with yourself now, in writing, while it is easy."
@@ -640,7 +640,7 @@
         {
           "title": "What to actually eat when you do",
           "summary": "Practical, since this is a food company",
-          "lede": "If you are going to eat in the evening — and many people will, most evenings — it may as well be something that stops.",
+          "lede": "If you are going to eat in the evening, and many people will, most evenings, it may as well be something that stops.",
           "body": [
             {
               "t": "Protein stops, sugar does not",
@@ -648,7 +648,7 @@
             },
             {
               "t": "Volume helps",
-              "d": "A very large bowl of something light — fruit with yoghurt, vegetables with hummus, popcorn — satisfies the wanting-to-eat far better than a small amount of something dense, and the brain responds to volume more than it should."
+              "d": "A very large bowl of something light, fruit with yoghurt, vegetables with hummus, popcorn, satisfies the wanting-to-eat far better than a small amount of something dense, and the brain responds to volume more than it should."
             },
             {
               "t": "Plan the evening snack rather than resisting it",
@@ -666,7 +666,7 @@
       "endLede": "Six lines, and they are in order for a reason.",
       "endBody": [
         "Sleep, protein at breakfast, a real lunch. Two weeks of that before you conclude the problem is emotional, because for a large number of people it was never emotional at all.",
-        "Then: name the feeling in one word, wait ten minutes with permission to eat afterwards, change the room rather than your character, and above all stop the aftermath — next meal, normal, no compensating.",
+        "Then: name the feeling in one word, wait ten minutes with permission to eat afterwards, change the room rather than your character, and above all stop the aftermath, next meal, normal, no compensating.",
         "And if what is actually happening is bigger than this book, the safety page at the front is the most useful page in it. Eating disorders are treatable and the results are much better with help. Asking is the whole of the hard part."
       ],
       "endNote": "18+. General information, not medical or psychological treatment. If eating feels out of control, or is accompanied by purging, severe restriction, or thoughts that occupy most of your day, please speak to a doctor or a clinical psychologist."
@@ -674,7 +674,7 @@
     {
       "book": "supplements",
       "name": "EVZO-Supplements",
-      "file": "EVZO — The Only Supplements You Need",
+      "file": "EVZO, The Only Supplements You Need",
       "accent": "#FFB347",
       "eyebrow": "What is worth buying",
       "coverTitle": "Almost none of them",
@@ -702,7 +702,7 @@
       "safety": [
         {
           "t": "More is not safer",
-          "d": "The fat-soluble vitamins — A, D, E and K — accumulate, and overdose is genuinely possible. Vitamin D in particular has a real upper limit, and taking very large doses because a little was good is a recognised route to harm."
+          "d": "The fat-soluble vitamins, A, D, E and K, accumulate, and overdose is genuinely possible. Vitamin D in particular has a real upper limit, and taking very large doses because a little was good is a recognised route to harm."
         },
         {
           "t": "Do not supplement iron without a blood test",
@@ -730,11 +730,11 @@
         {
           "title": "Vitamin D, the one that genuinely applies here",
           "summary": "The exception worth taking seriously",
-          "lede": "Counter-intuitively, deficiency is common across Greece and Cyprus despite the sunshine — and this is the supplement with the strongest everyday case.",
+          "lede": "Counter-intuitively, deficiency is common across Greece and Cyprus despite the sunshine, and this is the supplement with the strongest everyday case.",
           "body": [
             {
               "t": "Why sunny countries are deficient",
-              "d": "Because people avoid midday sun, work indoors, wear sunscreen and cover up — all sensible for skin cancer risk, and all of it reduces synthesis. Southern European deficiency rates are consistently higher than people expect and often higher than in northern countries where supplementation is routine."
+              "d": "Because people avoid midday sun, work indoors, wear sunscreen and cover up, all sensible for skin cancer risk, and all of it reduces synthesis. Southern European deficiency rates are consistently higher than people expect and often higher than in northern countries where supplementation is routine."
             },
             {
               "t": "Who should think about it",
@@ -762,7 +762,7 @@
             },
             {
               "t": "What it does",
-              "d": "Reliable small improvements in strength, power and training volume across hundreds of trials. The effect is real and it is modest — it makes good training slightly better; it does not replace training."
+              "d": "Reliable small improvements in strength, power and training volume across hundreds of trials. The effect is real and it is modest, it makes good training slightly better; it does not replace training."
             },
             {
               "t": "How to take it",
@@ -770,7 +770,7 @@
             },
             {
               "t": "The myths",
-              "d": "It does not damage healthy kidneys — this has been looked for repeatedly and not found. It is not only for men. The weight gained in the first weeks is water inside the muscle, not fat. If you have kidney disease, ask your doctor, as with anything."
+              "d": "It does not damage healthy kidneys, this has been looked for repeatedly and not found. It is not only for men. The weight gained in the first weeks is water inside the muscle, not fat. If you have kidney disease, ask your doctor, as with anything."
             }
           ],
           "action": "If you lift weights and buy one thing from this book, it is a tub of plain creatine monohydrate."
@@ -786,11 +786,11 @@
             },
             {
               "t": "When it earns its place",
-              "d": "When hitting a protein target from food is genuinely difficult — a large target, a small appetite, long days away from a kitchen, or a vegan diet where the target is harder to reach."
+              "d": "When hitting a protein target from food is genuinely difficult, a large target, a small appetite, long days away from a kitchen, or a vegan diet where the target is harder to reach."
             },
             {
               "t": "Judge it on cost per gram of protein",
-              "d": "That is the only honest comparison, and it is the calculation the budget book applies to food. Whey at 22 euro a kilo and 78% protein is about 2.8 cents a gram — cheaper than chicken breast, dearer than eggs, roughly the same as lentils."
+              "d": "That is the only honest comparison, and it is the calculation the budget book applies to food. Whey at 22 euro a kilo and 78% protein is about 2.8 cents a gram, cheaper than chicken breast, dearer than eggs, roughly the same as lentils."
             },
             {
               "t": "Ignore the rest of the label",
@@ -810,7 +810,7 @@
             },
             {
               "t": "When a capsule makes sense",
-              "d": "If you genuinely do not eat fish. Then look for the EPA and DHA content on the back rather than the fish oil total on the front — the two are frequently very different numbers, and that gap is where the marketing lives."
+              "d": "If you genuinely do not eat fish. Then look for the EPA and DHA content on the back rather than the fish oil total on the front, the two are frequently very different numbers, and that gap is where the marketing lives."
             },
             {
               "t": "Vegan sources",
@@ -826,15 +826,15 @@
         {
           "title": "The three that depend entirely on a blood test",
           "summary": "Iron, B12 and folate",
-          "lede": "These are the ones where guessing is not neutral — taking them unnecessarily can do actual harm.",
+          "lede": "These are the ones where guessing is not neutral, taking them unnecessarily can do actual harm.",
           "body": [
             {
               "t": "Iron",
-              "d": "Deficiency is genuinely common, especially in menstruating women, and genuinely worth correcting — fatigue, breathlessness and poor training all improve. But supplementing without deficiency is a bad idea, and overload is serious. Test first, always, and take what the result indicates rather than what a shelf suggests."
+              "d": "Deficiency is genuinely common, especially in menstruating women, and genuinely worth correcting, fatigue, breathlessness and poor training all improve. But supplementing without deficiency is a bad idea, and overload is serious. Test first, always, and take what the result indicates rather than what a shelf suggests."
             },
             {
               "t": "Vitamin B12",
-              "d": "Only found in animal foods. If you are vegan, this is not optional and it is not a preference — long-term deficiency causes irreversible nerve damage. Supplement it or use reliably fortified foods. Also worth checking if you are over sixty, take metformin, or take long-term acid-reducing medication, all of which impair absorption."
+              "d": "Only found in animal foods. If you are vegan, this is not optional and it is not a preference, long-term deficiency causes irreversible nerve damage. Supplement it or use reliably fortified foods. Also worth checking if you are over sixty, take metformin, or take long-term acid-reducing medication, all of which impair absorption."
             },
             {
               "t": "Folate",
@@ -858,7 +858,7 @@
             },
             {
               "t": "Fat burners and metabolism boosters",
-              "d": "The effects are trivial where they exist at all, and the active ingredient is almost always caffeine — which you can buy as coffee for a fraction of the price."
+              "d": "The effects are trivial where they exist at all, and the active ingredient is almost always caffeine, which you can buy as coffee for a fraction of the price."
             },
             {
               "t": "Detox teas and cleanses",
@@ -899,12 +899,12 @@
     {
       "book": "produce",
       "name": "EVZO-Picking-Produce",
-      "file": "EVZO — How to Pick Fruit and Vegetables",
+      "file": "EVZO, How to Pick Fruit and Vegetables",
       "accent": "#7BC96F",
       "eyebrow": "At the market and the supermarket",
       "coverTitle": "Everything you need to know is in your hands",
       "coverTitleEl": "Όλα όσα χρειάζεσαι είναι στα χέρια σου",
-      "coverSub": "How to choose produce by weight, smell, skin and sound — what is actually in season in Greece and Cyprus month by month, and how to store it so it lasts twice as long.",
+      "coverSub": "How to choose produce by weight, smell, skin and sound, what is actually in season in Greece and Cyprus month by month, and how to store it so it lasts twice as long.",
       "band": [
         [
           "Format",
@@ -927,7 +927,7 @@
       "safety": [
         {
           "t": "Heavy for its size is the best single signal",
-          "d": "It means water content, which means juice and freshness. It works for citrus, melons, cucumbers, aubergines, peppers and squash. Pick up two of the same size and buy the heavier one — that one move will improve your shopping more than anything else in this book."
+          "d": "It means water content, which means juice and freshness. It works for citrus, melons, cucumbers, aubergines, peppers and squash. Pick up two of the same size and buy the heavier one, that one move will improve your shopping more than anything else in this book."
         },
         {
           "t": "Smell it, at the stem end",
@@ -935,20 +935,20 @@
         },
         {
           "t": "Firm with a slight give, not soft",
-          "d": "Press gently with the pad of your thumb, near the stem. No give means unripe. A small yielding dent means ready. A soft patch that stays pressed means past it. Never press with a fingertip — that is what bruises fruit for the next person."
+          "d": "Press gently with the pad of your thumb, near the stem. No give means unripe. A small yielding dent means ready. A soft patch that stays pressed means past it. Never press with a fingertip, that is what bruises fruit for the next person."
         },
         {
           "t": "Look at the stem and the leaves, not the fruit",
           "d": "The fastest way to judge age is the part nobody markets. A green, pliable stem and crisp leaves mean recent. Dry, brown, shrivelled or mouldy stems mean it has been sitting, whatever the fruit looks like."
         }
       ],
-      "safetyNote": "Wash produce before eating. Food that is mouldy, slimy or smells fermented goes in the bin — with soft fruit, mould spreads invisibly and cutting it off is not enough.",
+      "safetyNote": "Wash produce before eating. Food that is mouldy, slimy or smells fermented goes in the bin, with soft fruit, mould spreads invisibly and cutting it off is not enough.",
       "introLabel": "Why this matters",
       "introTitle": "The cheapest food is the food in season",
       "introLede": "Seasonality is usually sold as an ethical idea. It is really a price and flavour idea, which is a much better argument.",
       "introBody": [
         "Produce in season is grown nearby, in volume, without heating or long storage. It costs a fraction of the same item in February and it tastes like the thing it is meant to taste like. A tomato in August and a tomato in January are two different products sold under one name.",
-        "This is also where most household food waste comes from. People buy out of season, it disappoints, it sits in the drawer, it gets thrown away — and the money went in the bin along with it.",
+        "This is also where most household food waste comes from. People buy out of season, it disappoints, it sits in the drawer, it gets thrown away, and the money went in the bin along with it.",
         "So this book has three parts: how to choose by hand, what is actually in season here month by month, and how to store it so that what you bought is still good on Thursday."
       ],
       "chapters": [
@@ -959,7 +959,7 @@
           "body": [
             {
               "t": "Tomatoes",
-              "d": "Smell the stem end — that is where the aroma is. Look for a green, fresh crown and skin that is taut rather than shiny and hard. Weight matters. Never refrigerate them: below about 12°C the compounds that make a tomato taste like a tomato stop being produced and do not come back. A cold tomato is a permanently ruined tomato."
+              "d": "Smell the stem end, that is where the aroma is. Look for a green, fresh crown and skin that is taut rather than shiny and hard. Weight matters. Never refrigerate them: below about 12°C the compounds that make a tomato taste like a tomato stop being produced and do not come back. A cold tomato is a permanently ruined tomato."
             },
             {
               "t": "Peppers",
@@ -975,7 +975,7 @@
             },
             {
               "t": "Peaches, apricots, figs",
-              "d": "Smell first, always. Colour tells you about the variety, not the ripeness. Figs should be heavy, slightly soft, with a bent neck and a small split at the base — a split fig is ready, not damaged."
+              "d": "Smell first, always. Colour tells you about the variety, not the ripeness. Figs should be heavy, slightly soft, with a bent neck and a small split at the base, a split fig is ready, not damaged."
             }
           ],
           "action": "Next time you buy tomatoes, smell three before choosing. The difference is immediate once you have done it once."
@@ -987,7 +987,7 @@
           "body": [
             {
               "t": "Look at the cut end",
-              "d": "On any bunch — horta, spinach, chard, parsley — the cut stems tell the truth. Pale, wet and slightly slimy means days old. Clean and dry-cut means recent."
+              "d": "On any bunch, horta, spinach, chard, parsley, the cut stems tell the truth. Pale, wet and slightly slimy means days old. Clean and dry-cut means recent."
             },
             {
               "t": "Weight and spring in lettuce",
@@ -995,7 +995,7 @@
             },
             {
               "t": "Herbs are bought by the bunch, not the packet",
-              "d": "In Greece and Cyprus the bunch is a fraction of the price of the supermarket plastic box, and it is fresher. Buy it, and treat it like flowers — see the storage chapter."
+              "d": "In Greece and Cyprus the bunch is a fraction of the price of the supermarket plastic box, and it is fresher. Buy it, and treat it like flowers, see the storage chapter."
             },
             {
               "t": "Frozen spinach is not a compromise",
@@ -1011,7 +1011,7 @@
           "body": [
             {
               "t": "Potatoes",
-              "d": "Firm all over, dry skin, no green tinge and no sprouts. Green means light exposure and solanine, which is bitter and mildly toxic — cut it out generously or leave it. Buy loose rather than in plastic, which traps moisture and rots them."
+              "d": "Firm all over, dry skin, no green tinge and no sprouts. Green means light exposure and solanine, which is bitter and mildly toxic, cut it out generously or leave it. Buy loose rather than in plastic, which traps moisture and rots them."
             },
             {
               "t": "Onions and garlic",
@@ -1019,7 +1019,7 @@
             },
             {
               "t": "Carrots",
-              "d": "Firm and snappable. A bendy carrot has lost water and will be woody. If the tops are still on they should be green and fresh — but remove them before storing or they will pull moisture out of the root."
+              "d": "Firm and snappable. A bendy carrot has lost water and will be woody. If the tops are still on they should be green and fresh, but remove them before storing or they will pull moisture out of the root."
             },
             {
               "t": "Cabbage",
@@ -1047,13 +1047,13 @@
             },
             {
               "t": "October to December",
-              "d": "Grapes and figs end. Pomegranates, quinces, apples, pears, the first citrus around November. Pumpkin, cauliflower, broccoli, spinach, leeks, celery root. Olives are harvested and the new oil appears — this is when to buy it."
+              "d": "Grapes and figs end. Pomegranates, quinces, apples, pears, the first citrus around November. Pumpkin, cauliflower, broccoli, spinach, leeks, celery root. Olives are harvested and the new oil appears, this is when to buy it."
             }
           ],
           "list": {
             "label": "The rule that follows from all of that",
             "items": [
-              "If it is expensive, it is out of season — and it will also taste worse",
+              "If it is expensive, it is out of season, and it will also taste worse",
               "Buy the thing that is piled highest at the market; that is what came in this morning",
               "Frozen is the honest answer out of season, not an imported fresh version at four times the price",
               "Tinned tomatoes beat fresh tomatoes for eight months of the year, for cooking"
@@ -1072,7 +1072,7 @@
             },
             {
               "t": "In the fridge, but dry",
-              "d": "Leaves, herbs, berries and mushrooms all rot from moisture. Line the drawer with a tea towel or kitchen paper. Do not wash anything until you are about to eat it — washing then storing is the single most common way to lose a punnet of berries."
+              "d": "Leaves, herbs, berries and mushrooms all rot from moisture. Line the drawer with a tea towel or kitchen paper. Do not wash anything until you are about to eat it, washing then storing is the single most common way to lose a punnet of berries."
             },
             {
               "t": "Herbs like flowers",
@@ -1084,7 +1084,7 @@
             },
             {
               "t": "Onions and potatoes are not friends",
-              "d": "Stored together, the onions accelerate sprouting in the potatoes. Both want dark, dry and airy — but separately, and not in plastic."
+              "d": "Stored together, the onions accelerate sprouting in the potatoes. Both want dark, dry and airy, but separately, and not in plastic."
             }
           ],
           "action": "Move the tomatoes out of your fridge tonight, and stand your herbs in a glass of water."
@@ -1100,7 +1100,7 @@
             },
             {
               "t": "Do not touch, ask",
-              "d": "At a market stall the seller picks for you and that is the custom. Say what it is for and when you will eat it — 'for today' or 'for the weekend' — and you will get better fruit than you would have chosen yourself."
+              "d": "At a market stall the seller picks for you and that is the custom. Say what it is for and when you will eat it, 'for today' or 'for the weekend', and you will get better fruit than you would have chosen yourself."
             },
             {
               "t": "Buy what is piled highest",

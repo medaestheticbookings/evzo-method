@@ -1,4 +1,4 @@
-/* EVZO — cookie and tracking consent
+/* EVZO, cookie and tracking consent
  * ===========================================================================
  * A consent manager that actually withholds consent, rather than a banner
  * that appears after the tracking has already loaded. Most cookie banners are
@@ -25,7 +25,7 @@
  *      instead of silently inheriting an old answer.
  *
  * WHAT THIS SITE ACTUALLY DOES TODAY: nothing. No cookies, no analytics, no
- * third-party requests — the fonts are self-hosted precisely so there is no
+ * third-party requests, the fonts are self-hosted precisely so there is no
  * transfer to Google to ask about. The banner exists so that the moment
  * Stripe or a pixel is connected, consent is already being collected properly
  * rather than retrofitted.
@@ -51,7 +51,7 @@
   /* ------------------------------------------------------------- storage */
   /* Private browsing and blocked storage both throw. A visitor who cannot be
      remembered is treated as having consented to nothing, which is the safe
-     failure — they simply see the banner again. */
+     failure, they simply see the banner again. */
   function read() {
     try {
       var raw = root.localStorage.getItem(KEY);
@@ -210,7 +210,7 @@
 
   function boot() {
     render(false);
-    // The footer link on every page reopens the chooser — this is the
+    // The footer link on every page reopens the chooser, this is the
     // "withdraw as easily as you gave" requirement, and it must never be
     // removed from a page.
     Array.prototype.forEach.call(

@@ -22,7 +22,7 @@
 
     { "id": "bowl-feta-chickpea", "book": "bowls", "slot": "bowl", "title": "The chickpea and feta bowl", "greek": "Μπολ με ρεβίθια και φέτα", "servings": 1, "time": "10 minutes",
       "ingredients": [ {"food":"chickpeas_tin","g":200},{"food":"feta","g":50},{"food":"spinach","g":80},{"food":"pepper_red","g":80},{"food":"tomato","g":80},{"food":"olive_oil","g":10},{"food":"lemon_juice","g":15},{"food":"herbs","g":2} ],
-      "method": ["Chickpeas in a hot dry pan until they start to split — that is the whole trick.","Spinach in for thirty seconds, off.","Everything into the bowl, feta and lemon last."],
+      "method": ["Chickpeas in a hot dry pan until they start to split, that is the whole trick.","Spinach in for thirty seconds, off.","Everything into the bowl, feta and lemon last."],
       "why": "Vegetarian and still worth eating. Crisping the chickpeas changes the texture enough that nobody misses the meat.",
       "swaps": ["White beans instead of chickpeas.","Halloumi instead of feta, 50 g, pan-fried dry."] },
 
@@ -48,7 +48,7 @@
       "ingredients": [ {"food":"egg","g":110},{"food":"cottage_cheese","g":100},{"food":"avocado","g":40},{"food":"tomato","g":100},{"food":"sourdough","g":50},{"food":"herbs","g":2} ],
       "method": ["Eggs soft-boiled, six and a half minutes exactly.","Everything else into the bowl cold.","Bread toasted, cut into fingers, on the side."],
       "why": "Thirty grams of protein at breakfast, which is where most people are short. Cottage cheese does the heavy lifting for about 100 calories.",
-      "swaps": ["Skyr instead of cottage cheese.","No bread — double the tomato and add a second egg."] },
+      "swaps": ["Skyr instead of cottage cheese.","No bread, double the tomato and add a second egg."] },
 
     { "id": "bowl-prawn-noodle", "book": "bowls", "slot": "bowl", "title": "Prawn and lemon noodle bowl", "greek": "Μπολ με γαρίδες και νουντλς", "servings": 1, "time": "12 minutes",
       "ingredients": [ {"food":"prawns","g":150},{"food":"noodles_rice","g":60},{"food":"broccoli","g":120},{"food":"carrot","g":60},{"food":"garlic","g":6},{"food":"olive_oil","g":8},{"food":"lemon_juice","g":20},{"food":"herbs","g":2} ],
@@ -89,14 +89,14 @@
 
     { "id": "din-stuffed-peppers", "book": "dinners", "slot": "dinner", "title": "Peppers stuffed with turkey", "greek": "Πιπεριές γεμιστές με γαλοπούλα", "servings": 4, "time": "55 minutes",
       "ingredients": [ {"food":"pepper_red","g":800},{"food":"turkey_mince","g":500},{"food":"rice_dry","g":120},{"food":"passata","g":250},{"food":"onion","g":120},{"food":"feta","g":80},{"food":"olive_oil","g":25},{"food":"herbs","g":5} ],
-      "method": ["Turkey browned with the onion, rice and passata in, five minutes.","Peppers filled three-quarters — rice doubles.","180°C, 40 minutes, feta crumbled on for the last eight."],
+      "method": ["Turkey browned with the onion, rice and passata in, five minutes.","Peppers filled three-quarters, rice doubles.","180°C, 40 minutes, feta crumbled on for the last eight."],
       "why": "Gemista's leaner cousin. Holding the rice at 30 g dry per person is what keeps this a protein dinner rather than a rice dish with a vegetable around it.",
       "swaps": ["Beef mince 5% instead of turkey.","Bulgur instead of rice, same dry weight."] },
 
     { "id": "din-pastitsio-light", "book": "dinners", "slot": "dinner", "title": "Pastitsio, rebuilt", "greek": "Παστίτσιο, ξαναχτισμένο", "servings": 6, "time": "70 minutes",
       "ingredients": [ {"food":"beef_mince_5","g":800},{"food":"pasta_dry","g":300},{"food":"passata","g":500},{"food":"yoghurt_2","g":400},{"food":"egg","g":110},{"food":"parmesan","g":60},{"food":"onion","g":150},{"food":"olive_oil","g":30},{"food":"garlic","g":9},{"food":"herbs","g":6} ],
       "method": ["Mince browned hard, onion, garlic, passata, 30 minutes.","Pasta cooked two minutes under, mixed into the sauce.","Top: yoghurt whisked with the eggs and parmesan, poured over. 180°C, 30 minutes."],
-      "why": "The bechamel is the whole problem with pastitsio — butter, flour and full-fat milk before the cheese. Strained yoghurt with egg sets the same way for a fraction of the fat.",
+      "why": "The bechamel is the whole problem with pastitsio, butter, flour and full-fat milk before the cheese. Strained yoghurt with egg sets the same way for a fraction of the fat.",
       "swaps": ["Lamb instead of beef for a Sunday version, and expect it heavier.","Lentils, 300 g dry cooked, for vegetarian."] },
 
     { "id": "din-steak-greens", "book": "dinners", "slot": "dinner", "title": "Steak, greens, potatoes", "greek": "Μπριζόλα με χόρτα και πατάτες", "servings": 2, "time": "25 minutes",
@@ -120,30 +120,30 @@
     { "id": "din-prawn-saganaki", "book": "dinners", "slot": "dinner", "title": "Prawn saganaki, portioned", "greek": "Γαρίδες σαγανάκι", "servings": 2, "time": "20 minutes",
       "ingredients": [ {"food":"prawns","g":300},{"food":"passata","g":250},{"food":"feta","g":60},{"food":"onion","g":80},{"food":"garlic","g":6},{"food":"olive_oil","g":15},{"food":"sourdough","g":100},{"food":"herbs","g":3} ],
       "method": ["Onion and garlic in the oil, passata in, ten minutes to thicken.","Prawns two minutes, no longer.","Feta crumbled over off the heat. One slice of bread each, weighed."],
-      "why": "The taverna version arrives swimming in oil with a basket of bread. The dish itself is lean — it is the bread and the pour that decide the number.",
+      "why": "The taverna version arrives swimming in oil with a basket of bread. The dish itself is lean, it is the bread and the pour that decide the number.",
       "swaps": ["Mussels instead of prawns.","No bread, serve over 150 g of potatoes each."] },
 
     { "id": "din-lamb-sunday", "book": "dinners", "slot": "dinner", "title": "Sunday lamb that still fits", "greek": "Κυριακάτικο αρνί", "servings": 6, "time": "2 hours",
       "ingredients": [ {"food":"lamb_leg","g":1200},{"food":"potato","g":900},{"food":"lemon_juice","g":60},{"food":"garlic","g":18},{"food":"olive_oil","g":30},{"food":"green_beans","g":400},{"food":"herbs","g":8} ],
-      "method": ["Lamb scored, garlic pushed in, lemon and oregano all over. 160°C, 90 minutes covered.","Potatoes in for the last 45 minutes, uncovered, 200°C.","Beans steamed. Skim the tray before serving — that is where the fat is."],
+      "method": ["Lamb scored, garlic pushed in, lemon and oregano all over. 160°C, 90 minutes covered.","Potatoes in for the last 45 minutes, uncovered, 200°C.","Beans steamed. Skim the tray before serving, that is where the fat is."],
       "why": "Lamb is the most calorie-dense meat here at 258 per 100 g. Nobody is asking you to skip Sunday; 200 g a person with the tray skimmed is what makes it fit.",
       "swaps": ["Pork shoulder, same method.","Halve the potatoes and double the beans if it is a heavy week."] },
 
     { "id": "din-veg-moussaka", "book": "dinners", "slot": "dinner", "title": "Moussaka without the frying", "greek": "Μουσακάς χωρίς τηγάνι", "servings": 6, "time": "80 minutes",
       "ingredients": [ {"food":"aubergine","g":900},{"food":"beef_mince_5","g":700},{"food":"passata","g":500},{"food":"yoghurt_2","g":400},{"food":"egg","g":110},{"food":"parmesan","g":50},{"food":"onion","g":150},{"food":"olive_oil","g":35},{"food":"herbs","g":6} ],
-      "method": ["Aubergine sliced, brushed with the weighed oil, roasted at 220°C — never fried. Fried aubergine drinks 200 g of oil.","Mince and passata, 30 minutes.","Layered, yoghurt-and-egg top, 180°C for 35 minutes."],
+      "method": ["Aubergine sliced, brushed with the weighed oil, roasted at 220°C, never fried. Fried aubergine drinks 200 g of oil.","Mince and passata, 30 minutes.","Layered, yoghurt-and-egg top, 180°C for 35 minutes."],
       "why": "Traditional moussaka is roughly 800 calories a portion, and almost half of that is the oil the aubergine absorbed in the pan. Roasting is the entire difference.",
       "swaps": ["Courgette instead of aubergine.","Lentils instead of mince, 300 g dry cooked."] },
 
     { "id": "din-chicken-souvla", "book": "dinners", "slot": "dinner", "title": "Chicken souvla at home", "greek": "Κοτόπουλο σούβλα", "servings": 4, "time": "35 minutes, plus marinating",
       "ingredients": [ {"food":"chicken_thigh","g":800},{"food":"lemon_juice","g":60},{"food":"olive_oil","g":25},{"food":"garlic","g":12},{"food":"cabbage","g":400},{"food":"carrot","g":200},{"food":"pitta_wholemeal","g":240},{"food":"herbs","g":6} ],
-      "method": ["Thighs in lemon, oil, garlic and oregano, an hour minimum.","Hot griddle or barbecue, turning, 20 minutes.","Cabbage and carrot shredded with lemon — the salad that belongs with it."],
+      "method": ["Thighs in lemon, oil, garlic and oregano, an hour minimum.","Hot griddle or barbecue, turning, 20 minutes.","Cabbage and carrot shredded with lemon, the salad that belongs with it."],
       "why": "Souvla is one of the leanest things in Cypriot cooking once the skin is off. One pitta each is the only decision that matters here.",
       "swaps": ["Pork tenderloin instead of chicken.","No pitta, double the cabbage salad."] },
 
     { "id": "din-tofu-tomato", "book": "dinners", "slot": "dinner", "title": "Tofu in tomato, for the sceptics", "greek": "Τόφου με ντομάτα", "servings": 2, "time": "20 minutes",
       "ingredients": [ {"food":"tofu_firm","g":300},{"food":"passata","g":300},{"food":"onion","g":100},{"food":"pepper_red","g":150},{"food":"olive_oil","g":15},{"food":"garlic","g":6},{"food":"bulgur_dry","g":100},{"food":"herbs","g":4} ],
-      "method": ["Tofu pressed dry and torn, not cubed — torn edges catch colour.","Very hot dry pan until browned, then out.","Sauce built in the same pan, tofu back in for the last two minutes."],
+      "method": ["Tofu pressed dry and torn, not cubed, torn edges catch colour.","Very hot dry pan until browned, then out.","Sauce built in the same pan, tofu back in for the last two minutes."],
       "why": "Tofu is 17 g of protein per 100 g and tastes of whatever you put it in. Pressing and tearing it is the difference between this working and not.",
       "swaps": ["Halloumi instead of tofu, 200 g.","Chickpeas, two tins, if tofu is not for you."] }
   ]

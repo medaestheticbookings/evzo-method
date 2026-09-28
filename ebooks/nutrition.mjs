@@ -1,4 +1,4 @@
-/* EVZO — the arithmetic, in one place
+/* EVZO, the arithmetic, in one place
  * ===========================================================================
  * Both the ebook builder and the blog generator import this. There is exactly
  * one implementation of "what are this recipe's macros" in the project, so a
@@ -19,7 +19,7 @@ export const FOODS = JSON.parse(readFileSync(join(HERE, "foods.json"), "utf8"));
 
 /* Euro cost per kilogram, in the same state foods.json measures each food.
    Kept in its own file so a price can be updated from a receipt without
-   anybody touching a nutrition figure — the two drift on completely
+   anybody touching a nutrition figure, the two drift on completely
    different timescales. */
 export const PRICES = JSON.parse(readFileSync(join(HERE, "prices.json"), "utf8"));
 
@@ -57,7 +57,7 @@ export function macros(recipe) {
 
     Returned per serving, in euro. `perProtein` is cents per gram of protein,
     which is the only number that actually compares a tin of lentils with a
-    chicken breast — cheap food that gives you nothing back is not cheap.
+    chicken breast, cheap food that gives you nothing back is not cheap.
 
     Throws on a missing price rather than silently treating it as free: a
     shopping total that quietly omits the meat is worse than no total. */

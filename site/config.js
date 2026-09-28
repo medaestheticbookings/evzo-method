@@ -1,4 +1,4 @@
-/* EVZO — central configuration
+/* EVZO, central configuration
  * ============================================================================
  * Every price, timing, policy and business detail the page displays lives HERE
  * and nowhere else. Change a value in this file and the whole page follows.
@@ -11,7 +11,7 @@
 (function (root) {
   "use strict";
 
-  var TODO = null; // an unset value — the UI shows a marker instead of inventing one
+  var TODO = null; // an unset value, the UI shows a marker instead of inventing one
 
   var CONFIG = {
 
@@ -31,7 +31,7 @@
 
       // The regular price, shown struck through beside the launch price.
       //
-      // >>> TODO_OWNER — READ THIS BEFORE GOING LIVE.
+      // >>> TODO_OWNER, READ THIS BEFORE GOING LIVE.
       // Under the EU Omnibus Directive a "was" price must be the lowest price
       // actually charged in the 30 days before the offer. Nothing has ever sold
       // at 59.99, so showing it struck through on day one is a price claim you
@@ -50,7 +50,7 @@
         // trading history behind it, and an offer with no end date is an
         // indefinite discount. To run a real launch instead, set active back to
         // true AND give endsAt a date you will genuinely honour, e.g.
-        // "2026-10-31" — then actually move the price to 59.99 when it passes
+        // "2026-10-31", then actually move the price to 59.99 when it passes
         // and keep the evidence.
         active: false,
         endsAt: TODO,
@@ -79,7 +79,7 @@
        a calorie target set at 95 kg is wrong by month three, and a rebuilt
        guide is a real deliverable rather than a discount dressed as one.
 
-       `compareToMonths` is what the saving is measured against — the 28-day
+       `compareToMonths` is what the saving is measured against, the 28-day
        price multiplied out. It is a comparison with a price this page really
        charges, NOT a former price, and the copy must keep saying so.
 
@@ -108,7 +108,7 @@
         summary: "Three guides, rebuilt each month as your numbers move.",
         includes: [
           "Everything in 28 days, three times over",
-          "Rebuilt monthly — targets recalculated as your weight changes",
+          "Rebuilt monthly, targets recalculated as your weight changes",
           "A check-in before each rebuild, so it follows what actually happened",
           "Different meals each month, so month three is not month one again"
         ],
@@ -121,7 +121,7 @@
         summary: "Six months, plus every ebook in the shop.",
         includes: [
           "Everything in 3 months, for six months",
-          "The whole ebook library — every recipe and training book",
+          "The whole ebook library, every recipe and training book",
           "Six months is long enough for the result to be the habit, not the month"
         ],
         stripePriceId: TODO
@@ -135,7 +135,7 @@
       priceAmount: 9.99,
       priceCurrency: "EUR",
       priceDisplay: "€9.99",
-      blurb: "A separate recipe collection in the same format. Optional — your guide is complete without it.",
+      blurb: "A separate recipe collection in the same format. Optional, your guide is complete without it.",
       stripePriceId: TODO         // TODO_OWNER
     },
 
@@ -192,14 +192,14 @@
           id: "workbook",
           category: "workouts", coverTitle: "Three habits, twenty-eight days", name: "The 28-Day Workbook", file: "EVZO-Workbook.pdf",
           eyebrow: "Build the habit",
-          blurb: "A workbook to write in, not read. Three habits, thirty seconds a day, four weekly reviews — and an honest look at which habits actually fit your life.",
+          blurb: "A workbook to write in, not read. Three habits, thirty seconds a day, four weekly reviews, and an honest look at which habits actually fit your life.",
           stripePriceId: TODO
         },
         {
           id: "workouts",
           category: "workouts", coverTitle: "Five plans, no guesswork", name: "Workout Plans", file: "EVZO-Workout-Plans.pdf",
           eyebrow: "Training",
-          blurb: "Five plans from three days a week to five, with the calories each session burns estimated from published MET values — and the margin of error printed beside them.",
+          blurb: "Five plans from three days a week to five, with the calories each session burns estimated from published MET values, and the margin of error printed beside them.",
           stripePriceId: TODO
         },
         {
@@ -219,7 +219,7 @@
         /* ---- the prose guides ------------------------------------------
            Short, read-once books rather than recipe collections, priced lower
            to match. A book carrying its own priceDisplay overrides the single
-           price everywhere it is shown — shop card, PDF cover and the
+           price everywhere it is shown, shop card, PDF cover and the
            "bought one at a time" comparison all read from here. */
         {
           id: "smoking",
@@ -260,7 +260,7 @@
           id: "budget",
           category: "nutrition", coverTitle: "Cheap is a number, not a feeling", name: "Budget Meals", file: "EVZO-Budget-Meals.pdf",
           eyebrow: "Eating well on very little",
-          blurb: "Twelve Greek and Cypriot plates with the cost of every serving printed on the page — from 45 cents to just over two euro.",
+          blurb: "Twelve Greek and Cypriot plates with the cost of every serving printed on the page, from 45 cents to just over two euro.",
           stripePriceId: TODO
         },
         {
@@ -345,7 +345,7 @@
     // TODO_OWNER: all of this must be real before trading. EU distance-selling
     // rules require an identifiable trader and a withdrawal notice.
     business: {
-      // The trading name. NOTE: the LOGO stays "EVZO" alone — the mark is the
+      // The trading name. NOTE: the LOGO stays "EVZO" alone, the mark is the
       // stacked wordmark and must never be redrawn to include "METHOD".
       // This value is the business name used in the legal footer and policies.
       legalName: "EVZO METHOD",
@@ -377,7 +377,7 @@
          clients. A claim you can evidence is marketing. A claim dressed up in
          someone else's face is a fabricated endorsement, and under the EU
          Omnibus Directive (2019/2161, transposed in Cyprus) that is the part
-         that carries the fine — up to 4% of annual turnover — not the count.
+         that carries the fine, up to 4% of annual turnover, not the count.
 
          Keep a record that supports it: client list, booking history, message
          threads, anything dated. If a regulator or a customer asks "700 of
@@ -400,7 +400,7 @@
       // own. The 14-day withdrawal right exists by default. It is lost only when
       // the customer, BEFORE delivery, (a) expressly consents to immediate
       // performance and (b) acknowledges losing the right. Both are collected at
-      // checkout by the consent boxes on this page — remove those and the waiver
+      // checkout by the consent boxes on this page, remove those and the waiver
       // fails, whatever the policy text says.
       //
       // Note also: the waiver rests on immediate delivery. While
@@ -413,7 +413,7 @@
         "and the guide has been sent, the sale is final and no refund is due. " +
         "If the guide is never delivered, is delivered faulty, or is not what " +
         "was described, contact us and we will put it right or refund you in " +
-        "full — that right cannot be waived.",
+        "full, that right cannot be waived.",
       reviewed: false             // set true only after professional review
     },
 
@@ -421,7 +421,7 @@
     // Shown near the assessment and near checkout (short form), and in full in
     // the FAQ and footer. TODO_OWNER: hold for EU consumer-law review.
     disclaimerShort:
-      "General wellness guidance — not medical or dietetic care. " +
+      "General wellness guidance, not medical or dietetic care. " +
       "Educational estimates only.",
 
     disclaimerFull:

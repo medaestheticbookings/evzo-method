@@ -52,7 +52,7 @@ for (const p of products) {
 
   // Product: one per book, carrying the PDF file names the Worker delivers.
   const productFields = {
-    name: "EVZO — " + p.name, description: p.description,
+    name: "EVZO, " + p.name, description: p.description,
     "metadata[evzo_id]": p.id, "metadata[evzo_files]": files
   };
   s.product = s.product
@@ -83,8 +83,7 @@ for (const p of products) {
   writeFileSync(STATE_PATH, JSON.stringify(state, null, 2));
 }
 
-// Write the links into config.js. Only the live links belong on the website —
-// test links would take real customers to a checkout that charges nothing and
+// Write the links into config.js. Only the live links belong on the website, // test links would take real customers to a checkout that charges nothing and
 // is labelled TEST MODE.
 if (MODE === "live" || process.argv.includes("--write-test-links")) {
   let src = readFileSync(CONFIG_PATH, "utf8");

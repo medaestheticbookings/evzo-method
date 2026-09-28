@@ -1,9 +1,9 @@
-/* EVZO — motion
+/* EVZO, motion
  * ===========================================================================
  * Scroll reveals and the counting stat band.
  *
  * The page renders fully without this file. The `js-reveal` class is added
- * here, at the top of the script, and only that class hides anything — so if
+ * here, at the top of the script, and only that class hides anything, so if
  * the file fails to load, or IntersectionObserver is missing, every element
  * stays visible instead of a visitor meeting a blank page. That failure mode
  * is the main reason animated sites break, and it is avoidable.
@@ -44,7 +44,7 @@
 
     /* ---- the stat band counts up ---------------------------------------
        Only the digits animate. If a value is not a plain number it is left
-       exactly as written — a count-up that mangles "28 days" into "3 days"
+       exactly as written, a count-up that mangles "28 days" into "3 days"
        on the way is worse than no animation. */
     var band = document.getElementById("stats");
     if (!band) return;

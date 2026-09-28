@@ -1,4 +1,4 @@
-/* EVZO — the shop page
+/* EVZO, the shop page
  * ===========================================================================
  * Renders from two sources and invents nothing:
  *
@@ -8,7 +8,7 @@
  *
  * A number shown on a card is therefore the same number printed in the PDF.
  * If a book gains a recipe, rerun the ebook build and this page follows. Do
- * not hard-code a count here to save a fetch — that is exactly how a shop ends
+ * not hard-code a count here to save a fetch, that is exactly how a shop ends
  * up advertising twelve recipes in a book that has nine.
  * ======================================================================== */
 (function () {
@@ -25,11 +25,11 @@
 
   /* Where a buy button goes. Stripe is not connected yet and fulfilment is
      manual, so rather than a dead button or a fake checkout the fallback is a
-     pre-filled email — which is the process that actually exists today. */
+     pre-filled email, which is the process that actually exists today. */
   /* Order of preference:
        1. the book's own Stripe Payment Link  (book.checkoutUrl)
        2. the shop-wide checkout              (ebooks.shopUrl)
-       3. a pre-filled order email            — the process that exists today
+       3. a pre-filled order email, the process that exists today
      Pass the book object to get (1); a bare label still works for the bundle. */
   function buyHref(book) {
     var label = typeof book === "string" ? book : book.name;
@@ -38,7 +38,7 @@
     var to = CFG.business && CFG.business.supportEmail;
     if (!to) return esc(CFG.links.instagram);
     return "mailto:" + to +
-      "?subject=" + encodeURIComponent("EVZO order — " + label) +
+      "?subject=" + encodeURIComponent("EVZO order, " + label) +
       "&body=" + encodeURIComponent(
         "Hello,\n\nI would like to order: " + label + "\n\n" +
         "Please send me the payment link.\n\nThank you.");
@@ -87,8 +87,8 @@
     // It is deliberately NOT presented as a former price: nothing has ever
     // sold at that number, and under the Omnibus Directive those are two
     // different claims.
-    // Books may carry their own price — the short prose guides are cheaper
-    // than the recipe collections — so this sums the actual prices rather
+    // Books may carry their own price, the short prose guides are cheaper
+    // than the recipe collections, so this sums the actual prices rather
     // than multiplying one of them by the shelf length.
     var separately = books.reduce(function (sum, b) {
       return sum + (typeof b.priceAmount === "number" ? b.priceAmount : SHOP.singlePriceAmount);
@@ -173,7 +173,7 @@
       '</article>';
     }).join("");
 
-    /* The whole card is clickable, not just the button — people click covers.
+    /* The whole card is clickable, not just the button, people click covers.
        Delegated, so it survives re-render; ignores clicks that already landed
        on a link so the Buy button keeps its own behaviour. */
     var grid = $("shelf");
@@ -193,7 +193,7 @@
        T("As a PDF, by email") + (CFG.isSet(ful.turnaroundText) ? ", " + T(ful.turnaroundText) : "") + ". " +
        T("It is a file, not a subscription. Download it once and it is yours on every device you own.")],
       [T("Is this the same as the personalised guide?"),
-       T("No. The books are fixed recipe collections at the same price for everyone. The guide is built from your own answers — your body, your goal, the food you actually eat — and it costs more because it is made for one person.")],
+       T("No. The books are fixed recipe collections at the same price for everyone. The guide is built from your own answers, your body, your goal, the food you actually eat, and it costs more because it is made for one person.")],
       [T("Can I get a refund?"),
        T("Digital files come with a 14-day right of withdrawal in the EU, which you waive at checkout if you ask for the download immediately. If a file is broken or does not arrive, tell us and we will fix it or refund it.")],
       [T("Are the recipes in Greek?"),
@@ -201,7 +201,7 @@
       [T("Who worked out the numbers?"),
        T("A program did, from a table of standard published values for each ingredient. Nobody typed a calorie figure by hand and no language model estimated one. That is the whole point of the format.")],
       [T("Do I need to weigh everything forever?"),
-       T("No. Weigh for two weeks and you will not need to again — the point of the scales is to calibrate your eye, not to live on your worktop.")]
+       T("No. Weigh for two weeks and you will not need to again, the point of the scales is to calibrate your eye, not to live on your worktop.")]
     ];
     $("shop-faq").innerHTML = faq.map(function (q) {
       return "<details><summary>" + esc(q[0]) + "</summary><p>" + esc(q[1]) + "</p></details>";
@@ -220,7 +220,7 @@
 
   /* i18n.js binds the EN/EL buttons itself and walks the text nodes that were
      in the document when it loaded. These cards are rendered afterwards, so it
-     cannot see them — the same hook the sales page uses lets it ask for a
+     cannot see them, the same hook the sales page uses lets it ask for a
      re-render in the new language instead. */
   window.EVZO_APP = { rerender: function () { render(lastStats); } };
 })();

@@ -1,4 +1,4 @@
-/* EVZO — Facebook Page cover photos
+/* EVZO, Facebook Page cover photos
  * ===========================================================================
  *   node tools/fbcover.mjs
  *     -> brand/fb-<name>.png     1640 x 856

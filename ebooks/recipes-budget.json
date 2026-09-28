@@ -1,5 +1,5 @@
 {
-  "_note": "The budget book. Every recipe is built from ingredients that are cheap ALL year, not cheap in August — tins, pulses, eggs, thighs, root vegetables. Costs are computed by ebooks/nutrition.mjs from prices.json; nothing here has a price typed into it by hand.",
+  "_note": "The budget book. Every recipe is built from ingredients that are cheap ALL year, not cheap in August, tins, pulses, eggs, thighs, root vegetables. Costs are computed by ebooks/nutrition.mjs from prices.json; nothing here has a price typed into it by hand.",
   "recipes": [
     {
       "id": "bu-fakes",
@@ -40,13 +40,13 @@
         }
       ],
       "method": [
-        "Rinse the lentils. No soaking — they are the one pulse that does not need it, which is half of why they are here.",
+        "Rinse the lentils. No soaking, they are the one pulse that does not need it, which is half of why they are here.",
         "Soften the onion, carrot and garlic in the oil for a good eight minutes. This is not a step to hurry; it is where a cheap pot of food stops tasting cheap.",
         "Lentils, passata, bay leaf, and water to cover by three fingers.",
         "Simmer 35 to 40 minutes. Add hot water if it tightens.",
         "Vinegar and salt at the end, off the heat. Salt early and the skins stay hard."
       ],
-      "why": "This is the cheapest complete dinner in the book and it is not close. A bag of lentils costs less than a coffee and feeds four people twice. The carrot and onion are not garnish — they are what stop it tasting like a punishment, and they cost about twenty cents.",
+      "why": "This is the cheapest complete dinner in the book and it is not close. A bag of lentils costs less than a coffee and feeds four people twice. The carrot and onion are not garnish, they are what stop it tasting like a punishment, and they cost about twenty cents.",
       "swaps": [
         "A tin of chopped tomatoes instead of passata, if that is what is open.",
         "Serve with a 30 g slice of feta to lift the protein and the taste at once."
@@ -90,7 +90,7 @@
         "Soften the onion and carrot in the oil until they have given up. Ten minutes.",
         "Passata in, cook it down for five so it stops tasting raw.",
         "Beans in, drained and rinsed. Water to loosen.",
-        "Fifteen minutes at a bare simmer. Crush a few beans against the side of the pot — that is what thickens it, not flour.",
+        "Fifteen minutes at a bare simmer. Crush a few beans against the side of the pot, that is what thickens it, not flour.",
         "Salt and a hard squeeze of lemon at the end."
       ],
       "why": "The dried version is cheaper still, but it needs soaking overnight and an hour and a half on the hob, and a recipe you do not cook is not cheap at any price. Tins cost roughly twice the dry weight and turn this into a Tuesday.",
@@ -133,7 +133,7 @@
         "Chickpeas drained, onion sliced thick, everything into a dish with the oil and a cup of water.",
         "Rosemary, salt, pepper. Cover with foil.",
         "180°C for 30 minutes covered, then 15 uncovered so the top catches.",
-        "All the lemon goes on at the end, not before — cooked lemon juice turns flat."
+        "All the lemon goes on at the end, not before, cooked lemon juice turns flat."
       ],
       "why": "Four ingredients and an oven. Nothing has to be watched, chopped fine or browned, which makes it the recipe most likely to survive a bad week. Chickpeas are also the pulse that reheats best, so it is better on Wednesday than it was on Monday.",
       "swaps": [
@@ -172,14 +172,14 @@
         }
       ],
       "method": [
-        "Grate the tomatoes into a pan with the oil. Grating, not chopping — you want pulp, not chunks swimming in water.",
+        "Grate the tomatoes into a pan with the oil. Grating, not chopping, you want pulp, not chunks swimming in water.",
         "Cook hard for eight to ten minutes until it stops being watery and starts being sauce. This is the entire recipe; everything else takes two minutes.",
         "Eggs straight in, beaten, heat low. Stir slowly and take it off while it still looks slightly underdone.",
         "Feta crumbled over at the table."
       ],
       "why": "Four eggs and three tomatoes is the cheapest 30 g of protein you can put in front of two people, and unlike most cheap breakfasts it is not made of sugar. The feta is optional on the cost and not optional on the taste.",
       "swaps": [
-        "A 400 g tin of chopped tomatoes out of season, cooked down the same way — cheaper than sad winter tomatoes and better.",
+        "A 400 g tin of chopped tomatoes out of season, cooked down the same way, cheaper than sad winter tomatoes and better.",
         "Leave the feta out and it drops about 25 cents and 90 calories a serving."
       ]
     },
@@ -217,11 +217,11 @@
         "Potatoes in 5 mm slices, onion the same. Into the pan with the oil on a low heat, lid on, 15 minutes. You are softening them, not frying them.",
         "Beaten eggs in, heat low, lid back on.",
         "Eight minutes until it is set at the edges and barely wobbling in the middle.",
-        "Slide it onto a plate. Eat it warm rather than hot — it is better and it always has been."
+        "Slide it onto a plate. Eat it warm rather than hot, it is better and it always has been."
       ],
       "why": "A whole lunch for two out of a potato, half an onion and four eggs. It is also the best cold food in the book: wrapped in foil it is a lunch box that does not need a microwave, which quietly solves the most expensive meal of most people's week.",
       "swaps": [
-        "Any vegetable that needs using — courgette, pepper, the last of a bag of spinach.",
+        "Any vegetable that needs using, courgette, pepper, the last of a bag of spinach.",
         "Two of the four eggs as whites only, if you want the same protein for fewer calories."
       ]
     },
@@ -264,14 +264,14 @@
         }
       ],
       "method": [
-        "Slice the onion as thin as you can and leave it in the lemon juice for five minutes. That is what takes the harshness out — skip it and the whole bowl tastes of raw onion.",
+        "Slice the onion as thin as you can and leave it in the lemon juice for five minutes. That is what takes the harshness out, skip it and the whole bowl tastes of raw onion.",
         "Everything else into the bowl, tuna flaked in last so it stays in pieces.",
         "Oil, salt, pepper, parsley if there is any."
       ],
       "why": "No hob, no oven, six minutes, and it is the highest protein-per-euro plate in the book. This is the recipe for the evening you were going to order something because you could not face cooking.",
       "swaps": [
         "Chickpeas instead of white beans.",
-        "Sardines instead of tuna — cheaper per gram of protein and considerably better for you."
+        "Sardines instead of tuna, cheaper per gram of protein and considerably better for you."
       ]
     },
     {
@@ -305,14 +305,14 @@
         }
       ],
       "method": [
-        "Wet the rusks briefly under the tap. Briefly — three seconds, not ten. They should soften, not collapse.",
+        "Wet the rusks briefly under the tap. Briefly, three seconds, not ten. They should soften, not collapse.",
         "Grate the tomato over them and let it sit two minutes.",
         "Sardines on top, oil, oregano, pepper."
       ],
       "why": "Dakos with the protein put back in. Tinned sardines are the most underrated food in any Greek supermarket: they cost less per gram of protein than chicken breast, they need no cooking, and they keep in a cupboard for three years.",
       "swaps": [
         "Bread instead of rusk, toasted hard.",
-        "Mackerel tins where you can find them — same idea, richer."
+        "Mackerel tins where you can find them, same idea, richer."
       ]
     },
     {
@@ -514,7 +514,7 @@
       ],
       "why": "Frozen spinach is a third of the price of fresh, loses nothing that matters, and does not go slimy in the drawer on day three. This costs less than a euro a plate and does not look or taste like it.",
       "swaps": [
-        "Any greens — chard, the tops of beetroot, wild horta if somebody brings you some.",
+        "Any greens, chard, the tops of beetroot, wild horta if somebody brings you some.",
         "Leave the eggs out and it is 30 cents cheaper and a side dish rather than a dinner."
       ]
     },
@@ -549,13 +549,13 @@
         }
       ],
       "method": [
-        "Oats, milk and yoghurt in a jar. Stir properly — the dry pocket at the bottom is why people give up on this.",
+        "Oats, milk and yoghurt in a jar. Stir properly, the dry pocket at the bottom is why people give up on this.",
         "Lid on, fridge, overnight.",
         "Banana and peanut butter in the morning. Not the night before, unless you want brown banana."
       ],
       "why": "Compare it to what it replaces: a coffee and a pastry on the way to work is about three euro and 25 g of protein short. This is made the night before, costs about a third of that, and is the one change in this book that pays for the book inside a month.",
       "swaps": [
-        "Frozen berries instead of banana — add them at night and they thaw perfectly.",
+        "Frozen berries instead of banana, add them at night and they thaw perfectly.",
         "Water instead of milk if money is genuinely tight. It saves about 20 cents and you will not love it."
       ]
     }

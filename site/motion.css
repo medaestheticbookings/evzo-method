@@ -1,12 +1,11 @@
-/* EVZO — motion
+/* EVZO, motion
    =========================================================================
    Movement that helps a visitor follow the page, not movement for its own
    sake. Three rules it sticks to:
 
    1. Nothing moves more than ~18px. Big travel reads as a website showing off;
       small travel reads as the page settling.
-   2. Nothing animates twice. A section reveals once and is then left alone —
-      re-animating on every scroll past is the thing that makes a page feel
+   2. Nothing animates twice. A section reveals once and is then left alone, re-animating on every scroll past is the thing that makes a page feel
       cheap and makes people scroll faster to escape it.
    3. Everything is off under prefers-reduced-motion. For some people this is
       a nausea trigger, not a preference, and content must never depend on an
@@ -14,7 +13,7 @@
 
    Content is visible by default and only hidden once JavaScript confirms it
    can reveal it again (`html.js-reveal`). Without that, a script failure
-   would leave a blank page — which is how animated sites break in the wild.
+   would leave a blank page, which is how animated sites break in the wild.
    ====================================================================== */
 
 /* ---- scroll reveal ------------------------------------------------------ */
@@ -31,7 +30,7 @@
 }
 
 /* Children stagger, so a row of cards arrives as a row rather than a block.
-   Capped at six — past that the last card feels like it is lagging. */
+   Capped at six, past that the last card feels like it is lagging. */
 .js-reveal [data-reveal-stagger] > * {
   opacity: 0;
   transform: translateY(16px);
@@ -74,7 +73,7 @@
 
 /* ---- interaction -------------------------------------------------------- */
 /* Lifts on hover. Kept to 2px: enough to feel alive, not enough to shove the
-   layout around. Pointer devices only — a tap should never leave a card stuck
+   layout around. Pointer devices only, a tap should never leave a card stuck
    in a hover state. */
 @media (hover: hover) and (pointer: fine) {
   .goal, .linkcard, .book, .post-card, .pack, .panel {

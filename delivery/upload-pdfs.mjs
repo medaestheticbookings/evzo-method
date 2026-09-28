@@ -17,7 +17,7 @@ const BUCKET = "evzo-pdfs";
 const files = CONFIG.ebooks.books.map(b => b.file);
 const missing = files.filter(f => !existsSync(join(HERE, "..", "ebooks", f)));
 if (missing.length) {
-  console.error("Not built yet — run node ebooks/build.mjs first:\n  " + missing.join("\n  "));
+  console.error("Not built yet, run node ebooks/build.mjs first:\n  " + missing.join("\n  "));
   process.exit(1);
 }
 

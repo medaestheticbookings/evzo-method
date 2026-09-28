@@ -1,10 +1,10 @@
-/* EVZO — calculation core
+/* EVZO, calculation core
  * ============================================================================
  * Pure functions. No DOM, no strings for display, no side effects. Everything
  * here is unit-testable and is tested in calc.test.js.
  *
  * PROVENANCE OF THE CONSTANTS
- *   Mifflin-St Jeor resting metabolic rate (1990) — the equation most widely
+ *   Mifflin-St Jeor resting metabolic rate (1990), the equation most widely
  *   used for healthy adults. Returns kcal/day at complete rest.
  *   Activity multipliers are the conventional Harris-Benedict style factors.
  *   7,700 kcal ≈ 1 kg of body fat is the standard planning figure.
@@ -91,7 +91,7 @@
   /* ---- safety screening ------------------------------------------------ */
   /* The exclusions the product will not auto-calculate or sell for. Each key
      is a question the user answers; true means the exclusion applies.
-     Returns the list of reasons — empty means no exclusion. */
+     Returns the list of reasons, empty means no exclusion. */
   var EXCLUSIONS = [
     "under18",
     "pregnantOrBreastfeeding",
@@ -110,8 +110,7 @@
   }
 
   /* ---- input validation ------------------------------------------------ */
-  /* Returns {valid, errors:{field:code}}. Codes are for the UI to translate —
-     this module never produces display strings. */
+  /* Returns {valid, errors:{field:code}}. Codes are for the UI to translate, this module never produces display strings. */
   function validate(input) {
     var errors = {};
     var n = function (v) { return typeof v === "number" && isFinite(v); };

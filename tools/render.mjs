@@ -3,9 +3,9 @@
  *   node tools/render.mjs content/<file>.json
  *
  * Reads a post file, builds one HTML page per slide from the shared
- * tools/slide.css, and screenshots each at exactly 1080x1440 — or
- * 1080x1920 when the post sets `"format": "story"` — through
- * headless Chrome. No install step — it drives the Chrome already on
+ * tools/slide.css, and screenshots each at exactly 1080x1440, or
+ * 1080x1920 when the post sets `"format": "story"`, through
+ * headless Chrome. No install step, it drives the Chrome already on
  * the machine.
  *
  * Every colour, face and spacing value lives in slide.css. Slides pick a
@@ -225,7 +225,7 @@ const TYPES = {
     <span style="display:block;width:160px;height:6px;background:#FFE14D;margin:30px auto"></span>
     <span style="display:block;font-family:${s.lang === "el" ? "var(--greek);font-weight:800" : "var(--display)"};font-size:${s.lang === "el" ? 130 : 170}px;line-height:.9;color:#FFE14D;text-transform:uppercase;text-align:center;max-width:820px;letter-spacing:.01em">${esc(s.word).split(String.fromCharCode(10)).join("<br>")}</span>`,
 
-  // Tick/cross list. No numbers — these are pillars, not a sequence.
+  // Tick/cross list. No numbers, these are pillars, not a sequence.
   checks: (s) => `
     ${s.eyebrow ? `<span class="eyebrow">${esc(s.eyebrow)}</span>` : ""}
     <h2>${rich(s.headline)}</h2>
@@ -242,7 +242,7 @@ const TYPES = {
     ${s.foot ? `<p class="wide sm">${rich(s.foot)}</p>` : ""}`,
 
   // Direct-response offer frame: pin, fault-reversal headline, what you get,
-  // then the two lines that create urgency. Portrait is optional — a face
+  // then the two lines that create urgency. Portrait is optional, a face
   // lifts this format, but only a real one.
   offer: (s) => `
     <span class="pin">${esc(s.pin || "")}</span>
@@ -294,7 +294,7 @@ function page(slide, post, index, total, format) {
 
   // A photo slide paints the image full-bleed behind everything, so the path
   // has to be absolute: the page itself is written to build/_tmp.
-  // photoPos / photoZoom reframe the shot — used to push a brand label or a
+  // photoPos / photoZoom reframe the shot, used to push a brand label or a
   // distracting element out of frame rather than lose the photograph.
   const photo = slide.photo
     ? `<div class="photo-bg" style="background-image:url('file:///${path
@@ -362,7 +362,7 @@ async function main() {
 
     const total = post.slides.length;
     const format = post.format || data.format || "post";
-    // Small concurrency — each shot spawns its own Chrome.
+    // Small concurrency, each shot spawns its own Chrome.
     const jobs = post.slides.map((slide, i) => async () => {
       const file = path.join(dir, `${post.id}_${String(i + 1).padStart(2, "0")}.png`);
       await shoot(
@@ -378,7 +378,7 @@ async function main() {
     for (let i = 0; i < jobs.length; i += 4) {
       await Promise.all(jobs.slice(i, i + 4).map((j) => j()));
     }
-    console.log(`${post.id} — ${total} ${format === "story" ? "stories" : "slides"} (${format})`);
+    console.log(`${post.id}, ${total} ${format === "story" ? "stories" : "slides"} (${format})`);
   }
 
   if (!process.env.KEEP_TMP) rmSync(tmp, { recursive: true, force: true });

@@ -1,4 +1,4 @@
-/* EVZO — ebook builder
+/* EVZO, ebook builder
  * ============================================================================
  * Builds the two upsell products as print-ready PDFs:
  *
@@ -49,7 +49,7 @@ const iconBars  = readFileSync(join(BRAND, "evzo-icon-bars.svg"), "utf8");      
 
 /* ---- the arithmetic ------------------------------------------------------ */
 
-// food() and macros() now live in nutrition.mjs — see the note there.
+// food() and macros() now live in nutrition.mjs, see the note there.
 
 const SERIES_RECIPES = [
   ...JSON.parse(readFileSync(join(HERE, "recipes-bowls-dinners.json"), "utf8")).recipes,
@@ -255,8 +255,7 @@ p { margin: 0 0 3.4mm; font-size: 12pt; line-height: 1.55; }
 .cover-big h1 { font-size: 52pt; line-height: .92; letter-spacing: -.005em; text-shadow: 0 .6mm 4mm rgba(0,0,0,.55); }
 .cover-el { font-size: 15pt; color: #FFE14D; margin: 5mm 0 0; font-weight: 600; }
 /* One line, large. The three-line paragraph that used to sit here was
-   invisible at thumbnail size and nobody reads a blurb off a cover anyway —
-   that is what the shop card's own text is for. */
+   invisible at thumbnail size and nobody reads a blurb off a cover anyway, that is what the shop card's own text is for. */
 .cover-big .sub { font-size: 13pt; color: #E3E7EE; margin-top: 6mm; max-width: 120mm; line-height: 1.38; font-weight: 400; }
 
 /* The three-column stat band that used to sit here is gone. At thumbnail
@@ -401,17 +400,17 @@ function page(inner, { dark = false, num = null } = {}) {
 /* The front of every book.
 
    `band` is optional and carries the figures this book is about. They arrive
-   already computed — nothing on a cover is ever typed by hand, for the same
+   already computed, nothing on a cover is ever typed by hand, for the same
    reason nothing inside one is. */
 /* The front of every book.
 
    `accent` is the book's own colour, used at scale so the nine covers are
    telling apart as thumbnails rather than only as documents. `figure` is the
-   one number worth reading from across a room — computed like every other
+   one number worth reading from across a room, computed like every other
    figure here, never typed. */
 /* Which photograph fronts which book.
 
-   Chosen so the picture is the dish the book is actually about — a cover
+   Chosen so the picture is the dish the book is actually about, a cover
    that shows food from a different chapter is the sort of thing readers
    notice and quietly distrust. Three books have no honest photograph
    available in photos/ (the workbook, the workout plans and the smoking
@@ -439,7 +438,7 @@ const photoUrl = rel => pathToFileURL(join(HERE, "..", rel)).href;
 
 /* The front of every book.
 
-   A photograph, full bleed, with the type in the lower third — the structure
+   A photograph, full bleed, with the type in the lower third, the structure
    a printed cookbook uses, because the picture is what makes somebody want
    the food and no amount of typography substitutes for it.
 
@@ -542,7 +541,7 @@ function recipePage(r, num, opts = {}) {
       <div>
         <span class="label">What goes in</span>
         <ul class="ing" style="margin-top:2.5mm">${ings}</ul>
-        <p class="note" style="margin-top:3mm">Herbs, spices, salt and pepper as you like — too small to count.</p>
+        <p class="note" style="margin-top:3mm">Herbs, spices, salt and pepper as you like, too small to count.</p>
       </div>
       <div>
         <span class="label">How</span>
@@ -584,7 +583,7 @@ function weekPages(week, startNum) {
       <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th><th class="num">Kcal</th><th class="num">Protein</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    <p class="note" style="margin-top:5mm">Seven-day average: <b>${Math.round(avg.kcal / 7)} kcal</b> and <b>${Math.round(avg.protein / 7)} g of protein</b> a day, at one serving per meal. Scale the portions to the calorie range in your own guide — the structure does not change, only the amounts.</p>
+    <p class="note" style="margin-top:5mm">Seven-day average: <b>${Math.round(avg.kcal / 7)} kcal</b> and <b>${Math.round(avg.protein / 7)} g of protein</b> a day, at one serving per meal. Scale the portions to the calorie range in your own guide, the structure does not change, only the amounts.</p>
   `, { num: n++ });
 
   const list = shoppingList(week);
@@ -614,7 +613,7 @@ function bookPlan() {
     <p class="lede">Your guide gave you the numbers. This gives you twenty-eight days of structure to spend them on, so the plan does not die of boredom in week three.</p>
     <div class="rule"></div>
     <p>Each week has a grid and a shopping list. The grid names a breakfast, lunch, dinner and snack for every day; the list is what those meals actually need, added up, for one person.</p>
-    <p>The calories shown are for one standard serving of each recipe. Your own target will be higher or lower — that is what the portion guidance in your guide is for. Move the amounts, keep the structure.</p>
+    <p>The calories shown are for one standard serving of each recipe. Your own target will be higher or lower, that is what the portion guidance in your guide is for. Move the amounts, keep the structure.</p>
     <div class="rule"></div>
     <h3>Swap anything inside its slot</h3>
     <p>Any dinner can replace any other dinner. The weeks are arranged so that nothing repeats twice inside seven days and no dinner carries over into the next week, which is the entire reason people abandon meal plans.</p>
@@ -640,7 +639,7 @@ function bookPlan() {
   return [cover({
     eyebrow: "30-day meal variety bundle",
     title: "Four weeks that do not repeat",
-    sub: "Twenty-eight days of structure, four shopping lists, and swaps for every slot — so the guide keeps working after the novelty wears off.",
+    sub: "Twenty-eight days of structure, four shopping lists, and swaps for every slot, so the guide keeps working after the novelty wears off.",
     price: "EVZO"
   }), intro, body, rules].join("\n");
 }
@@ -683,7 +682,7 @@ function bookWorkouts() {
   const intro = page(`
     <span class="label">Before the plans</span>
     <h2 style="margin:3mm 0 6mm">Where these numbers come from</h2>
-    <p class="lede">Every calorie figure in this book is calculated, not guessed — and it is still only
+    <p class="lede">Every calorie figure in this book is calculated, not guessed, and it is still only
     an estimate. Both of those things are true and most fitness material tells you only the first.</p>
     <div class="rule"></div>
 
@@ -704,7 +703,7 @@ function bookWorkouts() {
     have removed the session from the week. Treat training as something that builds and keeps muscle, and
     let food do the arithmetic of the deficit.</p>
     <p><b>Lifting burns less than people expect, and matters more.</b> An hour of hard weights costs
-    roughly what a brisk hour of walking does. Its value is not the burn — it is that it keeps the muscle
+    roughly what a brisk hour of walking does. Its value is not the burn, it is that it keeps the muscle
     you would otherwise lose while eating less.</p>
     <p><b>Walking is the most underrated line in this book.</b> It does not make you hungry the way hard
     cardio does, it needs no recovery, and it can be done every day for years.</p>
@@ -728,7 +727,7 @@ function bookWorkouts() {
           `<span>${kg} kg <b>${st.kcal[kg]}</b> kcal</span>`).join("")}</div>
         ${sess.blocks.map(b => {
           const a = FITNESS.activity(b.activity);
-          return `<p class="blk"><b>${esc(a.label)}</b> <span class="mins">${b.minutes} min</span> — ${esc(b.note)}</p>`;
+          return `<p class="blk"><b>${esc(a.label)}</b> <span class="mins">${b.minutes} min</span>, ${esc(b.note)}</p>`;
         }).join("")}
       </div>`;
     }).join("");
@@ -778,8 +777,7 @@ function bookWorkouts() {
     </table>
     <div class="rule" style="margin-top:8mm"></div>
     <p class="note">Thirty minutes, gross calories, computed for each bodyweight. Gross means the total
-    your body used, including what it would have used sitting on the sofa for those thirty minutes —
-    which is roughly 1 MET, or about ${Math.round(FITNESS.burn(1, 30, 75))} kcal at 75 kg. Subtract that
+    your body used, including what it would have used sitting on the sofa for those thirty minutes, which is roughly 1 MET, or about ${Math.round(FITNESS.burn(1, 30, 75))} kcal at 75 kg. Subtract that
     if you want the figure the session actually added.</p>
   `, { num: num++ });
 
@@ -814,7 +812,7 @@ function bookWorkouts() {
     })) },
     title: "Five plans, no guesswork",
     titleEl: "Πέντε πλάνα, χωρίς μαντεψιές",
-    sub: plans.length + " workout plans from three days a week to five, with the calories each session burns estimated from published MET values — and the margin of error printed next to them.",
+    sub: plans.length + " workout plans from three days a week to five, with the calories each session burns estimated from published MET values, and the margin of error printed next to them.",
     price: "@evzo_method",
   }), contents, intro, ...planPages, reference, end, shopPage("workouts", num++)].join("\n");
 }
@@ -834,7 +832,7 @@ function bookWorkbook() {
     ${W.rules.map(r => `<h3 style="margin-top:5mm">${esc(r.t)}</h3><p>${esc(r.d)}</p>`).join("")}
     <div class="rule"></div>
     <p class="note">This book tracks what you did, not what you weigh. It makes no promise about
-    how much weight you will lose or how fast, because it cannot know — that depends on your body,
+    how much weight you will lose or how fast, because it cannot know, that depends on your body,
     your food and your week, and anyone printing a number here would be guessing at your expense.</p>
   `, { num: num++ });
 
@@ -858,7 +856,7 @@ function bookWorkbook() {
   `, { num: num++ });
 
   /* Four weeks. One tracking page each, one review page each. Seven rows to a
-     page so a week is always visible at once — the point of a paper tracker is
+     page so a week is always visible at once, the point of a paper tracker is
      seeing the run of ticks without turning anything. */
   const weeks = [];
   for (let w = 0; w < 4; w++) {
@@ -1084,7 +1082,7 @@ function bookRecipes() {
   const howto = page(`
     <span class="label">Before you cook anything</span>
     <h2 style="margin:3mm 0 6mm">The three rules that make these work</h2>
-    <p class="lede">Every recipe here is ordinary food. What makes them add up is not an ingredient — it is where the scale gets used and where it does not.</p>
+    <p class="lede">Every recipe here is ordinary food. What makes them add up is not an ingredient, it is where the scale gets used and where it does not.</p>
     <div class="rule"></div>
     <h3>1. Weigh the oil. Always.</h3>
     <p>Olive oil is 884 calories per 100 g. A level tablespoon is 119 calories; a normal pour into a pan is about 357. That single habit is worth more than every substitution in this book put together, and it changes nothing about how the food tastes.</p>
@@ -1095,7 +1093,7 @@ function bookRecipes() {
     <div class="rule"></div>
     <h3>The protein score, and why it is on every page</h3>
     <p>Protein score is grams of protein divided by calories, times one hundred: how much protein a food gives you for what it costs. Above about 15 a meal fills you for its calories. Below about 5 it does not, whatever the label says.</p>
-    <p>It is on every recipe in this book so you can see, at a glance, which meals are doing the work. Nothing here is banned and nothing is a "treat" — some meals simply hold you longer than others, and now you can tell which.</p>
+    <p>It is on every recipe in this book so you can see, at a glance, which meals are doing the work. Nothing here is banned and nothing is a "treat", some meals simply hold you longer than others, and now you can tell which.</p>
   `, { num: n++ });
 
   const pages = all.map(r => recipePage(r, n++));
@@ -1106,7 +1104,7 @@ function bookRecipes() {
     <p class="lede">Decide the protein first. Everything else on the plate is detail.</p>
     <div class="rule"></div>
     <p>These recipes are not a diet. They are ${RECIPES.length} ordinary Mediterranean meals with the portions decided in advance, so that dinner stops being a series of small negotiations you lose when you are tired.</p>
-    <p>Cook the same four for a fortnight. You are not supposed to cook all ${RECIPES.length} in a week — variety is what you reach for when the basics are already automatic.</p>
+    <p>Cook the same four for a fortnight. You are not supposed to cook all ${RECIPES.length} in a week, variety is what you reach for when the basics are already automatic.</p>
     <div class="rule"></div>
     <p class="note">18+. General information about food, not medical advice. Not suitable during pregnancy or breastfeeding, with a history of disordered eating, or alongside a medically prescribed diet. Speak to a registered dietitian or your doctor if any of those apply to you.</p>
   `, { num: n++ });
@@ -1118,7 +1116,7 @@ function bookRecipes() {
     accent: "#FFE14D", figure: String(rList.length), figureLabel: "Recipes",
     title: "Real food, weighed once",
     titleEl: "Αληθινό φαγητό, ζυγισμένο μία φορά",
-    sub: RECIPES.length + " Mediterranean meals and snacks with the portions already decided — and the one number that tells you which ones will hold you.",
+    sub: RECIPES.length + " Mediterranean meals and snacks with the portions already decided, and the one number that tells you which ones will hold you.",
     price: "@evzo_method",
   }), contents, howto, ...pages, end, shopPage("healthy", n++)].join("\n");
 }
@@ -1143,15 +1141,15 @@ const SERIES = [
 
     endLede: "You do not need {{count}} recipes to eat well on very little. You need five habits, and the recipes are only there to make them concrete.",
     endBody: [
-      "Buy pulses dry, not tinned, whenever you can plan a day ahead — it is roughly half the price for the same food. Buy frozen vegetables without embarrassment: they are picked riper, cost a third, and do not rot in the drawer. Buy the cheap cut, because thigh and mince survive being reheated in a way breast does not.",
+      "Buy pulses dry, not tinned, whenever you can plan a day ahead, it is roughly half the price for the same food. Buy frozen vegetables without embarrassment: they are picked riper, cost a third, and do not rot in the drawer. Buy the cheap cut, because thigh and mince survive being reheated in a way breast does not.",
       "Cook once, eat twice. Every pot in this book is written for four servings or reheats cleanly, because the real cost of a meal includes the ones you did not eat.",
-      "And put protein in breakfast. The single most expensive habit most people have is buying lunch at eleven because breakfast was a coffee — the forty-cent jar of oats on the last page is the cheapest thing in this book and it saves the most money."
+      "And put protein in breakfast. The single most expensive habit most people have is buying lunch at eleven because breakfast was a coffee, the forty-cent jar of oats on the last page is the cheapest thing in this book and it saves the most money."
     ]
   },
   {
-    book: "bowls", accent: "#FFE14D", name: "EVZO-Protein-Bowls", file: "EVZO — High-Protein Bowls",
+    book: "bowls", accent: "#FFE14D", name: "EVZO-Protein-Bowls", file: "EVZO, High-Protein Bowls",
     eyebrow: "High-protein bowls", coverTitle: "One bowl, thirty grams", coverTitleEl: "Ένα bowl, τριάντα γραμμάρια",
-    coverSub: "{{count}} Mediterranean bowls built around the protein first — assembled in minutes, most of them in one pan.",
+    coverSub: "{{count}} Mediterranean bowls built around the protein first, assembled in minutes, most of them in one pan.",
     contentsTitle: "Every bowl, by the numbers", col1: "Bowl",
     introLabel: "The method", introTitle: "How a bowl is built",
     introLede: "A bowl is not a recipe, it is a formula. Once you know the formula you stop needing recipes at all.",
@@ -1164,16 +1162,16 @@ const SERIES = [
     endTitle: "The formula, one line", endLede: "Protein weighed, carbohydrate weighed, vegetables free, sauce from yoghurt.",
     endBody: [
       "Every bowl in this book is that sentence with different ingredients. Cook four of them until you stop reading the page, and you will build a bowl out of whatever is in the fridge without looking anything up.",
-      "That is the real goal. Not twelve recipes — one habit."
+      "That is the real goal. Not twelve recipes, one habit."
     ]
   },
   {
-    book: "dinners", accent: "#FF8A4C", name: "EVZO-Protein-Dinners", file: "EVZO — High-Protein Dinners",
+    book: "dinners", accent: "#FF8A4C", name: "EVZO-Protein-Dinners", file: "EVZO, High-Protein Dinners",
     eyebrow: "High-protein dinners", coverTitle: "Dinners that hold", coverTitleEl: "Βραδινά που σε κρατούν",
-    coverSub: "{{count}} Greek and Cypriot dinners rebuilt so the protein is the point — including the ones you were told to give up.",
+    coverSub: "{{count}} Greek and Cypriot dinners rebuilt so the protein is the point, including the ones you were told to give up.",
     contentsTitle: "Every dinner, by the numbers", col1: "Dinner",
     introLabel: "Before you cook", introTitle: "Nothing here is banned",
-    introLede: "Moussaka, pastitsio, souvla, Sunday lamb. The dishes were never the problem — the oil, the portion and the second helping were.",
+    introLede: "Moussaka, pastitsio, souvla, Sunday lamb. The dishes were never the problem, the oil, the portion and the second helping were.",
     introBody: [
       { t: "Roast what you would fry", d: "Fried aubergine absorbs roughly 200 g of oil per tray. Roasted with 30 g brushed on, it tastes the same and costs about 1,500 calories less across a moussaka." },
       { t: "Yoghurt instead of bechamel", d: "Strained yoghurt whisked with egg sets the same golden way over a bake, without the butter, flour and full-fat milk." },
@@ -1183,20 +1181,20 @@ const SERIES = [
     endTitle: "If you cook three of these", endLede: "You do not need twelve dinners. You need three you can make without thinking.",
     endBody: [
       "Pick the three your household will actually eat, cook them until the weighing is automatic, and keep the rest for the weeks you get bored.",
-      "Every number here is per serving. Eat two servings and you have eaten two servings — that is not the recipe failing, it is arithmetic."
+      "Every number here is per serving. Eat two servings and you have eaten two servings, that is not the recipe failing, it is arithmetic."
     ]
   },
   {
-    book: "fatloss", accent: "#4CC9A7", name: "EVZO-Fat-Loss-Dishes", file: "EVZO — Fat Loss Dishes",
+    book: "fatloss", accent: "#4CC9A7", name: "EVZO-Fat-Loss-Dishes", file: "EVZO, Fat Loss Dishes",
     eyebrow: "Fat loss dishes", coverTitle: "Full plates, fewer calories", coverTitleEl: "Γεμάτα πιάτα, λιγότερες θερμίδες",
-    coverSub: "{{count}} meals built for volume — from {{minKcal}} to {{maxKcal}} calories a serving, every one of them a full plate with the figures printed on the page.",
+    coverSub: "{{count}} meals built for volume, from {{minKcal}} to {{maxKcal}} calories a serving, every one of them a full plate with the figures printed on the page.",
     contentsTitle: "Sorted by calories, lowest first", col1: "Dish",
     sort: (a, b) => a.per.kcal - b.per.kcal,
     introLabel: "Why these work", introTitle: "Hunger is what ends diets",
     introLede: "Not willpower, not metabolism, not carbohydrates. People stop because they are hungry, and they are hungry because the plate got smaller.",
     introBody: [
-      { t: "Volume first", d: "Cabbage, courgette, cauliflower, watermelon, lettuce — between 15 and 40 calories per 100 g. You can put 400 g of them on a plate for the cost of one biscuit." },
-      { t: "Protein second", d: "Every dish here carries at least {{minProtein}} g of protein, and {{over10}} of the {{count}} score 10 or better — that is 10 g of protein for every 100 calories. Protein is the one macronutrient that reliably reduces how much you eat later." },
+      { t: "Volume first", d: "Cabbage, courgette, cauliflower, watermelon, lettuce, between 15 and 40 calories per 100 g. You can put 400 g of them on a plate for the cost of one biscuit." },
+      { t: "Protein second", d: "Every dish here carries at least {{minProtein}} g of protein, and {{over10}} of the {{count}} score 10 or better, that is 10 g of protein for every 100 calories. Protein is the one macronutrient that reliably reduces how much you eat later." },
       { t: "Fat is where the calories hide", d: "Fat is 9 calories a gram against 4 for protein and carbohydrate. That is why the oil is weighed in every recipe here and why the dressings are built on yoghurt." },
       { t: "Nothing is banned", d: "There is steak in this book, and pasta, and bread. A deficit is a weekly number, not a list of forbidden foods." }
     ],
@@ -1207,18 +1205,18 @@ const SERIES = [
     ]
   },
   {
-    book: "gain", accent: "#7FA8FF", name: "EVZO-Weight-Gain", file: "EVZO — Weight Gain",
+    book: "gain", accent: "#7FA8FF", name: "EVZO-Weight-Gain", file: "EVZO, Weight Gain",
     eyebrow: "Weight gain", coverTitle: "Eating more, on purpose", coverTitleEl: "Τρως περισσότερο, επίτηδες",
-    coverSub: "{{count}} calorie-dense meals and shakes for people who genuinely struggle to gain — built on real food, not on eating badly.",
+    coverSub: "{{count}} calorie-dense meals and shakes for people who genuinely struggle to gain, built on real food, not on eating badly.",
     contentsTitle: "Sorted by calories, highest first", col1: "Meal",
     sort: (a, b) => b.per.kcal - a.per.kcal,
     introLabel: "The honest version", introTitle: "There is no secret",
-    introLede: "If you are not gaining, you are not eating enough. That is the whole of it — and it is not what anybody wants to hear, because eating more is genuinely hard when food fills you up.",
+    introLede: "If you are not gaining, you are not eating enough. That is the whole of it, and it is not what anybody wants to hear, because eating more is genuinely hard when food fills you up.",
     introBody: [
       { t: "The problem is volume, not metabolism", d: "A fast metabolism is real but small. Appetite is the big one: most people who cannot gain simply stop when they are full, and full arrives early." },
       { t: "Drink some of it", d: "Liquid calories bypass the fullness solid food creates. One oat and peanut butter shake alongside a meal is a thousand calories you did not have to chew through." },
       { t: "Add, do not replace", d: "Oil on the rice, avocado in the box, thighs instead of breast, whole milk instead of semi. Each is 100 to 300 calories with no extra bulk." },
-      { t: "Aim for 300 to 500 calories over maintenance", d: "That is roughly 0.25 to 0.5 kg a week. Push it harder and most of what you add is fat — muscle cannot be forced to grow faster by eating more." }
+      { t: "Aim for 300 to 500 calories over maintenance", d: "That is roughly 0.25 to 0.5 kg a week. Push it harder and most of what you add is fat, muscle cannot be forced to grow faster by eating more." }
     ],
     endTitle: "Lift, or you are just eating", endLede: "A surplus decides how much weight you gain. Training decides how much of it is muscle.",
     endBody: [
@@ -1269,8 +1267,8 @@ const SERIES = [
 /* ---- the prose books -----------------------------------------------------
    Not every guide is a set of recipes. These are read front to back once and
    then used: a quit plan, a supplement audit, a shopping eye. They all share
-   one shape — cover, contents, an honest "before you start" page, numbered
-   chapters, a last page — so a JSON file is the whole of a new one.
+   one shape, cover, contents, an honest "before you start" page, numbered
+   chapters, a last page, so a JSON file is the whole of a new one.
 
    The safety page is NOT optional and NOT a disclaimer bolted on at the end.
    For the two books about stopping something the body has adapted to, it is
@@ -1391,16 +1389,16 @@ async function toPdf(name, title, body) {
 }
 
 const books = [
-  { name: "EVZO-Healthy-Recipes", title: "EVZO — Healthy Recipes", body: bookRecipes() },
-  { name: "EVZO-30-Day-Meal-Variety", title: "EVZO — 30-Day Meal Variety Bundle", body: bookPlan() },
-  { name: "EVZO-Workout-Plans", title: "EVZO — Workout Plans", body: bookWorkouts() },
-  { name: "EVZO-Workbook", title: "EVZO — The 28-Day Workbook", body: bookWorkbook() },
+  { name: "EVZO-Healthy-Recipes", title: "EVZO, Healthy Recipes", body: bookRecipes() },
+  { name: "EVZO-30-Day-Meal-Variety", title: "EVZO, 30-Day Meal Variety Bundle", body: bookPlan() },
+  { name: "EVZO-Workout-Plans", title: "EVZO, Workout Plans", body: bookWorkouts() },
+  { name: "EVZO-Workbook", title: "EVZO, The 28-Day Workbook", body: bookWorkbook() },
   ...SERIES.map(def => ({ name: def.name, title: def.file, body: seriesBook(def) })),
   ...GUIDES.map(def => ({ name: def.name, title: def.file, body: bookGuide(def) }))
 ];
 
 /* Where the finished PDFs are copied for the owner. Desktop/EVZO/Books, not
-   the Desktop itself — ten loose files that reappear on every build is not a
+   the Desktop itself, ten loose files that reappear on every build is not a
    place anyone can find anything. */
 const DESKTOP_OUT = join(
   process.env.USERPROFILE || process.env.HOME || ".", "Desktop", "EVZO", "Books"
@@ -1456,7 +1454,7 @@ SHOP_STATS.workbook = {
 writeFileSync(
   join(HERE, "..", "site", "shop-data.json"),
   JSON.stringify({
-    _note: "Generated by ebooks/build.mjs. Do not edit by hand — rerun the build.",
+    _note: "Generated by ebooks/build.mjs. Do not edit by hand, rerun the build.",
     generated: new Date().toISOString().slice(0, 10),
     books: SHOP_STATS,
     /* The home page's stats band. Every one of these is a count of something

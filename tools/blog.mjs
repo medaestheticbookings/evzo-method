@@ -1,4 +1,4 @@
-/* EVZO — blog generator
+/* EVZO, blog generator
  * ===========================================================================
  *   node tools/blog.mjs
  *     -> blog.html            the index
@@ -9,7 +9,7 @@
  *
  * THE RULE, same as the ebooks: no calorie or macro figure is written into
  * content/blog.json. A post names a recipe by id and this file computes the
- * figures from ebooks/foods.json through the shared nutrition module — so a
+ * figures from ebooks/foods.json through the shared nutrition module, so a
  * number published here is the same number printed in the PDF, always.
  * ======================================================================== */
 
@@ -27,7 +27,7 @@ const POSTS = JSON.parse(readFileSync(join(ROOT, "content", "blog.json"), "utf8"
 const RECIPES = Object.fromEntries(allRecipes().map(r => [r.id, r]));
 const BOOKS = Object.fromEntries(CONFIG.ebooks.books.map(b => [b.id, b]));
 
-/* No domain yet means no canonical and no absolute URL anywhere — a canonical
+/* No domain yet means no canonical and no absolute URL anywhere, a canonical
    pointing at a guess is worse than none. Set config.site.baseUrl and rerun. */
 const BASE = CONFIG.isSet(CONFIG.site.baseUrl)
   ? String(CONFIG.site.baseUrl).replace(/\/+$/, "")
@@ -112,7 +112,7 @@ ${body}
     <div class="foot-grid">
       <div>
         <img class="mark-img" src="${up}brand/evzo-wordmark-ev-yellow.svg" alt="EVZO" width="107" height="24">
-        <p class="note" style="margin-top:8px">ευ ζω — to live well</p>
+        <p class="note" style="margin-top:8px">ευ ζω, to live well</p>
       </div>
       <div class="foot-links">
         <a href="/legal/#cookies" data-cookie-settings>Cookie settings</a>
@@ -154,11 +154,11 @@ function recipeBlock(id, intro, depth) {
       <div><span class="k">Fat</span><b>${r.per.fat} g</b></div>
       <div><span class="k">Score</span><b>${r.per.score}</b></div>
     </div>
-    <p class="note" style="margin-top:-8px">Per serving, computed from the ingredients below. Figures vary with brand, cut and cooking — close, not exact.</p>
+    <p class="note" style="margin-top:-8px">Per serving, computed from the ingredients below. Figures vary with brand, cut and cooking, close, not exact.</p>
 
     <span class="label" style="margin-top:20px">What goes in</span>
     <ul class="ing" style="margin-top:8px">${ings}</ul>
-    <p class="note" style="margin-top:10px">Herbs, spices, salt and pepper as you like — too small to count.</p>
+    <p class="note" style="margin-top:10px">Herbs, spices, salt and pepper as you like, too small to count.</p>
 
     <span class="label" style="margin-top:20px">How</span>
     <ol>${r.method.map(m => `<li>${esc(m)}</li>`).join("")}</ol>
@@ -180,8 +180,8 @@ function blocks(list) {
 
 /* ---- structured data for a post ------------------------------------------
    Article always; Recipe as well when the post carries one. The Recipe block
-   is the valuable half — it is what produces a result with the calorie figure
-   attached — and every number in it comes from the same computation that
+   is the valuable half, it is what produces a result with the calorie figure
+   attached, and every number in it comes from the same computation that
    printed the figures on the page, so the markup and the visible text can
    never disagree. Google treats that mismatch as a manual-action risk. */
 
@@ -273,7 +273,7 @@ function postPage(post) {
             <div class="h" style="font-family:var(--display);font-size:24px;text-transform:uppercase;margin-top:6px">${esc(book.name)}</div>
             <p>${esc(book.blurb)}</p>
           </div>
-          <a class="btn" href="${shopHref}">${esc(price)} — see the book</a>
+          <a class="btn" href="${shopHref}">${esc(price)}, see the book</a>
         </div>` : ""}
 
         <p class="note" style="margin-top:34px">18+. General information about food, not medical advice. EVZO is not run by
@@ -287,7 +287,7 @@ function postPage(post) {
 </main>`;
 
   return shell({
-    title: post.title + " — EVZO",
+    title: post.title + ", EVZO",
     description: post.excerpt,
     body, depth: 2,
     canonicalPath: "blog/" + post.slug + "/",
@@ -355,7 +355,7 @@ function indexPage() {
 </main>`;
 
   return shell({
-    title: "EVZO Blog — food, written with the numbers in",
+    title: "EVZO Blog, food, written with the numbers in",
     description: "Free recipes and plain nutrition explanations for Greek and Cypriot kitchens, with every figure computed from the ingredient.",
     body, depth: 1, canonicalPath: "blog/"
   });

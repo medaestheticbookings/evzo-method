@@ -1,10 +1,10 @@
-/* EVZO — cover images for the shop
+/* EVZO, cover images for the shop
  * ===========================================================================
  *   node tools/covers.mjs
  *     -> brand/covers/EVZO-*.png
  *
  * The shop used to draw a CSS imitation of each cover, which meant the card on
- * the site and the actual front of the PDF could drift apart — and did. These
+ * the site and the actual front of the PDF could drift apart, and did. These
  * are screenshots of page one of the real book, so what a customer sees in the
  * shop is exactly what they get.
  *

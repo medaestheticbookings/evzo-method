@@ -1,8 +1,8 @@
-/* EVZO — site styles
+/* EVZO, site styles
  * Tokens below are copied verbatim from tools/slide.css, which is the brand
  * source of truth for the carousels. Do not change a value here in isolation:
  * change it in slide.css and mirror it, or the feed and the site drift apart.
- * Deliberately single-theme — EVZO is a dark identity — so every colour is
+ * Deliberately single-theme, EVZO is a dark identity, so every colour is
  * painted explicitly and nothing inherits the host ground.
  * ========================================================================= */
 
@@ -43,7 +43,7 @@ body{
   overflow-x:hidden;
 }
 
-/* Anton carries no Greek glyphs — Greek headlines fall back to Commissioner
+/* Anton carries no Greek glyphs, Greek headlines fall back to Commissioner
    800, exactly as tools/slide.css does for the carousels. */
 body.gr h1,body.gr h2,body.gr h3,body.gr .h{
   font-family:var(--body);
@@ -69,7 +69,7 @@ mark{background:var(--yellow);color:var(--ink);padding:1px 6px;font-weight:600}
 
 h1,h2,h3{text-wrap:balance;margin:0}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,6.4vw,58px);line-height:1;text-transform:uppercase}
-/* Section titles carry the brand yellow — set 27 Sep 2026. The accent is the
+/* Section titles carry the brand yellow, set 27 Sep 2026. The accent is the
    one thing every EVZO surface shares, so the headings use it rather than
    plain white. */
 h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4.8vw,40px);line-height:1.02;text-transform:uppercase;color:var(--yellow)}
@@ -113,7 +113,7 @@ input:focus-visible,select:focus-visible{outline:3px solid var(--yellow);outline
 /* Two-tone wordmark, matching the @evzo_method profile photo: EV yellow,
    ZO white. Applies wherever .mark is used, header and footer alike. */
 /* The wordmark is the supplied logo artwork (Archivo Black, outlined), not
-   type set in the display face — those are different letterforms. */
+   type set in the display face, those are different letterforms. */
 .mast .mark{display:flex;align-items:center;flex:none}
 .mast .mark img{display:block;height:28px;width:auto}
 @media (max-width:420px){ .mast .mark img{height:22px} }
@@ -252,7 +252,7 @@ select{
 .opt .t{display:block}
 .opt .d{display:block;color:var(--muted);font-size:14px;margin-top:3px;line-height:1.45}
 
-/* Food picker — the same control as .opt, packed tight, because twenty-seven
+/* Food picker, the same control as .opt, packed tight, because twenty-seven
    of them stacked full width would turn one question into a scroll marathon. */
 .foods{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:8px}
 .foods .opt{padding:10px 12px;min-height:44px;font-size:15px;gap:10px;align-items:center}
@@ -323,7 +323,7 @@ select{
 .receive li{background:var(--raised);padding:15px 18px;display:flex;gap:13px;align-items:flex-start;font-size:15.5px;color:var(--bone-dim)}
 .receive li::before{content:"";width:7px;height:7px;background:var(--yellow);flex:none;margin-top:8px}
 
-/* Representative mock-up of the deliverable — not real nutritional content. */
+/* Representative mock-up of the deliverable, not real nutritional content. */
 .mock{background:var(--raised-2);border:1px solid var(--line);padding:22px 20px}
 .mock .cap{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:14px;display:block}
 .mock .doc{background:var(--ground);padding:18px;border:1px solid var(--line-soft)}
@@ -569,7 +569,7 @@ section > .wrap > *:last-child{margin-bottom:0}
 }
 
 /* Phone header: logo + Instagram + language + CTA on one row. The CTA must
-   not wrap — a two-line button doubles the header height and pushes the hero
+   not wrap, a two-line button doubles the header height and pushes the hero
    off the first screen. */
 @media (max-width:460px){
   .mast-in{gap:6px}
@@ -583,7 +583,7 @@ section > .wrap > *:last-child{margin-bottom:0}
   }
 }
 
-/* Launch pricing. Uses the existing tokens and faces only — Anton for the
+/* Launch pricing. Uses the existing tokens and faces only, Anton for the
    figure, Roboto Mono for the labels, yellow accent, muted for the old price. */
 .price-block{display:flex;flex-direction:column;align-items:flex-end;gap:7px;text-align:right}
 .price-badge{
@@ -661,7 +661,7 @@ a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
 
 /* ---- reviews --------------------------------------------------------------
    Renders only when real entries exist. Each card carries a photo the customer
-   supplied, their words, their first name and a short context line — the three
+   supplied, their words, their first name and a short context line, the three
    things that make a review readable rather than decorative. */
 .reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
 .review {
@@ -695,7 +695,7 @@ a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
 
 /* ---- reviews --------------------------------------------------------------
    Renders only when real entries exist. Each card carries a photo the customer
-   supplied, their words, their first name and a short context line — the three
+   supplied, their words, their first name and a short context line, the three
    things that make a review readable rather than decorative. */
 .reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
 .review {

@@ -1,4 +1,4 @@
-/* EVZO — the consent chooser
+/* EVZO, the consent chooser
    =========================================================================
    Deliberately plain. A consent dialogue is not a place for persuasion: the
    "reject" button is the same size, weight and colour as "accept", because a
@@ -50,8 +50,7 @@ label.cc-row { cursor: pointer; }
   margin-top: 2px;
 }
 
-/* A real checkbox, sized to be tappable. Nothing is checked by default —
-   silence is not consent. */
+/* A real checkbox, sized to be tappable. Nothing is checked by default, silence is not consent. */
 .cc-row input[type="checkbox"] {
   appearance: none; -webkit-appearance: none;
   width: 44px; height: 26px; flex: none; margin-top: 1px;

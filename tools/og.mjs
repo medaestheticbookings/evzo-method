@@ -1,4 +1,4 @@
-/* EVZO — social share images
+/* EVZO, social share images
  * ===========================================================================
  *   node tools/og.mjs
  *     -> brand/og-home.png    1200x630
@@ -6,7 +6,7 @@
  *     -> brand/og-blog.png
  *
  * Without these, a link pasted into WhatsApp, Instagram or Facebook falls back
- * to whatever image it can find — usually the favicon, blown up and cropped
+ * to whatever image it can find, usually the favicon, blown up and cropped
  * into nonsense. The first thing anyone sees of EVZO is that thumbnail, so it
  * is worth a designed card rather than an accident.
  *
@@ -49,8 +49,7 @@ function card({ eyebrow, title, titleEl, sub, stat, statLabel }) {
     position:relative;-webkit-font-smoothing:antialiased;
   }
 
-  /* The yellow field. A hard diagonal edge rather than a straight split —
-     it is what stops the card reading as a slide template. */
+  /* The yellow field. A hard diagonal edge rather than a straight split, it is what stops the card reading as a slide template. */
   .field{
     position:absolute;inset:0 0 0 auto;width:470px;background:#FFE14D;
     clip-path:polygon(120px 0, 470px 0, 470px 630px, 0 630px);

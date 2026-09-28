@@ -1,5 +1,5 @@
 {
-  "_note": "Two single-ingredient books: oats and eggs. Same rule as every other content file here — quantities are written by hand, every calorie and macro figure is computed by build.mjs from foods.json. Nothing in the prose may state a number that is not derived from that arithmetic.",
+  "_note": "Two single-ingredient books: oats and eggs. Same rule as every other content file here, quantities are written by hand, every calorie and macro figure is computed by build.mjs from foods.json. Nothing in the prose may state a number that is not derived from that arithmetic.",
   "recipes": [
     {
       "id": "oa-overnight-classic",
@@ -17,13 +17,13 @@
         { "food": "honey", "g": 10 }
       ],
       "method": [
-        "Oats, yoghurt and milk into a jar. Stir properly — the dry pocket at the bottom is the reason people give up on this.",
+        "Oats, yoghurt and milk into a jar. Stir properly, the dry pocket at the bottom is the reason people give up on this.",
         "Lid on, fridge, overnight. It will look too wet. It is not.",
         "Berries and honey in the morning, not the night before, or the fruit bleeds into everything."
       ],
       "why": "Breakfast is the meal most often skipped and then paid for at eleven o'clock. This one is made when you are not hungry and not in a hurry, which is the only reliable way to eat it.",
       "swaps": [
-        "Frozen berries work and cost a third as much — add them at night, they thaw perfectly.",
+        "Frozen berries work and cost a third as much, add them at night, they thaw perfectly.",
         "Grated apple instead of berries, with cinnamon."
       ]
     },
@@ -49,7 +49,7 @@
       ],
       "why": "Most people eat almost no protein before midday and then try to make it up at dinner, which does not work as well. This puts a third of the day's protein in before anything else has happened.",
       "swaps": [
-        "Any powder — check your own tub, scoops differ by brand.",
+        "Any powder, check your own tub, scoops differ by brand.",
         "Tahini instead of peanut butter if you want it less sweet."
       ]
     },
@@ -74,7 +74,7 @@
         "Oats in, jar, fridge overnight.",
         "Seeds and berries on top in the morning."
       ],
-      "why": "Soy is the one plant milk with protein worth counting — most almond milks have almost none. Chia does the thickening that yoghurt does elsewhere in this book.",
+      "why": "Soy is the one plant milk with protein worth counting, most almond milks have almost none. Chia does the thickening that yoghurt does elsewhere in this book.",
       "swaps": [
         "Maple syrup instead of honey to keep it fully plant-based.",
         "Oat milk if soy is not for you, but expect less protein."
@@ -128,7 +128,7 @@
         "Wilt the spinach through at the end, crumble in the feta.",
         "Two eggs on top, fried or poached, and the oil over everything."
       ],
-      "why": "Oats are a grain, not a dessert. Treated like rice they carry eggs and cheese as well as they carry honey — and it is the version that keeps people eating them past February.",
+      "why": "Oats are a grain, not a dessert. Treated like rice they carry eggs and cheese as well as they carry honey, and it is the version that keeps people eating them past February.",
       "swaps": [
         "Halloumi instead of feta, grilled hard.",
         "A spoon of yoghurt stirred in at the end makes it creamier for almost nothing."
@@ -203,7 +203,7 @@
       ],
       "method": [
         "Oats in salted water, six minutes, looser than porridge.",
-        "Halloumi dry-grilled until it is properly marked. No oil in the pan — it releases its own.",
+        "Halloumi dry-grilled until it is properly marked. No oil in the pan, it releases its own.",
         "Tomato chopped raw through the oats, halloumi on top, oil over."
       ],
       "why": "Closer to trahana than to porridge, and that is the point: this is a bowl a Cypriot kitchen already understands.",
@@ -232,7 +232,7 @@
         "Everything else in, blend properly.",
         "Drink it alongside a meal, not instead of one."
       ],
-      "why": "Liquid calories go past the fullness that solid food creates. If you struggle to gain weight, this is the single most useful thing in this book — and if you are trying to lose, it is the one page to skip.",
+      "why": "Liquid calories go past the fullness that solid food creates. If you struggle to gain weight, this is the single most useful thing in this book, and if you are trying to lose, it is the one page to skip.",
       "swaps": [
         "Semi-skimmed milk takes a meaningful number of calories out.",
         "Dates instead of banana."
@@ -280,7 +280,7 @@
       ],
       "method": [
         "Toast the oats dry, three minutes.",
-        "Chop the dates small — whole ones sink and you get one sweet mouthful and four plain ones.",
+        "Chop the dates small, whole ones sink and you get one sweet mouthful and four plain ones.",
         "Everything folded through the skyr, tahini rippled on top."
       ],
       "why": "Tahini and dates is an old pairing here and it is a genuinely good one: the sesame keeps the sweetness from being flat. Skyr carries the protein so this eats like dessert and behaves like a meal.",
@@ -331,7 +331,7 @@
       ],
       "method": [
         "Oats and oat milk from cold, six minutes on low.",
-        "Toast the seeds in a dry pan while it cooks — thirty seconds past when you think they are done.",
+        "Toast the seeds in a dry pan while it cooks, thirty seconds past when you think they are done.",
         "Banana sliced over, seeds last so they stay crisp."
       ],
       "why": "Fully plant-based and no powder involved. The seeds are doing the protein work here, which is why they are weighed rather than scattered.",
@@ -360,7 +360,7 @@
         "Off the heat before the powder goes in. Boiled protein powder goes grainy.",
         "Berries and chopped almonds over."
       ],
-      "why": "The plant-based bowl that actually reaches the protein other breakfasts get from dairy. Cook the powder and you ruin the texture — that is the only technical thing on this page.",
+      "why": "The plant-based bowl that actually reaches the protein other breakfasts get from dairy. Cook the powder and you ruin the texture, that is the only technical thing on this page.",
       "swaps": [
         "Whey works the same way if dairy is not an issue for you.",
         "Frozen berries, stirred in hot so they collapse into it."
@@ -384,11 +384,11 @@
         { "food": "herbs", "g": 2 }
       ],
       "method": [
-        "Grate the tomatoes and cook them down hard with the onion until the water has gone. Eight minutes, and do not rush it — wet tomato makes wet eggs.",
+        "Grate the tomatoes and cook them down hard with the onion until the water has gone. Eight minutes, and do not rush it, wet tomato makes wet eggs.",
         "Beaten eggs in, heat low, move them slowly.",
         "Off the heat while still glossy, feta crumbled over, oregano."
       ],
-      "why": "The dish half of Greece eats in August, and it needs no rebuilding at all — three eggs, a quarter kilo of tomatoes and measured oil is already a good meal. The only common mistake is a pour of oil instead of a spoon.",
+      "why": "The dish half of Greece eats in August, and it needs no rebuilding at all, three eggs, a quarter kilo of tomatoes and measured oil is already a good meal. The only common mistake is a pour of oil instead of a spoon.",
       "swaps": [
         "Tinned chopped tomatoes out of season, reduced harder.",
         "Two eggs plus a handful of whites keeps the volume and cuts the fat."
@@ -416,7 +416,7 @@
         "Passata, garlic, cumin and paprika in, simmer until it thickens enough to hold a hollow.",
         "Three hollows, an egg in each, lid on, six minutes. Feta over at the end."
       ],
-      "why": "A pan of vegetables with eggs set into it — most of the volume is nearly free, and the eggs make it a meal rather than a side.",
+      "why": "A pan of vegetables with eggs set into it, most of the volume is nearly free, and the eggs make it a meal rather than a side.",
       "swaps": [
         "A tin of chickpeas in with the sauce turns one portion into two.",
         "Serve with a rusk rather than bread to keep it from disappearing in two bites."
@@ -467,7 +467,7 @@
         "Wet the rusk under the tap for three seconds only, then grate the tomato over it and let it sit two minutes.",
         "Eggs halved on top, oil, olives, salt."
       ],
-      "why": "Dakos with the protein put back. It takes ten minutes, travels in a box, and does not need reheating — which is most of why people eat badly at work.",
+      "why": "Dakos with the protein put back. It takes ten minutes, travels in a box, and does not need reheating, which is most of why people eat badly at work.",
       "swaps": [
         "Tinned tuna instead of one of the eggs.",
         "Anari or cottage cheese crumbled over."
@@ -493,7 +493,7 @@
         "Whites in, heat low, keep them moving. They set faster than whole eggs and turn rubbery in seconds.",
         "Off the heat while still soft."
       ],
-      "why": "Almost all of the calories here are protein, which makes this the page to use in a hard deficit. It is not better than a whole-egg breakfast — the yolk carries most of the nutrition — it is just leaner.",
+      "why": "Almost all of the calories here are protein, which makes this the page to use in a hard deficit. It is not better than a whole-egg breakfast, the yolk carries most of the nutrition, it is just leaner.",
       "swaps": [
         "Two whole eggs plus 150 g of whites is the better everyday version.",
         "Chicken mince or leftover roast chicken instead of turkey."
@@ -519,7 +519,7 @@
         "Mash the avocado with the lemon and plenty of salt, directly on the toast.",
         "Two eggs on top, however you like them, oil over."
       ],
-      "why": "The café version of this costs eleven euros and usually arrives with one egg. Half an avocado is around 130 calories — worth knowing, because a whole one on top of a normal breakfast is where this dish quietly goes wrong.",
+      "why": "The café version of this costs eleven euros and usually arrives with one egg. Half an avocado is around 130 calories, worth knowing, because a whole one on top of a normal breakfast is where this dish quietly goes wrong.",
       "swaps": [
         "Poached instead of fried takes the oil out entirely.",
         "Cottage cheese under the avocado adds protein for very little."
@@ -545,7 +545,7 @@
         "Oil and garlic in at the end, tip into an oven dish.",
         "Three hollows, eggs in, halloumi over, 190°C for twelve minutes."
       ],
-      "why": "Two hundred grams of mushrooms is about 44 calories and fills a dish. Volume from vegetables, protein from eggs and cheese — that is the whole structure.",
+      "why": "Two hundred grams of mushrooms is about 44 calories and fills a dish. Volume from vegetables, protein from eggs and cheese, that is the whole structure.",
       "swaps": [
         "Spinach folded through the mushrooms.",
         "Feta instead of halloumi, added after baking."
@@ -569,7 +569,7 @@
       "method": [
         "Chop everything small and squeeze the water out of the wilted spinach.",
         "Beat the eggs with salt and pepper, stir the rest through, fill six oiled muffin holes.",
-        "180°C for twenty minutes. They deflate as they cool — that is normal."
+        "180°C for twenty minutes. They deflate as they cool, that is normal."
       ],
       "why": "Three days of breakfasts made in half an hour on a Sunday. The reason people eat pastry at nine in the morning is that nothing else is ready.",
       "swaps": [
@@ -674,7 +674,7 @@
         { "food": "paximadi", "g": 40 }
       ],
       "method": [
-        "Yoghurt out of the fridge early and mixed with crushed garlic and salt — cold yoghurt under a hot egg is unpleasant.",
+        "Yoghurt out of the fridge early and mixed with crushed garlic and salt, cold yoghurt under a hot egg is unpleasant.",
         "Two eggs poached four minutes, drained properly on paper.",
         "Butter melted with paprika until it foams, poured over. Rusk on the side."
       ],

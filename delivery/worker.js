@@ -1,4 +1,4 @@
-/* EVZO — automatic PDF delivery
+/* EVZO, automatic PDF delivery
  * ============================================================================
  * A buyer pays on a Stripe Payment Link and gets the book in two ways:
  *
@@ -19,7 +19,7 @@
  *   STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, RESEND_API_KEY,
  *   DOWNLOAD_SIGNING_SECRET
  * Vars (wrangler.toml): MAIL_FROM, SUPPORT_EMAIL, SITE_URL, LINK_HOURS,
- *   WORKER_URL (optional — defaults to the address the Worker is served on)
+ *   WORKER_URL (optional, defaults to the address the Worker is served on)
  * Binding: PDFS (R2 bucket)
  */
 
@@ -76,7 +76,7 @@ function titleFor(file, product, count) {
   return file.replace(/^EVZO-/, "").replace(/\.pdf$/i, "").replace(/-/g, " ");
 }
 
-// A 100%-off promotion code completes with "no_payment_required" — still a sale.
+// A 100%-off promotion code completes with "no_payment_required", still a sale.
 function isPaid(session) {
   return session.payment_status === "paid" || session.payment_status === "no_payment_required";
 }
@@ -142,11 +142,10 @@ async function thanks(url, env) {
   const rows = await Promise.all(books.map(async b =>
     `<li><span>${esc(b.name)}</span><a class="btn" href="${esc(await signedUrl(env, b.file))}">Download PDF</a></li>`));
 
-  return page(env, "Thank you — your books are ready",
+  return page(env, "Thank you, your books are ready",
     `<p>Download them now. A copy of these links is on its way to <strong>${esc(email || "your inbox")}</strong>.</p>
      <ul class="dl">${rows.join("")}</ul>
-     <p class="small">Links stay valid for ${Number(env.LINK_HOURS)} hours. Save the PDFs to your phone or computer —
-     they are yours to keep. Lost them? Email <a href="mailto:${esc(env.SUPPORT_EMAIL)}">${esc(env.SUPPORT_EMAIL)}</a>.</p>`);
+     <p class="small">Links stay valid for ${Number(env.LINK_HOURS)} hours. Save the PDFs to your phone or computer, they are yours to keep. Lost them? Email <a href="mailto:${esc(env.SUPPORT_EMAIL)}">${esc(env.SUPPORT_EMAIL)}</a>.</p>`);
 }
 
 /* ---- /dl ----------------------------------------------------------------- */
@@ -172,7 +171,7 @@ async function download(url, env) {
   const obj = await env.PDFS.get("books/" + file);
   if (!obj) {
     console.error("Missing PDF in R2:", file);
-    return new Response("File missing — email " + env.SUPPORT_EMAIL + " and we will send it by hand.", { status: 404 });
+    return new Response("File missing, email " + env.SUPPORT_EMAIL + " and we will send it by hand.", { status: 404 });
   }
   return new Response(obj.body, {
     headers: {
@@ -198,7 +197,7 @@ async function sendEmail(env, to, name, links) {
       <h1 style="font:800 24px Arial,sans-serif;margin:24px 0 8px">${first ? "Thank you, " + esc(first) + "." : "Thank you."}</h1>
       <p style="color:#c9d2e3;margin:0 0 20px">Your ${links.length > 1 ? "books are" : "book is"} ready. Tap to download:</p>
       <table style="width:100%;border-collapse:collapse">${list}</table>
-      <p style="color:#8b97ad;font-size:13px;margin-top:24px">Links stay valid for ${Number(env.LINK_HOURS)} hours — save the PDF once and it is yours to keep.
+      <p style="color:#8b97ad;font-size:13px;margin-top:24px">Links stay valid for ${Number(env.LINK_HOURS)} hours, save the PDF once and it is yours to keep.
       Any problem, just reply to this email.</p>
       <p style="color:#8b97ad;font-size:13px">EVZO METHOD · <a href="${esc(env.SITE_URL)}" style="color:#FFE14D">${esc(env.SITE_URL.replace(/^https?:\/\//, ""))}</a></p>
     </div></div>`;
@@ -215,7 +214,7 @@ async function sendEmail(env, to, name, links) {
       html, text
     })
   });
-  // Throwing makes the webhook return 500, so Stripe retries later — the
+  // Throwing makes the webhook return 500, so Stripe retries later, the
   // marker is only written after a successful send.
   if (!res.ok) throw new Error("Resend " + res.status + " " + await res.text());
 }

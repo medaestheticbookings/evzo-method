@@ -1,11 +1,11 @@
-/* EVZO — the home page's new sections
+/* EVZO, the home page's new sections
    =========================================================================
    Only the sections added when the page was restructured. Deliberately a
    separate file from shop.css: that one resets `section` padding globally,
    which would move every existing block on the sales page.
 
    Everything here uses the same tokens as evzo.css, so a palette change still
-   carries, and every class name is new — nothing already on the page is
+   carries, and every class name is new, nothing already on the page is
    restyled from this file.
    ====================================================================== */
 
@@ -50,7 +50,7 @@
 .feature-list b { color: var(--bone); font-weight: 600; }
 
 /* A phone-shaped frame around a real screenshot. No mockup, no device chrome
-   pretending to be an iPhone — just a bezel so the screen reads as a screen. */
+   pretending to be an iPhone, just a bezel so the screen reads as a screen. */
 .shots { display: flex; justify-content: center; gap: clamp(10px, 2vw, 18px); }
 .shot {
   background: var(--ink); border: 1px solid var(--line); border-radius: 22px;
@@ -119,7 +119,7 @@
 .review .who b { display: block; font-size: 15px; }
 .review .who span { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
 
-/* The empty state. It is not hidden from the owner — it is hidden from
+/* The empty state. It is not hidden from the owner, it is hidden from
    visitors, and the page simply does not render the section at all until
    config.testimonials has a real entry in it. */
 
@@ -144,7 +144,7 @@
 /* ---- utilities the new markup needs ------------------------------------ */
 
 /* A label that only a screen reader hears. The email field has a visible
-   placeholder, which is not a label — placeholders vanish on focus. */
+   placeholder, which is not a label, placeholders vanish on focus. */
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
@@ -246,7 +246,7 @@
    The page had no photograph on it anywhere. For a product about food that is
    not a style problem, it is a selling problem: nobody can want a meal they
    cannot see. Everything below exists to put real food on the page and to
-   order the argument the way a stranger actually reads it — what is wrong,
+   order the argument the way a stranger actually reads it, what is wrong,
    what they get, what it looks like, why the numbers can be trusted, and only
    then the form.
 
@@ -267,7 +267,7 @@
 /* `section > .wrap{text-align:center}` sets the centred rhythm for the whole
    page and outranks a plain `.hero-grid`, so this has to match its specificity
    to win. A two-column hero ranged centre reads as a poster, not a page. */
-/* The wrap keeps its own auto margins — it is what centres the column on a
+/* The wrap keeps its own auto margins, it is what centres the column on a
    wide screen. Only the text inside is un-centred. */
 section > .wrap.hero-grid{text-align:left}
 section > .wrap.hero-grid .label,
@@ -291,7 +291,7 @@ section > .wrap.hero-grid .trust{text-align:left;margin-inline:0}
   aspect-ratio:1200/950;object-fit:cover;
 }
 /* The brand's diagonal yellow field, used as a corner rule rather than a
-   whole panel — enough to make the photograph look placed rather than
+   whole panel, enough to make the photograph look placed rather than
    dropped in. */
 .hero-shot::before{
   content:"";position:absolute;left:-10px;top:-10px;
@@ -308,7 +308,7 @@ section > .wrap.hero-grid .trust{text-align:left;margin-inline:0}
   .hero-grid{grid-template-columns:1fr}
   /* The photograph stays BELOW the copy on a phone. Putting it first was
      tempting, but at this width a 1200x950 image fills the whole viewport and
-     pushes the headline and the button off the screen — the visitor lands on
+     pushes the headline and the button off the screen, the visitor lands on
      a picture of meat with nothing telling them what the page is. Copy first,
      then the photograph as proof, then the numbers.
      It is also cropped shallower here so the next section stays in reach. */
@@ -385,7 +385,7 @@ section > .wrap.hero-grid .trust{text-align:left;margin-inline:0}
 }
 
 /* ---- why the numbers hold up -------------------------------------------- */
-/* Four cards, so two columns — not auto-fit, which put three on the top row
+/* Four cards, so two columns, not auto-fit, which put three on the top row
    on a wide screen and left two dead cells beside the fourth. */
 .rig{
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
@@ -420,7 +420,7 @@ section > .wrap.hero-grid .trust{text-align:left;margin-inline:0}
    SIZING AND THE DEVICE RANGE
    ===========================================================================
    Two problems this fixes. The photographs were displayed far larger than
-   they needed to be — a 950px-tall hero shot and 800px dish tiles on a laptop
+   they needed to be, a 950px-tall hero shot and 800px dish tiles on a laptop
    is a slideshow, not a page. And the layout only had one breakpoint, so a
    tablet in portrait got the phone layout with enormous type.
 

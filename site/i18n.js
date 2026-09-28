@@ -1,4 +1,4 @@
-/* EVZO — language
+/* EVZO, language
  * ============================================================================
  * Keyed by the English string itself, so markup stays clean: on switch the page
  * walks its own text nodes and swaps what it recognises. Anything missing stays
@@ -31,14 +31,14 @@
     "Digital delivery": "Ψηφιακή παράδοση",
     "Made around your answers": "Φτιαγμένο από τις απαντήσεις σου",
     "No subscription": "Χωρίς συνδρομή",
-    "General wellness guidance — not medical or dietetic care.":
-      "Γενική καθοδήγηση ευεξίας — όχι ιατρική ή διαιτολογική φροντίδα.",
+    "General wellness guidance, not medical or dietetic care.":
+      "Γενική καθοδήγηση ευεξίας, όχι ιατρική ή διαιτολογική φροντίδα.",
     "We are not dietitians or healthcare professionals. Everything here is an educational estimate.":
       "Δεν είμαστε διαιτολόγοι ούτε επαγγελματίες υγείας. Όλα εδώ είναι εκπαιδευτικές εκτιμήσεις.",
 
     /* hero, the problem band, the week gallery and the rigour cards */
-    "Answer eleven questions. Get a month of meals built from your own numbers — and from Mediterranean food you will actually want to eat.":
-      "Απάντησε σε έντεκα ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα — και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
+    "Answer eleven questions. Get a month of meals built from your own numbers, and from Mediterranean food you will actually want to eat.":
+      "Απάντησε σε έντεκα ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα, και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
     "Takes about three minutes. Nothing to pay to see your numbers.":
       "Παίρνει περίπου τρία λεπτά. Δεν πληρώνεις τίποτα για να δεις τα νούμερά σου.",
     "The food is ordinary Mediterranean cooking. The portions are the part built for you.":
@@ -111,8 +111,8 @@
     /* goals */
     "Step one": "Βήμα ένα",
     "Pick the one you actually want": "Διάλεξε αυτό που θέλεις πραγματικά",
-    "Everything after this is shaped by this answer — the calorie range, the protein target and the way the week is built.":
-      "Όλα από εδώ και πέρα διαμορφώνονται από αυτή την απάντηση — το εύρος θερμίδων, ο στόχος πρωτεΐνης και ο τρόπος που χτίζεται η εβδομάδα.",
+    "Everything after this is shaped by this answer, the calorie range, the protein target and the way the week is built.":
+      "Όλα από εδώ και πέρα διαμορφώνονται από αυτή την απάντηση, το εύρος θερμίδων, ο στόχος πρωτεΐνης και ο τρόπος που χτίζεται η εβδομάδα.",
     // The page carries the short version; the long one above is kept for the
     // shop and the guide, which still use it.
     "Everything after this is shaped by this answer.":
@@ -148,11 +148,11 @@
     "How old are you?": "Πόσων χρονών είσαι;",
     "Age changes how many calories your body uses at rest, so the estimate needs it. This guide is for adults only.":
       "Η ηλικία αλλάζει πόσες θερμίδες καίει το σώμα σου σε ηρεμία, οπότε η εκτίμηση τη χρειάζεται. Ο οδηγός είναι μόνο για ενήλικες.",
-    "Age — years": "Ηλικία — έτη",
+    "Age, years": "Ηλικία, έτη",
     "I confirm I am 18 or over": "Επιβεβαιώνω ότι είμαι 18 ή άνω",
     "Which units do you think in?": "Σε ποιες μονάδες σκέφτεσαι;",
-    "Switching later converts what you have already typed — you will not have to redo anything.":
-      "Αν αλλάξεις αργότερα, μετατρέπονται όσα έγραψες — δεν θα ξαναγράψεις τίποτα.",
+    "Switching later converts what you have already typed, you will not have to redo anything.":
+      "Αν αλλάξεις αργότερα, μετατρέπονται όσα έγραψες, δεν θα ξαναγράψεις τίποτα.",
     "kg & cm\": \"κιλά & εκ.\", \"lb & ft\": \"λίβρες & πόδια\", \"st & ft": "stone & πόδια",
     "How tall are you?": "Πόσο ψηλός/ή είσαι;",
     "Used only inside the calorie estimate.": "Χρησιμοποιείται μόνο μέσα στην εκτίμηση θερμίδων.",
@@ -163,20 +163,20 @@
     "The Mifflin-St Jeor equation has two variants. This picks which one, and nothing else.":
       "Η εξίσωση Mifflin-St Jeor έχει δύο εκδοχές. Αυτό διαλέγει ποια, και τίποτα άλλο.",
     "Female\": \"Γυναίκα\", \"Male": "Άνδρας",
-    "An honest week — how much do you move?": "Μια ειλικρινής εβδομάδα — πόσο κινείσαι;",
+    "An honest week, how much do you move?": "Μια ειλικρινής εβδομάδα, πόσο κινείσαι;",
     "Count what you did last week, not what you meant to.":
       "Μέτρα τι έκανες την περασμένη εβδομάδα, όχι τι σκόπευες.",
     "Desk job, no training": "Γραφείο, καθόλου προπόνηση",
-    "Light — 1 to 2 sessions": "Ελαφριά — 1 με 2 προπονήσεις",
-    "Moderate — 3 to 4 sessions": "Μέτρια — 3 με 4 προπονήσεις",
-    "Hard — 5 to 6 sessions": "Έντονη — 5 με 6 προπονήσεις",
+    "Light, 1 to 2 sessions": "Ελαφριά, 1 με 2 προπονήσεις",
+    "Moderate, 3 to 4 sessions": "Μέτρια, 3 με 4 προπονήσεις",
+    "Hard, 5 to 6 sessions": "Έντονη, 5 με 6 προπονήσεις",
     "Physical job or twice a day": "Χειρωνακτική δουλειά ή δύο φορές τη μέρα",
     "How do you eat, and does anything here apply?": "Πώς τρως, και ισχύει κάτι από αυτά;",
-    "The safety questions decide whether we can give you an automatic estimate at all. Answer them honestly — nothing is stored.":
-      "Οι ερωτήσεις ασφάλειας κρίνουν αν μπορούμε καν να σου δώσουμε αυτόματη εκτίμηση. Απάντησε ειλικρινά — τίποτα δεν αποθηκεύεται.",
+    "The safety questions decide whether we can give you an automatic estimate at all. Answer them honestly, nothing is stored.":
+      "Οι ερωτήσεις ασφάλειας κρίνουν αν μπορούμε καν να σου δώσουμε αυτόματη εκτίμηση. Απάντησε ειλικρινά, τίποτα δεν αποθηκεύεται.",
     "Dietary style": "Διατροφικό στιλ",
     "I eat everything": "Τρώω τα πάντα",
-    "Pescatarian — fish, no meat": "Πεσκεταριανός — ψάρι, όχι κρέας",
+    "Pescatarian, fish, no meat": "Πεσκεταριανός, ψάρι, όχι κρέας",
     "Vegetarian\": \"Χορτοφάγος\", \"Vegan\": \"Vegan\", \"No pork\": \"Χωρίς χοιρινό\", \"Halal": "Halal",
     "Tick anything that applies to you": "Σημείωσε ό,τι ισχύει για σένα",
     "Pregnant or breastfeeding": "Εγκυμοσύνη ή θηλασμός",
@@ -258,8 +258,8 @@
     "Practical tips for staying consistent": "Πρακτικές συμβουλές για να είσαι συνεπής",
     "Digital PDF delivery after you complete the questionnaire": "Παράδοση ψηφιακού PDF αφού συμπληρώσεις το ερωτηματολόγιο",
     "Healthy Recipes eBook": "eBook Υγιεινών Συνταγών",
-    "A separate recipe collection in the same format. Optional — your guide is complete without it.":
-      "Μια ξεχωριστή συλλογή συνταγών στην ίδια μορφή. Προαιρετικό — ο οδηγός σου είναι πλήρης και χωρίς αυτό.",
+    "A separate recipe collection in the same format. Optional, your guide is complete without it.":
+      "Μια ξεχωριστή συλλογή συνταγών στην ίδια μορφή. Προαιρετικό, ο οδηγός σου είναι πλήρης και χωρίς αυτό.",
     "Add the": "Πρόσθεσε το",
     "for only": "μόνο με",
     "One guide, one payment": "Ένας οδηγός, μία πληρωμή",
@@ -291,7 +291,7 @@
     "Your goal. Your food. Your month.": "Ο στόχος σου. Το φαγητό σου. Ο μήνας σου.",
     "A practical starting structure, matched to your preferences and designed for a real schedule.":
       "Μια πρακτική αρχική δομή, ταιριασμένη στις προτιμήσεις σου και σχεδιασμένη για πραγματικό πρόγραμμα.",
-    "ευ ζω — to live well": "ευ ζω — να ζεις καλά",
+    "ευ ζω, to live well": "ευ ζω, να ζεις καλά",
     "Terms and Conditions": "Όροι Χρήσης",
     "Privacy Policy": "Πολιτική Απορρήτου",
     "Cookie Policy": "Πολιτική Cookies",
@@ -354,7 +354,7 @@
     "Change it any time from “Cookie settings” at the foot of the page.": "Άλλαξέ το οποτεδήποτε από τις «Ρυθμίσεις cookies» στο κάτω μέρος της σελίδας.",
     "Cookie settings": "Ρυθμίσεις cookies",
     "Your choice, not ours": "Δική σου επιλογή, όχι δική μας",
-    "EVZO sets no cookies and loads nothing from anyone else — the fonts are on our own server, so nothing about your visit is sent to Google or anybody. If we ever add analytics or advertising, it will only run if you tick it here first.": "Το EVZO δεν βάζει cookies και δεν φορτώνει τίποτα από τρίτους — οι γραμματοσειρές είναι στον δικό μας διακομιστή, οπότε τίποτα από την επίσκεψή σου δεν στέλνεται στην Google ή σε κανέναν. Αν προσθέσουμε ποτέ στατιστικά ή διαφήμιση, θα τρέξουν μόνο αν το επιλέξεις εδώ πρώτα.",
+    "EVZO sets no cookies and loads nothing from anyone else, the fonts are on our own server, so nothing about your visit is sent to Google or anybody. If we ever add analytics or advertising, it will only run if you tick it here first.": "Το EVZO δεν βάζει cookies και δεν φορτώνει τίποτα από τρίτους, οι γραμματοσειρές είναι στον δικό μας διακομιστή, οπότε τίποτα από την επίσκεψή σου δεν στέλνεται στην Google ή σε κανέναν. Αν προσθέσουμε ποτέ στατιστικά ή διαφήμιση, θα τρέξουν μόνο αν το επιλέξεις εδώ πρώτα.",
     "Strictly necessary": "Απολύτως απαραίτητα",
     "Remembering this choice, and your basket at checkout. Cannot be switched off.": "Η απομνημόνευση αυτής της επιλογής και του καλαθιού σου στο ταμείο. Δεν απενεργοποιείται.",
     "Always on": "Πάντα ενεργά",
@@ -382,10 +382,10 @@
     "Recipes": "Συνταγές",
     "Ingredients costed": "Υλικά υπολογισμένα",
     "Training plans": "Πλάνα προπόνησης",
-    "Counted, not claimed. Every calorie and macro figure behind these numbers is computed from a table of standard published values — none of them is typed by hand and none is estimated by a language model.": "Μετρημένα, όχι δηλωμένα. Κάθε νούμερο θερμίδων και μακροθρεπτικών πίσω από αυτά υπολογίζεται από πίνακα με πρότυπες δημοσιευμένες τιμές — κανένα δεν γράφτηκε με το χέρι και κανένα δεν το εκτίμησε γλωσσικό μοντέλο.",
+    "Counted, not claimed. Every calorie and macro figure behind these numbers is computed from a table of standard published values, none of them is typed by hand and none is estimated by a language model.": "Μετρημένα, όχι δηλωμένα. Κάθε νούμερο θερμίδων και μακροθρεπτικών πίσω από αυτά υπολογίζεται από πίνακα με πρότυπες δημοσιευμένες τιμές, κανένα δεν γράφτηκε με το χέρι και κανένα δεν το εκτίμησε γλωσσικό μοντέλο.",
     "The app · optional": "Η εφαρμογή · προαιρετικά",
     "The guide, but it keeps up with you": "Ο οδηγός, αλλά σε ακολουθεί",
-    "The guide is a PDF and it never changes. The app is the same plan, live — it knows what day you are on, what you have eaten and what is left.": "Ο οδηγός είναι PDF και δεν αλλάζει ποτέ. Η εφαρμογή είναι το ίδιο πλάνο, ζωντανά — ξέρει σε ποια μέρα είσαι, τι έφαγες και τι απομένει.",
+    "The guide is a PDF and it never changes. The app is the same plan, live, it knows what day you are on, what you have eaten and what is left.": "Ο οδηγός είναι PDF και δεν αλλάζει ποτέ. Η εφαρμογή είναι το ίδιο πλάνο, ζωντανά, ξέρει σε ποια μέρα είσαι, τι έφαγες και τι απομένει.",
     "Today, not a document.": "Σήμερα, όχι έγγραφο.",
     "Your day, your four meals, your remaining calories and protein.": "Η μέρα σου, τα γεύματά σου, οι θερμίδες και η πρωτεΐνη που απομένουν.",
     "A food log that speaks Greek.": "Ημερολόγιο φαγητού στα ελληνικά.",
@@ -404,7 +404,7 @@
     "Overnight oats, and the arithmetic": "Βρώμη ολονύκτια, και τα νούμερα",
     "The whole recipe free, plus the three places a jar of oats turns into an 800-calorie dessert.": "Ολόκληρη η συνταγή δωρεάν, και τα τρία σημεία όπου ένα βάζο βρώμης γίνεται επιδόρπιο 800 θερμίδων.",
     "Strapatsada, counted": "Στραπατσάδα, μετρημένη",
-    "The August breakfast that needs no rebuilding — and the one habit that makes it heavy.": "Το πρωινό του Αυγούστου που δεν χρειάζεται αλλαγή — και η μία συνήθεια που το βαραίνει.",
+    "The August breakfast that needs no rebuilding, and the one habit that makes it heavy.": "Το πρωινό του Αυγούστου που δεν χρειάζεται αλλαγή, και η μία συνήθεια που το βαραίνει.",
     "Why you are hungry on every diet": "Γιατί πεινάς σε κάθε δίαιτα",
     "It is not willpower and it is not your metabolism. It is that the plate got smaller.": "Δεν φταίει η θέληση ούτε ο μεταβολισμός. Φταίει ότι το πιάτο μίκρυνε.",
     "Read it →": "Διάβασέ το →",
@@ -414,11 +414,11 @@
     "Recipe books.": "Βιβλία συνταγών.",
     "Oats, eggs, protein bowls, dinners, fat loss, weight gain.": "Βρώμη, αυγά, bowls πρωτεΐνης, βραδινά, απώλεια λίπους, αύξηση βάρους.",
     "Workout plans.": "Πλάνα προπόνησης.",
-    "Five plans with the calories each session burns estimated from published MET values — and the margin of error printed beside them.": "Πέντε πλάνα, με τις θερμίδες κάθε προπόνησης υπολογισμένες από δημοσιευμένες τιμές MET — και το περιθώριο σφάλματος δίπλα τους.",
+    "Five plans with the calories each session burns estimated from published MET values, and the margin of error printed beside them.": "Πέντε πλάνα, με τις θερμίδες κάθε προπόνησης υπολογισμένες από δημοσιευμένες τιμές MET, και το περιθώριο σφάλματος δίπλα τους.",
     "Every number derived.": "Κάθε νούμερο παράγεται.",
     "Change an ingredient quantity and the figure changes, because it is arithmetic.": "Άλλαξε μια ποσότητα υλικού και το νούμερο αλλάζει, γιατί είναι αριθμητική.",
     "Pick how long you want it for": "Διάλεξε για πόσο καιρό το θέλεις",
-    "The same guide either way. The longer packages cost less a month because the targets get rebuilt as your weight moves — which is the part a single month cannot do.": "Ο ίδιος οδηγός και στις δύο περιπτώσεις. Τα μεγαλύτερα πακέτα κοστίζουν λιγότερο τον μήνα γιατί οι στόχοι ξαναχτίζονται καθώς αλλάζει το βάρος σου — κάτι που ένας μόνο μήνας δεν μπορεί να κάνει.",
+    "The same guide either way. The longer packages cost less a month because the targets get rebuilt as your weight moves, which is the part a single month cannot do.": "Ο ίδιος οδηγός και στις δύο περιπτώσεις. Τα μεγαλύτερα πακέτα κοστίζουν λιγότερο τον μήνα γιατί οι στόχοι ξαναχτίζονται καθώς αλλάζει το βάρος σου, κάτι που ένας μόνο μήνας δεν μπορεί να κάνει.",
     "Recommended": "Προτεινόμενο",
     "28 days": "28 ημέρες",
     "3 months": "3 μήνες",
@@ -435,11 +435,11 @@
     "Meals filtered by your allergies, dislikes and cooking time": "Γεύματα φιλτραρισμένα από τις αλλεργίες, τις αντιπάθειες και τον χρόνο μαγειρέματος",
     "A weekly shopping list": "Εβδομαδιαία λίστα για ψώνια",
     "Everything in 28 days, three times over": "Όλα των 28 ημερών, τρεις φορές",
-    "Rebuilt monthly — targets recalculated as your weight changes": "Ξαναχτίζεται κάθε μήνα — οι στόχοι υπολογίζονται ξανά καθώς αλλάζει το βάρος σου",
+    "Rebuilt monthly, targets recalculated as your weight changes": "Ξαναχτίζεται κάθε μήνα, οι στόχοι υπολογίζονται ξανά καθώς αλλάζει το βάρος σου",
     "A check-in before each rebuild, so it follows what actually happened": "Ένα check-in πριν από κάθε ανανέωση, ώστε να ακολουθεί τι πραγματικά έγινε",
     "Different meals each month, so month three is not month one again": "Διαφορετικά γεύματα κάθε μήνα, ώστε ο τρίτος μήνας να μην είναι ξανά ο πρώτος",
     "Everything in 3 months, for six months": "Όλα των 3 μηνών, για έξι μήνες",
-    "The whole ebook library — every recipe and training book": "Όλη η συλλογή ebook — κάθε βιβλίο συνταγών και προπόνησης",
+    "The whole ebook library, every recipe and training book": "Όλη η συλλογή ebook, κάθε βιβλίο συνταγών και προπόνησης",
     "Six months is long enough for the result to be the habit, not the month": "Έξι μήνες είναι αρκετοί ώστε το αποτέλεσμα να είναι η συνήθεια, όχι ο μήνας",
     "One-time payment · 3 guides · No subscription": "Εφάπαξ πληρωμή · 3 οδηγοί · Χωρίς συνδρομή",
     "One-time payment · 6 guides · No subscription": "Εφάπαξ πληρωμή · 6 οδηγοί · Χωρίς συνδρομή",
@@ -453,16 +453,16 @@
     "Send it": "Στείλ' το",
     "Your address is used to send you these emails and nothing else. Unsubscribe in one click. See the privacy policy below.": "Η διεύθυνσή σου χρησιμοποιείται για να σου στέλνουμε αυτά τα email και τίποτε άλλο. Διαγραφή με ένα κλικ. Δες την πολιτική απορρήτου παρακάτω.",
     "That does not look like an email address.": "Αυτό δεν μοιάζει με διεύθυνση email.",
-    "Thank you. Your mail app should open — send it and you are on the list.": "Ευχαριστούμε. Θα ανοίξει η εφαρμογή email σου — στείλε το και μπήκες στη λίστα.",
-    "They are not personalised. The numbers are per serving, not per person — if you want figures built around your own body and routine, that is": "Δεν είναι εξατομικευμένα. Τα νούμερα είναι ανά μερίδα, όχι ανά άτομο — αν θέλεις νούμερα χτισμένα γύρω από το δικό σου σώμα και πρόγραμμα, αυτό είναι",
+    "Thank you. Your mail app should open, send it and you are on the list.": "Ευχαριστούμε. Θα ανοίξει η εφαρμογή email σου, στείλε το και μπήκες στη λίστα.",
+    "They are not personalised. The numbers are per serving, not per person, if you want figures built around your own body and routine, that is": "Δεν είναι εξατομικευμένα. Τα νούμερα είναι ανά μερίδα, όχι ανά άτομο, αν θέλεις νούμερα χτισμένα γύρω από το δικό σου σώμα και πρόγραμμα, αυτό είναι",
     "the guide": "ο οδηγός",
     ", not these.": ", όχι αυτά.",
-    "Recipe and training books for Greek and Cypriot kitchens. Every calorie, protein and macro figure is calculated from the ingredient beside it, and every burn figure from a published MET value — not estimated, not rounded up to look better, and not written by a machine that guesses.": "Βιβλία συνταγών και προπόνησης για ελληνικές και κυπριακές κουζίνες. Κάθε νούμερο θερμίδων και μακροθρεπτικών υπολογίζεται από το υλικό δίπλα του, και κάθε νούμερο κατανάλωσης από δημοσιευμένη τιμή MET — χωρίς εκτιμήσεις, χωρίς στρογγυλοποιήσεις και χωρίς μηχανή που μαντεύει.",
+    "Recipe and training books for Greek and Cypriot kitchens. Every calorie, protein and macro figure is calculated from the ingredient beside it, and every burn figure from a published MET value, not estimated, not rounded up to look better, and not written by a machine that guesses.": "Βιβλία συνταγών και προπόνησης για ελληνικές και κυπριακές κουζίνες. Κάθε νούμερο θερμίδων και μακροθρεπτικών υπολογίζεται από το υλικό δίπλα του, και κάθε νούμερο κατανάλωσης από δημοσιευμένη τιμή MET, χωρίς εκτιμήσεις, χωρίς στρογγυλοποιήσεις και χωρίς μηχανή που μαντεύει.",
     "training plans": "πλάνα προπόνησης",
     "plans": "πλάνα",
     "days a week": "μέρες τη βδομάδα",
     "activities costed": "δραστηριότητες υπολογισμένες",
-    "Five plans from three days a week to five, with the calories each session burns estimated from published MET values — and the margin of error printed beside them.": "Πέντε πλάνα, από τρεις μέρες τη βδομάδα έως πέντε, με τις θερμίδες κάθε προπόνησης υπολογισμένες από δημοσιευμένες τιμές MET — και το περιθώριο σφάλματος δίπλα τους.",
+    "Five plans from three days a week to five, with the calories each session burns estimated from published MET values, and the margin of error printed beside them.": "Πέντε πλάνα, από τρεις μέρες τη βδομάδα έως πέντε, με τις θερμίδες κάθε προπόνησης υπολογισμένες από δημοσιευμένες τιμές MET, και το περιθώριο σφάλματος δίπλα τους.",
     "for all": "για και τα",
     "Get the whole library": "Πάρε όλη τη συλλογή",
     "Every book in the shop, in one download.": "Κάθε βιβλίο του καταστήματος, σε ένα αρχείο.",
@@ -470,11 +470,11 @@
     "Training": "Προπόνηση",
     "Five plans, no guesswork": "Πέντε πλάνα, χωρίς μαντεψιές",
     "There is no filler in these books. No life story before the ingredients, no stock photography, no \"serves 4–6\".": "Δεν υπάρχει γέμισμα σε αυτά τα βιβλία. Καμία ιστορία ζωής πριν τα υλικά, καμία φωτογραφία αρχείου, κανένα «για 4–6 άτομα».",
-    "Calories, protein, carbohydrate and fat per serving, plus the EVZO protein score — grams of protein per 100 calories. Change a quantity in the ingredient list and the figure changes with it, because it is arithmetic, not a claim.": "Θερμίδες, πρωτεΐνη, υδατάνθρακες και λιπαρά ανά μερίδα, μαζί με το σκορ πρωτεΐνης του EVZO — γραμμάρια πρωτεΐνης ανά 100 θερμίδες. Άλλαξε μια ποσότητα στα υλικά και το νούμερο αλλάζει μαζί της, γιατί είναι αριθμητική, όχι ισχυρισμός.",
-    "Every ingredient in grams, including the oil. A level tablespoon of olive oil is about 119 calories and a pour is closer to 350 — which is where most \"healthy\" cooking quietly goes wrong.": "Κάθε υλικό σε γραμμάρια, μαζί και το λάδι. Μια κοφτή κουταλιά ελαιόλαδο είναι περίπου 119 θερμίδες και μια ελεύθερη ροή πιο κοντά στις 350 — εκεί χαλάει αθόρυβα το περισσότερο «υγιεινό» μαγείρεμα.",
-    "One short paragraph per recipe explaining the decision that matters — the swap, the technique, the thing people get wrong. You should be able to cook without the book after a fortnight.": "Μια σύντομη παράγραφος ανά συνταγή που εξηγεί την απόφαση που μετράει — την αλλαγή, την τεχνική, αυτό που οι περισσότεροι κάνουν λάθος. Σε δύο εβδομάδες πρέπει να μαγειρεύεις χωρίς το βιβλίο.",
+    "Calories, protein, carbohydrate and fat per serving, plus the EVZO protein score, grams of protein per 100 calories. Change a quantity in the ingredient list and the figure changes with it, because it is arithmetic, not a claim.": "Θερμίδες, πρωτεΐνη, υδατάνθρακες και λιπαρά ανά μερίδα, μαζί με το σκορ πρωτεΐνης του EVZO, γραμμάρια πρωτεΐνης ανά 100 θερμίδες. Άλλαξε μια ποσότητα στα υλικά και το νούμερο αλλάζει μαζί της, γιατί είναι αριθμητική, όχι ισχυρισμός.",
+    "Every ingredient in grams, including the oil. A level tablespoon of olive oil is about 119 calories and a pour is closer to 350, which is where most \"healthy\" cooking quietly goes wrong.": "Κάθε υλικό σε γραμμάρια, μαζί και το λάδι. Μια κοφτή κουταλιά ελαιόλαδο είναι περίπου 119 θερμίδες και μια ελεύθερη ροή πιο κοντά στις 350, εκεί χαλάει αθόρυβα το περισσότερο «υγιεινό» μαγείρεμα.",
+    "One short paragraph per recipe explaining the decision that matters, the swap, the technique, the thing people get wrong. You should be able to cook without the book after a fortnight.": "Μια σύντομη παράγραφος ανά συνταγή που εξηγεί την απόφαση που μετράει, την αλλαγή, την τεχνική, αυτό που οι περισσότεροι κάνουν λάθος. Σε δύο εβδομάδες πρέπει να μαγειρεύεις χωρίς το βιβλίο.",
     "Two alternatives per recipe for the ingredient you do not have or do not eat, with the consequence stated when there is one.": "Δύο εναλλακτικές ανά συνταγή για το υλικό που δεν έχεις ή δεν τρως, με τη συνέπεια γραμμένη όπου υπάρχει.",
-    "They are not personalised. The numbers are per serving, not per person — if you want figures built around your own body and routine, that is the guide, not these.": "Δεν είναι εξατομικευμένα. Τα νούμερα είναι ανά μερίδα, όχι ανά άτομο — αν θέλεις νούμερα χτισμένα γύρω από το δικό σου σώμα και πρόγραμμα, αυτό είναι ο οδηγός, όχι αυτά.",
+    "They are not personalised. The numbers are per serving, not per person, if you want figures built around your own body and routine, that is the guide, not these.": "Δεν είναι εξατομικευμένα. Τα νούμερα είναι ανά μερίδα, όχι ανά άτομο, αν θέλεις νούμερα χτισμένα γύρω από το δικό σου σώμα και πρόγραμμα, αυτό είναι ο οδηγός, όχι αυτά.",
     "They are not medical or dietetic advice. EVZO is not run by dietitians, nutritionists or doctors and does not present itself as any of those.": "Δεν είναι ιατρική ή διαιτολογική συμβουλή. Το EVZO δεν το τρέχουν διαιτολόγοι, διατροφολόγοι ή γιατροί και δεν παρουσιάζεται ως τέτοιο.",
     "They are not a diet. Nothing is banned in any of them.": "Δεν είναι δίαιτα. Τίποτα δεν απαγορεύεται σε κανένα από αυτά.",
     "Figures vary with brand, cut and cooking. They are close, not exact, and the books say so on the page rather than in the small print.": "Τα νούμερα αλλάζουν ανάλογα με μάρκα, κομμάτι και μαγείρεμα. Είναι κοντινά, όχι ακριβή, και τα βιβλία το λένε στη σελίδα, όχι στα ψιλά γράμματα.",
@@ -483,7 +483,7 @@
     "Food, written": "Φαγητό, γραμμένο",
     "with the numbers in": "με τα νούμερα μέσα",
     "Every number on the page is real": "Κάθε νούμερο στη σελίδα είναι αληθινό",
-    "Recipe books for Greek and Cypriot kitchens. Every calorie, protein, carb and fat figure in every book is calculated from the ingredient list beside it — not estimated, not rounded up to look better, and not written by a machine that guesses.": "Βιβλία συνταγών για ελληνικές και κυπριακές κουζίνες. Κάθε νούμερο θερμίδων, πρωτεΐνης, υδατανθράκων και λιπαρών υπολογίζεται από τη λίστα υλικών δίπλα του — δεν εκτιμάται, δεν στρογγυλοποιείται για να φαίνεται καλύτερο και δεν το γράφει μηχανή που μαντεύει.",
+    "Recipe books for Greek and Cypriot kitchens. Every calorie, protein, carb and fat figure in every book is calculated from the ingredient list beside it, not estimated, not rounded up to look better, and not written by a machine that guesses.": "Βιβλία συνταγών για ελληνικές και κυπριακές κουζίνες. Κάθε νούμερο θερμίδων, πρωτεΐνης, υδατανθράκων και λιπαρών υπολογίζεται από τη λίστα υλικών δίπλα του, δεν εκτιμάται, δεν στρογγυλοποιείται για να φαίνεται καλύτερο και δεν το γράφει μηχανή που μαντεύει.",
     "books": "βιβλία",
     "recipes in total": "συνταγές συνολικά",
     "Every figure computed": "Κάθε νούμερο υπολογισμένο",
@@ -520,10 +520,10 @@
     "Full plates, fewer calories": "Γεμάτα πιάτα, λιγότερες θερμίδες",
     "Eating more, on purpose": "Τρως περισσότερο, επίτηδες",
     "Real food, weighed once": "Αληθινό φαγητό, ζυγισμένο μία φορά",
-    "Fourteen ways to eat oats that are not porridge — overnight jars, baked oats, savoury bowls, pancakes and bars.": "Δεκατέσσερις τρόποι να φας βρώμη που δεν είναι χυλός — βάζα για το βράδυ, βρώμη στον φούρνο, αλμυρά bowls, τηγανίτες και μπάρες.",
+    "Fourteen ways to eat oats that are not porridge, overnight jars, baked oats, savoury bowls, pancakes and bars.": "Δεκατέσσερις τρόποι να φας βρώμη που δεν είναι χυλός, βάζα για το βράδυ, βρώμη στον φούρνο, αλμυρά bowls, τηγανίτες και μπάρες.",
     "Fourteen egg dishes, from strapatsada to a protein box that needs no reheating. Six eggs is a dinner for four.": "Δεκατέσσερα πιάτα με αυγά, από στραπατσάδα μέχρι ένα κουτί πρωτεΐνης που δεν θέλει ζέσταμα. Έξι αυγά είναι βραδινό για τέσσερις.",
     "Mediterranean bowls built around the protein first. Most of them one pan, all of them assembled in minutes.": "Μεσογειακά bowls χτισμένα πρώτα γύρω από την πρωτεΐνη. Τα περισσότερα σε ένα τηγάνι, όλα έτοιμα σε λίγα λεπτά.",
-    "Greek and Cypriot dinners rebuilt so the protein is the point — including the ones you were told to give up.": "Ελληνικά και κυπριακά βραδινά ξαναχτισμένα ώστε η πρωτεΐνη να είναι το θέμα — μαζί και αυτά που σου είπαν να κόψεις.",
+    "Greek and Cypriot dinners rebuilt so the protein is the point, including the ones you were told to give up.": "Ελληνικά και κυπριακά βραδινά ξαναχτισμένα ώστε η πρωτεΐνη να είναι το θέμα, μαζί και αυτά που σου είπαν να κόψεις.",
     "Meals built for volume, sorted by calories. Full plates, because hunger is what ends diets.": "Γεύματα φτιαγμένα για όγκο, ταξινομημένα κατά θερμίδες. Γεμάτα πιάτα, γιατί η πείνα είναι αυτή που τελειώνει τις δίαιτες.",
     "Calorie-dense meals and shakes for people who genuinely struggle to gain, built on real food.": "Πυκνά σε θερμίδες γεύματα και σέικ για όσους πραγματικά δυσκολεύονται να πάρουν βάρος, με αληθινό φαγητό.",
     "The collection offered at checkout. Breakfasts, lunches, dinners and snacks with every figure on the page.": "Η συλλογή που προσφέρεται στο ταμείο. Πρωινά, μεσημεριανά, βραδινά και σνακ, με όλα τα νούμερα στη σελίδα.",
@@ -538,7 +538,7 @@
     "As a PDF, by email": "Ως PDF, με email",
     "It is a file, not a subscription. Download it once and it is yours on every device you own.": "Είναι αρχείο, όχι συνδρομή. Το κατεβάζεις μία φορά και είναι δικό σου σε κάθε συσκευή σου.",
     "Is this the same as the personalised guide?": "Είναι το ίδιο με τον εξατομικευμένο οδηγό;",
-    "No. The books are fixed recipe collections at the same price for everyone. The guide is built from your own answers — your body, your goal, the food you actually eat — and it costs more because it is made for one person.": "Όχι. Τα βιβλία είναι σταθερές συλλογές συνταγών, στην ίδια τιμή για όλους. Ο οδηγός φτιάχνεται από τις δικές σου απαντήσεις — το σώμα σου, τον στόχο σου, το φαγητό που πραγματικά τρως — και κοστίζει περισσότερο γιατί είναι φτιαγμένος για έναν άνθρωπο.",
+    "No. The books are fixed recipe collections at the same price for everyone. The guide is built from your own answers, your body, your goal, the food you actually eat, and it costs more because it is made for one person.": "Όχι. Τα βιβλία είναι σταθερές συλλογές συνταγών, στην ίδια τιμή για όλους. Ο οδηγός φτιάχνεται από τις δικές σου απαντήσεις, το σώμα σου, τον στόχο σου, το φαγητό που πραγματικά τρως, και κοστίζει περισσότερο γιατί είναι φτιαγμένος για έναν άνθρωπο.",
     "Can I get a refund?": "Μπορώ να πάρω τα λεφτά μου πίσω;",
     "Digital files come with a 14-day right of withdrawal in the EU, which you waive at checkout if you ask for the download immediately. If a file is broken or does not arrive, tell us and we will fix it or refund it.": "Τα ψηφιακά αρχεία έχουν δικαίωμα υπαναχώρησης 14 ημερών στην ΕΕ, το οποίο παραιτείσαι στο ταμείο αν ζητήσεις άμεση παράδοση. Αν ένα αρχείο είναι χαλασμένο ή δεν φτάσει, πες μας και θα το διορθώσουμε ή θα σου επιστρέψουμε τα χρήματα.",
     "Are the recipes in Greek?": "Οι συνταγές είναι στα ελληνικά;",
@@ -546,9 +546,9 @@
     "Who worked out the numbers?": "Ποιος έβγαλε τα νούμερα;",
     "A program did, from a table of standard published values for each ingredient. Nobody typed a calorie figure by hand and no language model estimated one. That is the whole point of the format.": "Ένα πρόγραμμα, από πίνακα με πρότυπες δημοσιευμένες τιμές για κάθε υλικό. Κανείς δεν πληκτρολόγησε θερμίδες με το χέρι και κανένα γλωσσικό μοντέλο δεν τις εκτίμησε. Αυτό ακριβώς είναι το νόημα.",
     "Do I need to weigh everything forever?": "Πρέπει να ζυγίζω τα πάντα για πάντα;",
-    "No. Weigh for two weeks and you will not need to again — the point of the scales is to calibrate your eye, not to live on your worktop.": "Όχι. Ζύγισε για δύο εβδομάδες και δεν θα χρειαστεί ξανά — η ζυγαριά είναι για να βαθμονομήσεις το μάτι σου, όχι για να μένει στον πάγκο.",
+    "No. Weigh for two weeks and you will not need to again, the point of the scales is to calibrate your eye, not to live on your worktop.": "Όχι. Ζύγισε για δύο εβδομάδες και δεν θα χρειαστεί ξανά, η ζυγαριά είναι για να βαθμονομήσεις το μάτι σου, όχι για να μένει στον πάγκο.",
     "Any allergies or intolerances?": "Έχεις αλλεργίες ή δυσανεξίες;",
-    "Anything ticked here is removed from every meal in the month — not reduced, removed. If it is a severe allergy, tell your doctor before changing how you eat, whatever a plan says.": "Ό,τι σημειώσεις εδώ αφαιρείται από κάθε γεύμα του μήνα — δεν μειώνεται, αφαιρείται. Αν πρόκειται για σοβαρή αλλεργία, μίλησε με τον γιατρό σου πριν αλλάξεις τον τρόπο που τρως, ό,τι κι αν λέει ένα πλάνο.",
+    "Anything ticked here is removed from every meal in the month, not reduced, removed. If it is a severe allergy, tell your doctor before changing how you eat, whatever a plan says.": "Ό,τι σημειώσεις εδώ αφαιρείται από κάθε γεύμα του μήνα, δεν μειώνεται, αφαιρείται. Αν πρόκειται για σοβαρή αλλεργία, μίλησε με τον γιατρό σου πριν αλλάξεις τον τρόπο που τρως, ό,τι κι αν λέει ένα πλάνο.",
     "Allergies": "Αλλεργίες",
     "Dairy": "Γαλακτοκομικά",
     "Gluten": "Γλουτένη",
@@ -629,35 +629,35 @@
     /* long-form copy: exclusion notice, preview, FAQ, terms, privacy, refunds */
     "Vegan": "Βίγκαν",
     "Halal": "Χαλάλ",
-    "General wellness guidance — not medical or dietetic care. Educational estimates only.":
-      "Γενική καθοδήγηση ευεξίας — όχι ιατρική ή διαιτολογική φροντίδα. Μόνο εκπαιδευτικές εκτιμήσεις.",
+    "General wellness guidance, not medical or dietetic care. Educational estimates only.":
+      "Γενική καθοδήγηση ευεξίας, όχι ιατρική ή διαιτολογική φροντίδα. Μόνο εκπαιδευτικές εκτιμήσεις.",
     "WEEK 1 · DAY 1": "ΕΒΔΟΜΑΔΑ 1 · ΜΕΡΑ 1",
     "WEEK 1 · DAY 2": "ΕΒΔΟΜΑΔΑ 1 · ΜΕΡΑ 2",
     "SHOPPING LIST": "ΛΙΣΤΑ ΑΓΟΡΩΝ",
     "28-DAY GUIDE": "ΟΔΗΓΟΣ 28 ΗΜΕΡΩΝ",
     "PORTIONS": "ΜΕΡΙΔΕΣ",
-    "You ticked something that needs proper professional input, so we are not going to generate an estimate or sell you a guide. That is not a sales tactic — an automatic calorie figure is genuinely the wrong tool here.":
-      "Τσέκαρες κάτι που χρειάζεται σωστή επαγγελματική καθοδήγηση, οπότε δεν θα βγάλουμε εκτίμηση ούτε θα σου πουλήσουμε οδηγό. Δεν είναι τέχνασμα πώλησης — ένας αυτόματος αριθμός θερμίδων είναι πραγματικά λάθος εργαλείο εδώ.",
+    "You ticked something that needs proper professional input, so we are not going to generate an estimate or sell you a guide. That is not a sales tactic, an automatic calorie figure is genuinely the wrong tool here.":
+      "Τσέκαρες κάτι που χρειάζεται σωστή επαγγελματική καθοδήγηση, οπότε δεν θα βγάλουμε εκτίμηση ούτε θα σου πουλήσουμε οδηγό. Δεν είναι τέχνασμα πώλησης, ένας αυτόματος αριθμός θερμίδων είναι πραγματικά λάθος εργαλείο εδώ.",
     "Please speak to a registered dietitian or your doctor. They can build something around your actual situation, which is what you need.":
       "Μίλησε με εγγεγραμμένο διαιτολόγο ή με τον γιατρό σου. Μπορούν να φτιάξουν κάτι γύρω από την πραγματική σου κατάσταση, που είναι αυτό που χρειάζεσαι.",
     "The snapshot above, then a longer questionnaire after checkout covering food you like, dislikes, allergies, cooking time and budget.":
       "Την παραπάνω εικόνα, και μετά ένα πιο αναλυτικό ερωτηματολόγιο μετά την αγορά για τροφές που σου αρέσουν, τι δεν τρως, αλλεργίες, χρόνο μαγειρέματος και προϋπολογισμό.",
     "Your calorie and protein ranges set the structure. Your preferences decide what actually goes in the meals.":
       "Τα εύρη θερμίδων και πρωτεΐνης ορίζουν τη δομή. Οι προτιμήσεις σου αποφασίζουν τι μπαίνει πραγματικά στα γεύματα.",
-    "Representative layout of the deliverable. Not real nutritional content — your guide is generated from your own answers.":
-      "Ενδεικτική διάταξη του παραδοτέου. Όχι πραγματικό διατροφικό περιεχόμενο — ο οδηγός σου δημιουργείται από τις δικές σου απαντήσεις.",
+    "Representative layout of the deliverable. Not real nutritional content, your guide is generated from your own answers.":
+      "Ενδεικτική διάταξη του παραδοτέου. Όχι πραγματικό διατροφικό περιεχόμενο, ο οδηγός σου δημιουργείται από τις δικές σου απαντήσεις.",
     "Personalised Nutrition & Meal-Planning Guide": "Εξατομικευμένος Οδηγός Διατροφής και Σχεδιασμού Γευμάτων",
     "Healthy Recipes eBook": "eBook με Υγιεινές Συνταγές",
-    "A separate recipe collection in the same format. Optional — your guide is complete without it.":
-      "Μια ξεχωριστή συλλογή συνταγών στην ίδια μορφή. Προαιρετικό — ο οδηγός σου είναι πλήρης και χωρίς αυτό.",
+    "A separate recipe collection in the same format. Optional, your guide is complete without it.":
+      "Μια ξεχωριστή συλλογή συνταγών στην ίδια μορφή. Προαιρετικό, ο οδηγός σου είναι πλήρης και χωρίς αυτό.",
     "In their words": "Με δικά τους λόγια",
     "From people who used it": "Από ανθρώπους που τον χρησιμοποίησαν",
     "No. It is general educational wellness information and meal-planning examples. It is not medical nutrition therapy, and it does not diagnose, treat, cure or prevent anything.":
       "Όχι. Είναι γενική εκπαιδευτική πληροφόρηση ευεξίας και παραδείγματα σχεδιασμού γευμάτων. Δεν είναι ιατρική διατροφική θεραπεία και δεν διαγιγνώσκει, δεν θεραπεύει και δεν προλαμβάνει τίποτα.",
     "EVZO. We are not dietitians, clinical dietitians, doctors or healthcare professionals, and we do not present ourselves as any of those. The calorie and protein figures come from standard published equations, noted in the guide.":
       "Η EVZO. Δεν είμαστε διαιτολόγοι, κλινικοί διαιτολόγοι, γιατροί ή επαγγελματίες υγείας, ούτε παρουσιαζόμαστε ως τέτοιοι. Οι αριθμοί θερμίδων και πρωτεΐνης προκύπτουν από καθιερωμένες δημοσιευμένες εξισώσεις, που αναφέρονται στον οδηγό.",
-    "The structure is built from your goal, measurements, activity level and the questionnaire you complete after purchase — food you like, dislikes, allergies, cooking time, budget and schedule. It is not a fixed template with your name on it.":
-      "Η δομή χτίζεται από τον στόχο σου, τις μετρήσεις, το επίπεδο δραστηριότητας και το ερωτηματολόγιο που συμπληρώνεις μετά την αγορά — τροφές που σου αρέσουν, τι δεν τρως, αλλεργίες, χρόνο μαγειρέματος, προϋπολογισμό και πρόγραμμα. Δεν είναι ένα έτοιμο πρότυπο με το όνομά σου πάνω.",
+    "The structure is built from your goal, measurements, activity level and the questionnaire you complete after purchase, food you like, dislikes, allergies, cooking time, budget and schedule. It is not a fixed template with your name on it.":
+      "Η δομή χτίζεται από τον στόχο σου, τις μετρήσεις, το επίπεδο δραστηριότητας και το ερωτηματολόγιο που συμπληρώνεις μετά την αγορά, τροφές που σου αρέσουν, τι δεν τρως, αλλεργίες, χρόνο μαγειρέματος, προϋπολογισμό και πρόγραμμα. Δεν είναι ένα έτοιμο πρότυπο με το όνομά σου πάνω.",
     "A PDF, sent to the email address you give at checkout. Yours to keep, no subscription and no app.":
       "Ένα PDF, που στέλνεται στο email που δίνεις στο ταμείο. Δικό σου για πάντα, χωρίς συνδρομή και χωρίς εφαρμογή.",
     "No. If you have a diagnosed condition, are pregnant or breastfeeding, have a history of disordered eating, or follow a medically prescribed diet, this is not the right product and we will not sell it to you automatically. Speak to a registered dietitian or your doctor.":
@@ -666,10 +666,10 @@
       "Ναι. Το ερωτηματολόγιο ρωτά τι δεν σου αρέσει και τι δεν μπορείς να φας, και ο οδηγός περιλαμβάνει εναλλακτικές για γεύματα που δεν θέλεις να μαγειρέψεις.",
     "No. One payment, one guide. There is nothing to cancel.":
       "Όχι. Μία πληρωμή, ένας οδηγός. Δεν υπάρχει τίποτα να ακυρώσεις.",
-    "Because this is a digital product, you are asked at checkout to consent to receiving it immediately and to acknowledge that doing so ends your 14-day right of withdrawal. Once you have given that consent and the guide has been sent, the sale is final and no refund is due. If the guide is never delivered, is delivered faulty, or is not what was described, contact us and we will put it right or refund you in full — that right cannot be waived.":
-      "Επειδή πρόκειται για ψηφιακό προϊόν, στο ταμείο σού ζητείται να συναινέσεις στην άμεση παράδοση και να αναγνωρίσεις ότι έτσι παύει το δικαίωμα υπαναχώρησης 14 ημερών. Μόλις δώσεις αυτή τη συναίνεση και σταλεί ο οδηγός, η πώληση είναι οριστική και δεν οφείλεται επιστροφή χρημάτων. Αν ο οδηγός δεν παραδοθεί ποτέ, παραδοθεί ελαττωματικός ή δεν είναι αυτό που περιγράφηκε, επικοινώνησε μαζί μας και θα το διορθώσουμε ή θα σου επιστρέψουμε όλο το ποσό — αυτό το δικαίωμα δεν παραιτείται.",
-    "Your answers are used to build your guide and nothing else. Health-related answers are never sent to advertising or analytics platforms — not to Meta Pixel, not to Google Analytics, not anywhere. See the privacy policy for the full detail.":
-      "Οι απαντήσεις σου χρησιμοποιούνται για να φτιαχτεί ο οδηγός σου και για τίποτα άλλο. Απαντήσεις σχετικές με την υγεία δεν στέλνονται ποτέ σε διαφημιστικές πλατφόρμες ή σε εργαλεία ανάλυσης — ούτε στο Meta Pixel, ούτε στο Google Analytics, πουθενά. Δες την πολιτική απορρήτου για όλες τις λεπτομέρειες.",
+    "Because this is a digital product, you are asked at checkout to consent to receiving it immediately and to acknowledge that doing so ends your 14-day right of withdrawal. Once you have given that consent and the guide has been sent, the sale is final and no refund is due. If the guide is never delivered, is delivered faulty, or is not what was described, contact us and we will put it right or refund you in full, that right cannot be waived.":
+      "Επειδή πρόκειται για ψηφιακό προϊόν, στο ταμείο σού ζητείται να συναινέσεις στην άμεση παράδοση και να αναγνωρίσεις ότι έτσι παύει το δικαίωμα υπαναχώρησης 14 ημερών. Μόλις δώσεις αυτή τη συναίνεση και σταλεί ο οδηγός, η πώληση είναι οριστική και δεν οφείλεται επιστροφή χρημάτων. Αν ο οδηγός δεν παραδοθεί ποτέ, παραδοθεί ελαττωματικός ή δεν είναι αυτό που περιγράφηκε, επικοινώνησε μαζί μας και θα το διορθώσουμε ή θα σου επιστρέψουμε όλο το ποσό, αυτό το δικαίωμα δεν παραιτείται.",
+    "Your answers are used to build your guide and nothing else. Health-related answers are never sent to advertising or analytics platforms, not to Meta Pixel, not to Google Analytics, not anywhere. See the privacy policy for the full detail.":
+      "Οι απαντήσεις σου χρησιμοποιούνται για να φτιαχτεί ο οδηγός σου και για τίποτα άλλο. Απαντήσεις σχετικές με την υγεία δεν στέλνονται ποτέ σε διαφημιστικές πλατφόρμες ή σε εργαλεία ανάλυσης, ούτε στο Meta Pixel, ούτε στο Google Analytics, πουθενά. Δες την πολιτική απορρήτου για όλες τις λεπτομέρειες.",
     "EVZO provides general educational wellness information and personalised meal-planning examples. We are not dietitians, clinical dietitians, doctors or healthcare professionals. Our products do not constitute medical advice, diagnosis, treatment or medical nutrition therapy. They are not suitable for minors, pregnancy, eating disorders, medical conditions or medically prescribed diets. Consult a qualified healthcare professional before changing your diet if you have health concerns.":
       "Η EVZO παρέχει γενική εκπαιδευτική πληροφόρηση ευεξίας και εξατομικευμένα παραδείγματα σχεδιασμού γευμάτων. Δεν είμαστε διαιτολόγοι, κλινικοί διαιτολόγοι, γιατροί ή επαγγελματίες υγείας. Τα προϊόντα μας δεν αποτελούν ιατρική συμβουλή, διάγνωση, θεραπεία ή ιατρική διατροφική θεραπεία. Δεν είναι κατάλληλα για ανηλίκους, εγκυμοσύνη, διατροφικές διαταραχές, ιατρικές παθήσεις ή ιατρικά συνταγογραφημένες δίαιτες. Συμβουλέψου ειδικό επαγγελματία υγείας πριν αλλάξεις τη διατροφή σου αν έχεις θέματα υγείας.",
     "What you are buying.": "Τι αγοράζεις.",
@@ -691,17 +691,17 @@
     "Nothing here removes rights you have under EU consumer law, and nothing here limits liability for death or personal injury caused by negligence.":
       "Τίποτα εδώ δεν αφαιρεί δικαιώματα που έχεις βάσει του ευρωπαϊκού δικαίου προστασίας καταναλωτή, και τίποτα εδώ δεν περιορίζει την ευθύνη για θάνατο ή σωματική βλάβη από αμέλεια.",
     "Governing law.": "Εφαρμοστέο δίκαιο.",
-    "These terms are governed by the consumer-protection law of the EU member state in which EVZO METHOD is established. Wherever you live in the EU, you also keep the mandatory consumer rights of your own country — nothing here can take those away.":
-      "Οι όροι αυτοί διέπονται από το δίκαιο προστασίας καταναλωτή του κράτους μέλους της ΕΕ στο οποίο είναι εγκατεστημένη η EVZO METHOD. Όπου κι αν ζεις στην ΕΕ, διατηρείς επίσης τα υποχρεωτικά δικαιώματα καταναλωτή της χώρας σου — τίποτα εδώ δεν μπορεί να σου τα αφαιρέσει.",
+    "These terms are governed by the consumer-protection law of the EU member state in which EVZO METHOD is established. Wherever you live in the EU, you also keep the mandatory consumer rights of your own country, nothing here can take those away.":
+      "Οι όροι αυτοί διέπονται από το δίκαιο προστασίας καταναλωτή του κράτους μέλους της ΕΕ στο οποίο είναι εγκατεστημένη η EVZO METHOD. Όπου κι αν ζεις στην ΕΕ, διατηρείς επίσης τα υποχρεωτικά δικαιώματα καταναλωτή της χώρας σου, τίποτα εδώ δεν μπορεί να σου τα αφαιρέσει.",
     "What happens on this page.": "Τι συμβαίνει σε αυτή τη σελίδα.",
     "The assessment runs entirely in your browser. Your age, height, weight, activity level and safety answers are held in memory only. They are not written to storage, not sent to a server, and they are gone the moment you close the tab.":
       "Το ερωτηματολόγιο τρέχει εξ ολοκλήρου στον browser σου. Η ηλικία, το ύψος, το βάρος, το επίπεδο δραστηριότητας και οι απαντήσεις ασφαλείας κρατούνται μόνο στη μνήμη. Δεν γράφονται πουθενά, δεν στέλνονται σε διακομιστή και χάνονται τη στιγμή που κλείνεις την καρτέλα.",
     "What we never do.": "Τι δεν κάνουμε ποτέ.",
-    "Health-related answers are never sent to advertising or analytics platforms. Not to Meta Pixel, not to Google Analytics, not anywhere. The code that emits analytics events has a fixed list of five permitted fields and drops everything else before it leaves the page — weight, age, allergies, conditions and email cannot pass through it.":
-      "Απαντήσεις σχετικές με την υγεία δεν στέλνονται ποτέ σε διαφημιστικές πλατφόρμες ή σε εργαλεία ανάλυσης. Ούτε στο Meta Pixel, ούτε στο Google Analytics, πουθενά. Ο κώδικας που στέλνει συμβάντα ανάλυσης έχει σταθερή λίστα πέντε επιτρεπόμενων πεδίων και απορρίπτει όλα τα υπόλοιπα πριν φύγουν από τη σελίδα — βάρος, ηλικία, αλλεργίες, παθήσεις και email δεν μπορούν να περάσουν.",
+    "Health-related answers are never sent to advertising or analytics platforms. Not to Meta Pixel, not to Google Analytics, not anywhere. The code that emits analytics events has a fixed list of five permitted fields and drops everything else before it leaves the page, weight, age, allergies, conditions and email cannot pass through it.":
+      "Απαντήσεις σχετικές με την υγεία δεν στέλνονται ποτέ σε διαφημιστικές πλατφόρμες ή σε εργαλεία ανάλυσης. Ούτε στο Meta Pixel, ούτε στο Google Analytics, πουθενά. Ο κώδικας που στέλνει συμβάντα ανάλυσης έχει σταθερή λίστα πέντε επιτρεπόμενων πεδίων και απορρίπτει όλα τα υπόλοιπα πριν φύγουν από τη σελίδα, βάρος, ηλικία, αλλεργίες, παθήσεις και email δεν μπορούν να περάσουν.",
     "If you buy.": "Αν αγοράσεις.",
-    "We collect the email address you give at checkout, and the answers to the post-purchase questionnaire, solely to build and send your guide. Payment is handled by the payment provider — we never see or store your card details.":
-      "Συλλέγουμε το email που δίνεις στο ταμείο και τις απαντήσεις του ερωτηματολογίου μετά την αγορά, αποκλειστικά για να φτιάξουμε και να στείλουμε τον οδηγό σου. Η πληρωμή γίνεται από τον πάροχο πληρωμών — δεν βλέπουμε ούτε αποθηκεύουμε ποτέ τα στοιχεία της κάρτας σου.",
+    "We collect the email address you give at checkout, and the answers to the post-purchase questionnaire, solely to build and send your guide. Payment is handled by the payment provider, we never see or store your card details.":
+      "Συλλέγουμε το email που δίνεις στο ταμείο και τις απαντήσεις του ερωτηματολογίου μετά την αγορά, αποκλειστικά για να φτιάξουμε και να στείλουμε τον οδηγό σου. Η πληρωμή γίνεται από τον πάροχο πληρωμών, δεν βλέπουμε ούτε αποθηκεύουμε ποτέ τα στοιχεία της κάρτας σου.",
     "How long we keep it.": "Πόσο καιρό τα κρατάμε.",
     "Only as long as we need it to deliver your guide and meet our accounting obligations.":
       "Μόνο όσο χρειάζεται για να παραδώσουμε τον οδηγό σου και να καλύψουμε τις λογιστικές μας υποχρεώσεις.",
@@ -712,8 +712,8 @@
     "Right now, this page sets no cookies at all": "Αυτή τη στιγμή, η σελίδα δεν βάζει κανένα cookie",
     "and stores nothing in your browser. There is no tracking pixel and no analytics vendor connected.":
       "και δεν αποθηκεύει τίποτα στον browser σου. Δεν υπάρχει pixel παρακολούθησης ούτε συνδεδεμένο εργαλείο ανάλυσης.",
-    "If that changes — if an analytics or advertising tool is added — this page will ask for your consent first and this section will be updated to name each cookie, what it is for and how long it lasts. Non-essential cookies will not be set before you agree.":
-      "Αν αυτό αλλάξει — αν προστεθεί εργαλείο ανάλυσης ή διαφήμισης — η σελίδα θα ζητήσει πρώτα τη συγκατάθεσή σου και αυτή η ενότητα θα ενημερωθεί ώστε να ονομάζει κάθε cookie, σε τι χρησιμεύει και πόσο διαρκεί. Μη απαραίτητα cookies δεν θα μπαίνουν πριν συμφωνήσεις.",
+    "If that changes, if an analytics or advertising tool is added, this page will ask for your consent first and this section will be updated to name each cookie, what it is for and how long it lasts. Non-essential cookies will not be set before you agree.":
+      "Αν αυτό αλλάξει, αν προστεθεί εργαλείο ανάλυσης ή διαφήμισης, η σελίδα θα ζητήσει πρώτα τη συγκατάθεσή σου και αυτή η ενότητα θα ενημερωθεί ώστε να ονομάζει κάθε cookie, σε τι χρησιμεύει και πόσο διαρκεί. Μη απαραίτητα cookies δεν θα μπαίνουν πριν συμφωνήσεις.",
     "Refund and Digital Delivery Policy": "Πολιτική Επιστροφών και Ψηφιακής Παράδοσης",
     "How delivery works.": "Πώς γίνεται η παράδοση.",
     "Your guide is prepared from your questionnaire answers and sent to you by email as a PDF.":
@@ -732,17 +732,17 @@
       "πες μας πριν σταλεί ο οδηγός και θα σου επιστρέψουμε τα χρήματα.",
     "Contact:": "Επικοινωνία:",
 
-    /* practical FAQ — the questions a buyer actually has */
+    /* practical FAQ, the questions a buyer actually has */
     "How long do the meals take to cook?": "Πόση ώρα θέλουν τα γεύματα;",
-    "You tell us before the plan is built — fifteen minutes, half an hour, an hour — and nothing that takes longer goes in it. Most of what we build lands between fifteen and thirty minutes, because a plan you have no time to cook is not a plan.":
-      "Μας το λες πριν φτιαχτεί το πλάνο — δεκαπέντε λεπτά, μισή ώρα, μία ώρα — και τίποτα πιο αργό δεν μπαίνει μέσα. Τα περισσότερα είναι μεταξύ δεκαπέντε και τριάντα λεπτών, γιατί ένα πλάνο που δεν προλαβαίνεις να μαγειρέψεις δεν είναι πλάνο.",
+    "You tell us before the plan is built, fifteen minutes, half an hour, an hour, and nothing that takes longer goes in it. Most of what we build lands between fifteen and thirty minutes, because a plan you have no time to cook is not a plan.":
+      "Μας το λες πριν φτιαχτεί το πλάνο, δεκαπέντε λεπτά, μισή ώρα, μία ώρα, και τίποτα πιο αργό δεν μπαίνει μέσα. Τα περισσότερα είναι μεταξύ δεκαπέντε και τριάντα λεπτών, γιατί ένα πλάνο που δεν προλαβαίνεις να μαγειρέψεις δεν είναι πλάνο.",
     "Do I need special ingredients or supplements?": "Χρειάζομαι ειδικά υλικά ή συμπληρώματα;",
-    "No. Everything comes from an ordinary supermarket in Cyprus or Greece — chicken, yoghurt, lentils, rice, olive oil, whatever is in season. No powders, no imported health foods, nothing you have to order.":
-      "Όχι. Όλα βρίσκονται σε ένα κανονικό σούπερ μάρκετ σε Κύπρο ή Ελλάδα — κοτόπουλο, γιαούρτι, φακές, ρύζι, ελαιόλαδο, ό,τι έχει η εποχή. Χωρίς σκόνες, χωρίς εισαγόμενα, χωρίς παραγγελίες.",
+    "No. Everything comes from an ordinary supermarket in Cyprus or Greece, chicken, yoghurt, lentils, rice, olive oil, whatever is in season. No powders, no imported health foods, nothing you have to order.":
+      "Όχι. Όλα βρίσκονται σε ένα κανονικό σούπερ μάρκετ σε Κύπρο ή Ελλάδα, κοτόπουλο, γιαούρτι, φακές, ρύζι, ελαιόλαδο, ό,τι έχει η εποχή. Χωρίς σκόνες, χωρίς εισαγόμενα, χωρίς παραγγελίες.",
     "I have never followed a plan before. Is it too much?":
       "Δεν έχω ακολουθήσει ποτέ πλάνο. Είναι δύσκολο;",
-    "It is built for exactly that. You weigh three things — oil, anything dry, anything from a jar — and eyeball the rest. Vegetables never get weighed. Most people stop needing the scale after a fortnight.":
-      "Ακριβώς γι' αυτό είναι φτιαγμένο. Ζυγίζεις τρία πράγματα — λάδι, ό,τι είναι ξηρό, ό,τι βγαίνει από βάζο — και τα υπόλοιπα με το μάτι. Τα λαχανικά δεν ζυγίζονται ποτέ. Οι περισσότεροι δεν χρειάζονται ζυγαριά μετά από δεκαπέντε μέρες.",
+    "It is built for exactly that. You weigh three things, oil, anything dry, anything from a jar, and eyeball the rest. Vegetables never get weighed. Most people stop needing the scale after a fortnight.":
+      "Ακριβώς γι' αυτό είναι φτιαγμένο. Ζυγίζεις τρία πράγματα, λάδι, ό,τι είναι ξηρό, ό,τι βγαίνει από βάζο, και τα υπόλοιπα με το μάτι. Τα λαχανικά δεν ζυγίζονται ποτέ. Οι περισσότεροι δεν χρειάζονται ζυγαριά μετά από δεκαπέντε μέρες.",
     "What if I do not like what is in it?": "Κι αν δεν μου αρέσει αυτό που έχει μέσα;",
     "You tell us what you will not eat before it is built, and those foods never appear. Every meal also comes with an alternative, so a night you cannot face the plan does not end the week.":
       "Μας λες τι δεν τρως πριν φτιαχτεί, και αυτά δεν εμφανίζονται ποτέ. Κάθε γεύμα έχει και εναλλακτική, ώστε ένα βράδυ που δεν αντέχεις το πλάνο να μην τελειώνει την εβδομάδα.",
@@ -752,8 +752,8 @@
 
     /* macro split */
     "How do you like your food to be made up?": "Πώς σου αρέσει να συνθέτεις το φαγητό σου;",
-    "Same calories either way — this only changes how they are arranged between protein, carbohydrate and fat. Pick the way of eating you can actually keep up; that matters more than the ratio itself.":
-      "Οι ίδιες θερμίδες έτσι κι αλλιώς — αλλάζει μόνο το πώς μοιράζονται σε πρωτεΐνη, υδατάνθρακες και λιπαρά. Διάλεξε τον τρόπο που μπορείς πραγματικά να κρατήσεις· αυτό μετράει περισσότερο από την ίδια την αναλογία.",
+    "Same calories either way, this only changes how they are arranged between protein, carbohydrate and fat. Pick the way of eating you can actually keep up; that matters more than the ratio itself.":
+      "Οι ίδιες θερμίδες έτσι κι αλλιώς, αλλάζει μόνο το πώς μοιράζονται σε πρωτεΐνη, υδατάνθρακες και λιπαρά. Διάλεξε τον τρόπο που μπορείς πραγματικά να κρατήσεις· αυτό μετράει περισσότερο από την ίδια την αναλογία.",
     "Balanced": "Ισορροπημένο",
     "An even spread of carbohydrate and fat. The default if you are not sure.":
       "Ισόποση κατανομή υδατανθράκων και λιπαρών. Η προεπιλογή αν δεν είσαι σίγουρος.",
@@ -838,7 +838,7 @@
 
   /* Dictionary keys are written on one line; the page's paragraphs are wrapped
      and indented across several. Collapsing runs of whitespace before the lookup
-     is what lets the two meet — without it every multi-line paragraph missed its
+     is what lets the two meet, without it every multi-line paragraph missed its
      entry and silently stayed in English. */
   function key(s) { return String(s).trim().replace(/\s+/g, " "); }
 

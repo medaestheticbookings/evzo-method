@@ -1,4 +1,4 @@
-/* EVZO — shop and blog
+/* EVZO, shop and blog
    =========================================================================
    Additions to evzo.css for the two pages the sales page does not cover.
    Everything here reuses the same tokens, so a palette change in evzo.css
@@ -42,7 +42,7 @@ section > .wrap > .lede { margin-bottom: 26px; }
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 /* [hidden] must win over the display below, or the category tabs hide
-   nothing — an element with its own `display` ignores the hidden attribute. */
+   nothing, an element with its own `display` ignores the hidden attribute. */
 .book[hidden] { display: none !important; }
 .book {
   text-align: left;

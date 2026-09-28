@@ -1,5 +1,5 @@
 {
-  "_note": "Workout plans. MET values are from the Compendium of Physical Activities (Ainsworth et al.), the standard published reference. NO calorie figure is written in this file — build.mjs computes every one of them with kcal = MET x 3.5 x kg / 200 x minutes, the standard equation, for the reference bodyweights below. Change a MET or a duration here and every printed figure changes with it.",
+  "_note": "Workout plans. MET values are from the Compendium of Physical Activities (Ainsworth et al.), the standard published reference. NO calorie figure is written in this file, build.mjs computes every one of them with kcal = MET x 3.5 x kg / 200 x minutes, the standard equation, for the reference bodyweights below. Change a MET or a duration here and every printed figure changes with it.",
 
   "_method": {
     "formula": "kcal = MET x 3.5 x bodyweight_kg / 200 x minutes",
@@ -77,14 +77,14 @@
       "who": "Once three full-body days stop being enough to fit the work in. Two upper, two lower, with a day off between each pair.",
       "sessions": [
         {
-          "name": "Upper 1 — push focus",
+          "name": "Upper 1, push focus",
           "blocks": [
             { "activity": "mobility", "minutes": 7, "note": "Shoulders and thoracic spine before anything overhead." },
             { "activity": "lift_vigorous", "minutes": 48, "note": "Bench press 4x6 · Incline dumbbell press 3x10 · Overhead press 3x8 · Cable row 3x12 · Lateral raise 3x15 · Triceps pushdown 3x12" }
           ]
         },
         {
-          "name": "Lower 1 — squat focus",
+          "name": "Lower 1, squat focus",
           "blocks": [
             { "activity": "mobility", "minutes": 7, "note": "Hips and ankles." },
             { "activity": "lift_vigorous", "minutes": 46, "note": "Back squat 4x6 · Romanian deadlift 3x8 · Leg press 3x12 · Leg curl 3x12 · Calf raise 4x12 · Plank 3x45s" },
@@ -92,14 +92,14 @@
           ]
         },
         {
-          "name": "Upper 2 — pull focus",
+          "name": "Upper 2, pull focus",
           "blocks": [
             { "activity": "mobility", "minutes": 7, "note": "Same as Upper 1." },
             { "activity": "lift_vigorous", "minutes": 48, "note": "Pull-up or lat pulldown 4x8 · Barbell row 3x8 · Incline dumbbell press 3x10 · Face pull 3x15 · Biceps curl 3x12 · Rear delt fly 3x15" }
           ]
         },
         {
-          "name": "Lower 2 — hinge focus",
+          "name": "Lower 2, hinge focus",
           "blocks": [
             { "activity": "mobility", "minutes": 7, "note": "Hamstrings and lower back." },
             { "activity": "lift_vigorous", "minutes": 46, "note": "Deadlift 4x5 · Front squat or hack squat 3x8 · Bulgarian split squat 3x10 each · Leg extension 3x15 · Hanging leg raise 3x12" },
@@ -107,7 +107,7 @@
           ]
         }
       ],
-      "progression": "Run each lift for four weeks adding weight, then take a lighter week before starting again. If a top set stalls twice in a row, drop 10% and build back — that is not a setback, it is the normal shape of getting stronger.",
+      "progression": "Run each lift for four weeks adding weight, then take a lighter week before starting again. If a top set stalls twice in a row, drop 10% and build back, that is not a setback, it is the normal shape of getting stronger.",
       "notes": [
         "Two minutes rest on the heavy compound lifts, 60 to 90 seconds on everything else.",
         "If you can only make three of the four sessions in a week, do Upper 1, Lower 1 and whichever of the other two you missed most recently."
@@ -141,12 +141,12 @@
           "name": "Conditioning",
           "blocks": [
             { "activity": "mobility", "minutes": 5, "note": "Longer warm-up before intervals, not shorter." },
-            { "activity": "hiit", "minutes": 18, "note": "30 seconds hard, 90 seconds easy, twelve rounds. Stairs, hill, skipping rope or burpees — the medium does not matter, the effort does." },
+            { "activity": "hiit", "minutes": 18, "note": "30 seconds hard, 90 seconds easy, twelve rounds. Stairs, hill, skipping rope or burpees, the medium does not matter, the effort does." },
             { "activity": "walk_easy", "minutes": 12, "note": "Cool down properly. Stopping dead after intervals is how people feel awful for an hour." }
           ]
         }
       ],
-      "progression": "Add repetitions, then slow the lowering phase to three seconds, then move to a harder variation — feet elevated press-ups, then one-arm progressions. Bodyweight training runs out of road much later than people claim.",
+      "progression": "Add repetitions, then slow the lowering phase to three seconds, then move to a harder variation, feet elevated press-ups, then one-arm progressions. Bodyweight training runs out of road much later than people claim.",
       "notes": [
         "AMRAP means as many repetitions as possible with good form, stopping two short of failure.",
         "If press-ups are not possible yet, do them with hands on a table. That is not a lesser exercise, it is the same exercise at the right load."
@@ -163,7 +163,7 @@
         {
           "name": "Weekday walk",
           "blocks": [
-            { "activity": "walk_brisk", "minutes": 45, "note": "One block or three of fifteen minutes — the total is what counts. Brisk means you can talk but would rather not sing." }
+            { "activity": "walk_brisk", "minutes": 45, "note": "One block or three of fifteen minutes, the total is what counts. Brisk means you can talk but would rather not sing." }
           ]
         },
         {

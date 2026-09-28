@@ -1,4 +1,4 @@
-/* EVZO slide system — 1080×1440 (3:4)
+/* EVZO slide system, 1080×1440 (3:4)
    Matched to the batch-1 renders, which are the live identity. */
 
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Commissioner:wght@400;500;600;800&family=Roboto+Mono:wght@400;500&display=swap");
@@ -12,7 +12,7 @@
   --bone-dim:#C8CEDA;
   --muted:#7A849A;
   --label:#FFE14D;
-  --olive:#FFE14D;        /* accent — yellow */
+  --olive:#FFE14D;        /* accent, yellow */
   --olive-deep:#C9AE33;   /* accent, stepped down */
   --rust:#FFE14D;         /* cue colour is yellow too */
   --ink:#06101B;          /* text on yellow */
@@ -121,7 +121,7 @@ strong{color:var(--bone);font-weight:600}
   font-variant-numeric:tabular-nums;
 }
 .bar-row .trk{grid-column:1;display:block;height:13px;background:var(--raised-2);overflow:hidden}
-/* display:block matters — an inline span ignores a percentage width. */
+/* display:block matters, an inline span ignores a percentage width. */
 .bar-row .fil{display:block;height:100%;background:var(--olive)}
 .bar-row.dim .val{color:var(--rust)}
 .bar-row.dim .fil{background:var(--rust);opacity:.72}
@@ -319,7 +319,7 @@ body.story{height:1920px}
   margin-top:7px;max-width:250px;
 }
 
-/* ---------- square (1080×1080, 1:1) — feed ads ----------
+/* ---------- square (1080×1080, 1:1), feed ads ----------
    Same brand furniture, tighter vertical room, so the type scale steps down
    rather than the padding collapsing. */
 body.square{height:1080px}
@@ -336,7 +336,7 @@ body.square{height:1080px}
 .slide.square .pull{padding:24px 26px;margin-top:24px}
 .slide.square .pull p{font-size:26px}
 
-/* An ad is one frame — a counter and a swipe cue both lie about that. */
+/* An ad is one frame, a counter and a swipe cue both lie about that. */
 .slide.square .hd .ctr{display:none}
 
 /* ---------- tick / cross list ---------- */

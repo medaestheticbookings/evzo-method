@@ -1,4 +1,4 @@
-/* EVZO — energy expenditure, in one place
+/* EVZO, energy expenditure, in one place
  * ===========================================================================
  * The same contract as nutrition.mjs: one implementation, imported by the
  * ebook builder and the blog generator, so a burn figure printed in a PDF and

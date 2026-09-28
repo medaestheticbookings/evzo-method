@@ -1,4 +1,4 @@
-/* EVZO — application layer
+/* EVZO, application layer
  * ============================================================================
  * Presentation and wiring only. Every number comes from calc.js; every price,
  * policy and business detail comes from config.js. This file computes nothing
@@ -43,7 +43,7 @@
   }
 
   /* The goal is NOT a step. It is answered by the three cards above the panel,
-     and the panel stays hidden until it is — asking it here as well meant the
+     and the panel stays hidden until it is, asking it here as well meant the
      visitor answered the same question twice in a row. */
   var STEPS = ["age", "units", "height", "weight", "sex", "activity", "split", "style", "allergies", "foods", "meals"];
 
@@ -116,7 +116,7 @@
   var ALLOWED_KEYS = ["goal", "step", "value", "currency", "item"];
   function track(name, payload) {
     /* Consent gate. Nothing reaches a vendor until the visitor has ticked
-       analytics — prior consent is the requirement, and a tracker that fires
+       analytics, prior consent is the requirement, and a tracker that fires
        first and asks afterwards is the thing the fines are for. Events are
        dropped rather than queued: a queue that flushes on consent still
        records what someone did before they agreed. */
@@ -198,7 +198,7 @@
     /* Bring the new question to the top of the screen.
        Continue sits at the bottom of a long question and the next one renders
        above it, so without this the visitor taps Continue and appears to land
-       on nothing — they are looking at the disclaimer of the screen they just
+       on nothing, they are looking at the disclaimer of the screen they just
        left. The focus call keeps preventScroll so it cannot fight this. */
     if (!firstStepRender) {
       var anchor = document.getElementById("step-anchor") || $("assessment");
@@ -313,7 +313,7 @@
     // numbers sitting in the document, even inside a hidden section.
     S.lastResult = null;
     ["r-kcal", "r-pro", "r-maint", "r-goal", "r-bmi", "r-split", "r-foods", "g-pro", "g-car", "g-fat"]
-      .forEach(function (id) { $(id).textContent = "—"; });
+      .forEach(function (id) { $(id).textContent = ", "; });
     ["bar-pro", "bar-car", "bar-fat"].forEach(function (id) { $(id).style.width = "0%"; });
     $("r-note").textContent = "";
     $("r-warn").hidden = true;
@@ -380,7 +380,7 @@
     });
     if (S.bumpOn) track("order_bump_accepted", { item: CFG.orderBump.id });
 
-    // INTEGRATION POINT — Stripe Checkout.
+    // INTEGRATION POINT, Stripe Checkout.
     // When the server endpoint exists, POST the line items here and redirect to
     // the session URL. The server must re-read prices from Stripe, never trust
     // an amount sent from this page, and must verify payment via webhook before
@@ -397,7 +397,7 @@
   function unsetMark(el, label) {
     el.innerHTML = "";
     // Setup markers are a build-time aid. Turn config.showSetupMarkers off and
-    // they stop rendering — the underlying value is still unset either way.
+    // they stop rendering, the underlying value is still unset either way.
     if (CFG.showSetupMarkers === false) {
       if (window.console && console.warn) console.warn("EVZO setup: still unset -> " + label);
       return;
@@ -411,7 +411,7 @@
   /* ------------------------------------------------------------ packages */
 
   /* Three lengths of the same product. The saving printed on a card is the
-     difference against buying 28 days at a time — a real price on this page,
+     difference against buying 28 days at a time, a real price on this page,
      not a "was" price. Under the Omnibus Directive those are different claims
      and only the first one is true here, so the copy says "instead of ... at
      28 days at a time" and never "was".
@@ -514,7 +514,7 @@
     $("p-price").textContent = CFG.product.priceDisplay;
 
     /* Launch pricing. The struck-through regular price only appears while the
-       launch is actually running — switch launch.active off and the card shows
+       launch is actually running, switch launch.active off and the card shows
        one honest price with no comparison claim. */
     var L = CFG.product.launch || {};
     if (L.active) {
@@ -557,7 +557,7 @@
     $("b-price").textContent = CFG.orderBump.priceDisplay;
     $("b-blurb").textContent = T(CFG.orderBump.blurb);
 
-    // Delivery timing — never promise a turnaround the owner has not confirmed.
+    // Delivery timing, never promise a turnaround the owner has not confirmed.
     // Translated like any other copy: the config holds the English, the
     // dictionary holds the Greek, so the promise reads properly in both.
     var turnaround = T(CFG.fulfilment.turnaroundText);
@@ -575,7 +575,7 @@
     else unsetMark($("faq-refund"), "legal.refundPolicyText");
 
     /* The full scope note lives in the FAQ on legal.html. The homepage lost its
-       FAQ when it was cut down, so this element is absent there — and an
+       FAQ when it was cut down, so this element is absent there, and an
        unguarded assignment threw, which aborted the rest of renderConfig and
        silently left every config-driven value below this line unrendered. */
     if ($("faq-scope")) $("faq-scope").textContent = T(CFG.disclaimerFull);
@@ -636,7 +636,7 @@
         missingBiz.map(function (k) { return "business." + k; }).join(", "));
     }
 
-    // Legal links — a "#" placeholder renders as an unset marker, not a link.
+    // Legal links, a "#" placeholder renders as an unset marker, not a link.
     var links = [
       ["Terms and Conditions", CFG.legal.termsUrl],
       ["Privacy Policy", CFG.legal.privacyUrl],
@@ -656,7 +656,7 @@
       } else {
         var s = document.createElement("span");
         s.className = "unset";
-        s.textContent = T(pair[0]) + " — NOT SET";
+        s.textContent = T(pair[0]) + ", NOT SET";
         host.appendChild(s);
       }
     });
@@ -665,16 +665,16 @@
     /* Reviews render only from config.testimonials, which holds real,
        permissioned entries or nothing at all. Each entry may carry:
          { quote, name, context, photo, rating, verified }
-       `name` is a first name and a surname initial — "Eleni P." — and `context`
+       `name` is a first name and a surname initial, "Eleni P.", and `context`
        is how long they used it. No town: it narrows a person more than it adds.
        `verified` is true only for a confirmed purchaser, and the badge says
-       exactly that — it is a claim, not decoration. */
+       exactly that, it is a claim, not decoration. */
     /* Reviews render only from config.testimonials, which holds real,
        permissioned entries or nothing at all. Each entry may carry:
          { quote, name, context, photo, rating, verified }
 
        `verified` is true only for a confirmed purchaser and the badge says
-       exactly that — it is a claim about a person, not decoration. The
+       exactly that, it is a claim about a person, not decoration. The
        aggregate rating is averaged from the entries present; it is never
        written down, so it cannot drift away from the reviews under it. */
     if (CFG.testimonials && CFG.testimonials.length) {
@@ -772,7 +772,7 @@
       var first = $("q-panel") && $("q-panel").hidden;
       setGoal(b.getAttribute("data-goal"));
       // On the first pick, take them to the questions that just appeared.
-      // On a change of mind, stay put — the panel is already below them.
+      // On a change of mind, stay put, the panel is already below them.
       var target = first ? ($("q-intro") || $("assessment")) : $("assessment");
       if (target && target.scrollIntoView) {
         var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -896,8 +896,7 @@
     $("bump").setAttribute("aria-pressed", String(S.bumpOn));
   });
 
-  /* Consent gate. Both boxes must be ticked before checkout can start —
-     the withdrawal waiver in the refund policy depends on collecting them,
+  /* Consent gate. Both boxes must be ticked before checkout can start, the withdrawal waiver in the refund policy depends on collecting them,
      so this is not cosmetic. Neither is ever pre-checked. */
   function consentOk() { return S.consent.terms && S.consent.immediate; }
 
@@ -971,7 +970,7 @@
 
   /* The stats band. Numbers come from site/shop-data.json, which is written by
      ebooks/build.mjs by counting the actual content. If the file is missing the
-     band removes itself rather than showing an em dash — a broken statistic is
+     band removes itself rather than showing an em dash, a broken statistic is
      worse than no statistic. */
   var statTotals = null;
 
@@ -982,7 +981,7 @@
     /* Three figures counted from the repository by ebooks/build.mjs, plus the
        owner's people-helped figure from config when it is set. The counted
        three cannot drift from the content; the fourth is the owner's own claim
-       and lives in config.business.peopleHelped — see the note there. */
+       and lives in config.business.peopleHelped, see the note there. */
     var cells = [
       [t.planDays, T("Day plan")],
       [t.recipes, T("Recipes")],
@@ -1018,7 +1017,7 @@
 
   /* The email capture. There is no list to post to yet, so rather than a form
      that silently throws an address away, it opens the visitor's mail client
-     addressed to the support inbox — which is a place a human actually reads. */
+     addressed to the support inbox, which is a place a human actually reads. */
   (function () {
     var form = $("signup-form");
     if (!form) return;
@@ -1036,10 +1035,10 @@
       var to = CFG.business && CFG.business.supportEmail;
       if (to) {
         window.location.href = "mailto:" + to +
-          "?subject=" + encodeURIComponent("EVZO — add me to the list") +
+          "?subject=" + encodeURIComponent("EVZO, add me to the list") +
           "&body=" + encodeURIComponent("Please add " + value + " to the EVZO email list.");
       }
-      said.textContent = T("Thank you. Your mail app should open — send it and you are on the list.");
+      said.textContent = T("Thank you. Your mail app should open, send it and you are on the list.");
       said.hidden = false;
       track("newsletter_submit", {});
     });
