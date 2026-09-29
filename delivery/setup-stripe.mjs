@@ -30,6 +30,25 @@ const STATE_PATH = join(HERE, `stripe-links.${MODE}.json`);
 const state = existsSync(STATE_PATH) ? JSON.parse(readFileSync(STATE_PATH, "utf8")) : {};
 
 const SHOP = CONFIG.ebooks;
+
+/* The personalised guide packages. These are NOT books:
+   - fulfilment is by hand, so there is no PDF for deliver.mjs to attach and
+     `evzo_files` stays empty. The order still needs acting on, which is what
+     the Stripe email to the owner is for.
+   - the 6-month package does include the whole ebook library, so that one
+     carries every file and is delivered automatically like a bundle.
+   - they are one-off payments covering N monthly rebuilds, not subscriptions;
+     Stripe would otherwise auto-charge on a cadence the fulfilment cannot keep. */
+const PACKAGES = (CONFIG.packages || []).map(p => ({
+  id: p.id,
+  name: CONFIG.product.name + ", " + p.name,
+  files: p.months >= 6 ? SHOP.books.map(b => b.file) : [],
+  amount: p.priceAmount,
+  description: p.summary,
+  manual: true,
+  months: p.months
+}));
+
 const products = [
   ...SHOP.books.map(b => ({
     id: b.id, name: b.name, files: [b.file],
@@ -38,7 +57,8 @@ const products = [
   {
     id: SHOP.bundle.id, name: SHOP.bundle.name, files: SHOP.books.map(b => b.file),
     amount: SHOP.bundle.priceAmount, description: SHOP.bundle.blurb
-  }
+  },
+  ...PACKAGES
 ];
 
 // Shown on the Stripe checkout page, beside the Pay button. EU law: a digital
@@ -46,6 +66,13 @@ const products = [
 // acknowledgement that the 14-day withdrawal right is lost.
 const WAIVER = "By paying you ask for the PDF to be emailed to you straight away and acknowledge " +
   "that you lose your 14-day right of withdrawal once it has been sent.";
+
+// The guide is written to the buyer's own measurements and answers, so it is a
+// made-to-order item, and it is not delivered instantly. Reusing the ebook
+// wording here would promise a download that does not arrive for a day.
+const WAIVER_MANUAL = "Your guide is built from your own answers and emailed within 24 hours. " +
+  "By paying you ask for work to begin now and acknowledge that, because it is made to your " +
+  "specification, the 14-day right of withdrawal does not apply once it has been sent.";
 
 for (const p of products) {
   const cents = Math.round(p.amount * 100);
@@ -56,8 +83,10 @@ for (const p of products) {
   // Product: one per book, carrying the PDF file names the Worker delivers.
   const productFields = {
     name: "EVZO, " + p.name, description: p.description,
-    "metadata[evzo_id]": p.id, "metadata[evzo_files]": files
+    "metadata[evzo_id]": p.id, "metadata[evzo_files]": files,
+    "metadata[evzo_manual]": p.manual ? "1" : "0"
   };
+  if (p.months) productFields["metadata[evzo_months]"] = String(p.months);
   s.product = s.product
     ? (await api("POST", "products/" + s.product, productFields)).id
     : (await api("POST", "products", productFields)).id;
@@ -73,9 +102,12 @@ for (const p of products) {
       "line_items[0][price]": price.id, "line_items[0][quantity]": 1,
       "after_completion[type]": "redirect",
       "after_completion[redirect][url]": THANKS,
-      "custom_text[submit][message]": WAIVER,
+      "custom_text[submit][message]": p.manual ? WAIVER_MANUAL : WAIVER,
       allow_promotion_codes: "true",
-      "metadata[evzo_id]": p.id
+      "metadata[evzo_id]": p.id,
+      // Marked so deliver.mjs does not treat a hand-built guide as a missing
+      // attachment, and so the owner can spot orders that need work doing.
+      "metadata[evzo_manual]": p.manual ? "1" : "0"
     });
     Object.assign(s, { price: price.id, amount: cents, link: link.url, linkId: link.id });
     console.log(`${p.id.padEnd(12)} €${p.amount.toFixed(2).padStart(6)}  NEW  ${link.url}`);

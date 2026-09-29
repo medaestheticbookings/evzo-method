@@ -371,6 +371,12 @@
   }
 
   /* -------------------------------------------------------------- checkout */
+  /* True once at least one package carries a Payment Link. Used instead of the
+     old checkoutEnabled flag, which described a server that was never built. */
+  function anyCheckoutLink() {
+    return (CFG.packages || []).some(function (p) { return CFG.isSet(p.checkoutUrl); });
+  }
+
   function buy() {
     track("checkout_started", {
       goal: S.goal,
@@ -380,16 +386,22 @@
     });
     if (S.bumpOn) track("order_bump_accepted", { item: CFG.orderBump.id });
 
-    // INTEGRATION POINT, Stripe Checkout.
-    // When the server endpoint exists, POST the line items here and redirect to
-    // the session URL. The server must re-read prices from Stripe, never trust
-    // an amount sent from this page, and must verify payment via webhook before
-    // any fulfilment. See INTEGRATION.md.
-    if (!CFG.integrations.checkoutEnabled) {
-      $("buy-state").textContent = T("checkout_unavailable");
-      $("buy-state").hidden = false;
+    /* Stripe Payment Links, not a server session.
+       The original plan here was POST /api/checkout/session, which needs a
+       backend this site does not have (GitHub Pages is static). A Payment Link
+       per package does the same job with no server: the amount lives in Stripe,
+       so nothing this page sends can change what is charged, which was the
+       reason the server was wanted in the first place.
+       Links are written into config.js by delivery/setup-stripe.mjs. */
+    var pack = selectedPackage();
+    var url = pack && pack.checkoutUrl;
+    if (CFG.isSet(url)) {
+      window.location.href = url;
       return;
     }
+
+    $("buy-state").textContent = T("checkout_unavailable");
+    $("buy-state").hidden = false;
   }
 
   /* ------------------------------------------------------ config rendering */
@@ -741,7 +753,8 @@
       $("proof").hidden = false;
     }
 
-    if (!CFG.integrations.checkoutEnabled) {
+    // Only warn when there is genuinely no link to send the buyer to.
+    if (!anyCheckoutLink()) {
       $("buy-state").textContent = T("checkout_unavailable");
       $("buy-state").hidden = false;
     }
@@ -907,9 +920,11 @@
     if (!ready && !$("buy").dataset.blocked) {
       $("buy-state").textContent = T("consent_required");
       $("buy-state").hidden = false;
-    } else if (ready && !$("buy").dataset.blocked && !CFG.integrations.checkoutEnabled) {
+    } else if (ready && !$("buy").dataset.blocked && !anyCheckoutLink()) {
       $("buy-state").textContent = T("checkout_unavailable");
       $("buy-state").hidden = false;
+    } else if (ready && !$("buy").dataset.blocked) {
+      $("buy-state").hidden = true;
     }
   }
 
