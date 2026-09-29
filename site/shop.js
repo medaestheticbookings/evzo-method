@@ -209,6 +209,9 @@
 
     /* --- the legal line, same source as every other page --- */
     if ($("legal-full")) $("legal-full").textContent = T(CFG.disclaimerFull || "");
+    // Short form next to the buy buttons. A disclaimer only in the footer is a
+    // disclaimer nobody reads before paying.
+    if ($("scope-shop")) $("scope-shop").textContent = T(CFG.disclaimerShort || "");
   }
 
   /* shop-data.json is generated; if it is missing the page still renders,
