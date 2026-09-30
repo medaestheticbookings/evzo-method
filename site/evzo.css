@@ -741,3 +741,12 @@ a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
 .shelf-tab[aria-pressed="true"]{background:var(--yellow);border-color:var(--yellow);
   color:var(--ink);font-weight:500}
 .shelf-tab:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+/* ---- questions page ------------------------------------------------------
+   Group headings break 23 questions into four scannable runs, so somebody
+   looking for the refund rule is not reading about cooking times first. */
+.faq-group{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--yellow);margin:34px 0 12px;font-weight:500;
+}
+.faq-group:first-child{margin-top:0}
