@@ -1,4 +1,4 @@
-/* EVZO, central configuration
+﻿/* EVZO, central configuration
  * ============================================================================
  * Every price, timing, policy and business detail the page displays lives HERE
  * and nowhere else. Change a value in this file and the whole page follows.
@@ -27,7 +27,7 @@
       // What the customer pays today.
       priceAmount: 39.99,
       priceCurrency: "EUR",
-      priceDisplay: "€39.99",
+      priceDisplay: "â‚¬39.99",
 
       // The regular price, shown struck through beside the launch price.
       //
@@ -42,7 +42,7 @@
       //       strike-through until a real 59.99 trading history exists.
       // Option (b) is the safe one for a first launch.
       regularPriceAmount: 59.99,
-      regularPriceDisplay: "€59.99",
+      regularPriceDisplay: "â‚¬59.99",
 
       launch: {
         // Off, 20 Sep 2026: the card shows one honest price. Nothing has ever
@@ -88,9 +88,9 @@
        are willing to do that on the busiest month, not the quietest. */
     packages: [
       {
-        id: "m1", months: 1,
+        id: "m1", checkoutUrl: "https://buy.stripe.com/3cI5kE3Tz2twf4Rg1S3ZK0h", months: 1,
         name: "28 days",
-        priceAmount: 39.99, priceDisplay: "€39.99",
+        priceAmount: 39.99, priceDisplay: "â‚¬39.99",
         summary: "One month, built from your answers.",
         includes: [
           "A personalised 28-day guide",
@@ -101,9 +101,9 @@
         stripePriceId: TODO
       },
       {
-        id: "m3", months: 3,
+        id: "m3", checkoutUrl: "https://buy.stripe.com/6oU5kE9dT4BEcWJ3f63ZK0i", months: 3,
         name: "3 months",
-        priceAmount: 89, priceDisplay: "€89",
+        priceAmount: 89, priceDisplay: "â‚¬89",
         recommended: true,
         summary: "Three guides, rebuilt each month as your numbers move.",
         includes: [
@@ -115,9 +115,9 @@
         stripePriceId: TODO
       },
       {
-        id: "m6", months: 6,
+        id: "m6", checkoutUrl: "https://buy.stripe.com/4gM3cw89P9VY4qdbLC3ZK0j", months: 6,
         name: "6 months",
-        priceAmount: 149, priceDisplay: "€149",
+        priceAmount: 149, priceDisplay: "â‚¬149",
         summary: "Six months, plus every ebook in the shop.",
         includes: [
           "Everything in 3 months, for six months",
@@ -134,7 +134,7 @@
       name: "Healthy Recipes eBook",
       priceAmount: 9.99,
       priceCurrency: "EUR",
-      priceDisplay: "€9.99",
+      priceDisplay: "â‚¬9.99",
       blurb: "A separate recipe collection in the same format. Optional, your guide is complete without it.",
       stripePriceId: TODO         // TODO_OWNER
     },
@@ -145,7 +145,7 @@
       name: "30-Day Meal Variety Bundle",
       priceAmount: 29,
       priceCurrency: "EUR",
-      priceDisplay: "€29",
+      priceDisplay: "â‚¬29",
       blurb: "Four more weeks of structures and swaps so the guide does not repeat.",
       stripePriceId: TODO         // TODO_OWNER
     },
@@ -189,28 +189,28 @@
 
       books: [
         {
-          id: "workbook",
+          id: "workbook", checkoutUrl: "https://buy.stripe.com/00w5kE61H0lo8Gt2b23ZK01",
           category: "workouts", coverTitle: "Three habits, twenty-eight days", name: "The 28-Day Workbook", file: "EVZO-Workbook.pdf",
           eyebrow: "Build the habit",
           blurb: "A workbook to write in, not read. Three habits, thirty seconds a day, four weekly reviews, and an honest look at which habits actually fit your life.",
           stripePriceId: TODO
         },
         {
-          id: "workouts",
+          id: "workouts", checkoutUrl: "https://buy.stripe.com/aFadRa4XD4BEg8V02U3ZK02",
           category: "workouts", coverTitle: "Five plans, no guesswork", name: "Workout Plans", file: "EVZO-Workout-Plans.pdf",
           eyebrow: "Training",
           blurb: "Five plans from three days a week to five, with the calories each session burns estimated from published MET values, and the margin of error printed beside them.",
           stripePriceId: TODO
         },
         {
-          id: "oats",
+          id: "oats", checkoutUrl: "https://buy.stripe.com/5kQ28s2Pvc469KxcPG3ZK03",
           category: "nutrition", coverTitle: "Oats, fourteen ways", name: "Oat Recipes", file: "EVZO-Oat-Recipes.pdf",
           eyebrow: "Breakfast",
           blurb: "Fourteen ways to eat oats that are not porridge \u2014 overnight jars, baked oats, savoury bowls, pancakes and bars.",
           stripePriceId: TODO
         },
         {
-          id: "eggs",
+          id: "eggs", checkoutUrl: "https://buy.stripe.com/dRmfZi3Tz5FIbSF4ja3ZK04",
           category: "nutrition", coverTitle: "The cheapest protein there is", name: "Egg Recipes", file: "EVZO-Egg-Recipes.pdf",
           eyebrow: "The cheapest protein there is",
           blurb: "Fourteen egg dishes, from strapatsada to a protein box that needs no reheating. Six eggs is a dinner for four.",
@@ -222,77 +222,77 @@
            price everywhere it is shown, shop card, PDF cover and the
            "bought one at a time" comparison all read from here. */
         {
-          id: "smoking",
+          id: "smoking", checkoutUrl: "https://buy.stripe.com/14AeVeahXd8a6ylbLC3ZK05",
           category: "habits", coverTitle: "The last cigarette is not the hard part", name: "How to Stop Smoking", file: "EVZO-Quit-Smoking.pdf",
           eyebrow: "Stopping smoking",
           blurb: "A ninety-day plan: what withdrawal actually does, why week three is the dangerous one, and the six things that double your odds.",
-          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+          priceAmount: 4.99, priceDisplay: "â‚¬4.99", stripePriceId: TODO
         },
         {
-          id: "drinking",
+          id: "drinking", checkoutUrl: "https://buy.stripe.com/7sY14odu93xA5uh8zq3ZK06",
           category: "habits", coverTitle: "The question is not whether you can stop", name: "Drinking Less, or Not At All", file: "EVZO-Quit-Drinking.pdf",
           eyebrow: "Changing your drinking",
           blurb: "Counting honestly, choosing a target with a number in it, and the four situations where it actually happens. Includes when stopping suddenly is dangerous.",
-          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+          priceAmount: 4.99, priceDisplay: "â‚¬4.99", stripePriceId: TODO
         },
         {
-          id: "emotional",
+          id: "emotional", checkoutUrl: "https://buy.stripe.com/eVq14o89Pece09XdTK3ZK07",
           category: "habits", coverTitle: "You are not eating because you are weak", name: "Emotional Eating", file: "EVZO-Emotional-Eating.pdf",
           eyebrow: "Eating when you are not hungry",
           blurb: "Three of the most common causes are not emotional at all. Fix those first, then the ten-minute rule for nine o'clock at night.",
-          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+          priceAmount: 4.99, priceDisplay: "â‚¬4.99", stripePriceId: TODO
         },
         {
-          id: "supplements",
+          id: "supplements", checkoutUrl: "https://buy.stripe.com/00waEYfCh3xAcWJ4ja3ZK08",
           category: "habits", coverTitle: "Almost none of them", name: "The Only Supplements You Need", file: "EVZO-Supplements.pdf",
           eyebrow: "What is worth buying",
           blurb: "Four with real evidence, three that need a blood test first, and the long list you can stop buying. EVZO sells no supplements and takes no commission.",
-          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+          priceAmount: 4.99, priceDisplay: "â‚¬4.99", stripePriceId: TODO
         },
         {
-          id: "produce",
+          id: "produce", checkoutUrl: "https://buy.stripe.com/9B64gA1Lr5FI6yleXO3ZK09",
           category: "habits", coverTitle: "Everything you need to know is in your hands", name: "How to Pick Fruit and Vegetables", file: "EVZO-Picking-Produce.pdf",
           eyebrow: "At the market",
           blurb: "Choosing by weight, smell and skin, what is in season in Greece and Cyprus month by month, and the storage that makes it last twice as long.",
-          priceAmount: 4.99, priceDisplay: "€4.99", stripePriceId: TODO
+          priceAmount: 4.99, priceDisplay: "â‚¬4.99", stripePriceId: TODO
         },
         {
-          id: "budget",
+          id: "budget", checkoutUrl: "https://buy.stripe.com/4gMbJ2gGl7NQ5uh2b23ZK0a",
           category: "nutrition", coverTitle: "Cheap is a number, not a feeling", name: "Budget Meals", file: "EVZO-Budget-Meals.pdf",
           eyebrow: "Eating well on very little",
           blurb: "Twelve Greek and Cypriot plates with the cost of every serving printed on the page, from 45 cents to just over two euro.",
           stripePriceId: TODO
         },
         {
-          id: "bowls",
+          id: "bowls", checkoutUrl: "https://buy.stripe.com/fZu28sfChd8a09X4ja3ZK0b",
           category: "nutrition", coverTitle: "One bowl, thirty grams", name: "High-Protein Bowls", file: "EVZO-Protein-Bowls.pdf",
           eyebrow: "Lunch",
           blurb: "Mediterranean bowls built around the protein first. Most of them one pan, all of them assembled in minutes.",
           stripePriceId: TODO
         },
         {
-          id: "dinners",
+          id: "dinners", checkoutUrl: "https://buy.stripe.com/00wfZi3Tzd8af4R7vm3ZK0c",
           category: "nutrition", coverTitle: "Dinners that hold", name: "High-Protein Dinners", file: "EVZO-Protein-Dinners.pdf",
           eyebrow: "Dinner",
           blurb: "Greek and Cypriot dinners rebuilt so the protein is the point \u2014 including the ones you were told to give up.",
           stripePriceId: TODO
         },
         {
-          id: "fatloss",
+          id: "fatloss", checkoutUrl: "https://buy.stripe.com/14AfZieyd1ps6ylcPG3ZK0d",
           category: "nutrition", coverTitle: "Full plates, fewer calories", name: "Fat Loss Dishes", file: "EVZO-Fat-Loss-Dishes.pdf",
           eyebrow: "Losing weight",
           blurb: "Meals built for volume, sorted by calories. Full plates, because hunger is what ends diets.",
           stripePriceId: TODO
         },
         {
-          id: "gain",
+          id: "gain", checkoutUrl: "https://buy.stripe.com/cNi00kbm16JM5uh02U3ZK0e",
           category: "nutrition", coverTitle: "Eating more, on purpose", name: "Weight Gain", file: "EVZO-Weight-Gain.pdf",
           eyebrow: "Gaining weight",
           blurb: "Calorie-dense meals and shakes for people who genuinely struggle to gain, built on real food.",
           stripePriceId: TODO
         },
         {
-          id: "healthy",
+          id: "healthy", checkoutUrl: "https://buy.stripe.com/fZubJ20Hn8RUcWJaHy3ZK0f",
           category: "nutrition", coverTitle: "Real food, weighed once", name: "Healthy Recipes", file: "EVZO-Healthy-Recipes.pdf",
           eyebrow: "The starter collection",
           blurb: "The collection offered at checkout. Breakfasts, lunches, dinners and snacks with every figure on the page.",
@@ -306,7 +306,7 @@
       // Omnibus Directive those are two different claims and only one of them
       // is true here.
       bundle: {
-        id: "library", name: "The whole library",
+        id: "library", checkoutUrl: "https://buy.stripe.com/3cI14o4XDfgi7CpaHy3ZK0g", name: "The whole library",
         blurb: "Every book in the shop, in one download.",
         priceAmount: 24.99, priceDisplay: "\u20AC24.99",
         stripePriceId: TODO
@@ -449,7 +449,7 @@
     // value ever reaches a customer. Set this to false before going live and
     // they stop rendering; anything still unset is warned about in the console
     // instead. Turning them off does NOT fill the value in.
-    showSetupMarkers: true,
+    showSetupMarkers: false,
 
     links: {
       instagram: "https://www.instagram.com/evzo_method/"

@@ -21,11 +21,16 @@ const CONFIG = createRequire(import.meta.url)(CONFIG_PATH);
 const VARS = join(HERE, ".dev.vars");
 const KEY = process.env.STRIPE_SECRET_KEY ||
   ((existsSync(VARS) ? readFileSync(VARS, "utf8") : "").match(/^STRIPE_SECRET_KEY=(.+)$/m) || [])[1];
-if (!/^sk_(test|live)_/.test((KEY || "").trim())) exit("Put STRIPE_SECRET_KEY=sk_test_... or sk_live_... in .dev.vars.");
+// rk_ is a restricted key. Stripe's "One-time payments" template grants exactly
+// what this script needs (products, prices, payment links) and nothing else, so
+// it is the safer thing to hand over than a full secret key.
+if (!/^(sk|rk)_(test|live)_/.test((KEY || "").trim())) {
+  exit("Put STRIPE_SECRET_KEY=sk_... or rk_... (test or live) in .dev.vars.");
+}
 // After paying, buyers land on the site's own thank-you page. The PDFs follow
 // by email from deliver.mjs within a few minutes.
 const THANKS = CONFIG.site.baseUrl.replace(/\/$/, "") + "/shop/thanks.html";
-const MODE = KEY.startsWith("sk_live_") ? "live" : "test";
+const MODE = /_live_/.test(KEY) ? "live" : "test";
 const STATE_PATH = join(HERE, `stripe-links.${MODE}.json`);
 const state = existsSync(STATE_PATH) ? JSON.parse(readFileSync(STATE_PATH, "utf8")) : {};
 
