@@ -45,9 +45,17 @@
     window.EVZO_CAMPAIGN = found;
   }
 
-  var before = url.search;
+  var before = url.search + url.hash;
   NOISE.concat(CAMPAIGN).forEach(function (k) { url.searchParams.delete(k); });
-  if (url.search === before) return;
+
+  // The home page logo used to point at "#top", which matches no element here
+  // and never did. Links carrying it are still in circulation, so the fragment
+  // is dropped rather than left hanging in the bar. Named explicitly instead of
+  // testing every hash against the DOM, because cards on /shop/ and /blog/ are
+  // built by script that has not run yet when this does.
+  if (url.hash === "#top") url.hash = "";
+
+  if (url.search + url.hash === before) return;
 
   history.replaceState(history.state, "", url.pathname + url.search + url.hash);
 })();
