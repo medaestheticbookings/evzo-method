@@ -1,4 +1,4 @@
-﻿/* EVZO, central configuration
+/* EVZO, central configuration
  * ============================================================================
  * Every price, timing, policy and business detail the page displays lives HERE
  * and nowhere else. Change a value in this file and the whole page follows.
