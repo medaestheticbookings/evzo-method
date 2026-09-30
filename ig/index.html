@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>EVZO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B1220">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://evzomethod.com/">
+
+<!-- The Instagram bio link points here rather than at "/".
+     ==========================================================================
+     Instagram staples a click id onto every outbound link, and it opens links
+     in its own in-app browser whose address bar is a label showing the URL
+     Instagram asked for, not the document's current URL. So rewriting the URL
+     from inside the page (site/url-tidy.js) cleans it in Safari and Chrome but
+     changes nothing a visitor coming from the app can see.
+
+     A redirect does, because it is a real navigation: whatever rubbish arrives
+     on /ig is left behind on this page, and the visitor lands on a bare
+     evzomethod.com. The path itself is the attribution, so the bio link needs
+     no utm tags to be distinguishable from ad traffic.
+
+     replace(), not assign(): Back must return to Instagram rather than bounce
+     the visitor through this redirect a second time.
+     ====================================================================== -->
+<style>
+  html,body{margin:0;height:100%;background:#0B1220}
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  /* An allowlist, never the raw parameter. A redirector that forwards to
+     whatever it is handed is an open redirect, and a link on our own domain
+     landing someone on a phishing page is exactly the sort of thing that gets
+     the domain flagged. Unknown or absent -> home. */
+  var DESTINATIONS = {
+    "": "/",
+    home: "/",
+    shop: "/shop/",
+    blog: "/blog/",
+    faq: "/faq/",
+    guide: "/#assessment",
+    price: "/#pricing"
+  };
+
+  var to = "";
+  try {
+    to = new URL(location.href).searchParams.get("to") || "";
+  } catch (e) { /* fall through to home */ }
+
+  var target = DESTINATIONS[to.toLowerCase()] || "/";
+
+  /* Record where this visitor came from before the query string is discarded.
+     Same origin as the destination, so it survives the redirect. First touch
+     wins: someone who arrives from the bio and later from an ad keeps the bio. */
+  try {
+    if (!sessionStorage.getItem("evzo_campaign")) {
+      sessionStorage.setItem("evzo_campaign", JSON.stringify({
+        utm_source: "ig",
+        utm_medium: "social",
+        utm_content: "link_in_bio"
+      }));
+    }
+  } catch (e) { /* private mode, attribution is not worth an exception */ }
+
+  location.replace(target);
+})();
+</script>
+
+<!-- If script is off, the redirect still happens, just a beat later. -->
+<noscript><meta http-equiv="refresh" content="0;url=/"></noscript>
+</html>
