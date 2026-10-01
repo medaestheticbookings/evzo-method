@@ -30,6 +30,9 @@
     // disliked food is a preference, an allergen is not.
     allergies: {}, noAllergies: false,
     meals: 3, snacks: 1,
+    // Rate of change in kg per week. Pre-set to the old hardcoded value, so
+    // anyone who does not care about the question keeps the previous result.
+    pace: 0.5,
     exclusions: {}, noneTicked: false,
     step: 0, bumpOn: false, lastResult: null, startedTracked: false,
     pack: null,
@@ -45,7 +48,24 @@
   /* The goal is NOT a step. It is answered by the three cards above the panel,
      and the panel stays hidden until it is, asking it here as well meant the
      visitor answered the same question twice in a row. */
-  var STEPS = ["age", "units", "height", "weight", "sex", "activity", "split", "style", "allergies", "foods", "meals"];
+  var BASE_STEPS = ["age", "units", "height", "weight", "sex", "activity", "split", "style", "allergies", "foods", "meals"];
+  var STEPS = BASE_STEPS.slice();
+
+  /* "How fast?" is only a question if the weight is meant to move, so someone
+     maintaining never sees it and their run is one question shorter. Rebuilt
+     on every goal change rather than hidden with a flag, because the progress
+     bar and the "question N of M" counter both read STEPS.length. */
+  function buildSteps() {
+    var wasOn = STEPS[S.step];
+    STEPS = BASE_STEPS.slice();
+    if (S.goal && S.goal !== "maintain") STEPS.splice(4, 0, "pace");
+    // Keep the visitor on the question they were looking at, not on whatever
+    // happens to sit at the old index once the list has changed length.
+    var i = STEPS.indexOf(wasOn);
+    S.step = i >= 0 ? i : Math.min(S.step, STEPS.length - 1);
+    var c = $("q-count");
+    if (c) c.textContent = String(STEPS.length);
+  }
 
   /* Tags hidden by each dietary style. A vegan is never asked whether they
      like lamb, and a food hidden here is also cleared from the answers, so a
@@ -288,9 +308,9 @@
       allergies: Object.keys(S.allergies).filter(function (a) { return S.allergies[a]; }),
       mealsPerDay: S.meals,
       snacksPerDay: S.snacks,
-      // A single conservative default rate. The user is never asked to choose
-      // an aggressive one, and calc.js clamps it regardless.
-      ratePerWeekKg: S.goal === "lose" ? 0.5 : S.goal === "gain" ? 0.25 : 0
+      // What the visitor actually chose. calc.js still clamps it, so the
+      // offered options are limited to rates the calculator can honour.
+      ratePerWeekKg: S.goal === "maintain" ? 0 : S.pace
     };
 
     var out = CALC.assess(input, S.exclusions);
@@ -343,6 +363,7 @@
     $("r-pro").textContent = r.proteinRange.low + "–" + r.proteinRange.high + " g";
     $("r-maint").textContent = fmt(r.energy.maintenance) + " kcal";
     $("r-goal").textContent = T("goal_" + S.goal);
+
     $("r-bmi").textContent = r.bmi.value.toFixed(1);
     // Name the preference the figures were drawn for, so the split on screen is
     // never mistaken for the only arrangement of these calories.
@@ -359,6 +380,25 @@
 
     $("result-lede").textContent = T("result_lede");
     $("r-note").textContent = T("result_note");
+
+    /* The pace, as it will actually be run.
+       ----------------------------------------------------------------------
+       calc.js caps the deficit at a share of maintenance, so a smaller person
+       asking for 0.75 kg a week is quietly given about 0.45. Printing the
+       requested figure here would be a number we have no intention of
+       honouring, so the achieved rate is what is shown, with the ask beside it
+       whenever the two have parted company. */
+    var paceLine = $("r-pace-line"), paceVal = $("r-pace");
+    if (paceLine && paceVal) {
+      var showPace = S.goal !== "maintain";
+      paceLine.hidden = !showPace;
+      if (showPace) {
+        var got = r.energy.actualPerWeekKg;
+        var txt = formatRate(got);
+        if (Math.abs(got - S.pace) >= 0.05) txt += " " + T("rather than the") + " " + formatRate(S.pace) + " " + T("you asked for");
+        paceVal.textContent = txt;
+      }
+    }
 
     if (r.energy.clamped) {
       $("r-warn").textContent = T("clamped_note");
@@ -760,12 +800,76 @@
     }
   }
 
+  /* The pace options, and the words for them.
+     ------------------------------------------------------------------------
+     Written here rather than in the markup because the same three buttons
+     serve two goals and three unit systems. Imperial shows the round numbers
+     people actually think in (half a pound, a pound) rather than a conversion
+     to two decimal places.
+
+     0.75 kg a week is offered for losing and withheld for gaining: fat comes
+     off faster than muscle goes on, and a surplus that size is mostly fat. */
+  var PACE = [
+    { kg: 0.25, lose: "Steady",   gain: "Lean",     metric: "0.25 kg a week", imperial: "About half a pound a week" },
+    { kg: 0.5,  lose: "Standard", gain: "Standard", metric: "0.5 kg a week",  imperial: "About a pound a week" },
+    { kg: 0.75, lose: "Faster",   gain: null,       metric: "0.75 kg a week", imperial: "About a pound and a half a week" }
+  ];
+
+  function formatRate(kg) {
+    var n = S.unit === "metric" ? kg.toFixed(2).replace(/0$/, "").replace(/\.$/, "")
+                                : (kg * 2.20462).toFixed(1);
+    // Greek uses a decimal comma, and the fixed option labels already do.
+    if (document.documentElement.getAttribute("lang") === "el") n = n.replace(".", ",");
+    return n + " " + T(S.unit === "metric" ? "kg a week" : "lb a week");
+  }
+
+  function paintPace() {
+    var gaining = S.goal === "gain";
+    var legend = $("pace-legend"), hint = $("pace-hint");
+    if (legend) legend.textContent = gaining ? T("How fast do you want to gain?") : T("How fast do you want to lose it?");
+    if (hint) {
+      hint.textContent = gaining
+        ? T("Faster is not better. Past a point the extra weight is fat rather than muscle, and it has to come off again later.")
+        : T("Slower is not worse. The quicker you go the more of the loss comes from muscle, and the harder the week is to hold to.");
+    }
+
+    all('.opt[data-q="pace"]').forEach(function (b) {
+      var kg = Number(b.getAttribute("data-v"));
+      var row = null;
+      PACE.forEach(function (r) { if (r.kg === kg) row = r; });
+      if (!row) return;
+
+      var name = gaining ? row.gain : row.lose;
+      // A rate this goal does not offer is removed, and the selection moves to
+      // the default so nobody is left on a hidden answer.
+      b.hidden = !name;
+      if (!name) {
+        if (S.pace === kg) S.pace = 0.5;
+        return;
+      }
+
+      // Built from two translated pieces, never one joined string: a composed
+      // key would miss the lookup table and fall through to English.
+      var label = T(name);
+      if (kg === 0.5) label += " · " + T("recommended");
+      var tEl = b.querySelector(".t"), dEl = b.querySelector(".d");
+      if (tEl) tEl.textContent = label;
+      if (dEl) dEl.textContent = T(S.unit === "metric" ? row.metric : row.imperial);
+      b.setAttribute("aria-pressed", String(S.pace === kg));
+    });
+  }
+
   /* ----------------------------------------------------------------- wiring */
   function setGoal(v) {
     S.goal = v;
     all(".goal").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-goal") === v)); });
     all('[data-q="goal"]').forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-v") === v)); });
+    buildSteps();
+    paintPace();
     revealQuestions();
+    // The counter and the progress bar are both derived from STEPS.length, so
+    // they are stale until the step is repainted against the rebuilt list.
+    showStep(S.step);
     track("goal_selected", { goal: v });
   }
 
@@ -801,7 +905,7 @@
       var q = b.getAttribute("data-q"), v = b.getAttribute("data-v");
       if (q === "goal") { setGoal(v); return; }
       if (q === "adult") { S.adult = !S.adult; b.setAttribute("aria-pressed", String(S.adult)); return; }
-      S[q] = (q === "meals" || q === "snacks") ? Number(v) : v;
+      S[q] = (q === "meals" || q === "snacks" || q === "pace") ? Number(v) : v;
       all('.opt[data-q="' + q + '"]').forEach(function (o) {
         o.setAttribute("aria-pressed", String(o === b));
       });
@@ -886,6 +990,7 @@
       S.unit = want;
       writeKg(kg); writeCm(cm);           // rewrite every box in the new one
       all("[data-unit]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      paintPace();
       showUnit();
     });
   });
@@ -1065,5 +1170,13 @@
   showStep(0);
   syncConsent();
 
-  window.EVZO_APP = { rerender: function () { renderConfig(); renderStats(); showStep(S.step); if (S.lastResult) renderResult(S.lastResult); } };
+  window.EVZO_APP = { rerender: function () {
+    renderConfig(); renderStats();
+    // paintPace writes its own text after i18n has already collected the
+    // page's original strings, so the walker never sees those nodes. It has
+    // to be asked to repaint itself.
+    paintPace();
+    showStep(S.step);
+    if (S.lastResult) renderResult(S.lastResult);
+  } };
 })();

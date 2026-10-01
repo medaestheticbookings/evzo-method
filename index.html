@@ -74,7 +74,7 @@
     <div class="hero-copy">
       <span class="label">Personalised monthly meal guide</span>
       <h1>Your goal. Your food.<br>A plan built around your real life.</h1>
-      <p class="sub">Answer eleven questions. Get a month of meals built from your
+      <p class="sub">Answer a few short questions. Get a month of meals built from your
       own numbers, and from Mediterranean food you will actually want to eat.</p>
       <div class="cta-row">
         <a class="btn btn-lg" href="#assessment" data-ev="cta_hero">Build my guide</a>
@@ -110,41 +110,6 @@
 </section>
 
 
-<!-- 2b. THE PROBLEM, one short section of agitation before any asking.
-     People do not buy a meal plan because plans are good. They buy because
-     the last four failed and they can name why. -->
-<section id="problem" class="band">
-  <div class="wrap">
-    <span class="label">Why the last one failed</span>
-    <h2>You did not lack discipline. You had the wrong plan.</h2>
-    <div class="probs" data-reveal-stagger>
-      <div class="prob">
-        <span class="pn">01</span>
-        <h3>It was built for somebody else</h3>
-        <p>A plan off the internet is built for an average that does not exist.
-        Your maintenance calories, your height, your week and your kitchen are
-        not the ones it assumed.</p>
-      </div>
-      <div class="prob">
-        <span class="pn">02</span>
-        <h3>It told you to eat food you do not eat</h3>
-        <p>Kale, quinoa, protein powder, six meals a day. Nobody in Nicosia or
-        Athens eats like that for a month, so by week three you are back to
-        exactly what you ate before.</p>
-      </div>
-      <div class="prob">
-        <span class="pn">03</span>
-        <h3>You were counting, not eating</h3>
-        <p>Weighing every plate is a second job. The portions should already be
-        worked out by the time the plan reaches you.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-
 <!-- 4. INTERACTIVE GOAL SNAPSHOT -->
 <section id="assessment">
   <div class="wrap">
@@ -175,7 +140,7 @@
     <div id="q-intro" hidden>
       <span class="label">Step two</span>
       <h2>Now the questions</h2>
-      <p class="lede">Eleven short ones. Nothing is stored and nothing is sent to advertising tools.</p>
+      <p class="lede"><span id="q-count">Eleven</span> short ones. Nothing is stored and nothing is sent to advertising tools.</p>
     </div>
 
     <div class="panel" id="q-panel" hidden>
@@ -256,6 +221,31 @@
               </div>
             </div>
             <p class="err" id="err-kg" hidden></p>
+          </fieldset>
+        </div>
+
+        <!-- 5b PACE, shown only when the goal is to lose or gain.
+             The rate used to be fixed at 0.5 kg a week and nobody was asked.
+             It is the question every buyer cares about most, so a page selling
+             personalisation should not be answering it for them.
+
+             The options stop at 0.75 kg on purpose. calc.js caps the deficit at
+             a share of maintenance and never prescribes below the absolute
+             floor, so a faster ask would quietly be clamped and the number on
+             screen would not be the number chosen. Offering only rates the
+             calculator can honour keeps the two honest.
+
+             Labels are written by paintPace() rather than sat in the markup,
+             because they differ by goal (lose or gain) and by unit (kg or lb). -->
+        <div class="step" data-step="pace">
+          <fieldset>
+            <legend id="pace-legend">How fast do you want to lose it?</legend>
+            <p class="hint" id="pace-hint"></p>
+            <div class="opts">
+              <button type="button" class="opt" data-q="pace" data-v="0.25" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t"></span><span class="d"></span></span></button>
+              <button type="button" class="opt" data-q="pace" data-v="0.5" aria-pressed="true"><span class="box" aria-hidden="true"></span><span><span class="t"></span><span class="d"></span></span></button>
+              <button type="button" class="opt" data-q="pace" data-v="0.75" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t"></span><span class="d"></span></span></button>
+            </div>
           </fieldset>
         </div>
 
@@ -540,6 +530,7 @@
           <div class="line"><span class="k">Suggested protein range</span><span class="v num" id="r-pro">, </span></div>
           <div class="line"><span class="k">Maintenance estimate</span><span class="v num" id="r-maint">, </span></div>
           <div class="line"><span class="k">Your goal</span><span class="v" id="r-goal">, </span></div>
+          <div class="line" id="r-pace-line" hidden><span class="k">Your chosen pace</span><span class="v" id="r-pace"></span></div>
           <div class="line"><span class="k">Height-to-weight ratio</span><span class="v num" id="r-bmi">, </span></div>
         </div>
 
@@ -597,6 +588,40 @@
 
 
 
+
+
+<!-- 5c. THE PROBLEM, the bridge from the free numbers to the offer.
+     It sat above the goal cards and made the visitor read three columns about
+     failure before they could touch anything. Placed after the result it does
+     the same job with the visitor already holding their own figures. -->
+<section id="problem" class="band">
+  <div class="wrap">
+    <span class="label">Why the last one failed</span>
+    <h2>You did not lack discipline. You had the wrong plan.</h2>
+    <div class="probs" data-reveal-stagger>
+      <div class="prob">
+        <span class="pn">01</span>
+        <h3>It was built for somebody else</h3>
+        <p>A plan off the internet is built for an average that does not exist.
+        Your maintenance calories, your height, your week and your kitchen are
+        not the ones it assumed.</p>
+      </div>
+      <div class="prob">
+        <span class="pn">02</span>
+        <h3>It told you to eat food you do not eat</h3>
+        <p>Kale, quinoa, protein powder, six meals a day. Nobody in Nicosia or
+        Athens eats like that for a month, so by week three you are back to
+        exactly what you ate before.</p>
+      </div>
+      <div class="prob">
+        <span class="pn">03</span>
+        <h3>You were counting, not eating</h3>
+        <p>Weighing every plate is a second job. The portions should already be
+        worked out by the time the plan reaches you.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 <!-- 6. HOW IT WORKS -->

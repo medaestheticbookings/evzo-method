@@ -29,6 +29,30 @@
       "Διάλεξε τον στόχο σου, πες μας πώς τρως, και πάρε έναν πρακτικό μηνιαίο οδηγό γευμάτων ταιριασμένο στις προτιμήσεις, το πρόγραμμα και τη ρουτίνα σου.",
     "See what is inside": "Δες τι περιέχει",
     "Digital delivery": "Ψηφιακή παράδοση",
+
+    /* the pace question */
+    "How fast do you want to lose it?": "Πόσο γρήγορα θέλεις να το χάσεις;",
+    "How fast do you want to gain?": "Πόσο γρήγορα θέλεις να πάρεις βάρος;",
+    "Slower is not worse. The quicker you go the more of the loss comes from muscle, and the harder the week is to hold to.":
+      "Πιο αργά δεν σημαίνει χειρότερα. Όσο πιο γρήγορα πας, τόσο μεγαλύτερο μέρος της απώλειας έρχεται από μυ, και τόσο πιο δύσκολη είναι η εβδομάδα για να την κρατήσεις.",
+    "Faster is not better. Past a point the extra weight is fat rather than muscle, and it has to come off again later.":
+      "Πιο γρήγορα δεν σημαίνει καλύτερα. Από ένα σημείο και μετά το επιπλέον βάρος είναι λίπος και όχι μυς, και θα πρέπει να ξαναφύγει.",
+    "Steady": "Σταθερά",
+    "Lean": "Καθαρά",
+    "Standard": "Κανονικά",
+    "Faster": "Πιο γρήγορα",
+    "recommended": "προτεινόμενο",
+    "0.25 kg a week": "0,25 κιλά την εβδομάδα",
+    "0.5 kg a week": "0,5 κιλά την εβδομάδα",
+    "0.75 kg a week": "0,75 κιλά την εβδομάδα",
+    "About half a pound a week": "Περίπου μισή λίβρα την εβδομάδα",
+    "About a pound a week": "Περίπου μία λίβρα την εβδομάδα",
+    "About a pound and a half a week": "Περίπου μιάμιση λίβρα την εβδομάδα",
+    "Your chosen pace": "Ο ρυθμός που διάλεξες",
+    "kg a week": "κιλά την εβδομάδα",
+    "lb a week": "λίβρες την εβδομάδα",
+    "rather than the": "αντί για",
+    "you asked for": "που ζήτησες",
     "Made around your answers": "Φτιαγμένο από τις απαντήσεις σου",
     "No subscription": "Χωρίς συνδρομή",
     "General wellness guidance, not medical or dietetic care.":
@@ -37,7 +61,7 @@
       "Δεν είμαστε διαιτολόγοι ούτε επαγγελματίες υγείας. Όλα εδώ είναι εκπαιδευτικές εκτιμήσεις.",
 
     /* hero, the problem band, the week gallery and the rigour cards */
-    "Answer eleven questions. Get a month of meals built from your own numbers, and from Mediterranean food you will actually want to eat.":
+    "Answer a few short questions. Get a month of meals built from your own numbers, and from Mediterranean food you will actually want to eat.":
       "Απάντησε σε έντεκα ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα, και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
     "Takes about three minutes. Nothing to pay to see your numbers.":
       "Παίρνει περίπου τρία λεπτά. Δεν πληρώνεις τίποτα για να δεις τα νούμερά σου.",
