@@ -39,6 +39,9 @@
     consent: { terms: false, immediate: false }
   };
 
+  // Pending auto-advance, so a change of mind or a Continue press can cancel it.
+  var advanceTimer = null;
+
   function trackStartOnce() {
     if (S.startedTracked) return;
     S.startedTracked = true;
@@ -50,6 +53,19 @@
      visitor answered the same question twice in a row. */
   var BASE_STEPS = ["age", "units", "height", "weight", "sex", "activity", "split", "style", "allergies", "foods", "meals"];
   var STEPS = BASE_STEPS.slice();
+
+  /* Steps where a single tap is the whole answer, so the visitor should not
+     then have to reach for Continue as well.
+     ------------------------------------------------------------------------
+     Named explicitly rather than worked out from "is this step valid yet",
+     because several steps go valid before they are finished. The meals step
+     holds two questions, meals and snacks, and snacks starts with a default,
+     so it reads as complete the instant meals is tapped and would carry the
+     visitor straight past the second half. Allergies, foods and the exclusion
+     list are multi-select, where advancing on the first tap would stop anyone
+     picking a second. Continue stays on screen throughout, and is still the
+     only way forward on the typed steps. */
+  var AUTO_ADVANCE = ["sex", "activity", "split", "pace"];
 
   /* "How fast?" is only a question if the weight is meant to move, so someone
      maintaining never sees it and their run is one question shorter. Rebuilt
@@ -200,8 +216,18 @@
   var firstStepRender = true;
 
   function showStep(i) {
+    // Any advance that was queued by a tap is void the moment the step moves,
+    // whatever moved it: Back, Start again, or Continue.
+    clearTimeout(advanceTimer);
     S.step = Math.max(0, Math.min(STEPS.length - 1, i));
-    all(".step").forEach(function (el, n) { el.classList.toggle("on", n === S.step); });
+    /* Matched on the step's own name, not on its position among the divs.
+       The markup always holds every step including pace, while STEPS leaves
+       pace out for someone maintaining, so position N in the DOM and position
+       N in the list stopped being the same thing. */
+    var want = STEPS[S.step];
+    all(".step").forEach(function (el) {
+      el.classList.toggle("on", el.getAttribute("data-step") === want);
+    });
     var pct = Math.round((S.step + 1) / STEPS.length * 100);
     $("bar").style.width = pct + "%";
     $("bar").parentNode.setAttribute("aria-valuenow", String(pct));
@@ -921,6 +947,15 @@
       all('.opt[data-q="' + q + '"]').forEach(function (o) {
         o.setAttribute("aria-pressed", String(o === b));
       });
+
+      /* Long enough that the tick is seen before the step changes under it,
+         short enough that it does not feel like waiting. Someone who taps a
+         second option inside that window cancels the first move, so a change
+         of mind never fires two advances. */
+      if (AUTO_ADVANCE.indexOf(STEPS[S.step]) !== -1) {
+        clearTimeout(advanceTimer);
+        advanceTimer = setTimeout(goNext, 260);
+      }
     });
   });
 
@@ -1007,11 +1042,20 @@
     });
   });
 
-  $("next").addEventListener("click", function () {
+  /* Continue and the auto-advance share one path, so a step can never be
+     validated one way by the button and another way by a tap. */
+  function goNext() {
     var problem = stepProblem();
     if (problem) { $("err-step").textContent = problem; $("err-step").hidden = false; return; }
     if (S.step === STEPS.length - 1) finish();
     else { showStep(S.step + 1); trackStartOnce(); }
+  }
+
+  $("next").addEventListener("click", function () {
+    // A tap that was about to advance on its own must not also advance here,
+    // or a visitor who taps an option and immediately hits Continue skips one.
+    clearTimeout(advanceTimer);
+    goNext();
   });
   $("back").addEventListener("click", function () { showStep(S.step - 1); });
   $("restart").addEventListener("click", function () { showStep(0); });
