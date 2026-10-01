@@ -807,17 +807,26 @@
      people actually think in (half a pound, a pound) rather than a conversion
      to two decimal places.
 
-     0.75 kg a week is offered for losing and withheld for gaining: fat comes
-     off faster than muscle goes on, and a surplus that size is mostly fat. */
+     The quicker rates are offered for losing and withheld for gaining: fat comes
+     off faster than muscle goes on, and a surplus that size is mostly fat.
+
+     1 kg carries a note saying so rather than being left off the list. Someone
+     who wants it will find it somewhere, and that somewhere will not tell them
+     what it costs them. `note` is a separate field, never joined into the name,
+     so both halves survive translation. */
   var PACE = [
-    { kg: 0.25, lose: "Steady",   gain: "Lean",     metric: "0.25 kg a week", imperial: "About half a pound a week" },
-    { kg: 0.5,  lose: "Standard", gain: "Standard", metric: "0.5 kg a week",  imperial: "About a pound a week" },
-    { kg: 0.75, lose: "Faster",   gain: null,       metric: "0.75 kg a week", imperial: "About a pound and a half a week" }
+    { kg: 0.25, lose: "Steady",     gain: "Lean",     metric: "0.25 kg a week", imperial: "About half a pound a week" },
+    { kg: 0.5,  lose: "Standard",   gain: "Standard", metric: "0.5 kg a week",  imperial: "About a pound a week", note: "recommended" },
+    { kg: 0.75, lose: "Faster",     gain: null,       metric: "0.75 kg a week", imperial: "About a pound and a half a week" },
+    { kg: 1,    lose: "Aggressive", gain: null,       metric: "1 kg a week",    imperial: "About two pounds a week", note: "not recommended",
+      caution: "At this rate more of what you lose is muscle, hunger makes the week hard to hold, and most people give it back." }
   ];
 
   function formatRate(kg) {
-    var n = S.unit === "metric" ? kg.toFixed(2).replace(/0$/, "").replace(/\.$/, "")
-                                : (kg * 2.20462).toFixed(1);
+    // Strip the trailing zeros a fixed two places leaves behind, so 1.00 prints
+    // as "1" and 0.50 as "0.5", while 0.25 and 0.34 are left alone.
+    var n = S.unit === "metric" ? kg.toFixed(2).replace(/\.?0+$/, "")
+                                : (kg * 2.20462).toFixed(1).replace(/\.0$/, "");
     // Greek uses a decimal comma, and the fixed option labels already do.
     if (document.documentElement.getAttribute("lang") === "el") n = n.replace(".", ",");
     return n + " " + T(S.unit === "metric" ? "kg a week" : "lb a week");
@@ -848,13 +857,16 @@
         return;
       }
 
-      // Built from two translated pieces, never one joined string: a composed
-      // key would miss the lookup table and fall through to English.
+      // Built from translated pieces, never one joined string: a composed key
+      // would miss the lookup table and fall through to English.
       var label = T(name);
-      if (kg === 0.5) label += " · " + T("recommended");
+      if (row.note) label += " · " + T(row.note);
+      var desc = T(S.unit === "metric" ? row.metric : row.imperial);
+      if (row.caution) desc += ". " + T(row.caution);
+
       var tEl = b.querySelector(".t"), dEl = b.querySelector(".d");
       if (tEl) tEl.textContent = label;
-      if (dEl) dEl.textContent = T(S.unit === "metric" ? row.metric : row.imperial);
+      if (dEl) dEl.textContent = desc;
       b.setAttribute("aria-pressed", String(S.pace === kg));
     });
   }

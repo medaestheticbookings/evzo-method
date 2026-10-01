@@ -42,6 +42,12 @@
     "Standard": "Κανονικά",
     "Faster": "Πιο γρήγορα",
     "recommended": "προτεινόμενο",
+    "Aggressive": "Επιθετικά",
+    "not recommended": "δεν το συνιστούμε",
+    "1 kg a week": "1 κιλό την εβδομάδα",
+    "About two pounds a week": "Περίπου δύο λίβρες την εβδομάδα",
+    "At this rate more of what you lose is muscle, hunger makes the week hard to hold, and most people give it back.":
+      "Με αυτόν τον ρυθμό, μεγαλύτερο μέρος από όσα χάνεις είναι μυς, η πείνα κάνει την εβδομάδα δύσκολη, και οι περισσότεροι το ξαναπαίρνουν πίσω.",
     "0.25 kg a week": "0,25 κιλά την εβδομάδα",
     "0.5 kg a week": "0,5 κιλά την εβδομάδα",
     "0.75 kg a week": "0,75 κιλά την εβδομάδα",

@@ -229,11 +229,12 @@
              It is the question every buyer cares about most, so a page selling
              personalisation should not be answering it for them.
 
-             The options stop at 0.75 kg on purpose. calc.js caps the deficit at
-             a share of maintenance and never prescribes below the absolute
-             floor, so a faster ask would quietly be clamped and the number on
-             screen would not be the number chosen. Offering only rates the
-             calculator can honour keeps the two honest.
+             1 kg a week is offered but marked as not recommended, rather than
+             left off the list. People who want it will go looking for it
+             elsewhere, and here the result tells them plainly what they will
+             actually be given: calc.js caps the deficit at a share of
+             maintenance and never prescribes below resting rate, so the
+             snapshot reports the rate it will really run and names the gap.
 
              Labels are written by paintPace() rather than sat in the markup,
              because they differ by goal (lose or gain) and by unit (kg or lb). -->
@@ -245,6 +246,7 @@
               <button type="button" class="opt" data-q="pace" data-v="0.25" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t"></span><span class="d"></span></span></button>
               <button type="button" class="opt" data-q="pace" data-v="0.5" aria-pressed="true"><span class="box" aria-hidden="true"></span><span><span class="t"></span><span class="d"></span></span></button>
               <button type="button" class="opt" data-q="pace" data-v="0.75" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t"></span><span class="d"></span></span></button>
+              <button type="button" class="opt" data-q="pace" data-v="1" aria-pressed="false"><span class="box" aria-hidden="true"></span><span><span class="t"></span><span class="d"></span></span></button>
             </div>
           </fieldset>
         </div>
