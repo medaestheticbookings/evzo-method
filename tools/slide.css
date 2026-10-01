@@ -366,10 +366,24 @@ body.square{height:1080px}
 .offer-price{display:flex;align-items:baseline;gap:18px;margin-top:34px;flex-wrap:wrap}
 .offer-price .free{font-family:var(--display);font-size:82px;line-height:1;color:var(--olive)}
 .gr .offer-price .free{font-family:var(--greek);font-weight:800;font-size:70px}
+/* The price being compared against, struck through. Dimmer and smaller than
+   the real one, so the eye lands on what is being charged and only then on
+   what it is being measured against. */
+.offer-price .was{font-family:var(--display);font-size:46px;line-height:1;
+  color:var(--bone-dim);text-decoration:line-through;text-decoration-thickness:4px}
+.gr .offer-price .was{font-family:var(--greek);font-weight:800;font-size:40px}
+.slide.square .offer-price .was{font-size:50px}
 .offer-price .pnote{font-family:var(--mono);font-size:19px;letter-spacing:.08em;color:var(--bone-dim)}
 .incl{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:11px}
 .incl li{font-size:27px;line-height:1.3;color:var(--bone);padding-left:34px;position:relative}
 .incl li::before{content:"✓";position:absolute;left:0;color:var(--olive);font-weight:700}
+/* The instruction. Deliberately the last thing in the frame and set in the
+   body face rather than the display one: it is a sentence to be read, not a
+   headline to be scanned past. */
+.cta-line{font-size:30px;line-height:1.3;color:var(--olive);margin-top:34px;max-width:none;font-weight:600}
+.gr .cta-line{font-family:var(--greek);font-weight:700}
+.slide.square .cta-line{font-size:28px;margin-top:30px}
+.slide.story .cta-line{font-size:34px;margin-top:38px}
 .spots{font-family:var(--mono);font-size:19px;letter-spacing:.12em;text-transform:uppercase;
        color:var(--bone);margin-top:34px;max-width:none}
 .deadline{font-family:var(--display);font-size:34px;letter-spacing:.02em;text-transform:uppercase;
@@ -377,11 +391,32 @@ body.square{height:1080px}
 .gr .deadline{font-family:var(--greek);font-weight:800;font-size:30px}
 .portrait{width:340px;height:340px;border-radius:50%;background-size:cover;
           background-position:center;flex:none;border:3px solid var(--olive)}
-.slide.square .offer-copy h2{font-size:46px}
-.slide.square .gr .offer-copy h2,.gr .slide.square .offer-copy h2{font-size:42px}
-.slide.square .offer-price .free{font-size:66px}
-.slide.square .incl li{font-size:24px}
-.slide.square .kicker{font-size:16px;margin-top:16px}
+/* 9:16 keeps the offer in the middle of the canvas on purpose: Instagram lays
+   its own UI over roughly the top 14% and bottom 20% of a story, so anything
+   pushed to the edges is covered. The type was still sized for a 1080x1350
+   frame though, which on a 1920-tall canvas reads as small and timid. */
+.slide.story .offer-copy h2{font-size:64px}
+.slide.story .gr .offer-copy h2,.gr .slide.story .offer-copy h2{font-size:58px}
+.slide.story .kicker{font-size:21px;margin-top:24px}
+.slide.story .offer-price{margin-top:44px}
+.slide.story .offer-price .free{font-size:94px}
+.slide.story .offer-price .was{font-size:54px}
+.slide.story .offer-price .pnote{font-size:22px}
+.slide.story .incl{margin-top:38px;gap:17px}
+.slide.story .incl li{font-size:33px;padding-left:44px}
+
+/* The offer frame at 1:1 was set a size down from the 4:5 version and then
+   centred, which left roughly 250px of empty navy above and below it. In a
+   feed that reads as a half-finished ad. Scaled up to fill the square instead:
+   this frame carries the whole argument on its own, so there is nothing else
+   the space could be doing. */
+.slide.square .offer-copy h2{font-size:58px}
+.slide.square .gr .offer-copy h2,.gr .slide.square .offer-copy h2{font-size:53px}
+.slide.square .offer-price{margin-top:40px}
+.slide.square .offer-price .free{font-size:86px}
+.slide.square .incl{margin-top:34px;gap:15px}
+.slide.square .incl li{font-size:30px;padding-left:40px}
+.slide.square .kicker{font-size:19px;margin-top:20px}
 .slide.square .portrait{width:250px;height:250px}
 .slide.square .pin{margin-bottom:22px}
 .slide.square .spots{margin-top:24px;font-size:17px}

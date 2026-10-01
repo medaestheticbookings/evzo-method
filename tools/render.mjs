@@ -252,6 +252,7 @@ const TYPES = {
         ${s.kicker ? `<p class="kicker">${rich(s.kicker)}</p>` : ""}
         <div class="offer-price">
           <span class="free">${esc(s.price || "ΔΩΡΕΑΝ")}</span>
+          ${s.was ? `<span class="was">${esc(s.was)}</span>` : ""}
           ${s.priceNote ? `<span class="pnote">${esc(s.priceNote)}</span>` : ""}
         </div>
         ${
@@ -261,6 +262,7 @@ const TYPES = {
                 .join("")}</ul>`
             : ""
         }
+        ${s.cta ? `<p class="cta-line">${rich(s.cta)}</p>` : ""}
         ${s.spots ? `<p class="spots">${esc(s.spots)}</p>` : ""}
         ${s.deadline ? `<p class="deadline">${esc(s.deadline)}</p>` : ""}
       </div>

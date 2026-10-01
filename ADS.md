@@ -158,3 +158,106 @@ in the whole funnel.
 **What happens after the click is where this is won or lost.** The DM has to
 land instantly and ask for four things only: ύψος, βάρος, ηλικία, κίνηση. Every
 extra question costs completions.
+
+---
+
+# EVZO — ad set 2
+
+Creative in `build/ads/` (1:1) and `build/ads-9x16/` (Stories/Reels), ids
+`ad-J` … `ad-N`. Source: `content/ad-5.json`, with the 9:16 copy derived from
+the same file so the two ratios cannot drift apart in wording.
+
+Set 1 sends people to the DM for a free plan written by hand, which caps the
+whole business at however many Marco can write in a week. Set 2 splits that in
+two: ads that still gather DMs, and ads that sell something which delivers
+itself.
+
+## The two jobs
+
+| Ads | Objective | Sends them to | Who fulfils it |
+|---|---|---|---|
+| `ad-M`, `ad-N` | Messages | Instagram DM | **Marco, by hand** |
+| `ad-J`, `ad-K` | Sales | `evzomethod.com/shop/` | Stripe, instantly |
+| `ad-L` | Sales | `evzomethod.com/ig/` | Stripe, after the assessment |
+
+Run `ad-J` and `ad-K` first. The library is the only thing in the shop that
+turns an ad click into money without Marco opening his laptop: 15 PDFs, one
+Stripe link, no assessment gate, delivered by the existing job.
+
+## What the struck-through price is
+
+`74,85€` is not an invented "was". It is fifteen books at `4,99€`, which is what
+any one of them costs in the shop today, so the comparison is to the component
+prices rather than to a past price that never existed.
+
+## What was deliberately not copied
+
+The competitor ads these frames are modelled on carry **"5 SPOTS AVAILABLE THIS
+MONTH"** and a countdown date. Both are false on a product with unlimited
+inventory, and invented scarcity is a banned practice under the Omnibus
+Directive rather than merely a sharp one — the ad account carries that risk.
+One of those ads reads **"OFFER ENDS FEBRUARY 30"**, a date that does not
+exist, which is what mass-produced urgency looks like close up.
+
+They also carry a dietitian credential badge. EVZO states on every page that it
+is not run by dietitians, so that frame is not available here and should not be
+imitated with something that merely looks like one.
+
+## Primary texts
+
+### ad-M — nobody ever told you · Messages
+
+📍 Κύπρος & Ελλάδα
+
+🙋 Αν τρως "καλά" εδώ και χρόνια και ο ζυγός δεν κουνιέται, το πρόβλημα δεν
+είναι η θέληση. Είναι ότι κανείς δεν σου είπε ποτέ πόσο πρέπει να τρως εσύ.
+
+Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
+
+ΜΕΣΟΓΕΙΑΚΟ — ΜΕ ΑΡΙΘΜΟΥΣ — ΧΩΡΙΣ ΣΥΝΔΡΟΜΗ
+
+### ad-N — the third week · Messages
+
+📍 Κύπρος & Ελλάδα
+
+🙋 Αν ξεκίνησες δίαιτα φέτος και την παράτησες, θυμήσου ποια εβδομάδα ήταν.
+Σχεδόν πάντα είναι η τρίτη, και δεν είναι σύμπτωση.
+
+Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
+
+### ad-J — the library · Sales → /shop/
+
+📍 Κύπρος & Ελλάδα
+
+15 βιβλία με μεσογειακές συνταγές, και κάθε μία με τις θερμίδες και την
+πρωτεΐνη ήδη μετρημένες. Όχι εφαρμογή, όχι συνδρομή: PDF που κατεβάζεις μία
+φορά και είναι δικά σου.
+
+Χωριστά κοστίζουν 74,85€. Μαζί, 24,99€.
+
+Στο email σου σε λίγα λεπτά.
+
+### ad-K — not your willpower · Sales → /shop/
+
+📍 Κύπρος & Ελλάδα
+
+Μια μερίδα ρύζι με το μάτι πέφτει 200 θερμίδες έξω. Τρεις τέτοιες την ημέρα
+και η "δίαιτα" σου δεν ήταν ποτέ δίαιτα.
+
+15 βιβλία, κάθε συνταγή μετρημένη. 24,99€ αντί για 74,85€.
+
+### ad-L — the guide · Sales → /ig/
+
+📍 Κύπρος & Ελλάδα
+
+Οι θερμίδες και η πρωτεΐνη σου υπολογίζονται δωρεάν στο site, σε τρία λεπτά.
+Αν τις θες γραμμένες σε 28 μέρες γεύματα, από φαγητό που ήδη τρως, ο οδηγός
+είναι 39,99€. Μία πληρωμή.
+
+## Before any of this spends money
+
+`ad-M` and `ad-N` promise a free plan **with a day of food on it**. The site
+gives the numbers automatically but there is no sample-day generator, so that
+half arrives only if Marco writes it. Either build the generator or cut the
+third tick from those two frames — running them as they stand means every
+click becomes a message to answer by hand.
