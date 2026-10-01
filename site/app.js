@@ -444,6 +444,17 @@
   }
 
   function buy() {
+    /* Checked here too, not just through the disabled attribute. That attribute
+       is one devtools click from being removed, and this is the function that
+       actually sends somebody to a payment page. */
+    if ($("buy").dataset.blocked || !S.lastResult) {
+      $("buy-state").textContent = T($("buy").dataset.blocked ? "excluded_blocked" : "assessment_required");
+      $("buy-state").hidden = false;
+      var jump = $("assessment");
+      if (jump && jump.scrollIntoView) jump.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
     track("checkout_started", {
       goal: S.goal,
       value: CFG.product.priceAmount,
@@ -1074,18 +1085,40 @@
      so this is not cosmetic. Neither is ever pre-checked. */
   function consentOk() { return S.consent.terms && S.consent.immediate; }
 
+  /* What has to be true before the guide can be bought.
+     ------------------------------------------------------------------------
+     The safety questions only protect anyone if they are answered. Consent
+     alone used to be enough, so a visitor could scroll past the assessment,
+     tick the two boxes and buy a calorie prescription having never been asked
+     about pregnancy, diabetes or a history of disordered eating. The gate is
+     now the screening itself: no completed assessment, no checkout.
+
+     S.lastResult is the proof. It is set only when the screening has been
+     passed and set back to null the moment someone is excluded, so a visitor
+     who answers again and declares a condition loses the button they had a
+     moment earlier. */
   function syncConsent() {
-    var ready = consentOk();
-    // Only gate on consent; an excluded visitor stays blocked regardless.
-    if (!$("buy").dataset.blocked) $("buy").disabled = !ready;
-    if (!ready && !$("buy").dataset.blocked) {
-      $("buy-state").textContent = T("consent_required");
-      $("buy-state").hidden = false;
-    } else if (ready && !$("buy").dataset.blocked && !anyCheckoutLink()) {
-      $("buy-state").textContent = T("checkout_unavailable");
-      $("buy-state").hidden = false;
-    } else if (ready && !$("buy").dataset.blocked) {
-      $("buy-state").hidden = true;
+    var buy = $("buy"), state = $("buy-state");
+
+    // An excluded visitor is blocked outright and renderExcluded has already
+    // written the reason. Nothing here may soften that.
+    if (buy.dataset.blocked) return;
+
+    var assessed = !!S.lastResult;
+    var ready = assessed && consentOk();
+    buy.disabled = !ready;
+
+    if (!assessed) {
+      state.textContent = T("assessment_required");
+      state.hidden = false;
+    } else if (!consentOk()) {
+      state.textContent = T("consent_required");
+      state.hidden = false;
+    } else if (!anyCheckoutLink()) {
+      state.textContent = T("checkout_unavailable");
+      state.hidden = false;
+    } else {
+      state.hidden = true;
     }
   }
 
