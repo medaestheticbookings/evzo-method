@@ -171,23 +171,32 @@ derived from the same file so the two ratios cannot drift apart in wording.
 Five frames, one offer, one action: the free personalised διατροφολόγιο, by DM.
 Nothing here sells a book. Objective **Messages**, not Traffic.
 
-## The argument
+## The shape of every frame
 
-Every frame says the same thing in a different voice: you pick the goal, and the
-plan is built around it. That is the one thing a diet downloaded off the
-internet cannot do, so the tick list leads with the three goals rather than with
-features.
+Three beats, in the order the reference ads use them, because an ad that opens
+by describing the product has already lost the scroll.
 
-| Ad | Hook |
-|---|---|
-| `ad-M` | Διάλεξε τι θέλεις, το πλάνο χτίζεται γύρω του |
-| `ad-N` | Κάθε δίαιτα σπάει την τρίτη εβδομάδα |
-| `ad-O` | 40+ και το απόγευμα σε τελειώνει; |
-| `ad-P` | Τρως σαλάτα και δεν χάνεις τίποτα; |
-| `ad-Q` | Δύο άτομα, ίδιο τραπέζι, 650 θερμίδες διαφορά |
+1. **Take the blame off them.** Every headline starts by saying the failure was
+   not theirs. People have been told for years that they lack discipline, and
+   the first ad that disagrees gets read to the end.
+2. **Name what nobody gave them.** Not a villain they have to believe in, like
+   a broken metabolism, but the true one: nobody ever told them how much.
+3. **Let them picture the relief.** The kicker is a scene, not a benefit.
+   "Φαντάσου να μην ξανακάνεις δίαιτα ποτέ" is something they can feel. "A
+   personalised plan built from your answers" is something they have to assess.
 
-Test M against O first. M argues the product, O argues a symptom, and whichever
-wins says who is actually buying.
+The tick list is outcomes, never features. Nobody buys a diet off a spec sheet.
+
+| Ad | The blame it lifts | The relief it offers |
+|---|---|---|
+| `ad-M` | Δεν φταις εσύ | Να μην ξανακάνεις δίαιτα ποτέ |
+| `ad-N` | Δεν την παράτησες από αδυναμία | Να φτάσεις την τέταρτη εβδομάδα |
+| `ad-O` | Δεν φταίει η ηλικία | Το απόγευμα να μην σε τελειώνει |
+| `ad-P` | Δεν τρως λάθος | Να μη ζυγίζεις τίποτα ποτέ ξανά |
+| `ad-Q` | Δεν χρειάζεται να κόψεις την ταβέρνα | Να βγαίνεις έξω χωρίς ενοχές |
+
+Test M against Q first. M sells relief from dieting, Q sells permission to keep
+a life, and whichever wins tells you which one they actually came for.
 
 ## The photograph
 
