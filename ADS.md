@@ -159,105 +159,110 @@ in the whole funnel.
 land instantly and ask for four things only: ύψος, βάρος, ηλικία, κίνηση. Every
 extra question costs completions.
 
+
 ---
 
 # EVZO — ad set 2
 
-Creative in `build/ads/` (1:1) and `build/ads-9x16/` (Stories/Reels), ids
-`ad-J` … `ad-N`. Source: `content/ad-5.json`, with the 9:16 copy derived from
-the same file so the two ratios cannot drift apart in wording.
+Creative in `build/ads/` (1:1) and `build/ads-9x16/` (Stories/Reels), collected
+flat in `build/TO-ADVERTISE/`. Source: `content/ad-5.json`, with the 9:16 copy
+derived from the same file so the two ratios cannot drift apart in wording.
 
-Set 1 sends people to the DM for a free plan written by hand, which caps the
-whole business at however many Marco can write in a week. Set 2 splits that in
-two: ads that still gather DMs, and ads that sell something which delivers
-itself.
+Five frames, one offer, one action: the free personalised διατροφολόγιο, by DM.
+Nothing here sells a book. Objective **Messages**, not Traffic.
 
-## The two jobs
+## The argument
 
-| Ads | Objective | Sends them to | Who fulfils it |
-|---|---|---|---|
-| `ad-M`, `ad-N` | Messages | Instagram DM | **Marco, by hand** |
-| `ad-J`, `ad-K` | Sales | `evzomethod.com/shop/` | Stripe, instantly |
-| `ad-L` | Sales | `evzomethod.com/ig/` | Stripe, after the assessment |
+Every frame says the same thing in a different voice: you pick the goal, and the
+plan is built around it. That is the one thing a diet downloaded off the
+internet cannot do, so the tick list leads with the three goals rather than with
+features.
 
-Run `ad-J` and `ad-K` first. The library is the only thing in the shop that
-turns an ad click into money without Marco opening his laptop: 15 PDFs, one
-Stripe link, no assessment gate, delivered by the existing job.
+| Ad | Hook |
+|---|---|
+| `ad-M` | Διάλεξε τι θέλεις, το πλάνο χτίζεται γύρω του |
+| `ad-N` | Κάθε δίαιτα σπάει την τρίτη εβδομάδα |
+| `ad-O` | 40+ και το απόγευμα σε τελειώνει; |
+| `ad-P` | Τρως σαλάτα και δεν χάνεις τίποτα; |
+| `ad-Q` | Δύο άτομα, ίδιο τραπέζι, 650 θερμίδες διαφορά |
 
-## What the struck-through price is
+Test M against O first. M argues the product, O argues a symptom, and whichever
+wins says who is actually buying.
 
-`74,85€` is not an invented "was". It is fifteen books at `4,99€`, which is what
-any one of them costs in the shop today, so the comparison is to the component
-prices rather than to a past price that never existed.
+## The photograph
+
+The ads this frame is modelled on put the practitioner's face in the circle,
+and that face is doing most of the work: it is a dietitian with a named degree,
+badge in the corner. EVZO states on every page that it is not run by
+dietitians, so that version of the frame is not available and should not be
+imitated with something that merely resembles a credential.
+
+The circle currently holds a food photograph as a stand-in. Replace it with a
+headshot of Marco in the `portrait` field of `content/ad-5.json`: the honest
+version of that composition is the person who writes the plans, not a clinician.
 
 ## What was deliberately not copied
 
-The competitor ads these frames are modelled on carry **"5 SPOTS AVAILABLE THIS
-MONTH"** and a countdown date. Both are false on a product with unlimited
-inventory, and invented scarcity is a banned practice under the Omnibus
-Directive rather than merely a sharp one — the ad account carries that risk.
-One of those ads reads **"OFFER ENDS FEBRUARY 30"**, a date that does not
-exist, which is what mass-produced urgency looks like close up.
-
-They also carry a dietitian credential badge. EVZO states on every page that it
-is not run by dietitians, so that frame is not available here and should not be
-imitated with something that merely looks like one.
+**"5 SPOTS AVAILABLE THIS MONTH"** and the countdown date. Both are false on a
+product with unlimited stock, and invented scarcity is a banned practice under
+the Omnibus Directive rather than merely a sharp one. The reference ads are
+careless with it too: one reads **"OFFER ENDS FEBRUARY 30"**, a date that does
+not exist.
 
 ## Primary texts
 
-### ad-M — nobody ever told you · Messages
+### ad-M — choose the goal
 
 📍 Κύπρος & Ελλάδα
 
-🙋 Αν τρως "καλά" εδώ και χρόνια και ο ζυγός δεν κουνιέται, το πρόβλημα δεν
-είναι η θέληση. Είναι ότι κανείς δεν σου είπε ποτέ πόσο πρέπει να τρως εσύ.
+🙋 Αν έχεις δοκιμάσει δίαιτα που ήταν φτιαγμένη για κάποιον άλλον, το πρόβλημα
+δεν ήταν η θέλησή σου. Διάλεξε εσύ τον στόχο: χάσιμο, συντήρηση ή όγκος, και
+οι αριθμοί αλλάζουν για να τον βγάλουν.
 
 Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
 
 ΜΕΣΟΓΕΙΑΚΟ — ΜΕ ΑΡΙΘΜΟΥΣ — ΧΩΡΙΣ ΣΥΝΔΡΟΜΗ
 
-### ad-N — the third week · Messages
+### ad-N — the third week
 
 📍 Κύπρος & Ελλάδα
 
 🙋 Αν ξεκίνησες δίαιτα φέτος και την παράτησες, θυμήσου ποια εβδομάδα ήταν.
-Σχεδόν πάντα είναι η τρίτη, και δεν είναι σύμπτωση.
+Σχεδόν πάντα είναι η τρίτη, και δεν είναι σύμπτωση: ήταν φτιαγμένη για κάποιον
+άλλον εξαρχής.
 
 Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
 
-### ad-J — the library · Sales → /shop/
+### ad-O — 40+, energy
 
 📍 Κύπρος & Ελλάδα
 
-15 βιβλία με μεσογειακές συνταγές, και κάθε μία με τις θερμίδες και την
-πρωτεΐνη ήδη μετρημένες. Όχι εφαρμογή, όχι συνδρομή: PDF που κατεβάζεις μία
-φορά και είναι δικά σου.
+🙋 Αν είσαι 40+ και στις τέσσερις το απόγευμα δεν σου έχει μείνει τίποτα, δεν
+φταίει η ηλικία. Συνήθως φταίει ένα πρωινό χωρίς πρωτεΐνη.
 
-Χωριστά κοστίζουν 74,85€. Μαζί, 24,99€.
+Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
 
-Στο email σου σε λίγα λεπτά.
-
-### ad-K — not your willpower · Sales → /shop/
+### ad-P — the salad
 
 📍 Κύπρος & Ελλάδα
 
-Μια μερίδα ρύζι με το μάτι πέφτει 200 θερμίδες έξω. Τρεις τέτοιες την ημέρα
-και η "δίαιτα" σου δεν ήταν ποτέ δίαιτα.
+🙋 Τρως σαλάτα κάθε μέρα και ο ζυγός δεν κουνιέται; Το λάδι που ρίχνεις πάνω
+της είναι συνήθως 265 θερμίδες. Δεν φταίει η σαλάτα, φταίει ότι κανείς δεν
+σου είπε πόσο χωράει στους δικούς σου αριθμούς.
 
-15 βιβλία, κάθε συνταγή μετρημένη. 24,99€ αντί για 74,85€.
+Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
 
-### ad-L — the guide · Sales → /ig/
+### ad-Q — the taverna
 
 📍 Κύπρος & Ελλάδα
 
-Οι θερμίδες και η πρωτεΐνη σου υπολογίζονται δωρεάν στο site, σε τρία λεπτά.
-Αν τις θες γραμμένες σε 28 μέρες γεύματα, από φαγητό που ήδη τρως, ο οδηγός
-είναι 39,99€. Μία πληρωμή.
+🙋 Δύο άτομα κάθονται στο ίδιο τραπέζι και φεύγουν με 650 θερμίδες διαφορά.
+Δεν είναι τι τρως. Είναι πόσο, και αυτό μαθαίνεται μία φορά.
 
-## Before any of this spends money
+Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
 
-`ad-M` and `ad-N` promise a free plan **with a day of food on it**. The site
-gives the numbers automatically but there is no sample-day generator, so that
-half arrives only if Marco writes it. Either build the generator or cut the
-third tick from those two frames — running them as they stand means every
-click becomes a message to answer by hand.
+## Before this spends money
+
+Every frame promises a plan built to their answers. The site works out the
+numbers by itself, but there is still no sample-day generator, so the food half
+arrives only if Marco writes it. Each click is an evening until that is built.
