@@ -51,6 +51,28 @@ const pct = (v, max) => Math.max(0.6, Math.min(100, (v / max) * 100)).toFixed(1)
 
 /* ---------- slide types ---------- */
 
+/* Highlight covers drawn as a single glyph.
+   ==========================================================================
+   The word version repeated the label Instagram already prints under the
+   circle, so each cover said its own name twice. One icon says it once.
+
+   Stroked rather than filled, at a weight that survives being shrunk to the
+   57px circle Instagram actually renders, and kept well inside the middle of
+   the frame because the cover is cropped to a centre square and then masked
+   to a circle, so anything near an edge is simply gone. */
+const ICONS = {
+  start:   `<path d="M28 14v74"/><path d="M28 22h46l-11 15 11 15H28"/>`,
+  // Both of these were optically small beside the rest: the dumbbell because it
+  // is wide and short, the fork because two tines read as a thin stick. Sized
+  // by eye against the others rather than to a common bounding box.
+  protein: `<path d="M12 32v36M28 22v56M72 22v56M88 32v36M28 50h44"/>`,
+  eating:  `<path d="M28 12v22M36 12v22M44 12v22"/><path d="M26 34h20"/><path d="M36 34v54"/><path d="M72 12c9 12 9 32 0 38v38"/>`,
+  recipes: `<path d="M20 46h60v20a14 14 0 0 1-14 14H34a14 14 0 0 1-14-14z"/><path d="M12 46h76"/><path d="M40 30c0-7 9-7 9-14M59 30c0-7 9-7 9-14"/>`,
+  swaps:   `<path d="M20 38h56M62 24l14 14-14 14"/><path d="M80 66H24M38 52 24 66l14 14"/>`,
+  shopping:`<path d="M16 38h68l-9 42H25z"/><path d="M36 38 47 14M64 38 53 14"/>`,
+  results: `<path d="M16 76 40 50l16 14 28-34"/><path d="M64 30h20v20"/>`
+};
+
 const TYPES = {
   // Opening slide: eyebrow, big headline, standfirst.
   cover: (s) => `
@@ -225,6 +247,13 @@ const TYPES = {
     <span style="display:block;width:160px;height:6px;background:#FFE14D;margin:30px auto"></span>
     <span style="display:block;font-family:${s.lang === "el" ? "var(--greek);font-weight:800" : "var(--display)"};font-size:${s.lang === "el" ? 130 : 170}px;line-height:.9;color:#FFE14D;text-transform:uppercase;text-align:center;max-width:820px;letter-spacing:.01em">${esc(s.word).split(String.fromCharCode(10)).join("<br>")}</span>`,
 
+  hlicon: (s) => `
+    <span style="display:block;width:520px;height:520px;margin:0 auto">
+      <svg viewBox="0 0 100 100" width="520" height="520" fill="none"
+           stroke="#FFE14D" stroke-width="5.5" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">${ICONS[s.icon] || ""}</svg>
+    </span>`,
+
   // Tick/cross list. No numbers, these are pillars, not a sequence.
   checks: (s) => `
     ${s.eyebrow ? `<span class="eyebrow">${esc(s.eyebrow)}</span>` : ""}
@@ -310,7 +339,7 @@ function page(slide, post, index, total, format) {
 <html lang="${slide.lang === "el" ? "el" : "en"}">
 <head><meta charset="utf-8"><style>${CSS}</style></head>
 <body${story ? ' class="story"' : square ? ' class="square"' : ""}>
-<div class="slide${story ? " story" : ""}${square ? " square" : ""}${slide.lang === "el" ? " gr" : ""}${slide.type === "hero" ? " poster" : ""}${slide.type === "hlcover" ? " cover" : ""}${photo ? " photoslide" : ""}${slide.type === "portion" || slide.type === "photohero" ? " card" : ""}">
+<div class="slide${story ? " story" : ""}${square ? " square" : ""}${slide.lang === "el" ? " gr" : ""}${slide.type === "hero" ? " poster" : ""}${slide.type === "hlcover" || slide.type === "hlicon" ? " cover" : ""}${photo ? " photoslide" : ""}${slide.type === "portion" || slide.type === "photohero" ? " card" : ""}">
   ${photo}
   <div class="hd">
     <span class="mark">EVZO</span>
