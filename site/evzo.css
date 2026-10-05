@@ -506,6 +506,11 @@ section > .wrap > .label{text-align:center}
 /* Footer stays a centred column */
 footer .wrap{text-align:center}
 .foot-grid{justify-content:center;text-align:center}
+/* text-align centres the tagline but cannot move the wordmark: .mark-img is
+   display:block, so it is a block box at its own width and sits hard left
+   while the line beneath it centres. Auto side margins are what centre a
+   block, and without them the two are visibly out of line. */
+footer .mark-img{margin-inline:auto}
 .foot-links{justify-content:center}
 .legal{margin-inline:auto;text-align:center}
 
