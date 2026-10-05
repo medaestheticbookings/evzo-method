@@ -236,6 +236,19 @@ same budget, Meta moves spend to whichever earns it.
 
 Call to action **Learn more**, not Sign up. There is nothing to sign up to.
 
+
+## The format
+
+Πρόβλημα / Λύση, after a Greek dental ad Marco sent through. It is everywhere in
+Greek local-service advertising because it survives being skimmed: three crosses,
+four ticks, one line of difference, one instruction.
+
+It also gives the disclaimer somewhere to live. EVZO has to say it is not run by
+dietitians, and in this shape that line sits at the foot of the ad as a footnote
+rather than interrupting the argument, which is where it ends up in prose.
+
+Full texts for all five are kept in ADS-GREEK.md beside this file.
+
 ## Primary texts
 
 ### ad-M — choose the goal
