@@ -150,7 +150,38 @@
      allow-list is dropped before it leaves. No vendor is connected; events go
      to a local sink until one is. */
   var ALLOWED_KEYS = ["goal", "step", "value", "currency", "item"];
+  /* Which of our events Meta is told about, and under what name.
+     ------------------------------------------------------------------------
+     Deliberately short. Meta gets the two facts an advertiser needs to buy
+     better: somebody finished the questionnaire, and somebody set off for the
+     checkout. It is told nothing about what they answered.
+
+     Lead carries no parameters at all. Not the goal, because "lose fat" said
+     about an identified browser is health-adjacent, and not a single safety
+     answer, which are special category data under Article 9 and prohibited
+     data under Meta's own Business Tools Terms. The legal pages promise in as
+     many words that health answers never reach Meta Pixel, and that promise
+     stays true because of this line.
+
+     The pixel gates itself on MARKETING consent, which is a different purpose
+     from the ANALYTICS consent the rest of this function waits on, so the
+     mapping happens before that gate rather than behind it. */
+  var META_EVENTS = { assessment_completed: "Lead", checkout_started: "InitiateCheckout" };
+
+  function toMeta(name, payload) {
+    var ev = META_EVENTS[name];
+    if (!ev || !window.EVZO_PIXEL) return;
+    var params;
+    if (ev === "InitiateCheckout" && payload) {
+      // Price and currency only. Both describe the product, not the person.
+      params = { value: payload.value, currency: payload.currency };
+    }
+    window.EVZO_PIXEL.track(ev, params);
+  }
+
   function track(name, payload) {
+    toMeta(name, payload);
+
     /* Consent gate. Nothing reaches a vendor until the visitor has ticked
        analytics, prior consent is the requirement, and a tracker that fires
        first and asks afterwards is the thing the fines are for. Events are

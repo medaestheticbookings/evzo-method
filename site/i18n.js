@@ -370,7 +370,7 @@
     "Shop": "Κατάστημα",
     "Blog": "Blog",
     "The shop": "Το κατάστημα",
-    "No cookies, no tracking, nothing sent to anyone.": "Χωρίς cookies, χωρίς παρακολούθηση, τίποτα δεν στέλνεται πουθενά.",
+    "Cookies for advertising only if you allow it. Your health answers are never sent, whatever you choose.": "Cookies για διαφήμιση μόνο αν το επιτρέψεις. Οι απαντήσεις σου για την υγεία δεν στέλνονται ποτέ, ό,τι κι αν διαλέξεις.",
     "Details": "Λεπτομέρειες",
     "Choose": "Επιλογές",
     "Reject": "Απόρριψη",

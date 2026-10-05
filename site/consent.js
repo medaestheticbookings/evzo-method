@@ -24,11 +24,13 @@
  *      so it can be evidenced, and so that changing the policy re-asks
  *      instead of silently inheriting an old answer.
  *
- * WHAT THIS SITE ACTUALLY DOES TODAY: nothing. No cookies, no analytics, no
- * third-party requests, the fonts are self-hosted precisely so there is no
- * transfer to Google to ask about. The banner exists so that the moment
- * Stripe or a pixel is connected, consent is already being collected properly
- * rather than retrofitted.
+ * WHAT THIS SITE DOES TODAY: the Meta Pixel, and only behind the marketing
+ * switch. site/pixel.js does not insert the script tag at all until this
+ * manager reports marketing === true, which is the "prior" in prior consent.
+ * The fonts are self-hosted, so there is still no transfer to Google to ask
+ * about. Two events are sent, Lead and InitiateCheckout, and neither carries
+ * anything from the assessment: the health answers are special category data
+ * and the legal pages promise they never reach an advertising platform.
  *
  * THE ONE THING STORED WITHOUT ASKING is the consent choice itself, in
  * localStorage. That is permitted as strictly necessary: it exists solely to
@@ -150,7 +152,7 @@
 
   function barHtml() {
     return '<div class="cc-in cc-bar">' +
-      '<p>' + T("No cookies, no tracking, nothing sent to anyone.") +
+      '<p>' + T("Cookies for advertising only if you allow it. Your health answers are never sent, whatever you choose.") +
         ' <a href="legal.html#cookies">' + T("Details") + '</a></p>' +
       '<div class="cc-act">' +
         '<button type="button" class="btn btn-ghost cc-more">' + T("Choose") + '</button>' +
