@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Thank you | EVZO</title>
+<meta name="description" content="Your order is confirmed. Your download is on its way by email.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B1220">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../brand/evzo-profile-navy-zowhite.png">
+<link rel="apple-touch-icon" href="../brand/evzo-profile-navy-zowhite.png">
+<link rel="stylesheet" href="../site/fonts.css">
+<link rel="stylesheet" href="../site/evzo.css">
+<link rel="stylesheet" href="../site/consent.css">
+<link rel="stylesheet" href="../site/motion.css">
+
+<!-- Where Stripe sends people after they pay.
+     ==========================================================================
+     Until this page existed, a sale was invisible to this site: Stripe takes
+     over at checkout, so the purchase happened on another origin and nothing
+     here ever learned about it. That is why the dataset had no conversion
+     event to optimise against, and why a Sales campaign had nothing to aim at.
+
+     Each payment link carries its own ?v= amount, because the value is fixed
+     per link and reading it back from Stripe would need a server this site
+     does not have. ?id= is the Stripe session, used only to make the Purchase
+     event idempotent if the page is reloaded or bookmarked.
+
+     noindex, because a thank-you page in search results is a thank-you page
+     people reach without paying. -->
+
+<header class="mast">
+  <div class="mast-in">
+    <a class="mark" href="/" aria-label="EVZO"><img src="../brand/evzo-wordmark-ev-yellow.svg" alt="EVZO" width="125" height="28"></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="/">Home</a>
+      <a href="/shop/">Shop</a>
+      <a href="/blog/">Blog</a>
+      <a href="/faq/">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <span class="label">Payment received</span>
+    <h2>Thank you. It is on its way.</h2>
+    <p class="lede" id="ty-lede">Your download is being sent to the email address you
+    gave Stripe. It usually arrives within a few minutes.</p>
+
+    <div class="panel" style="max-width:720px;margin-top:26px">
+      <div class="line"><span class="k">Order</span><span class="v" id="ty-ref">confirmed</span></div>
+      <div class="line"><span class="k">Delivery</span><span class="v">by email</span></div>
+    </div>
+
+    <p class="note" style="margin-top:22px">Nothing arrived after fifteen minutes? Check the
+    spam folder first, then email <a href="mailto:evzo.method@outlook.com">evzo.method@outlook.com</a>
+    and it will be resent. Attachments sometimes land there on the first message from a new sender.</p>
+
+    <div class="cta-row" style="margin-top:28px">
+      <a class="btn btn-lg" href="/shop/">Back to the shop</a>
+      <a class="btn-ghost btn-lg" href="/blog/">Read the blog</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img class="mark-img" src="../brand/evzo-wordmark-ev-yellow.svg" alt="EVZO" width="107" height="24">
+        <p class="note" style="margin-top:8px">ευ ζω, to live well</p>
+      </div>
+    </div>
+    <p class="legal" id="legal-full"></p>
+  </div>
+</footer>
+
+<script src="../site/url-tidy.js"></script>
+<script src="../site/consent.js"></script>
+<script src="../site/pixel.js"></script>
+<script src="../site/config.js"></script>
+<script src="../site/i18n.js"></script>
+<script src="../site/faq.js"></script>
+<script src="../site/motion.js"></script>
+<script>
+(function () {
+  "use strict";
+  var q;
+  try { q = new URL(location.href).searchParams; } catch (e) { return; }
+
+  var ref = q.get("id");
+  if (ref) {
+    var el = document.getElementById("ty-ref");
+    // The last eight characters are enough to quote in an email, and short
+    // enough not to look like a password.
+    if (el) el.textContent = ref.slice(-8).toUpperCase();
+  }
+
+  /* Fire Purchase once per order. A bookmarked or reloaded thank-you page
+     would otherwise report the same sale again, and an inflated conversion
+     count is worse than none: Meta would optimise towards whatever those
+     phantom buyers had in common. */
+  var value = parseFloat(q.get("v"));
+  var seen = "evzo.purchased." + (ref || String(value));
+  var already = false;
+  try { already = sessionStorage.getItem(seen) === "1"; } catch (e) {}
+
+  if (!already && window.EVZO_PIXEL && !isNaN(value)) {
+    window.EVZO_PIXEL.track("Purchase", { value: value, currency: "EUR" });
+    try { sessionStorage.setItem(seen, "1"); } catch (e) {}
+  }
+})();
+</script>
+</html>
