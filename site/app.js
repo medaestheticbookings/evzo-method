@@ -419,9 +419,14 @@
       var showPace = S.goal !== "maintain";
       paceLine.hidden = !showPace;
       if (showPace) {
+        /* Short enough to stay a value. The first attempt wrote the whole
+           comparison as a sentence here, and .line .v is white-space:nowrap
+           so it could not wrap: it ran straight out of the column and over
+           the panel beside it. The explanation belongs in the warning line
+           underneath, which already exists for exactly this. */
         var got = r.energy.actualPerWeekKg;
         var txt = formatRate(got);
-        if (Math.abs(got - S.pace) >= 0.05) txt += " " + T("rather than the") + " " + formatRate(S.pace) + " " + T("you asked for");
+        if (Math.abs(got - S.pace) >= 0.05) txt += " (" + T("asked for") + " " + formatRate(S.pace) + ")";
         paceVal.textContent = txt;
       }
     }

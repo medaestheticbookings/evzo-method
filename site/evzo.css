@@ -298,7 +298,11 @@ select{
 .macro .g{font-family:var(--display);font-size:30px;line-height:1.05;display:block;margin-top:6px}
 
 .readout{margin-top:20px;border-top:1px solid var(--line-soft);padding-top:16px;display:flex;flex-direction:column;gap:11px}
-.line{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+/* flex-wrap so a value too long for the row drops onto its own line instead
+   of overflowing the column. The values are white-space:nowrap, which keeps
+   ranges like 1,610-1,780 from breaking mid-number, and that same nowrap is
+   what makes an over-long value run out of the panel entirely. */
+.line{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
 .line .k{font-size:15px;color:var(--bone-dim)}
 .line .v{font-family:var(--mono);font-size:14.5px;color:var(--yellow);white-space:nowrap}
 

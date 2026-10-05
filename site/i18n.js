@@ -57,8 +57,7 @@
     "Your chosen pace": "Ο ρυθμός που διάλεξες",
     "kg a week": "κιλά την εβδομάδα",
     "lb a week": "λίβρες την εβδομάδα",
-    "rather than the": "αντί για",
-    "you asked for": "που ζήτησες",
+    "asked for": "ζητήθηκε",
     "Made around your answers": "Φτιαγμένο από τις απαντήσεις σου",
     "No subscription": "Χωρίς συνδρομή",
     "General wellness guidance, not medical or dietetic care.":
