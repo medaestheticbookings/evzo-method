@@ -218,6 +218,24 @@ the Omnibus Directive rather than merely a sharp one. The reference ads are
 careless with it too: one reads **"OFFER ENDS FEBRUARY 30"**, a date that does
 not exist.
 
+## Destination
+
+evzomethod.com, not the DM. The ad frames and these texts both say so. An
+earlier version pointed at Instagram messages and the creative still carried
+"message me and I will send it", which over a button that opens a web page
+spends money teaching people to do the wrong thing.
+
+Campaign objective **Traffic**, not Sales: a conversion campaign needs roughly
+fifty purchases a week before Meta's optimisation is worth anything, and from a
+standing start it burns the budget guessing. Traffic now, the pixel builds
+history while it runs, switch to Sales once there is something to optimise on.
+
+All five ads in **one** ad set. Five ad sets at €20 a day is €4 each, and
+nothing learns on €4. Five ads inside one ad set is the test: same audience,
+same budget, Meta moves spend to whichever earns it.
+
+Call to action **Learn more**, not Sign up. There is nothing to sign up to.
+
 ## Primary texts
 
 ### ad-M — choose the goal
@@ -228,7 +246,7 @@ not exist.
 δεν ήταν η θέλησή σου. Διάλεξε εσύ τον στόχο: χάσιμο, συντήρηση ή όγκος, και
 οι αριθμοί αλλάζουν για να τον βγάλουν.
 
-Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
+Φτιάξε το δωρεάν διατροφολόγιό σου στο evzomethod.com. Τρία λεπτά, χωρίς συνδρομή.
 
 ΜΕΣΟΓΕΙΑΚΟ — ΜΕ ΑΡΙΘΜΟΥΣ — ΧΩΡΙΣ ΣΥΝΔΡΟΜΗ
 
@@ -240,7 +258,7 @@ not exist.
 Σχεδόν πάντα είναι η τρίτη, και δεν είναι σύμπτωση: ήταν φτιαγμένη για κάποιον
 άλλον εξαρχής.
 
-Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
+Φτιάξε το δωρεάν διατροφολόγιό σου στο evzomethod.com. Τρία λεπτά, χωρίς συνδρομή.
 
 ### ad-O — 40+, energy
 
@@ -249,7 +267,7 @@ not exist.
 🙋 Αν είσαι 40+ και στις τέσσερις το απόγευμα δεν σου έχει μείνει τίποτα, δεν
 φταίει η ηλικία. Συνήθως φταίει ένα πρωινό χωρίς πρωτεΐνη.
 
-Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
+Φτιάξε το δωρεάν διατροφολόγιό σου στο evzomethod.com. Τρία λεπτά, χωρίς συνδρομή.
 
 ### ad-P — the salad
 
@@ -259,7 +277,7 @@ not exist.
 της είναι συνήθως 265 θερμίδες. Δεν φταίει η σαλάτα, φταίει ότι κανείς δεν
 σου είπε πόσο χωράει στους δικούς σου αριθμούς.
 
-Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
+Φτιάξε το δωρεάν διατροφολόγιό σου στο evzomethod.com. Τρία λεπτά, χωρίς συνδρομή.
 
 ### ad-Q — the taverna
 
@@ -268,7 +286,7 @@ not exist.
 🙋 Δύο άτομα κάθονται στο ίδιο τραπέζι και φεύγουν με 650 θερμίδες διαφορά.
 Δεν είναι τι τρως. Είναι πόσο, και αυτό μαθαίνεται μία φορά.
 
-Πάτησε εδώ για να σου στείλω δωρεάν διατροφολόγιο στα μέτρα σου.
+Φτιάξε το δωρεάν διατροφολόγιό σου στο evzomethod.com. Τρία λεπτά, χωρίς συνδρομή.
 
 ## Before this spends money
 
