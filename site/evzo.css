@@ -79,6 +79,17 @@ section{padding-block:clamp(44px,7vw,72px)}
 section > .wrap > .label{margin-bottom:12px}
 .lede{max-width:62ch;color:var(--bone-dim);margin:16px 0 0}
 
+/* Headings are set to margin:0, and most sections get their breathing room
+   from the .lede that follows, which carries its own top margin. The blocks
+   that sit straight after a heading with no lede between them had nothing
+   supplying that space at all, so the heading sat directly on the content.
+   It affected ten blocks across four pages: the FAQ list, the problem columns,
+   the step cards, the rigour cards, the link cards, the ratings summary, the
+   shop grid and the blog index. One rule rather than eight, so the next block
+   added after a heading cannot reintroduce it. */
+section > .wrap > h2 + *{margin-top:26px}
+section > .wrap > h2 + .lede{margin-top:16px}
+
 /* Buttons. .btn is the one primary action; .btn-ghost is everything else. */
 .btn,.btn-ghost{
   display:inline-flex;align-items:center;justify-content:center;
