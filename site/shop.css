@@ -79,10 +79,16 @@ section.alt .book { background: var(--ground); }
 .book-price { font-family: var(--mono); font-size: 15px; color: var(--yellow); }
 
 /* ---- what is inside --------------------------------------------------- */
+/* Two by two, explicitly. The heading says "the same four things" and there
+   are exactly four panels, but auto-fit fits as many 250px columns as the
+   container allows, which at ordinary desktop widths is three: three across
+   the top and the fourth stranded alone on a row with two empty cells beside
+   it. Four items want two columns, at any width wide enough for two. */
 .inside {
   display: grid; gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+@media (max-width: 560px) { .inside { grid-template-columns: 1fr; } }
 .inside .panel { background: var(--ground); text-align: left; }
 section:not(.alt) .inside .panel { background: var(--raised); }
 .inside h3 { font-size: 18px; margin: 10px 0 8px; }
