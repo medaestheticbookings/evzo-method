@@ -29,6 +29,8 @@
       "Διάλεξε τον στόχο σου, πες μας πώς τρως, και πάρε έναν πρακτικό μηνιαίο οδηγό γευμάτων ταιριασμένο στις προτιμήσεις, το πρόγραμμα και τη ρουτίνα σου.",
     "See what is inside": "Δες τι περιέχει",
     "Digital delivery": "Ψηφιακή παράδοση",
+    "Built from your answers": "Φτιαγμένο από τις απαντήσεις σου",
+    "One plate, not a banquet. The portions are the part built for you.": "Ένα πιάτο, όχι τραπέζι. Οι μερίδες είναι το κομμάτι που φτιάχνεται για σένα.",
 
     /* the pace question */
     "How fast do you want to lose it?": "Πόσο γρήγορα θέλεις να το χάσεις;",
@@ -67,7 +69,7 @@
 
     /* hero, the problem band, the week gallery and the rigour cards */
     "Answer a few short questions. Get a month of meals built from your own numbers, and from Mediterranean food you will actually want to eat.":
-      "Απάντησε σε έντεκα ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα, και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
+      "Απάντησε σε λίγες σύντομες ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα, και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
     "Takes about three minutes. Nothing to pay to see your numbers.":
       "Παίρνει περίπου τρία λεπτά. Δεν πληρώνεις τίποτα για να δεις τα νούμερά σου.",
     "The food is ordinary Mediterranean cooking. The portions are the part built for you.":
@@ -867,7 +869,23 @@
     "excl_medicationAffectingWeight": "Medication affecting appetite, blood sugar or weight"
   };
 
-  var cur = "en";
+  /* Greek by default: that is who the ads are for. The markup is authored in
+     English because the dictionaries are keyed on English strings, so the page
+     translates itself once on load rather than waiting for a button press.
+     Pressing EN puts the original strings back untouched. */
+  var cur = "el";
+
+  /* Remembered across pages, and overridable with ?lang= so a link can open
+     the site in a given language, which is also what makes this testable.
+     Stored, not asked about: a language preference is strictly necessary to
+     honour the choice, the same reasoning consent.js uses for its own record. */
+  try {
+    var q = new URL(location.href).searchParams.get("lang");
+    var saved = localStorage.getItem("evzo.lang");
+    var want = q || saved;
+    if (want === "en" || want === "el" || want === "ru") cur = want;
+    if (q) localStorage.setItem("evzo.lang", q);
+  } catch (e) { /* private mode, the default stands */ }
 
   /* Dictionary keys are written on one line; the page's paragraphs are wrapped
      and indented across several. Collapsing runs of whitespace before the lookup
@@ -878,6 +896,10 @@
   window.EVZO_T = function (s) {
     var k = key(s);
     if (cur === "el" && EL[k]) return EL[k];
+    /* Russian lives in site/i18n-ru.js, loaded beside this file. Kept apart
+       because this one is already nine hundred lines of Greek, and a missing
+       entry falls through to English exactly as a missing Greek one does. */
+    if (cur === "ru" && window.EVZO_RU && window.EVZO_RU[k]) return window.EVZO_RU[k];
     if (EN[k]) return EN[k];
     return s;
   };
@@ -911,18 +933,29 @@
       o.textContent = window.EVZO_T(o.dataset.en);
     });
     document.body.classList.toggle("gr", cur === "el");
-    document.documentElement.setAttribute("lang", cur === "el" ? "el" : "en");
+    /* Anton carries no Cyrillic either, so .ru sends headlines to Commissioner
+       800 by the same route .gr already uses. See site/evzo.css. */
+    document.body.classList.toggle("ru", cur === "ru");
+    document.documentElement.setAttribute("lang", cur);
     if (window.EVZO_APP) window.EVZO_APP.rerender();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     collect();
+    // Default language applied on load, before anybody touches the switch.
+    if (cur !== "en") apply();
+    // The markup ships with Greek pressed; correct it if the visitor chose
+    // otherwise, or the switch would show a language the page is not in.
+    Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === cur));
+    });
     Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) {
       b.addEventListener("click", function () {
         var want = b.getAttribute("data-lang");
         if (cur === want) return;
         if (!originals) collect();
         cur = want;
+        try { localStorage.setItem("evzo.lang", want); } catch (e) {}
         Array.prototype.forEach.call(b.parentNode.querySelectorAll("button"), function (sib) {
           sib.setAttribute("aria-pressed", String(sib === b));
         });

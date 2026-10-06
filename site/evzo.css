@@ -1,4 +1,4 @@
-/* EVZO, site styles
+﻿/* EVZO, site styles
  * Tokens below are copied verbatim from tools/slide.css, which is the brand
  * source of truth for the carousels. Do not change a value here in isolation:
  * change it in slide.css and mirror it, or the feed and the site drift apart.
@@ -44,8 +44,11 @@ body{
 }
 
 /* Anton carries no Greek glyphs, Greek headlines fall back to Commissioner
-   800, exactly as tools/slide.css does for the carousels. */
-body.gr h1,body.gr h2,body.gr h3,body.gr .h{
+   800, exactly as tools/slide.css does for the carousels. Russian hits the
+   same wall for the same reason, Anton has no Cyrillic either, and takes the
+   same route rather than introducing a second display family. */
+body.gr h1,body.gr h2,body.gr h3,body.gr .h,
+body.ru h1,body.ru h2,body.ru h3,body.ru .h{
   font-family:var(--body);
   font-weight:800;
   letter-spacing:-.01em;
@@ -207,7 +210,8 @@ input:focus-visible,select:focus-visible{outline:3px solid var(--yellow);outline
   font-family:var(--display);font-size:clamp(21px,3.4vw,27px);line-height:1.08;
   text-transform:uppercase;margin:0 0 8px;padding:0;
 }
-body.gr .step legend,body.gr .step .q{font-family:var(--body);font-weight:800;text-transform:none}
+body.gr .step legend,body.gr .step .q,
+body.ru .step legend,body.ru .step .q{font-family:var(--body);font-weight:800;text-transform:none}
 .step .hint{color:var(--muted);font-size:14.5px;margin:0 0 20px;max-width:52ch}
 .step fieldset{border:0;padding:0;margin:0}
 
