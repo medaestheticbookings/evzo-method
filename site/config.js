@@ -333,6 +333,10 @@
       checkoutEnabled: false,     // Stripe Checkout session endpoint live?
       upsellOneClickEnabled: false,
       analyticsEnabled: false,    // no vendor wired; events go to a local sink
+      // Email capture relay (site/capture.js). Free at web3forms.com: enter the
+      // support address, a key arrives by email, paste it here. Until then the
+      // popup falls back to opening the visitor's mail app, so nothing is lost.
+      web3formsKey: "TODO_OWNER",
       // Server endpoints the front end will call once they exist.
       endpoints: {
         createCheckoutSession: "/api/checkout/session",   // TODO_OWNER: deploy

@@ -774,3 +774,32 @@ a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
   color:var(--yellow);margin:34px 0 12px;font-weight:500;
 }
 .faq-group:first-child{margin-top:0}
+
+
+/* ---------- email capture (site/capture.js) ----------
+   A modal, not a bar: it appears at the moment the visitor has just seen their
+   own numbers, and a thin strip at the bottom of the screen would be competing
+   with the cookie bar for the same few pixels. Escape, the cross, and a click
+   on the backdrop all close it. */
+.capture{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
+  padding:18px;background:rgba(6,10,20,.72);opacity:0;transition:opacity .2s ease}
+.capture.on{opacity:1}
+.capture-card{position:relative;width:100%;max-width:480px;background:var(--raised);
+  border:1px solid var(--line-soft);border-top:3px solid var(--yellow);padding:34px 30px 26px;
+  transform:translateY(10px);transition:transform .2s ease}
+.capture.on .capture-card{transform:none}
+.capture-card h2{margin-top:6px;font-size:clamp(24px,5vw,32px)}
+.capture-card .lede{margin-top:12px}
+.capture-x{position:absolute;top:8px;right:10px;width:40px;height:40px;background:none;border:0;
+  color:var(--bone-dim);font-size:30px;line-height:1;cursor:pointer}
+.capture-x:hover{color:var(--bone)}
+.capture-form{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.capture-form input{width:100%;padding:15px 16px;font:inherit;font-size:16px;color:var(--bone);
+  background:var(--ground);border:1px solid var(--line-soft)}
+.capture-form input:focus{outline:2px solid var(--yellow);outline-offset:1px}
+.capture-tick{text-align:left}
+.capture-tick .t{font-size:14px;line-height:1.45}
+.capture-said{margin:0;font-size:14px;color:#E38B7A}
+.capture-ok{margin:0;font-size:17px;line-height:1.5;color:var(--bone)}
+.capture-card .note{margin-top:14px;text-align:center}
+@media (prefers-reduced-motion:reduce){.capture,.capture-card{transition:none}}

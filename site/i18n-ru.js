@@ -143,6 +143,21 @@
     "Cookie settings": "Настройки cookie",
     "Details": "Подробнее",
 
+    /* email capture */
+    "Close": "Закрыть",
+    "Free": "Бесплатно",
+    "Want the first three days written out?": "Хотите первые три дня расписанными?",
+    "Before you go, a free three-day plan": "Перед уходом: бесплатный план на три дня",
+    "Three days of meals built on the numbers you just saw, with the shopping list. Sent to your inbox within 24 hours.": "Три дня питания по цифрам, которые вы только что увидели, со списком покупок. На вашу почту в течение 24 часов.",
+    "Three days of Mediterranean meals with the portions worked out, and the shopping list. Sent to your inbox within 24 hours.": "Три дня средиземноморского питания с рассчитанными порциями и списком покупок. На вашу почту в течение 24 часов.",
+    "Email address": "Адрес почты",
+    "Send me the plan, and occasional emails from EVZO. I can unsubscribe in one click.": "Пришлите мне план и иногда письма от EVZO. Отписаться можно в один клик.",
+    "Send me the plan": "Прислать план",
+    "No spam. Your health answers are never sent.": "Без спама. Ваши ответы о здоровье не передаются никогда.",
+    "That does not look like an email address.": "Это не похоже на адрес почты.",
+    "Tick the box so we are allowed to email you.": "Отметьте пункт, чтобы мы могли вам написать.",
+    "Done. Check your inbox within 24 hours, and the spam folder if it is not there.": "Готово. Проверьте почту в течение 24 часов, и папку «Спам», если письма нет.",
+    "That did not go through. Try again, or email evzo.method@outlook.com.": "Не отправилось. Попробуйте ещё раз или напишите на evzo.method@outlook.com.",
     /* footer */
     "ευ ζω, to live well": "ευ ζω, жить хорошо",
     "Terms and conditions": "Условия",
