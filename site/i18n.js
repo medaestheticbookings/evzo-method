@@ -13,7 +13,7 @@
     "How it works": "Πώς λειτουργεί",
     "What you get": "Τι παίρνεις",
     "Price": "Τιμή",
-    "FAQ": "Συχνές ερωτήσεις",
+    "FAQ": "Ερωτήσεις",
     "Build my guide": "Φτιάξε τον οδηγό μου",
     "Skip to the assessment": "Μετάβαση στο ερωτηματολόγιο",
     "Personalised monthly meal guide": "Εξατομικευμένος μηνιαίος οδηγός γευμάτων",
