@@ -24,7 +24,7 @@
        half needs its own entry. */
     "Your goal. Your food.": "Ο στόχος σου. Το φαγητό σου.",
     "A plan built around your real life.":
-      "Ένα πλάνο φτιαγμένο για την πραγματική σου ζωή.",
+      "Φτιαγμένο για σένα.",
     "Choose your goal, tell us how you eat, and receive a practical monthly meal guide matched to your preferences, schedule and routine.":
       "Διάλεξε τον στόχο σου, πες μας πώς τρως, και πάρε έναν πρακτικό μηνιαίο οδηγό γευμάτων ταιριασμένο στις προτιμήσεις, το πρόγραμμα και τη ρουτίνα σου.",
     "See what is inside": "Δες τι περιέχει",
@@ -94,7 +94,7 @@
 
     /* hero, the problem band, the week gallery and the rigour cards */
     "Answer a few short questions. Get a month of meals built from your own numbers, and from Mediterranean food you will actually want to eat.":
-      "Απάντησε σε λίγες σύντομες ερωτήσεις. Πάρε έναν μήνα γευμάτων φτιαγμένο από τα δικά σου νούμερα, και από το ελληνικό και κυπριακό φαγητό που ήδη τρως.",
+      "Λίγες σύντομες ερωτήσεις. Ένας μήνας γεύματα από τους δικούς σου αριθμούς.",
     "Takes about three minutes. Nothing to pay to see your numbers.":
       "Παίρνει περίπου τρία λεπτά. Δεν πληρώνεις τίποτα για να δεις τα νούμερά σου.",
     "The food is ordinary Mediterranean cooking. The portions are the part built for you.":

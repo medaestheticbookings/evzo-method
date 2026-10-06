@@ -30,15 +30,20 @@
     /* hero */
     "Personalised monthly meal guide": "Персональный план питания на месяц",
     "Your goal. Your food.": "Ваша цель. Ваша еда.",
-    "A plan built around your real life.": "План под вашу настоящую жизнь.",
+    "A plan built around your real life.": "Составлено для вас.",
     "Answer a few short questions. Get a month of meals built from your own numbers, and from Mediterranean food you will actually want to eat.":
-      "Ответьте на несколько коротких вопросов. Получите месяц питания, рассчитанный по вашим цифрам, из средиземноморской еды, которую вы действительно захотите есть.",
+      "Несколько коротких вопросов. Месяц питания по вашим цифрам.",
     "See what is inside": "Посмотреть, что внутри",
     "Takes about three minutes. Nothing to pay to see your numbers.":
       "Около трёх минут. Чтобы увидеть свои цифры, платить не нужно.",
     "Digital delivery": "Цифровая доставка",
     "Built from your answers": "Составлено по вашим ответам",
     "No subscription": "Без подписки",
+    /* stats row */
+    "Transformations": "Преображений",
+    "Day plan": "Дней в плане",
+    "Recipes": "Рецептов",
+    "Training plans": "Программ тренировок",
     /* thank-you page */
     "Payment received": "Оплата получена",
     "Thank you. It is on its way.": "Спасибо. Уже в пути.",

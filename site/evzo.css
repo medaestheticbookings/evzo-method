@@ -818,3 +818,11 @@ a.mail[aria-disabled="true"]{color:var(--warn);text-decoration:none}
 .capture-ok{margin:0;font-size:17px;line-height:1.5;color:var(--bone)}
 .capture-card .note{margin-top:14px;text-align:center}
 @media (prefers-reduced-motion:reduce){.capture,.capture-card{transition:none}}
+
+
+/* Greek and Russian headlines are set in Commissioner 800, which is about a
+   third wider than Anton at the same size, so the hero headline that fits in
+   three lines in English ran to six in Greek. Scaled down to match the English
+   line count rather than the English point size. */
+body.gr .hero h1,body.ru .hero h1{font-size:clamp(30px,4.6vw,48px);line-height:1.08}
+body.gr .hero .sub,body.ru .hero .sub{max-width:34ch}
