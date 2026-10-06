@@ -39,6 +39,18 @@
     "Digital delivery": "Цифровая доставка",
     "Built from your answers": "Составлено по вашим ответам",
     "No subscription": "Без подписки",
+    /* thank-you page */
+    "Payment received": "Оплата получена",
+    "Thank you. It is on its way.": "Спасибо. Уже в пути.",
+    "Your PDF is being emailed to the address you paid with. It usually arrives within 15 minutes, from books@evzomethod.com.": "Ваш PDF отправляется на почту, с которой вы оплатили. Обычно приходит в течение 15 минут, от books@evzomethod.com.",
+    "Your guide is written by hand from your answers and emailed to the address you paid with within 24 hours.": "Ваш план составляется вручную по вашим ответам и отправляется на почту, с которой вы оплатили, в течение 24 часов.",
+    "Order": "Заказ",
+    "confirmed": "подтверждён",
+    "Delivery": "Доставка",
+    "by email": "по почте",
+    "Nothing arrived after fifteen minutes? Check the spam folder first, then email evzo.method@outlook.com and it will be resent. Attachments sometimes land there on the first message from a new sender.": "Ничего не пришло через пятнадцать минут? Сначала проверьте «Спам», затем напишите на evzo.method@outlook.com, и мы отправим снова. Вложения иногда попадают туда в первом письме от нового отправителя.",
+    "Back to the shop": "Вернуться в магазин",
+    "Read the blog": "Читать блог",
     "One plate, not a banquet. The portions are the part built for you.":
       "Одна тарелка, а не застолье. Порции — это и есть то, что рассчитано под вас.",
 

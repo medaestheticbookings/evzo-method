@@ -29,6 +29,18 @@
       "Διάλεξε τον στόχο σου, πες μας πώς τρως, και πάρε έναν πρακτικό μηνιαίο οδηγό γευμάτων ταιριασμένο στις προτιμήσεις, το πρόγραμμα και τη ρουτίνα σου.",
     "See what is inside": "Δες τι περιέχει",
     "Digital delivery": "Ψηφιακή παράδοση",
+    /* thank-you page */
+    "Payment received": "Η πληρωμή ολοκληρώθηκε",
+    "Thank you. It is on its way.": "Ευχαριστούμε. Είναι καθ' οδόν.",
+    "Your PDF is being emailed to the address you paid with. It usually arrives within 15 minutes, from books@evzomethod.com.": "Το PDF σου στέλνεται στο email με το οποίο πλήρωσες. Συνήθως φτάνει μέσα σε 15 λεπτά, από το books@evzomethod.com.",
+    "Your guide is written by hand from your answers and emailed to the address you paid with within 24 hours.": "Ο οδηγός σου γράφεται με το χέρι από τις απαντήσεις σου και στέλνεται στο email με το οποίο πλήρωσες μέσα σε 24 ώρες.",
+    "Order": "Παραγγελία",
+    "confirmed": "επιβεβαιώθηκε",
+    "Delivery": "Παράδοση",
+    "by email": "με email",
+    "Nothing arrived after fifteen minutes? Check the spam folder first, then email evzo.method@outlook.com and it will be resent. Attachments sometimes land there on the first message from a new sender.": "Δεν ήρθε τίποτα μετά από δεκαπέντε λεπτά; Κοίτα πρώτα τα ανεπιθύμητα, μετά γράψε στο evzo.method@outlook.com και θα σου ξανασταλεί. Τα συνημμένα καμιά φορά καταλήγουν εκεί στο πρώτο μήνυμα από νέο αποστολέα.",
+    "Back to the shop": "Πίσω στο κατάστημα",
+    "Read the blog": "Διάβασε το blog",
     /* email capture */
     "Close": "Κλείσιμο",
     "Want the first three days written out?": "Θες τις πρώτες τρεις μέρες γραμμένες;",

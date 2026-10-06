@@ -45,8 +45,15 @@
   <div class="wrap">
     <span class="label">Payment received</span>
     <h2>Thank you. It is on its way.</h2>
-    <p class="lede" id="ty-lede">Your download is being sent to the email address you
-    gave Stripe. It usually arrives within a few minutes.</p>
+    <!-- Two promises, because there are two products. The books are emailed by
+         delivery/deliver.mjs, which runs every five minutes; the guide is
+         written by hand to the buyer's answers and goes out within 24 hours.
+         The first version of this page told guide buyers "a few minutes",
+         which would have had them emailing support within the hour. -->
+    <p class="lede" id="ty-book">Your PDF is being emailed to the address you paid with.
+    It usually arrives within 15 minutes, from books@evzomethod.com.</p>
+    <p class="lede" id="ty-guide" hidden>Your guide is written by hand from your answers and
+    emailed to the address you paid with within 24 hours.</p>
 
     <div class="panel" style="max-width:720px;margin-top:26px">
       <div class="line"><span class="k">Order</span><span class="v" id="ty-ref">confirmed</span></div>
@@ -82,6 +89,7 @@
 <script src="../site/pixel.js"></script>
 <script src="../site/config.js"></script>
 <script src="../site/i18n.js"></script>
+<script src="../site/i18n-ru.js"></script>
 <script src="../site/faq.js"></script>
 <script src="../site/motion.js"></script>
 <script>
@@ -89,6 +97,15 @@
   "use strict";
   var q;
   try { q = new URL(location.href).searchParams; } catch (e) { return; }
+
+  /* The personalised guide is the only thing sold at these prices. Anything
+     else is a book or the library, which go out automatically. */
+  var GUIDE_PRICES = [39.99, 89, 149];
+  var v0 = parseFloat(q.get("v"));
+  if (GUIDE_PRICES.indexOf(v0) !== -1) {
+    document.getElementById("ty-book").hidden = true;
+    document.getElementById("ty-guide").hidden = false;
+  }
 
   var ref = q.get("id");
   if (ref) {

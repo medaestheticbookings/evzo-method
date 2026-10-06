@@ -140,7 +140,22 @@ input:focus-visible,select:focus-visible{outline:3px solid var(--yellow);outline
 }
 .mast .nav a:hover{color:var(--yellow)}
 .mast .btn{min-height:44px;padding:10px 18px;font-size:12px}
+/* One line, always. The labels were sized for English: "BUILD MY GUIDE" fits,
+   "ΦΤΙΑΞΕ ΤΟΝ ΟΔΗΓΟ ΜΟΥ" and "ΠΩΣ ΛΕΙΤΟΥΡΓΕΙ" are half as long again and
+   wrapped onto two lines, which doubled the height of the button and broke
+   the nav into a staircase. Greek and Russian also get tighter tracking, since
+   the wide letter-spacing is what pushed them over. */
+.mast .btn,.mast .nav a{white-space:nowrap}
+.mast .nav a{flex:none}
+body.gr .mast .nav a,body.ru .mast .nav a{letter-spacing:.06em}
+body.gr .mast .btn,body.ru .mast .btn{letter-spacing:.06em;padding-inline:14px}
 @media (min-width:860px){ .mast .nav{display:flex} }
+/* Between 860 and 1100 the full nav plus a long Greek button does not fit in
+   one row, so the nav gives up its gaps before anything wraps. */
+@media (min-width:860px) and (max-width:1100px){
+  .mast .nav{gap:14px}
+  body.gr .mast .nav a,body.ru .mast .nav a{font-size:11px;letter-spacing:.03em}
+}
 @media (max-width:420px){
   .mast .btn{padding:10px 12px;font-size:11.5px;letter-spacing:.06em}
   .mast .mark{font-size:24px}
