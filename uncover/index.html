@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#121628">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Uncover</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+[hidden]{display:none!important}
+:root{
+  --fog:#121628; --panel:rgba(18,22,40,.86); --line:rgba(255,255,255,.10);
+  --text:#f3f1ec; --muted:#a3a8bd; --accent:#ff8a3d; --accent-ink:#1b0f05; --good:#5fd39a;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"DM Sans",ui-sans-serif,system-ui,sans-serif;
+  color-scheme:dark; --banner:80px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-family:var(--body);overflow:hidden}
+#map{position:fixed;inset:0;background:#d9d6cf}
+#fog{position:absolute;inset:0;z-index:450;pointer-events:none}
+.leaflet-control-attribution{font-size:9px!important;background:rgba(18,22,40,.6)!important;color:#ccc!important;margin-bottom:calc(96px + var(--banner) + env(safe-area-inset-bottom,0px))!important}
+.leaflet-control-attribution a{color:#fff!important}
+.me{width:18px;height:18px;border-radius:50%;background:var(--accent);border:3px solid #fff}
+
+.top{position:fixed;z-index:600;top:calc(env(safe-area-inset-top,0px) + 12px);left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));
+  background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:14px 16px 12px}
+.brand{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.brand b{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em}
+.brand b span{color:var(--accent)}
+.gps{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;letter-spacing:.04em;text-transform:uppercase}
+.gps i{width:7px;height:7px;border-radius:50%;background:#666}
+.gps.on i{background:var(--good);box-shadow:0 0 0 4px rgba(95,211,154,.18)}
+.gps.weak i{background:#f2c14e}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat small{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.stat strong{font-family:var(--display);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat strong em{font-style:normal;font-size:12px;color:var(--muted);font-family:var(--body);font-weight:500;margin-left:2px}
+.lvl{margin-top:10px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.lvl b{color:var(--text);font-family:var(--display)}
+.bar{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar div{height:100%;width:0;background:var(--accent);transition:width .4s}
+
+.bottom{position:fixed;z-index:600;left:0;right:0;bottom:0;padding:12px max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px + var(--banner)) max(12px,env(safe-area-inset-left,0px));
+  display:flex;gap:10px;align-items:center;justify-content:center}
+.round{flex:none;width:54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--text);display:grid;place-items:center;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);cursor:pointer}
+.round svg{width:22px;height:22px}
+.round.active{color:var(--accent)}
+#go{flex:1 1 auto;max-width:220px;height:60px;border-radius:30px;border:0;background:var(--accent);color:var(--accent-ink);font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.01em;cursor:pointer;box-shadow:0 8px 24px rgba(255,138,61,.35)}
+#go.stop{background:var(--text);color:var(--fog);box-shadow:none}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.toast{position:fixed;z-index:700;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px + var(--banner));transform:translateX(-50%);background:var(--panel);border:1px solid var(--line);padding:10px 14px;border-radius:14px;font-size:13px;max-width:calc(100% - 32px);text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;backdrop-filter:blur(14px)}
+.toast.show{opacity:1}
+
+.sheet{position:fixed;z-index:800;inset:auto 0 0 0;background:#171b30;border-top:1px solid var(--line);border-radius:22px 22px 0 0;padding:18px max(18px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 20px) max(18px,env(safe-area-inset-left,0px));transform:translateY(105%);transition:transform .28s ease;max-height:80%;overflow:auto}
+.sheet.open{transform:none}
+.scrim{position:fixed;inset:0;z-index:790;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.open{opacity:1;pointer-events:auto}
+.sheet h2{font-family:var(--display);font-weight:800;margin:0 0 14px;font-size:20px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.row p{margin:0;font-size:14px}
+.row p small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+input[type=range]{accent-color:var(--accent);width:140px}
+.switch{position:relative;width:46px;height:28px;flex:none}
+.switch input{opacity:0;width:100%;height:100%;margin:0;position:absolute;cursor:pointer;z-index:1}
+.switch span{position:absolute;inset:0;border-radius:14px;background:rgba(255,255,255,.15);transition:.2s}
+.switch span::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.switch input:checked+span{background:var(--accent)}
+.switch input:checked+span::after{left:21px}
+.btn{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);padding:10px 14px;border-radius:12px;font:500 14px var(--body);cursor:pointer}
+.btn.danger{color:#ff7a7a}
+.btn.danger.confirm{background:#ff5c5c;color:#fff;border-color:#ff5c5c}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+
+/* first-run setup */
+.setup{position:fixed;inset:0;z-index:900;background:var(--fog);display:flex;align-items:center;justify-content:center;padding:24px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(safe-area-inset-left,0px));overflow:auto}
+/* Challenges and badges. Same panel language as the settings sheet, so the
+   sheet that rewards you looks like the sheet that configures you. */
+.quest{padding:12px 0;border-top:1px solid var(--line)}
+.quest .qh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.quest .qh b{font-family:var(--display);font-weight:800;font-size:15px}
+.quest .qh span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.quest small{display:block;color:var(--muted);font-size:12px;margin:2px 0 8px}
+.qbar{height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
+.qbar div{height:100%;width:0;background:var(--accent);transition:width .4s}
+.quest.done .qbar div{background:var(--good)}
+.quest.done .qh b::after{content:" ✓";color:var(--good)}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:12px}
+.bdg{text-align:center;opacity:.35}
+.bdg.on{opacity:1}
+.bdg i{display:grid;place-items:center;width:46px;height:46px;margin:0 auto 6px;border-radius:50%;border:1px solid var(--line);font-style:normal;font-size:20px}
+.bdg.on i{border-color:var(--accent);background:rgba(255,138,61,.12)}
+.bdg b{display:block;font-family:var(--display);font-weight:800;font-size:12px;line-height:1.2}
+.bdg small{display:block;color:var(--muted);font-size:10px;line-height:1.3;margin-top:2px}
+.setup .card{max-width:420px;width:100%}
+.setup h1{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;margin:0 0 6px}
+.setup h1 span{color:var(--accent)}
+.setup p{color:var(--muted);line-height:1.5;margin:0 0 18px}
+.setup label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.setup input{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);font:15px ui-monospace,monospace}
+.setup .err{color:#ff7a7a;font-size:13px;min-height:18px;margin:8px 0}
+.setup .btn.primary{width:100%;padding:15px;font-size:16px;border-radius:14px}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<header class="top">
+  <div class="brand"><b>Uncover<span>.</span></b><div class="gps" id="gps"><i></i><span id="gpsText">GPS off</span></div></div>
+  <div class="stats">
+    <div class="stat"><small>Revealed</small><strong id="sArea">0<em>km²</em></strong></div>
+    <div class="stat"><small>Today</small><strong id="sToday">0<em>km</em></strong></div>
+    <div class="stat"><small>All time</small><strong id="sTotal">0<em>km</em></strong></div>
+  </div>
+  <div class="lvl"><b id="lvl">Lv 1</b><div class="bar"><div id="bar"></div></div><span id="lvlNext"></span></div>
+</header>
+
+<nav class="bottom">
+  <button class="round" id="center" aria-label="Center on me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+  <button class="round" id="layers" aria-label="Map or satellite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
+  <button id="go">Start walking</button>
+  <button class="round" id="quests" aria-label="Challenges and badges"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5H5v2a3 3 0 0 0 3 3M16 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v4M9 21h6"/></svg></button>
+  <button class="round" id="menu" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav>
+
+<div class="toast" id="toast"></div>
+<div class="scrim" id="scrim"></div>
+<section class="sheet" id="qsheet" aria-label="Challenges and badges">
+  <h2>Challenges</h2>
+  <div id="qlist"></div>
+  <h2 style="margin-top:20px">Badges <span id="bcount" style="color:var(--muted);font-size:13px;font-weight:500"></span></h2>
+  <div class="bgrid" id="bgrid"></div>
+</section>
+
+<section class="sheet" id="sheet" aria-label="Settings">
+  <h2>Settings</h2>
+  <div class="row"><p>Reveal radius<small>How much of the map opens around you</small></p><div><input type="range" id="radius" min="20" max="100" step="5"> <span id="radiusVal"></span></div></div>
+  <div class="row"><p>Keep screen on<small>Tracking pauses when the screen locks</small></p><label class="switch"><input type="checkbox" id="wake"><span></span></label></div>
+  <div class="row"><p>Test mode<small>Tap the map to "walk" there, for trying it at home</small></p><label class="switch"><input type="checkbox" id="test"><span></span></label></div>
+  <div class="row"><p>Backup<small>Your map is saved on this phone only</small></p><div class="btns"><button class="btn" id="exp">Export</button><button class="btn" id="imp">Import</button><input type="file" id="impFile" accept="application/json" hidden></div></div>
+  <div class="row"><p>Reset map<small>Puts the fog back everywhere</small></p><button class="btn danger" id="reset">Reset</button></div>
+</section>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const KEY = 'uncover.v1', APIKEY = 'uncover.gkey';
+  const CELL = 0.00012;                  // grid size in degrees of latitude (~13 m)
+  const CELL_M = CELL * 111320;
+  const DEFAULT_CENTER = { lat:34.7754, lng:32.4245 }; // Pafos
+
+  let S = { cells:{}, count:0, total:0, days:{}, dayCells:{}, badges:{}, radius:40, wake:true, test:false, last:null, sat:false };
+  try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e){}
+  S.count = Object.keys(S.cells).length;
+  S.badges = S.badges || {}; S.dayCells = S.dayCells || {};
+  try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch(e){}
+  let saveT; const save = () => { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ toast('Could not save. Storage full?'); } }, 600); };
+
+  // ---------- grid ----------
+  function lngStep(i){ return CELL / Math.max(Math.cos(((i+.5)*CELL)*Math.PI/180), .05); }
+  function dist(a,b,c,d){ const R=6371000, t=Math.PI/180, x=(c-a)*t, y=(d-b)*t;
+    const h=Math.sin(x/2)**2+Math.cos(a*t)*Math.cos(c*t)*Math.sin(y/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
+  function reveal(lat, lng){
+    const rad = S.radius, dLat = rad/111320;
+    const i0 = Math.floor((lat-dLat)/CELL), i1 = Math.floor((lat+dLat)/CELL);
+    let added = 0;
+    for (let i=i0;i<=i1;i++){
+      const st = lngStep(i), cl = (i+.5)*CELL;
+      const dLng = rad/(111320*Math.cos(cl*Math.PI/180));
+      const j0 = Math.floor((lng-dLng)/st), j1 = Math.floor((lng+dLng)/st);
+      for (let j=j0;j<=j1;j++){
+        const k = i+','+j; if (S.cells[k]) continue;
+        if (dist(lat,lng,cl,(j+.5)*st) <= rad){ S.cells[k]=1; added++; }
+      }
+    }
+    S.count += added; return added;
+  }
+
+  // ---------- fog sprites ----------
+  const sprite = document.createElement('canvas'); sprite.width = sprite.height = 128;
+  { const g = sprite.getContext('2d'); const gr = g.createRadialGradient(64,64,0,64,64,64);
+    gr.addColorStop(0,'rgba(0,0,0,1)'); gr.addColorStop(.55,'rgba(0,0,0,1)'); gr.addColorStop(1,'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0,0,128,128); }
+  const tile = document.createElement('canvas'); tile.width = tile.height = 22;
+  { const g = tile.getContext('2d'); g.fillStyle = '#121628'; g.fillRect(0,0,22,22); g.fillStyle = 'rgba(255,255,255,.07)'; g.fillRect(10,10,2,2); }
+
+  // ---------- app ----------
+  let watchId = null, prev = null, follow = true, wakeLock = null, meMarker = null, accCircle = null;
+  const map = L.map('map', { zoomControl:false, zoomAnimation:false, fadeAnimation:false, minZoom:3, maxZoom:19 })
+    .setView(S.last ? [S.last[0], S.last[1]] : [DEFAULT_CENTER.lat, DEFAULT_CENTER.lng], 16);
+  const streets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom:19, maxNativeZoom:18, attribution:'Map © Esri, HERE, Garmin, OpenStreetMap' });
+  const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom:19, maxNativeZoom:18, attribution:'Imagery © Esri' });
+  (S.sat ? sat : streets).addTo(map);
+  $('layers').classList.toggle('active', S.sat);
+  map.attributionControl.setPosition('bottomleft');
+  const meIcon = L.divIcon({ className:'', html:'<div class="me"></div>', iconSize:[18,18], iconAnchor:[9,9] });
+
+  const fog = document.createElement('canvas'); fog.id = 'fog'; map.getContainer().appendChild(fog);
+  const ctx = fog.getContext('2d'); const pattern = ctx.createPattern(tile, 'repeat');
+  let raf = 0; const redraw = () => { if (!raf) raf = requestAnimationFrame(draw); };
+  function draw(){
+    raf = 0;
+    const size = map.getSize(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (fog.width !== size.x*dpr || fog.height !== size.y*dpr){ fog.width = size.x*dpr; fog.height = size.y*dpr; fog.style.width = size.x+'px'; fog.style.height = size.y+'px'; }
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.clearRect(0,0,size.x,size.y);
+    ctx.globalAlpha = .93; ctx.fillStyle = pattern; ctx.fillRect(0,0,size.x,size.y); ctx.globalAlpha = 1;
+    const c = map.getCenter(), z = map.getZoom();
+    const mpp = 156543.03392 * Math.cos(c.lat*Math.PI/180) / Math.pow(2, z);
+    const r = Math.max(CELL_M / mpp * 1.25, 1.2);
+    const b = map.getBounds().pad(0.15);
+    const iMin = Math.floor(b.getSouth()/CELL), iMax = Math.floor(b.getNorth()/CELL);
+    ctx.globalCompositeOperation = 'destination-out';
+    for (const k in S.cells){
+      const comma = k.indexOf(','); const i = +k.slice(0,comma);
+      if (i < iMin || i > iMax) continue;
+      const j = +k.slice(comma+1);
+      const lat = (i+.5)*CELL, lng = (j+.5)*lngStep(i);
+      if (lng < b.getWest() || lng > b.getEast()) continue;
+      const p = map.latLngToContainerPoint([lat,lng]);
+      ctx.drawImage(sprite, p.x-r, p.y-r, r*2, r*2);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+  map.on('move zoom resize viewreset', redraw);
+  map.on('dragstart', () => { follow = false; $('center').classList.remove('active'); });
+  map.on('click', e => { if (S.test) handleFix(e.latlng.lat, e.latlng.lng, 5, Date.now(), true); });
+
+  function placeMe(lat,lng,acc){
+    if (!meMarker){ meMarker = L.marker([lat,lng],{icon:meIcon, interactive:false, zIndexOffset:1000}).addTo(map);
+      accCircle = L.circle([lat,lng],{radius:acc, color:'#ff8a3d', weight:1, fillOpacity:.08, interactive:false}).addTo(map); }
+    meMarker.setLatLng([lat,lng]); accCircle.setLatLng([lat,lng]).setRadius(Math.min(acc,200));
+  }
+
+  function handleFix(lat, lng, acc, t, simulated){
+    if (!map) return;
+    setGps(acc <= 35 ? 'on' : 'weak', simulated ? 'Test mode' : (acc <= 35 ? 'GPS ±'+Math.round(acc)+'m' : 'Weak GPS ±'+Math.round(acc)+'m'));
+    placeMe(lat, lng, acc);
+    if (follow && !simulated) map.panTo([lat,lng], { animate:false });
+    if (acc > 40) return;
+    let newCells = 0;
+    if (!prev){ newCells += reveal(lat,lng); }
+    else {
+      const d = dist(prev.lat, prev.lng, lat, lng), dt = Math.max((t - prev.t)/1000, .5);
+      if (d < 4) return;
+      if (!simulated && d/dt > 7){ prev = {lat,lng,t}; setGps('weak','Too fast – paused'); return; } // in a car, skip
+      const steps = Math.max(1, Math.ceil(d/8));
+      for (let s=1;s<=steps;s++) newCells += reveal(prev.lat+(lat-prev.lat)*s/steps, prev.lng+(lng-prev.lng)*s/steps);
+      S.total += d; const day = today(); S.days[day] = (S.days[day]||0) + d;
+      if (newCells) S.dayCells[day] = (S.dayCells[day]||0) + newCells;
+    }
+    prev = {lat,lng,t}; S.last = [lat,lng];
+    if (newCells) redraw();
+    updateStats(); save();
+  }
+
+  function start(){
+    if (!('geolocation' in navigator)){ toast('This browser has no GPS access.'); return; }
+    prev = null; follow = true; $('center').classList.add('active');
+    setGps('weak','Finding you…');
+    watchId = navigator.geolocation.watchPosition(
+      p => handleFix(p.coords.latitude, p.coords.longitude, p.coords.accuracy, p.timestamp, false),
+      e => { setGps('', e.code===1 ? 'Location blocked' : 'No GPS signal');
+             if (e.code===1){ toast('Allow location for this site in your browser settings.'); stop(); } },
+      { enableHighAccuracy:true, maximumAge:1000, timeout:30000 });
+    $('go').textContent = 'Stop'; $('go').classList.add('stop');
+    if (S.wake) lockScreen();
+  }
+  function stop(){
+    if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+    watchId = null; prev = null;
+    $('go').textContent = 'Start walking'; $('go').classList.remove('stop');
+    if (!S.test) setGps('','GPS off');
+    if (wakeLock){ wakeLock.release().catch(()=>{}); wakeLock = null; }
+    save();
+  }
+  async function lockScreen(){ try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e){} }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState==='visible' && watchId!==null && S.wake) lockScreen(); });
+
+  // ---------- UI ----------
+  function today(){ return dayKey(new Date()); }
+  function dayKey(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function daysAgo(n){ const d = new Date(); d.setDate(d.getDate()-n); return dayKey(d); }
+
+  // ---------- challenges and badges ----------
+  // Everything is derived from what the walk already recorded. Nothing here
+  // asks you to press a button to claim anything: if you walked it, it counts.
+  const walked = k => S.days[k] || 0;
+
+  /** Consecutive days with any distance, ending today or yesterday — a streak
+      is still alive during a day you have not walked yet. */
+  function streak(){
+    let n = 0, i = walked(today()) > 0 ? 0 : 1;
+    if (i === 1 && walked(daysAgo(1)) === 0) return 0;
+    while (walked(daysAgo(i)) > 0){ n++; i++; }
+    return n;
+  }
+  function week(){ let m = 0; for (let i=0;i<7;i++) m += walked(daysAgo(i)); return m; }
+  function derived(){
+    const area = S.count * CELL_M * CELL_M / 1e6;
+    const best = Object.values(S.days).reduce((a,b) => Math.max(a,b), 0);
+    return { area, best, total:S.total, streak:streak(), week:week(),
+             days:Object.keys(S.days).filter(k => S.days[k] > 0).length,
+             lvl:S.lvl || 1, todayM:walked(today()), todayCells:S.dayCells[today()] || 0 };
+  }
+
+  const CHALLENGES = [
+    { name:'Two before dark',   sub:'Walk 2 km today',            unit:'km',    get:d => d.todayM/1000,     target:2 },
+    { name:'Open the fog',      sub:'Reveal 150 new tiles today', unit:'tiles', get:d => d.todayCells,      target:150 },
+    { name:'Ten a week',        sub:'10 km over the last 7 days', unit:'km',    get:d => d.week/1000,       target:10 },
+    { name:'Seven in a row',    sub:'A walk every day for a week',unit:'days',  get:d => d.streak,          target:7 },
+  ];
+
+  const BADGES = [
+    { c:'km1',     g:'·',  n:'First mile',   h:'Walk 1 km',          t:d => d.total >= 1000 },
+    { c:'km10',    g:'10', n:'Ten',          h:'10 km all time',     t:d => d.total >= 10000 },
+    { c:'km50',    g:'50', n:'Fifty',        h:'50 km all time',     t:d => d.total >= 50000 },
+    { c:'km100',   g:'100',n:'Century',      h:'100 km all time',    t:d => d.total >= 100000 },
+    { c:'day5',    g:'★',  n:'Long day',     h:'5 km in one day',    t:d => d.best >= 5000 },
+    { c:'area1',   g:'▧',  n:'A square km',  h:'1 km² uncovered',    t:d => d.area >= 1 },
+    { c:'area5',   g:'▦',  n:'Five square',  h:'5 km² uncovered',    t:d => d.area >= 5 },
+    { c:'streak7', g:'7',  n:'Week',         h:'7 day streak',       t:d => d.streak >= 7 },
+    { c:'streak30',g:'30', n:'Month',        h:'30 day streak',      t:d => d.streak >= 30 },
+    { c:'lv5',     g:'◆',  n:'Level five',   h:'Reach level 5',      t:d => d.lvl >= 5 },
+    { c:'lv10',    g:'◇',  n:'Level ten',    h:'Reach level 10',     t:d => d.lvl >= 10 },
+    { c:'days30',  g:'✦',  n:'Regular',      h:'Walk on 30 days',    t:d => d.days >= 30 },
+  ];
+
+  /** Award anything newly earned. Called after every fix, so it must be cheap
+      and must never award twice — hence the stored timestamp per code. */
+  function checkBadges(d){
+    let earned = null;
+    for (const b of BADGES){
+      if (S.badges[b.c] || !b.t(d)) continue;
+      S.badges[b.c] = Date.now(); earned = b;
+    }
+    if (earned) toast('Badge earned — ' + earned.n);
+    return Boolean(earned);
+  }
+
+  function renderQuests(d){
+    $('qlist').innerHTML = CHALLENGES.map(q => {
+      const have = q.get(d), done = have >= q.target;
+      const shown = q.unit === 'km' ? have.toFixed(2) : Math.floor(have);
+      return '<div class="quest' + (done ? ' done' : '') + '">' +
+        '<div class="qh"><b></b><span>' + shown + ' / ' + q.target + ' ' + q.unit + '</span></div>' +
+        '<small></small><div class="qbar"><div style="width:' +
+        Math.min(100, have/q.target*100).toFixed(1) + '%"></div></div></div>';
+    }).join('');
+    // Names and descriptions are set as text, never interpolated into HTML.
+    CHALLENGES.forEach((q,i) => {
+      const el = $('qlist').children[i];
+      el.querySelector('b').textContent = q.name;
+      el.querySelector('small').textContent = q.sub;
+    });
+
+    const got = BADGES.filter(b => S.badges[b.c]).length;
+    $('bcount').textContent = got + ' of ' + BADGES.length;
+    $('bgrid').innerHTML = BADGES.map(b =>
+      '<div class="bdg' + (S.badges[b.c] ? ' on' : '') + '"><i></i><b></b><small></small></div>').join('');
+    BADGES.forEach((b,i) => {
+      const el = $('bgrid').children[i];
+      el.querySelector('i').textContent = b.g;
+      el.querySelector('b').textContent = b.n;
+      el.querySelector('small').textContent = b.h;
+    });
+  }
+  function setGps(cls, txt){ $('gps').className = 'gps ' + cls; $('gpsText').textContent = txt; }
+  function fmtKm(m){ const k = m/1000; return (k < 10 ? k.toFixed(2) : k.toFixed(1)); }
+  function updateStats(){
+    const area = S.count * CELL_M * CELL_M / 1e6;
+    $('sArea').innerHTML = (area < 10 ? area.toFixed(2) : area.toFixed(1)) + '<em>km²</em>';
+    $('sToday').innerHTML = fmtKm(S.days[today()]||0) + '<em>km</em>';
+    $('sTotal').innerHTML = fmtKm(S.total) + '<em>km</em>';
+    const lvl = Math.floor(Math.sqrt(S.count/400)) + 1, lo = (lvl-1)**2*400, hi = lvl**2*400;
+    $('lvl').textContent = 'Lv ' + lvl;
+    $('bar').style.width = ((S.count-lo)/(hi-lo)*100).toFixed(1)+'%';
+    $('lvlNext').textContent = Math.round((S.count-lo)/(hi-lo)*100) + '%';
+    if (lvl > (S.lvl||1)) toast('Level up! You reached level ' + lvl);
+    S.lvl = lvl;
+    // Levels are awarded above, so badges are checked after — otherwise the
+    // level badges would always lag a fix behind.
+    const d = derived();
+    if (checkBadges(d)) save();
+    if ($('qsheet').classList.contains('open')) renderQuests(d);
+  }
+  let toastT; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2800); }
+
+  $('go').onclick = () => { watchId === null ? start() : stop(); };
+  $('center').onclick = () => { follow = true; $('center').classList.add('active');
+    if (meMarker) map.setView(meMarker.getLatLng(), Math.max(map.getZoom(),16));
+    else navigator.geolocation && navigator.geolocation.getCurrentPosition(p => map.setView([p.coords.latitude,p.coords.longitude],16), () => toast('Location not available'), {enableHighAccuracy:true}); };
+  $('layers').onclick = () => { S.sat = !S.sat; map.removeLayer(S.sat ? streets : sat); (S.sat ? sat : streets).addTo(map); $('layers').classList.toggle('active', S.sat); save(); redraw(); };
+  const openSheet = o => { $('sheet').classList.toggle('open',o); $('scrim').classList.toggle('open',o); };
+  const openQuests = o => { $('qsheet').classList.toggle('open',o); $('scrim').classList.toggle('open',o);
+    if (o) renderQuests(derived()); };
+  $('menu').onclick = () => openSheet(true);
+  $('quests').onclick = () => openQuests(true);
+  $('scrim').onclick = () => { openSheet(false); openQuests(false); };
+
+  $('radius').value = S.radius; $('radiusVal').textContent = S.radius+'m';
+  $('radius').oninput = e => { S.radius = +e.target.value; $('radiusVal').textContent = S.radius+'m'; save(); };
+  $('wake').checked = S.wake; $('wake').onchange = e => { S.wake = e.target.checked; save(); if (S.wake && watchId!==null) lockScreen(); };
+  $('test').checked = S.test; $('test').onchange = e => { S.test = e.target.checked; prev = null; save();
+    if (S.test){ openSheet(false); toast('Test mode on: tap the map to walk'); setGps('on','Test mode'); } else if (watchId===null) setGps('','GPS off'); };
+  if (S.test) setGps('on','Test mode');
+
+  $('exp').onclick = () => { const blob = new Blob([JSON.stringify(S)], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'uncover-backup-'+today()+'.json'; a.click(); };
+  $('imp').onclick = () => $('impFile').click();
+  $('impFile').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader();
+    r.onload = () => { try { const d = JSON.parse(r.result); if (!d.cells) throw 0; S = Object.assign(S, d); S.count = Object.keys(S.cells).length; save(); updateStats(); redraw(); toast('Backup restored'); } catch(_){ toast('That file is not an Uncover backup'); } };
+    r.readAsText(f); };
+  let resetArmed = false;
+  $('reset').onclick = () => { const b = $('reset');
+    if (!resetArmed){ resetArmed = true; b.textContent = 'Tap again to reset'; b.classList.add('confirm'); setTimeout(()=>{ resetArmed=false; b.textContent='Reset'; b.classList.remove('confirm'); }, 3000); return; }
+    S.cells = {}; S.count = 0; S.total = 0; S.days = {}; S.dayCells = {}; S.lvl = 1; prev = null; save(); updateStats(); redraw();
+    resetArmed = false; b.textContent = 'Reset'; b.classList.remove('confirm'); toast('Map reset'); };
+
+  updateStats(); redraw();
+  if (S.last) placeMe(S.last[0], S.last[1], 15);
+})();
+</script>
+</body>
+</html>
