@@ -52,7 +52,10 @@ html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-fami
 .attr-i{display:inline-grid;place-items:center;width:18px;height:18px;flex:none;font-style:normal;font-size:10px;color:var(--muted);cursor:pointer}
 .attr-t{padding-right:9px;white-space:nowrap}
 .me{filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
-.friend{filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));cursor:pointer;animation:bob 2.4s ease-in-out infinite}
+.mob{position:relative;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));cursor:pointer;animation:bob 2.4s ease-in-out infinite;transform-origin:50% 90%}
+.mob b{position:absolute;left:50%;top:-13px;transform:translateX(-50%);font:700 9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:2px 6px;border-radius:7px;white-space:nowrap}
+.mob.hit{animation:pop .26s ease-out forwards}
+@keyframes pop{to{transform:scale(1.6);opacity:0}}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 /* Flying characters ride above their own shadow, which stays on the ground
    and shrinks as they rise — the shadow is what sells the height. */
@@ -60,7 +63,7 @@ html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-fami
 .me.fly::after{content:"";position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);width:20px;height:6px;border-radius:50%;background:rgba(0,0,0,.45);filter:blur(1.5px);animation:shade 3s ease-in-out infinite}
 @keyframes hover{0%,100%{transform:translateY(-6px)}50%{transform:translateY(-12px)}}
 @keyframes shade{0%,100%{width:20px;opacity:.45}50%{width:14px;opacity:.3}}
-@media (prefers-reduced-motion: reduce){.me.fly,.me.fly::after,.friend{animation:none}}
+@media (prefers-reduced-motion: reduce){.me.fly,.me.fly::after,.mob{animation:none}}
 /* Just the map and the character. One tap anywhere brings the rest back. */
 body.zen .top,body.zen .bottom,body.zen .float{opacity:0;pointer-events:none;transition:opacity .25s}
 body.zen .leaflet-control-attribution{opacity:.35}
@@ -451,60 +454,178 @@ window.__startUncover = (user, sync) => {
 
 
   // ---------- characters ----------
-  // Each one is a 12x12 pixel grid. The digits are palette slots, and slot 1
-  // is whatever colour the player picked, so one grid serves every colour.
-  // Characters unlock by level, and level comes from ground uncovered — the
-  // only way to earn one is to walk.
-  const PAL = { '2':'#17161f', '3':'#f0c79a', '4':'#ffffff', '5':'#6b4a2f', '6':'#5fd39a', '7':'#9aa3b8' };
+  // A medieval cast. Characters unlock by level, and level comes from ground
+  // uncovered, so the only way to earn one is to walk.
   const COLOURS = ['#ff8a3d','#5fd39a','#5aa9ff','#ff6b9d','#ffd93d','#b388ff','#f3f1ec','#ff5c5c'];
   const CHARACTERS = [
-    { id:'walk', name:'Walker', lvl:1, px:["....2222....","...255552...","..25333352..","..23333332..","..23433432..","...233332...","....2332....","..21111112..",".2111111112.",".2311111132.","..21111112..","...22..22..."] },
-    { id:'woman', name:'Strider', lvl:1, px:["....2222....","...255552...","..25555552..","..25333352..","..25434352..","..25333352..","...233332...","....2332....","..21111112..",".2311111132.","..21111112..","...22..22..."] },
-    { id:'slim', name:'Wisp', lvl:3, px:["....2222....","...255552...","...233332...","...243342...","....3333....","....2332....","....1111....","...311113...","....1111....","....1111....","....2..2....","....2..2...."] },
-    { id:'athletic', name:'Runner', lvl:5, px:["....2222....","...255552...","..21111112..","..23333332..","..23433432..","...233332...","....2332....","..23111132..",".2311111132.","..23111132..","...233332...","...22..22..."] },
-    { id:'strong', name:'Bruiser', lvl:8, px:["....2222....","...255552...","..25333352..","..23333332..","..23433432..","...233332...","....2332....",".2311111132.","231111111132",".2311111132.","..21111112..","...22..22..."] },
-    { id:'round', name:'Rambler', lvl:8, px:["....2222....","...255552...","..25333352..","..23333332..","..23433432..","...233332...","....2332....","..21111112..",".2111111112.","211111111112",".2111111112.","...22..22..."] },
-    { id:'funny', name:'Cap', lvl:12, px:["....2222....","...211112...","..21111112..","..23333332..","..24344342..","...233332...","...2333332..","..21111112..",".2111111112.",".2311111132.","..21111112..","...22..22..."] },
-    { id:'dog', name:'Good Boy', lvl:15, px:["............","............","..2......2..",".252....252.",".25552222552",".21111111112",".21111111112","..2.2..2.2..","..2.2..2.2..","............","............","............"] },
-    { id:'mower', name:'Mower', lvl:20, px:["............","......22....",".....2552...","....253352..","...2511112..","..25111112..",".2222222222.",".2111111112.",".2777777772.","..2.2..2.2..","...2....2...","............"] },
-    { id:'trimmer', name:'Strimmer', lvl:25, px:["....2222....","...255552...","..25333352..","..23433432..","...233332...","..21111112..",".2111111172.","..21111172..","...2222.7...","...2..2.7...","...2..2.666.","........666."] },
-    { id:'blower', name:'Blower', lvl:30, px:["....2222....","...255552...","..25333352..","..23433432..","...233332...","..21111112..",".211111112..","..2111112777","...22222.77.","...2..2..7..","...2..2.....","............"] },
-    { id:'tractor', name:'Tractor', lvl:40, px:["............","....22222...","....21112...","....21112...","..2222222...",".211111112..",".21111111222",".21111111112","222222222222",".2772...2772",".2772...2772","..22.....22."] },
-    { id:'wizard', name:'Wizard', lvl:35, px:[".....22.....","....2112....","...211112...","..21111112..",".2111111112.","..23333332..","..24333342..","...244442...","..21444127..",".211111117..","..211111.7..","...22..2.7.."] },
-    { id:'knight', name:'Knight', lvl:45, px:["....2222....","...277772...","..27777772..","..27222272..","..27777772..","...277772...","....2772....","..211111127.",".2111111127.",".2711111172.","..21111112..","...22..22..."] },
-    { id:'ninja', name:'Ninja', lvl:55, px:["....2222....","...211112...","..21111112..","..23333332..","..21444112..","...211112...","....2112....","..21111112..",".2111111112.",".2311111132.","..21111112..","...22..22..."] },
-    { id:'unicorn', name:'Unicorn', lvl:70, px:[".........2..","........252.","..2.....252.",".252...25552",".25552225552",".21111111112",".21111111112","..2.2..2.2..","..2.2..2.2..","............","............","............"] },
-    { id:'dragon', name:'Dragon', lvl:60, fly:true, px:["............","..........2.",".2.......252","2522....2552","255522225552",".25111111552",".21111111112","..21111112..","..2.2..2.2..","...2....2...","............","............"] },
-    { id:'flyer', name:'Winged', lvl:80, fly:true, px:["...2....2...","..252..252..",".25552225552","..25333352..","..23433432..","...233332...","..21111112..",".2111111112.","..21111112..","...22..22...","............","............"] },
-    { id:'astro', name:'Spaceman', lvl:50, px:["....2222....","...244442...","..24444442..","..24433442..","..24444442..","...244442...","....2442....","..21111112..",".2111111112.",".2711111172.","..21111112..","...22..22..."] }
+    { id:'walk',    name:'Villager',  lvl:1,  hair:'short',  body:'normal' },
+    { id:'woman',   name:'Maiden',    lvl:1,  hair:'long',   body:'normal' },
+    { id:'slim',    name:'Scout',     lvl:3,  hair:'hood',   body:'slim' },
+    { id:'athletic',name:'Ranger',    lvl:5,  hair:'hood',   body:'slim',   prop:'bow' },
+    { id:'strong',  name:'Blacksmith',lvl:8,  hair:'short',  body:'strong', prop:'hammer' },
+    { id:'round',   name:'Innkeeper', lvl:8,  hair:'short',  body:'wide' },
+    { id:'bard',    name:'Bard',      lvl:12, hair:'cap',    body:'normal', prop:'lute' },
+    { id:'squire',  name:'Squire',    lvl:16, hair:'cap',    body:'normal', prop:'shield' },
+    { id:'monk',    name:'Monk',      lvl:20, hair:'hood',   body:'normal', beard:true },
+    { id:'hunter',  name:'Huntsman',  lvl:25, hair:'cap',    body:'normal', prop:'axe' },
+    { id:'knight',  name:'Knight',    lvl:30, hair:'helmet', body:'strong', prop:'sword' },
+    { id:'wizard',  name:'Wizard',    lvl:35, hair:'hat',    body:'normal', prop:'staff', beard:true },
+    { id:'wolf',    name:'Dire Wolf', lvl:40, creature:'wolf' },
+    { id:'paladin', name:'Paladin',   lvl:45, hair:'helmet', body:'strong', prop:'sword', halo:true },
+    { id:'ninja',   name:'Assassin',  lvl:50, hair:'mask',   body:'slim',   prop:'dagger' },
+    { id:'rider',   name:'Horse Rider', lvl:55, creature:'horse', rider:true },
+    { id:'dragon',  name:'Dragon',    lvl:65, creature:'dragon', fly:true },
+    { id:'drider',  name:'Dragonrider', lvl:80, creature:'dragon', rider:true, fly:true },
+    { id:'unicorn', name:'Unicorn',   lvl:95, creature:'unicorn' },
   ];
-
   CHARACTERS.sort((a, b) => a.lvl - b.lvl);
   const charById = id => CHARACTERS.find(c => c.id === id) || CHARACTERS[0];
   const unlocked = c => (S.lvl || 1) >= c.lvl;
 
-  /** Grid to SVG. One rect per run of identical pixels, so the markup stays
-      small enough to sit in a map icon that moves every second. */
-  function charSvg(id, colour, size){ return pixelSvg(charById(id).px, colour, size); }
+  // ---------- character artwork ----------
+  // Drawn rather than pixelled: flat vector shapes on a 48x48 canvas, two
+  // tones of the player's colour plus skin, so one set of parts serves every
+  // colour without shipping a sprite per combination.
+  //
+  // Characters are assembled from parts rather than drawn one by one, which
+  // is what keeps nineteen of them looking like one family.
+  const INK = '#1d2033', SKIN = '#f2c9a0', SKIN_D = '#d8a877';
 
-  function pixelSvg(px, colour, size){
-    const n = px.length;
-    let r = '';
-    for (let y = 0; y < n; y++){
-      const row = px[y];
-      let x = 0;
-      while (x < row.length){
-        const ch = row[x];
-        if (ch === '.'){ x++; continue; }
-        let w = 1;
-        while (x + w < row.length && row[x+w] === ch) w++;
-        r += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="1" fill="' +
-             (ch === '1' ? colour : PAL[ch] || colour) + '"/>';
-        x += w;
-      }
+  /** Mix a hex colour towards black (negative) or white (positive). */
+  function shade(hex, amt){
+    const n = parseInt(hex.slice(1), 16), to = amt < 0 ? 0 : 255, k = Math.abs(amt);
+    const mix = v => Math.round(v + (to - v) * k);
+    return '#' + [16, 8, 0].map(sh => mix((n >> sh) & 255).toString(16).padStart(2, '0')).join('');
+  }
+
+  const SHADOW = '<ellipse cx="24" cy="43.5" rx="10" ry="2.4" fill="rgba(0,0,0,.28)"/>';
+  const WIDTHS = { slim: 11, normal: 14, wide: 19, strong: 17 };
+
+  function face(){
+    return '<circle cx="24" cy="14.5" r="7.6" fill="' + SKIN + '"/>' +
+      '<circle cx="21.3" cy="14.6" r="1.15" fill="' + INK + '"/>' +
+      '<circle cx="26.7" cy="14.6" r="1.15" fill="' + INK + '"/>' +
+      '<path d="M21.9 18q2.1 1.5 4.2 0" stroke="' + INK + '" stroke-width="1.1" fill="none" stroke-linecap="round"/>';
+  }
+
+  const HAIR = {
+    short: () => '<path d="M16.6 13.2a7.6 7.6 0 0 1 14.8 0q-3.4-2.6-7.4-2.6t-7.4 2.6z" fill="#4a3526"/>',
+    long: () => '<path d="M16.4 13.4a7.6 7.6 0 0 1 15.2 0v8.4q-1.8.6-2.6-1.2V14q-5-2.6-10 0v6.6q-.8 1.8-2.6 1.2z" fill="#56301d"/>',
+    hood: (c) => '<path d="M15.6 16q0-9.6 8.4-9.6T32.4 16q-1.6-1.2-2.9-1.5-1.3-4.3-5.5-4.3t-5.5 4.3q-1.3.3-2.9 1.5z" fill="' + shade(c, -0.32) + '"/>',
+    cap: (c) => '<path d="M16.4 12.6a7.6 7.6 0 0 1 15.2 0z" fill="' + c + '"/>' +
+      '<rect x="15" y="11.9" width="18" height="2.5" rx="1.25" fill="' + shade(c, -0.28) + '"/>' +
+      '<path d="M22 3.6q4 1.6 3 7" stroke="#c9304a" stroke-width="1.6" fill="none" stroke-linecap="round"/>',
+    hat: (c) => '<path d="M24 1.2 32.6 13H15.4z" fill="' + c + '"/>' +
+      '<rect x="12.4" y="12.3" width="23.2" height="2.9" rx="1.45" fill="' + shade(c, -0.33) + '"/>' +
+      '<circle cx="27.2" cy="7.4" r="1" fill="#ffe14d"/><circle cx="21.6" cy="9.8" r=".8" fill="#ffe14d"/>',
+    helmet: () => '<path d="M16.2 15.4a7.8 7.8 0 0 1 15.6 0z" fill="#aeb6ca"/>' +
+      '<rect x="15.8" y="13.8" width="16.4" height="2.6" rx="1.3" fill="#8b93a8"/>' +
+      '<rect x="19.4" y="16.6" width="9.2" height="1.9" rx=".95" fill="' + INK + '"/>' +
+      '<rect x="23.2" y="2.6" width="1.6" height="5.2" fill="#8b93a8"/>' +
+      '<path d="M24 1q3.6 1.4 2.6 5.4Q24 5 24 1z" fill="#c9304a"/>',
+    mask: () => '<path d="M16.6 13.2a7.6 7.6 0 0 1 14.8 0z" fill="' + INK + '"/>' +
+      '<path d="M16.5 16.5q7.5 2.4 15 0v4.3q-7.5 2-15 0z" fill="' + INK + '"/>',
+  };
+
+  const PROPS = {
+    sword: () => '<path d="M33.6 34 42.4 15.6" stroke="#dde1ea" stroke-width="2.6" stroke-linecap="round"/>' +
+      '<path d="M31 33.2 36.8 35.8" stroke="#c9a227" stroke-width="2.4" stroke-linecap="round"/>',
+    dagger: () => '<path d="M33 33 38.4 22.6" stroke="#dde1ea" stroke-width="2" stroke-linecap="round"/>' +
+      '<path d="M31.2 32.4 35.4 34.4" stroke="#8b93a8" stroke-width="2" stroke-linecap="round"/>',
+    axe: () => '<path d="M33 37 38 18" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>' +
+      '<path d="M37.6 18q6-2 7 5-5 1-8-1z" fill="#aeb6ca"/>',
+    hammer: () => '<path d="M33 37 37.6 20" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>' +
+      '<rect x="32.6" y="14.4" width="11" height="6.4" rx="1.6" fill="#8b93a8" transform="rotate(-14 38 17.6)"/>',
+    staff: () => '<path d="M33.4 40 31 14.6" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>' +
+      '<circle cx="30.8" cy="12.4" r="3.1" fill="#8fd6ff" opacity=".9"/>',
+    bow: () => '<path d="M34 18q6 6 0 14" stroke="#6b4a2f" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<path d="M34 18 34 32" stroke="#e6e2d8" stroke-width="1" />',
+    lute: (c) => '<ellipse cx="33.6" cy="31" rx="5.4" ry="6.2" fill="#b6803f"/>' +
+      '<circle cx="33.6" cy="30.4" r="1.8" fill="' + shade('#b6803f', -0.4) + '"/>' +
+      '<path d="M35.6 25.6 41 16" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>',
+    shield: (c) => '<path d="M32.4 22h9v6q0 5.6-4.5 7.6Q32.4 33.6 32.4 28z" fill="' + shade(c, 0.25) + '" stroke="#8b93a8" stroke-width="1.4"/>',
+  };
+
+  /** A person: the body plan everything human hangs off. */
+  function person(def, c, opts){
+    const o = opts || {};
+    const w = WIDTHS[def.body] || 14, x = 24 - w / 2;
+    const top = def.body === 'strong' ? 21 : 22;
+    const dark = shade(c, -0.22), t = def.body === 'strong' ? 4.6 : 3.6;
+    let g = '';
+    if (!o.noShadow) g += SHADOW;
+    if (!o.noLegs){
+      g += '<rect x="18.4" y="31" width="5.2" height="11" rx="2.6" fill="' + shade(c, -0.42) + '"/>' +
+           '<rect x="24.4" y="31" width="5.2" height="11" rx="2.6" fill="' + shade(c, -0.42) + '"/>';
     }
-    return '<svg viewBox="0 0 12 12" width="' + size + '" height="' + size +
-           '" shape-rendering="crispEdges" aria-hidden="true">' + r + '</svg>';
+    if (def.halo) g += '<ellipse cx="24" cy="3.6" rx="6.4" ry="1.8" fill="none" stroke="#ffe14d" stroke-width="1.4"/>';
+    g += '<rect x="' + x + '" y="' + top + '" width="' + w + '" height="' + (34 - top) + '" rx="' +
+         (def.body === 'wide' ? 8 : 6) + '" fill="' + c + '"/>';
+    g += '<rect x="' + (x - t + 0.4) + '" y="23" width="' + t + '" height="10" rx="' + (t / 2) + '" fill="' + dark + '"/>' +
+         '<rect x="' + (x + w - 0.4) + '" y="23" width="' + t + '" height="10" rx="' + (t / 2) + '" fill="' + dark + '"/>';
+    g += '<rect x="22.2" y="19.5" width="3.6" height="3.4" fill="' + SKIN_D + '"/>';
+    g += face();
+    if (HAIR[def.hair]) g += HAIR[def.hair](c);
+    if (def.beard) g += '<path d="M17.8 16.6q1.5 9.6 6.2 9.6t6.2-9.6q-6.2 3.2-12.4 0z" fill="#e9e6df"/>';
+    if (def.prop && PROPS[def.prop]) g += PROPS[def.prop](c);
+    return g;
+  }
+
+  /** The ones that are not people. A mount carries a small rider. */
+  const CREATURES = {
+    wolf: (c) => SHADOW +
+      '<rect x="11" y="24" width="25" height="11" rx="5.5" fill="' + c + '"/>' +
+      '<rect x="13.6" y="33" width="4.2" height="9" rx="2.1" fill="' + shade(c, -0.36) + '"/>' +
+      '<rect x="29.4" y="33" width="4.2" height="9" rx="2.1" fill="' + shade(c, -0.36) + '"/>' +
+      '<path d="M35.6 26q8-4 8 3-5 0-8-1z" fill="' + shade(c, -0.2) + '"/>' +
+      '<circle cx="12.6" cy="19" r="7.2" fill="' + c + '"/>' +
+      '<path d="M7.4 14.6 6 7.4l5.6 3.8z" fill="' + shade(c, -0.34) + '"/>' +
+      '<path d="M17.8 14.6 19.2 7.4l-5.6 3.8z" fill="' + shade(c, -0.34) + '"/>' +
+      '<circle cx="10.4" cy="18.4" r="1.1" fill="#ffe14d"/>' +
+      '<circle cx="15" cy="18.4" r="1.1" fill="#ffe14d"/>' +
+      '<path d="M5.6 21.4q-3.4.6-4.6 2.6 3 .4 5-.6z" fill="' + shade(c, -0.25) + '"/>',
+    horse: (c) => SHADOW +
+      '<rect x="10" y="24" width="26" height="11" rx="5.5" fill="' + c + '"/>' +
+      '<rect x="13" y="33" width="4.4" height="9" rx="2.2" fill="' + shade(c, -0.32) + '"/>' +
+      '<rect x="29" y="33" width="4.4" height="9" rx="2.2" fill="' + shade(c, -0.32) + '"/>' +
+      '<path d="M33 26q7-3 8-12-5 3-9 7z" fill="' + c + '"/>' +
+      '<circle cx="38" cy="13.6" r="6.2" fill="' + c + '"/>' +
+      '<path d="M32.8 9.6q-5.6 1.2-7.4 8 4.8-2 8.4-3z" fill="' + shade(c, -0.3) + '"/>' +
+      '<circle cx="40.2" cy="13.4" r="1.2" fill="' + INK + '"/>' +
+      '<path d="M8.6 25.6q-4 1.4-5 5.4 3.6-1 5.6-2.6z" fill="' + shade(c, -0.3) + '"/>',
+    unicorn: (c) => CREATURES.horse(c) +
+      '<path d="M39.6 7.8 42.4 1l-5.6 5.4z" fill="#ffe14d"/>' +
+      '<path d="M32.8 9.6q-5.6 1.2-7.4 8 4.8-2 8.4-3z" fill="#ff8ec9"/>',
+    dragon: (c) => SHADOW +
+      '<path d="M21 17q14-10 17 2-7 2-11 1z" fill="' + shade(c, 0.32) + '"/>' +
+      '<rect x="9" y="23" width="27" height="12" rx="6" fill="' + c + '"/>' +
+      '<path d="M34 29q10-2 11.6 8.4-7.4-1-11.6-4.2z" fill="' + shade(c, -0.22) + '"/>' +
+      '<circle cx="11.4" cy="18" r="7.2" fill="' + c + '"/>' +
+      '<path d="M6.4 12.4 5 6l5.2 4z" fill="' + shade(c, -0.36) + '"/>' +
+      '<path d="M15.8 12 17.2 6l-5 4z" fill="' + shade(c, -0.36) + '"/>' +
+      '<circle cx="9.4" cy="17.4" r="1.3" fill="#ffe14d"/>' +
+      '<circle cx="14.2" cy="17.4" r="1.3" fill="#ffe14d"/>' +
+      '<path d="M5 21.6q-4.2 1.4-5 4.6 3.6-.6 5.6-2.4z" fill="#ff9d3d"/>' +
+      '<rect x="13.4" y="33.6" width="4.6" height="8.4" rx="2.3" fill="' + shade(c, -0.36) + '"/>' +
+      '<rect x="26.6" y="33.6" width="4.6" height="8.4" rx="2.3" fill="' + shade(c, -0.36) + '"/>',
+  };
+
+  /** Build one character's SVG at the size asked for. */
+  function charSvg(id, colour, size){
+    const c = charById(id);
+    let art;
+    if (c.creature){
+      art = CREATURES[c.creature](colour);
+      if (c.rider){
+        // Half-size rider, seated on the mount's back.
+        const seat = person({ hair:'helmet', body:'normal', prop:'sword' }, shade(colour, -0.3),
+                            { noShadow:true, noLegs:true });
+        art += '<g transform="translate(10.5 -4.5) scale(0.56)">' + seat + '</g>';
+      }
+    } else {
+      art = person(c, colour);
+    }
+    return '<svg viewBox="0 0 48 48" width="' + size + '" height="' + size + '" aria-hidden="true">' + art + '</svg>';
   }
 
   function meIcon(){
@@ -692,9 +813,12 @@ window.__startUncover = (user, sync) => {
   // Experience is the one currency: ground opened, distance covered and
   // saying hello. Levels come from it, and characters come from levels, so
   // everything in the game is paid for by moving.
-  const XP_PER_CELL = 1, XP_PER_10M = 1, XP_PER_GREET = 25;
-  const xpFor = lvl => (lvl - 1) * (lvl - 1) * 600;
-  const lvlFromXp = xp => Math.floor(Math.sqrt(Math.max(xp, 0) / 600)) + 1;
+  const XP_PER_CELL = 1, XP_PER_10M = 1;
+  // Each level costs more than the last: the curve is x^2.2, so level 10 is
+  // a fortnight of walks and level 50 is a year of them.
+  const XP_BASE = 260, XP_POW = 2.2;
+  const xpFor = lvl => Math.round(XP_BASE * Math.pow(Math.max(lvl - 1, 0), XP_POW));
+  const lvlFromXp = xp => Math.floor(Math.pow(Math.max(xp, 0) / XP_BASE, 1 / XP_POW)) + 1;
 
   // All-time kilometres worth announcing. Close together early, so the first
   // week feels like it is going somewhere, then further apart.
@@ -710,64 +834,116 @@ window.__startUncover = (user, sync) => {
     }
   }
 
-  const ANIMALS = {"cat":["............","..2......2..",".252....252.",".25552222552",".21111111112",".21411114112",".21111111112","..2.2..2.2..","..2.2..2.2..","..........2.",".........2..","............"],"bird":["............","............","....2222....","...211112...","..21141112..","..21111112..","..21111112..","...2111122..","....2222....","....2..2....","....2..2....","............"],"goat":["............","..2.....2...","..52...25...","..25222552..",".2111111112.",".2141111412.",".2111111112.","..2.2..2.2..","..2.2..2.2..","............","............","............"],"turtle":["............","............","....222222..","..2211111112",".21111111112",".21111111112","..2222222222","..2.2..2.2..","..2.2..2.2..","............","............","............"],"hedgie":["............","............","...2.2.2....","..2121212...",".2111111112.",".2111111132.","..21111132..","...222222...","....2..2....","............","............","............"]};
-  const ANIMAL_IDS = Object.keys(ANIMALS);
-  const ANIMAL_COLOURS = ['#c98b4b','#8fb3d9','#d9d2c3','#7fa86a','#c47b9c'];
-  const GREET_RADIUS = 30;   // metres you must be within to say hello
-  const MAX_FRIENDS = 3;
+  // ---------- monsters ----------
+  // Drawn in the same flat style as the characters, and worth experience for
+  // the walk it took to reach them. Each carries what it is worth, so a
+  // tougher thing further up the ladder pays more.
+  const MONSTERS = [
+    { id:'slime',    name:'Slime',    xp:20,  draw:(c) => SHADOW +
+      '<path d="M7 38q0-17 17-17t17 17z" fill="' + c + '"/>' +
+      '<ellipse cx="24" cy="38" rx="17" ry="3" fill="' + shade(c, -0.25) + '"/>' +
+      '<circle cx="18.6" cy="30" r="2" fill="' + INK + '"/><circle cx="29.4" cy="30" r="2" fill="' + INK + '"/>' +
+      '<path d="M20.6 34.6q3.4 2.4 6.8 0" stroke="' + INK + '" stroke-width="1.3" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="15.6" cy="26" rx="3" ry="2" fill="rgba(255,255,255,.4)"/>' },
+    { id:'bat',      name:'Bat',      xp:30,  draw:(c) => SHADOW +
+      '<path d="M22 20Q10 10 2 16q6 2 7 9 7-2 13-5z" fill="' + shade(c, -0.2) + '"/>' +
+      '<path d="M26 20q12-10 20-4-6 2-7 9-7-2-13-5z" fill="' + shade(c, -0.2) + '"/>' +
+      '<ellipse cx="24" cy="25" rx="7" ry="8.5" fill="' + c + '"/>' +
+      '<path d="M19.6 18.4 18.4 12l4.4 4z" fill="' + c + '"/>' +
+      '<path d="M28.4 18.4 29.6 12l-4.4 4z" fill="' + c + '"/>' +
+      '<circle cx="21.4" cy="23.6" r="1.5" fill="#ffe14d"/><circle cx="26.6" cy="23.6" r="1.5" fill="#ffe14d"/>' +
+      '<path d="M22 28.6h4l-2 2.4z" fill="#fff"/>' },
+    { id:'goblin',   name:'Goblin',   xp:45,  draw:(c) => SHADOW +
+      '<rect x="17" y="24" width="14" height="13" rx="5" fill="' + shade(c, -0.15) + '"/>' +
+      '<rect x="18.6" y="36" width="4.4" height="6" rx="2.2" fill="' + shade(c, -0.4) + '"/>' +
+      '<rect x="25" y="36" width="4.4" height="6" rx="2.2" fill="' + shade(c, -0.4) + '"/>' +
+      '<circle cx="24" cy="16" r="8" fill="' + c + '"/>' +
+      '<path d="M16.6 13.4 7 9.6l8 7.8z" fill="' + c + '"/>' +
+      '<path d="M31.4 13.4 41 9.6l-8 7.8z" fill="' + c + '"/>' +
+      '<circle cx="21" cy="15.4" r="1.5" fill="#c9304a"/><circle cx="27" cy="15.4" r="1.5" fill="#c9304a"/>' +
+      '<path d="M20.4 19.6h7.2l-1.6 2.4h-4z" fill="#fff"/>' +
+      '<path d="M32 34 39 22" stroke="#aeb6ca" stroke-width="2.2" stroke-linecap="round"/>' },
+    { id:'skeleton', name:'Skeleton', xp:65,  draw:() => SHADOW +
+      '<rect x="20.6" y="24" width="6.8" height="12" rx="2" fill="#e6e2d8"/>' +
+      '<path d="M17 26h14M17 30h14" stroke="#c6c1b4" stroke-width="1.6" stroke-linecap="round"/>' +
+      '<rect x="19" y="35.4" width="3.4" height="6.6" rx="1.7" fill="#e6e2d8"/>' +
+      '<rect x="25.6" y="35.4" width="3.4" height="6.6" rx="1.7" fill="#e6e2d8"/>' +
+      '<circle cx="24" cy="15.4" r="8" fill="#f2efe6"/>' +
+      '<ellipse cx="20.8" cy="15" rx="2.3" ry="2.7" fill="' + INK + '"/>' +
+      '<ellipse cx="27.2" cy="15" rx="2.3" ry="2.7" fill="' + INK + '"/>' +
+      '<path d="M22.4 20.4h3.2M21.6 22.4h4.8" stroke="' + INK + '" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<path d="M31 34 41 18" stroke="#c6c1b4" stroke-width="2.4" stroke-linecap="round"/>' },
+    { id:'imp',      name:'Imp',      xp:90,  draw:(c) => SHADOW +
+      '<path d="M9 22q6-12 15-12t15 12q-5 16-15 16T9 22z" fill="' + c + '"/>' +
+      '<path d="M15.4 11 11.6 3.4l7.4 4.6z" fill="' + shade(c, -0.3) + '"/>' +
+      '<path d="M32.6 11 36.4 3.4l-7.4 4.6z" fill="' + shade(c, -0.3) + '"/>' +
+      '<path d="M8 22q-6 2-6 8 4-1 7-4z" fill="' + shade(c, -0.2) + '"/>' +
+      '<path d="M40 22q6 2 6 8-4-1-7-4z" fill="' + shade(c, -0.2) + '"/>' +
+      '<path d="M18 20.6q2.6-2.6 5 0" stroke="#ffe14d" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<path d="M25 20.6q2.4-2.6 5 0" stroke="#ffe14d" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<path d="M19 28q5 4 10 0-5 1.6-10 0z" fill="#fff"/>' },
+  ];
+  const MONSTER_COLOURS = ['#6fbf73','#8a6bd0','#c9304a','#3f8fd0','#d08a3f'];
+  const REACH = 30;          // metres you must be within to strike
+  const MAX_MONSTERS = 3;
 
-  let friends = [];          // { id, lat, lng, kind, colour, marker }
+  let monsters = [];
 
   /**
-   * Company only ever appears on ground already uncovered.
+   * Monsters only ever appear on ground already uncovered.
    *
    * That is a safety rule, not a design one: the game must never be a reason
    * to step into a road, a field or the sea. If you have already walked it,
    * it is somewhere you can be.
    */
-  function spawnFriends(){
-    if (friends.length >= MAX_FRIENDS) return;
+  function spawnMonsters(){
+    if (monsters.length >= MAX_MONSTERS) return;
     const keys = Object.keys(S.cells);
-    if (keys.length < 40) return;        // too little known ground to be sure
     const here = S.last;
-    if (!here) return;
+    if (keys.length < 40 || !here) return;   // too little known ground to be sure
 
-    for (let tries = 0; tries < 40 && friends.length < MAX_FRIENDS; tries++){
+    for (let tries = 0; tries < 40 && monsters.length < MAX_MONSTERS; tries++){
       const k = keys[(Math.random() * keys.length) | 0];
       const comma = k.indexOf(',');
       const i = +k.slice(0, comma), j = +k.slice(comma + 1);
       const lat = (i + .5) * CELL, lng = (j + .5) * lngStep(i);
       const d = dist(here[0], here[1], lat, lng);
       // Near enough to walk to, far enough to be worth the walk.
-      if (d < 60 || d > 400) continue;
-      if (friends.some(f => dist(f.lat, f.lng, lat, lng) < 80)) continue;
+      if (d < 50 || d > 400) continue;
+      if (monsters.some(m => dist(m.lat, m.lng, lat, lng) < 80)) continue;
 
-      const kind = ANIMAL_IDS[(Math.random() * ANIMAL_IDS.length) | 0];
-      const colour = ANIMAL_COLOURS[(Math.random() * ANIMAL_COLOURS.length) | 0];
-      const f = { id: k + ':' + Date.now(), lat, lng, kind, colour };
-      f.marker = L.marker([lat, lng], {
-        icon: L.divIcon({ className:'', iconSize:[30,30], iconAnchor:[15,15],
-          html:'<div class="friend">' + pixelSvg(ANIMALS[kind], colour, 30) + '</div>' }),
+      // Tougher things show up as you climb, so the ladder keeps its shape.
+      const reach = Math.min(MONSTERS.length, 1 + Math.floor((S.lvl || 1) / 8));
+      const kind = MONSTERS[(Math.random() * reach) | 0];
+      const colour = MONSTER_COLOURS[(Math.random() * MONSTER_COLOURS.length) | 0];
+      const m = { lat, lng, kind, colour };
+      m.marker = L.marker([lat, lng], {
+        icon: L.divIcon({ className:'', iconSize:[42,42], iconAnchor:[21,21],
+          html:'<div class="mob">' +
+            '<svg viewBox="0 0 48 48" width="42" height="42" aria-hidden="true">' + kind.draw(colour) + '</svg>' +
+            '<b>' + (S.lang === 'en' ? 'Tap' : 'Πάτα') + '</b></div>' }),
         zIndexOffset: 900,
       }).addTo(map);
-      f.marker.on('click', () => greet(f));
-      friends.push(f);
+      m.marker.on('click', (ev) => { L.DomEvent.stop(ev); strike(m); });
+      monsters.push(m);
     }
   }
 
-  function greet(f){
+  function strike(m){
     const here = S.last;
-    const near = here && dist(here[0], here[1], f.lat, f.lng) <= GREET_RADIUS;
-    if (!near){
-      toast(S.lang === 'en' ? 'Too far away — walk closer to say hello'
-        : 'Πολύ μακριά — πλησίασε για να χαιρετήσεις');
+    if (!here || dist(here[0], here[1], m.lat, m.lng) > REACH){
+      toast(S.lang === 'en' ? 'Too far — get closer to fight it'
+        : 'Πολύ μακριά — πλησίασε για να το χτυπήσεις');
       return;
     }
-    addXp(XP_PER_GREET);
-    map.removeLayer(f.marker);
-    friends = friends.filter(x => x !== f);
-    toast((S.lang === 'en' ? 'Hello! +' : 'Γεια! +') + XP_PER_GREET + ' XP');
-    save();
+    const el = m.marker.getElement();
+    if (el) el.querySelector('.mob').classList.add('hit');
+    S.kills = (S.kills || 0) + 1;
+    addXp(m.kind.xp);
+    toast(m.kind.name + ' — +' + m.kind.xp + ' XP');
+    setTimeout(() => { map.removeLayer(m.marker); }, 260);
+    monsters = monsters.filter(x => x !== m);
+    updateStats(); save();
   }
 
   function addXp(n){
@@ -785,7 +961,7 @@ window.__startUncover = (user, sync) => {
     setGps(acc <= 35 ? 'on' : 'weak', simulated ? 'Test mode' : (acc <= 35 ? 'GPS ±'+Math.round(acc)+'m' : 'Weak GPS ±'+Math.round(acc)+'m'));
     placeMe(lat, lng, acc);
     updateTemp(lat, lng);
-    spawnFriends();
+    spawnMonsters();
     if (follow && !simulated) map.panTo([lat,lng], { animate:false });
     if (acc > 40) return;
     let newCells = 0;
