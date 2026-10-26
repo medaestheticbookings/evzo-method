@@ -58,7 +58,7 @@ html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-fami
 @keyframes shade{0%,100%{width:20px;opacity:.45}50%{width:14px;opacity:.3}}
 @media (prefers-reduced-motion: reduce){.me.fly,.me.fly::after,.friend{animation:none}}
 /* Just the map and the character. One tap anywhere brings the rest back. */
-body.zen .top,body.zen .bottom,body.zen .who,body.zen .float{opacity:0;pointer-events:none;transition:opacity .25s}
+body.zen .top,body.zen .bottom,body.zen .float{opacity:0;pointer-events:none;transition:opacity .25s}
 body.zen .leaflet-control-attribution{opacity:.35}
 .zen-hint{position:fixed;z-index:650;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .4s;pointer-events:none}
 body.zen .zen-hint{opacity:.7}
@@ -183,8 +183,6 @@ input[type=range]{accent-color:var(--accent);width:140px}
 #gate .tabs button.on{background:rgba(255,255,255,.10);color:var(--text)}
 #gate .err{color:#ff8e8e;font-size:13px;min-height:18px;margin-top:12px}
 #gate .foot{margin:16px 0 0;font-size:12px}
-.who{position:fixed;z-index:610;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 14px + var(--banner));font-size:11px;color:var(--muted)}
-.who button{background:none;border:0;color:var(--accent);font:inherit;cursor:pointer;padding:0 0 0 6px}
 .setup .card{max-width:420px;width:100%}
 .setup h1{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;margin:0 0 6px}
 .setup h1 span{color:var(--accent)}
@@ -248,7 +246,6 @@ input[type=range]{accent-color:var(--accent);width:140px}
   <button id="go" data-i18n="go">Start walking</button>
   <button class="round" id="menu" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </nav>
-<div class="who" id="who" hidden><span id="whoEmail"></span><button type="button" id="signout" data-i18n="signout">Sign out</button></div>
 
 <div class="zen-hint" data-i18n="zenHint">Tap the map to bring the panels back</div>
 <div class="toast" id="toast"></div>
@@ -262,6 +259,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
 
 <section class="sheet" id="sheet" aria-label="Settings">
   <h2 data-i18n="settings">Settings</h2>
+  <div class="row" id="who" hidden><p><span data-i18n="account">Account</span><small id="whoEmail"></small></p><button class="btn" type="button" id="signout" data-i18n="signout">Sign out</button></div>
   <div class="row"><p><span data-i18n="satellite">Satellite</span><small data-i18n="satelliteSub">Photographs instead of a drawn map</small></p><label class="switch"><input type="checkbox" id="layers"><span></span></label></div>
   <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="language">Language</span></p>
     <div class="pickgrid" id="pickLang" style="grid-template-columns:repeat(2,1fr)"></div>
@@ -444,11 +442,16 @@ window.__startUncover = (user, sync) => {
     { id:'trimmer', name:'Strimmer', lvl:25, px:["....2222....","...255552...","..25333352..","..23433432..","...233332...","..21111112..",".2111111172.","..21111172..","...2222.7...","...2..2.7...","...2..2.666.","........666."] },
     { id:'blower', name:'Blower', lvl:30, px:["....2222....","...255552...","..25333352..","..23433432..","...233332...","..21111112..",".211111112..","..2111112777","...22222.77.","...2..2..7..","...2..2.....","............"] },
     { id:'tractor', name:'Tractor', lvl:40, px:["............","....22222...","....21112...","....21112...","..2222222...",".211111112..",".21111111222",".21111111112","222222222222",".2772...2772",".2772...2772","..22.....22."] },
+    { id:'wizard', name:'Wizard', lvl:35, px:[".....22.....","....2112....","...211112...","..21111112..",".2111111112.","..23333332..","..24333342..","...244442...","..21444127..",".211111117..","..211111.7..","...22..2.7.."] },
+    { id:'knight', name:'Knight', lvl:45, px:["....2222....","...277772...","..27777772..","..27222272..","..27777772..","...277772...","....2772....","..211111127.",".2111111127.",".2711111172.","..21111112..","...22..22..."] },
+    { id:'ninja', name:'Ninja', lvl:55, px:["....2222....","...211112...","..21111112..","..23333332..","..21444112..","...211112...","....2112....","..21111112..",".2111111112.",".2311111132.","..21111112..","...22..22..."] },
+    { id:'unicorn', name:'Unicorn', lvl:70, px:[".........2..","........252.","..2.....252.",".252...25552",".25552225552",".21111111112",".21111111112","..2.2..2.2..","..2.2..2.2..","............","............","............"] },
     { id:'dragon', name:'Dragon', lvl:60, fly:true, px:["............","..........2.",".2.......252","2522....2552","255522225552",".25111111552",".21111111112","..21111112..","..2.2..2.2..","...2....2...","............","............"] },
     { id:'flyer', name:'Winged', lvl:80, fly:true, px:["...2....2...","..252..252..",".25552225552","..25333352..","..23433432..","...233332...","..21111112..",".2111111112.","..21111112..","...22..22...","............","............"] },
     { id:'astro', name:'Spaceman', lvl:50, px:["....2222....","...244442...","..24444442..","..24433442..","..24444442..","...244442...","....2442....","..21111112..",".2111111112.",".2711111172.","..21111112..","...22..22..."] }
   ];
 
+  CHARACTERS.sort((a, b) => a.lvl - b.lvl);
   const charById = id => CHARACTERS.find(c => c.id === id) || CHARACTERS[0];
   const unlocked = c => (S.lvl || 1) >= c.lvl;
 
@@ -623,7 +626,7 @@ window.__startUncover = (user, sync) => {
   // Greek is the default: this is a Cypriot app, and the browser's locale is
   // never allowed to decide. The player's own choice is, and it is kept.
   const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
-  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο"} };
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο"} };
   /** Falls back to the English already written into the markup. */
   const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
 
@@ -996,8 +999,8 @@ window.__startUncover = (user, sync) => {
   // to hunt for on a phone.
   map.on('click', () => document.body.classList.remove('zen'));
 
-  $('who').hidden = false;
-  $('whoEmail').textContent = user.email || 'Signed in';
+  $('whoEmail').textContent = user.email || '';
+  $('who').hidden = !user.email;
   $('signout').onclick = () => sync.signOut();
 };
 </script>
