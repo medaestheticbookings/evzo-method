@@ -23,7 +23,7 @@
   --text:#f3f1ec; --muted:#a3a8bd; --accent:#ff8a3d; --accent-ink:#1b0f05; --good:#5fd39a;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"DM Sans",ui-sans-serif,system-ui,sans-serif;
-  color-scheme:dark; --banner:80px;
+  color-scheme:dark; --banner:0px;
 }
 /* Light theme. The fog has to stay dark enough to read as fog, so it
    lightens rather than inverts. */
@@ -106,7 +106,9 @@ body.zen .zen-hint{opacity:.7}
 /* ---------- the controls ---------- */
 .bottom{position:fixed;z-index:600;left:0;right:0;bottom:0;
   padding:12px max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px + var(--banner)) max(12px,env(safe-area-inset-left,0px));
-  display:flex;gap:10px;align-items:center;justify-content:center}
+  display:flex;gap:10px;align-items:center;justify-content:center;pointer-events:none}
+.bottom > *{pointer-events:auto}
+.bottom{margin:0 auto;max-width:520px}
 .round{flex:none;width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:var(--panel);
   color:var(--text);display:grid;place-items:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.22);transition:transform .12s}
@@ -115,7 +117,7 @@ body.zen .zen-hint{opacity:.7}
 .round.active{color:var(--accent)}
 #go{flex:1 1 auto;max-width:200px;height:56px;border-radius:28px;border:0;background:var(--accent);
   color:var(--accent-ink);font-family:var(--display);font-weight:800;font-size:16.5px;letter-spacing:-.01em;
-  cursor:pointer;box-shadow:0 6px 20px rgba(255,138,61,.32);transition:transform .12s}
+  cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .12s}
 #go:active{transform:scale(.97)}
 /* Left alone for a while, the controls step back rather than sit on top of
    the map. Any touch brings them straight back to full strength. */
