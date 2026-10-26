@@ -21,13 +21,49 @@
   --body:"DM Sans",ui-sans-serif,system-ui,sans-serif;
   color-scheme:dark; --banner:80px;
 }
+/* Light theme. The fog has to stay dark enough to read as fog, so it
+   lightens rather than inverts. */
+:root[data-theme="light"]{
+  --fog:#eceae4; --panel:rgba(255,255,255,.90); --line:rgba(0,0,0,.12);
+  --text:#15151c; --muted:#5d6273; --good:#1d8a5c; color-scheme:light;
+}
+/* Higher contrast for low vision: solid panels, firmer borders, no blur. */
+:root[data-contrast="high"]{ --panel:#0b0e1a; --line:rgba(255,255,255,.45); --muted:#d6d9e4; }
+:root[data-theme="light"][data-contrast="high"]{ --panel:#ffffff; --line:rgba(0,0,0,.55); --muted:#2a2e3d; }
+:root[data-contrast="high"] .top,:root[data-contrast="high"] .sheet,
+:root[data-contrast="high"] .round,:root[data-contrast="high"] .toast{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+:root[data-contrast="high"] .top,:root[data-contrast="high"] .round{border-width:2px}
+/* Larger type, for anyone who needs it. */
+:root[data-text="large"]{font-size:118%}
+:root[data-text="large"] .stat strong{font-size:26px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-family:var(--body);overflow:hidden}
 #map{position:fixed;inset:0;background:#d9d6cf}
 #fog{position:absolute;inset:0;z-index:450;pointer-events:none}
-.leaflet-control-attribution{font-size:9px!important;background:rgba(18,22,40,.6)!important;color:#ccc!important;margin-bottom:calc(96px + var(--banner) + env(safe-area-inset-bottom,0px))!important}
-.leaflet-control-attribution a{color:#fff!important}
-.me{width:18px;height:18px;border-radius:50%;background:var(--accent);border:3px solid #fff}
+/* Esri and OpenStreetMap both require credit, so the line stays — but it
+   folds into a small circle and opens only when tapped. */
+.leaflet-control-attribution{font-size:10px!important;line-height:1!important;background:rgba(18,22,40,.55)!important;color:var(--muted)!important;border-radius:999px!important;padding:0!important;margin:0 0 calc(96px + var(--banner) + env(safe-area-inset-bottom,0px)) 10px!important;backdrop-filter:blur(8px);overflow:hidden;max-width:18px;transition:max-width .25s ease}
+.leaflet-control-attribution.open{max-width:min(78vw,340px)}
+.leaflet-control-attribution a{color:var(--muted)!important;text-decoration:none}
+.attr-i{display:inline-grid;place-items:center;width:18px;height:18px;flex:none;font-style:normal;font-size:10px;color:var(--muted);cursor:pointer}
+.attr-t{padding-right:9px;white-space:nowrap}
+.me{filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
+.friend{filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));cursor:pointer;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* Flying characters ride above their own shadow, which stays on the ground
+   and shrinks as they rise — the shadow is what sells the height. */
+.me.fly{animation:hover 3s ease-in-out infinite}
+.me.fly::after{content:"";position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);width:20px;height:6px;border-radius:50%;background:rgba(0,0,0,.45);filter:blur(1.5px);animation:shade 3s ease-in-out infinite}
+@keyframes hover{0%,100%{transform:translateY(-6px)}50%{transform:translateY(-12px)}}
+@keyframes shade{0%,100%{width:20px;opacity:.45}50%{width:14px;opacity:.3}}
+@media (prefers-reduced-motion: reduce){.me.fly,.me.fly::after,.friend{animation:none}}
+/* Just the map and the character. One tap anywhere brings the rest back. */
+body.zen .top,body.zen .bottom,body.zen .who{opacity:0;pointer-events:none;transition:opacity .25s}
+body.zen .leaflet-control-attribution{opacity:.35}
+.zen-hint{position:fixed;z-index:650;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .4s;pointer-events:none}
+body.zen .zen-hint{opacity:.7}
+.pick.locked{opacity:.45;cursor:not-allowed}
+.pick.locked span{color:var(--muted)}
 
 .top{position:fixed;z-index:600;top:calc(env(safe-area-inset-top,0px) + 12px);left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));
   background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:14px 16px 12px}
@@ -100,6 +136,31 @@ input[type=range]{accent-color:var(--accent);width:140px}
 .bdg.on i{border-color:var(--accent);background:rgba(255,138,61,.12)}
 .bdg b{display:block;font-family:var(--display);font-weight:800;font-size:12px;line-height:1.2}
 .bdg small{display:block;color:var(--muted);font-size:10px;line-height:1.3;margin-top:2px}
+/* Who you are on the map: a character and a colour. */
+.pickgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.pick{display:grid;place-items:center;gap:6px;padding:12px 6px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font:500 11px var(--body)}
+.pick svg{width:30px;height:30px}
+.pick[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,138,61,.12)}
+.swatches{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.sw{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{border-color:#fff}
+/* Sign-in gate. Covers everything until Firebase says who this is. */
+#gate{position:fixed;inset:0;z-index:900;background:var(--fog);display:grid;place-items:center;padding:24px}
+#gate .card{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 24px;text-align:center}
+#gate h1{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 6px}
+#gate h1 span{color:var(--accent)}
+#gate p{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 20px}
+#gate input{width:100%;margin-bottom:10px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);font:500 16px var(--body);text-align:center}
+#gate input:focus{outline:2px solid var(--accent);outline-offset:2px}
+#gate button{width:100%;padding:15px;border:0;border-radius:14px;background:var(--accent);color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
+#gate button:disabled{opacity:.5;cursor:default}
+#gate .tabs{display:flex;gap:4px;padding:4px;margin-bottom:14px;border-radius:14px;background:rgba(255,255,255,.05)}
+#gate .tabs button{flex:1;padding:10px;border:0;border-radius:10px;background:none;color:var(--muted);font:700 13px var(--body);cursor:pointer}
+#gate .tabs button.on{background:rgba(255,255,255,.10);color:var(--text)}
+#gate .err{color:#ff8e8e;font-size:13px;min-height:18px;margin-top:12px}
+#gate .foot{margin:16px 0 0;font-size:12px}
+.who{position:fixed;z-index:610;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 14px + var(--banner));font-size:11px;color:var(--muted)}
+.who button{background:none;border:0;color:var(--accent);font:inherit;cursor:pointer;padding:0 0 0 6px}
 .setup .card{max-width:420px;width:100%}
 .setup h1{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;margin:0 0 6px}
 .setup h1 span{color:var(--accent)}
@@ -111,14 +172,37 @@ input[type=range]{accent-color:var(--accent);width:140px}
 </style>
 </head>
 <body>
+<div id="gate">
+  <div class="card">
+    <h1>Uncover<span>.</span></h1>
+    <p id="gateMsg">Sign in to walk, or make an account — it takes a moment and your map follows you.</p>
+    <div class="tabs" id="gTabs">
+      <button type="button" class="on" data-mode="in" data-i18n="signin">Sign in</button>
+      <button type="button" data-mode="up" data-i18n="signup">Create account</button>
+    </div>
+    <form id="gateForm">
+      <input id="gEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email" required>
+      <input id="gPass" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required minlength="6">
+      <button id="gBtn" type="submit" data-i18n="signin">Sign in</button>
+    </form>
+    <div class="err" id="gErr" role="alert"></div>
+    <p class="foot"><a href="#" id="gReset" style="color:var(--muted)">Forgot your password?</a></p>
+  </div>
+</div>
+
 <div id="map"></div>
 
 <header class="top">
   <div class="brand"><b>Uncover<span>.</span></b><div class="gps" id="gps"><i></i><span id="gpsText">GPS off</span></div></div>
   <div class="stats">
-    <div class="stat"><small>Revealed</small><strong id="sArea">0<em>km²</em></strong></div>
-    <div class="stat"><small>Today</small><strong id="sToday">0<em>km</em></strong></div>
-    <div class="stat"><small>All time</small><strong id="sTotal">0<em>km</em></strong></div>
+    <div class="stat"><small data-i18n="revealed">Revealed</small><strong id="sArea">0<em>km²</em></strong></div>
+    <div class="stat"><small data-i18n="today">Today</small><strong id="sToday">0<em>km</em></strong></div>
+    <div class="stat"><small data-i18n="alltime">All time</small><strong id="sTotal">0<em>km</em></strong></div>
+  </div>
+  <div class="stats" style="margin-top:8px">
+    <div class="stat"><small data-i18n="steps">Steps today</small><strong id="sSteps">0</strong></div>
+    <div class="stat"><small data-i18n="burned">Burned</small><strong id="sKcal">0<em>kcal</em></strong></div>
+    <div class="stat"><small data-i18n="outside">Outside</small><strong id="sTemp">—</strong></div>
   </div>
   <div class="lvl"><b id="lvl">Lv 1</b><div class="bar"><div id="bar"></div></div><span id="lvlNext"></span></div>
 </header>
@@ -126,50 +210,95 @@ input[type=range]{accent-color:var(--accent);width:140px}
 <nav class="bottom">
   <button class="round" id="center" aria-label="Center on me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
   <button class="round" id="layers" aria-label="Map or satellite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
-  <button id="go">Start walking</button>
+  <button id="go" data-i18n="go">Start walking</button>
+  <button class="round" id="zen" aria-label="Hide the panels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
   <button class="round" id="quests" aria-label="Challenges and badges"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5H5v2a3 3 0 0 0 3 3M16 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v4M9 21h6"/></svg></button>
   <button class="round" id="menu" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </nav>
+<div class="who" id="who" hidden><span id="whoEmail"></span><button type="button" id="signout" data-i18n="signout">Sign out</button></div>
 
+<div class="zen-hint" data-i18n="zenHint">Tap the map to bring the panels back</div>
 <div class="toast" id="toast"></div>
 <div class="scrim" id="scrim"></div>
 <section class="sheet" id="qsheet" aria-label="Challenges and badges">
-  <h2>Challenges</h2>
+  <h2 data-i18n="challenges">Challenges</h2>
   <div id="qlist"></div>
-  <h2 style="margin-top:20px">Badges <span id="bcount" style="color:var(--muted);font-size:13px;font-weight:500"></span></h2>
+  <h2 style="margin-top:20px" data-i18n="badges">Badges <span id="bcount" style="color:var(--muted);font-size:13px;font-weight:500"></span></h2>
   <div class="bgrid" id="bgrid"></div>
 </section>
 
 <section class="sheet" id="sheet" aria-label="Settings">
-  <h2>Settings</h2>
-  <div class="row"><p>Reveal radius<small>How much of the map opens around you</small></p><div><input type="range" id="radius" min="20" max="100" step="5"> <span id="radiusVal"></span></div></div>
-  <div class="row"><p>Keep screen on<small>Tracking pauses when the screen locks</small></p><label class="switch"><input type="checkbox" id="wake"><span></span></label></div>
-  <div class="row"><p>Test mode<small>Tap the map to "walk" there, for trying it at home</small></p><label class="switch"><input type="checkbox" id="test"><span></span></label></div>
-  <div class="row"><p>Backup<small>Your map is saved on this phone only</small></p><div class="btns"><button class="btn" id="exp">Export</button><button class="btn" id="imp">Import</button><input type="file" id="impFile" accept="application/json" hidden></div></div>
-  <div class="row"><p>Reset map<small>Puts the fog back everywhere</small></p><button class="btn danger" id="reset">Reset</button></div>
+  <h2 data-i18n="settings">Settings</h2>
+  <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="language">Language</span></p>
+    <div class="pickgrid" id="pickLang" style="grid-template-columns:repeat(2,1fr)"></div>
+  </div>
+  <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="moving">How you are moving</span><small data-i18n="movingSub">Each one has its own speed limit, so a car reveals nothing</small></p>
+    <div class="pickgrid" id="pickMode" style="grid-template-columns:repeat(4,1fr)"></div>
+  </div>
+  <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="character">Your character</span><small data-i18n="characterSub">Who walks the map, and in what colour</small></p>
+    <div class="pickgrid" id="pickChar"></div>
+    <div class="swatches" id="pickColour"></div>
+  </div>
+  <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="appearance">Appearance</span><small data-i18n="appearanceSub">Theme, contrast and text size</small></p>
+    <div class="pickgrid" id="pickTheme" style="grid-template-columns:repeat(3,1fr)"></div>
+    <div class="row" style="border-top:0;padding-bottom:0"><p><span data-i18n="contrast">Higher contrast</span><small data-i18n="contrastSub">Solid panels and firmer edges</small></p><label class="switch"><input type="checkbox" id="hiC"><span></span></label></div>
+    <div class="row" style="border-top:0;padding-bottom:0"><p data-i18n="bigtext">Larger text</p><label class="switch"><input type="checkbox" id="bigT"><span></span></label></div>
+    <div class="row" style="border-top:0"><p><span data-i18n="cbsafe">Colour-blind safe palette</span><small data-i18n="cbsafeSub">Swaps the character colours for ones that stay apart</small></p><label class="switch"><input type="checkbox" id="cbSafe"><span></span></label></div>
+  </div>
+  <div class="row"><p><span data-i18n="weight">Your weight</span><small data-i18n="weightSub">Only used to work out calories</small></p><div><input type="number" id="kg" min="30" max="250" step="1" style="width:76px;padding:8px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-align:center"> kg</div></div>
+  <div class="row"><p><span data-i18n="stride">Step length</span><small data-i18n="strideSub">For the step count. 75 cm suits most people</small></p><div><input type="number" id="stride" min="40" max="110" step="1" style="width:76px;padding:8px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-align:center"> cm</div></div>
+  <div class="row"><p><span data-i18n="wake">Keep screen on</span><small data-i18n="wakeSub">Tracking pauses when the screen locks</small></p><label class="switch"><input type="checkbox" id="wake"><span></span></label></div>
+  <div class="row"><p><span data-i18n="test">Test mode</span><small data-i18n="testSub">Tap the map to walk there, for trying it at home</small></p><label class="switch"><input type="checkbox" id="test"><span></span></label></div>
+  <div class="row"><p><span data-i18n="backup">Backup</span><small data-i18n="backupSub">A copy you can keep</small></p><div class="btns"><button class="btn" id="exp" data-i18n="export">Export</button><button class="btn" id="imp" data-i18n="import">Import</button><input type="file" id="impFile" accept="application/json" hidden></div></div>
+  <div class="row"><p><span data-i18n="reset">Reset map</span><small data-i18n="resetSub">Puts the fog back everywhere</small></p><button class="btn danger" id="reset" data-i18n="resetBtn">Reset</button></div>
 </section>
 
 <script>
-(() => {
+/* The app runs only once Firebase has said who this is. The auth module
+   below calls this, having already put that account's saved map into local
+   storage, so everything underneath still reads from the same place. */
+window.__startUncover = (user, sync) => {
   const $ = id => document.getElementById(id);
   const KEY = 'uncover.v1', APIKEY = 'uncover.gkey';
   const CELL = 0.00012;                  // grid size in degrees of latitude (~13 m)
   const CELL_M = CELL * 111320;
   const DEFAULT_CENTER = { lat:34.7754, lng:32.4245 }; // Pafos
 
-  let S = { cells:{}, count:0, total:0, days:{}, dayCells:{}, badges:{}, radius:40, wake:true, test:false, last:null, sat:false };
+  let S = { cells:{}, count:0, total:0, days:{}, dayCells:{}, badges:{}, kg:70, stride:75, wake:true, test:false, last:null, sat:false };
   try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e){}
   S.count = Object.keys(S.cells).length;
   S.badges = S.badges || {}; S.dayCells = S.dayCells || {};
+  S.kg = S.kg || 70; S.stride = S.stride || 75; S.mode = S.mode || 'walk';
+  S.theme = S.theme || 'dark'; S.lang = S.lang || 'el';
+  S.xp = S.xp || 0; S.miles = S.miles || {};
   try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch(e){}
-  let saveT; const save = () => { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ toast('Could not save. Storage full?'); } }, 600); };
+  let saveT; const save = () => { clearTimeout(saveT); saveT = setTimeout(() => {
+    const json = JSON.stringify(S);
+    try { localStorage.setItem(KEY, json); } catch(e){ toast('Could not save. Storage full?'); }
+    sync.push(json);
+  }, 600); };
+
+  // ---------- how you are moving ----------
+  // Four ways, and nothing else. Each carries the fastest it can plausibly
+  // be done; anything quicker is a vehicle and reveals nothing, which is the
+  // whole point of the thing. METs are the Compendium of Physical Activities
+  // values for a moderate effort.
+  const MODES = [
+    { id:'walk', name:'Walk',  max:2.8,  met:3.5, radius:40, steps:true,  icon:'M9 3v6l-3 6M15 7l2 5-3 2v5' },
+    { id:'run',  name:'Run',   max:6.5,  met:9.8, radius:45, steps:true,  icon:'M10 2v5l-4 4 2 4M14 8l3 4-4 3v4' },
+    { id:'bike', name:'Cycle', max:13.0, met:7.5, radius:55, steps:false, icon:'M5 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 14l3-6h4' },
+    { id:'swim', name:'Swim',  max:2.2,  met:8.3, radius:35, steps:false, icon:'M3 18c2 0 2-1.5 4.5-1.5S10 18 12 18s2-1.5 4.5-1.5S19 18 21 18M6 11l4-3 4 3' },
+  ];
+  const mode = () => MODES.find(m => m.id === S.mode) || MODES[0];
 
   // ---------- grid ----------
   function lngStep(i){ return CELL / Math.max(Math.cos(((i+.5)*CELL)*Math.PI/180), .05); }
   function dist(a,b,c,d){ const R=6371000, t=Math.PI/180, x=(c-a)*t, y=(d-b)*t;
     const h=Math.sin(x/2)**2+Math.cos(a*t)*Math.cos(c*t)*Math.sin(y/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
   function reveal(lat, lng){
-    const rad = S.radius, dLat = rad/111320;
+    // Fixed per mode, never a setting: the only way to open more ground is
+    // to cover more of it.
+    const rad = mode().radius, dLat = rad/111320;
     const i0 = Math.floor((lat-dLat)/CELL), i1 = Math.floor((lat+dLat)/CELL);
     let added = 0;
     for (let i=i0;i<=i1;i++){
@@ -200,8 +329,34 @@ input[type=range]{accent-color:var(--accent);width:140px}
   const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom:19, maxNativeZoom:18, attribution:'Imagery © Esri' });
   (S.sat ? sat : streets).addTo(map);
   $('layers').classList.toggle('active', S.sat);
-  map.attributionControl.setPosition('bottomleft');
-  const meIcon = L.divIcon({ className:'', html:'<div class="me"></div>', iconSize:[18,18], iconAnchor:[9,9] });
+  map.attributionControl.setPosition('bottomleft').setPrefix('');
+  // Esri and OpenStreetMap both require credit, so the line stays — folded
+  // behind an info dot that opens on a tap. Leaflet rewrites the container's
+  // contents whenever a layer is added or removed, so this re-wraps on both.
+  {
+    const box = map.attributionControl.getContainer();
+    box.style.display = 'flex'; box.style.alignItems = 'center';
+    const decorate = () => {
+      if (box.querySelector('.attr-i')) return;
+      const text = document.createElement('span');
+      text.className = 'attr-t';
+      text.innerHTML = box.innerHTML;
+      const dot = document.createElement('i');
+      dot.className = 'attr-i'; dot.textContent = 'i';
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('tabindex', '0');
+      dot.setAttribute('aria-label', 'Map credits');
+      const toggle = () => box.classList.toggle('open');
+      dot.onclick = e => { e.stopPropagation(); toggle(); };
+      dot.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } };
+      box.textContent = '';
+      box.append(dot, text);
+    };
+    decorate();
+    map.on('layeradd layerremove', () => setTimeout(decorate, 0));
+    map.on('click', () => box.classList.remove('open'));
+  }
+
 
   const fog = document.createElement('canvas'); fog.id = 'fog'; map.getContainer().appendChild(fog);
   const ctx = fog.getContext('2d'); const pattern = ctx.createPattern(tile, 'repeat');
@@ -235,9 +390,326 @@ input[type=range]{accent-color:var(--accent);width:140px}
   map.on('dragstart', () => { follow = false; $('center').classList.remove('active'); });
   map.on('click', e => { if (S.test) handleFix(e.latlng.lat, e.latlng.lng, 5, Date.now(), true); });
 
+
+  // ---------- characters ----------
+  // Each one is a 12x12 pixel grid. The digits are palette slots, and slot 1
+  // is whatever colour the player picked, so one grid serves every colour.
+  // Characters unlock by level, and level comes from ground uncovered — the
+  // only way to earn one is to walk.
+  const PAL = { '2':'#17161f', '3':'#f0c79a', '4':'#ffffff', '5':'#6b4a2f', '6':'#5fd39a', '7':'#9aa3b8' };
+  const COLOURS = ['#ff8a3d','#5fd39a','#5aa9ff','#ff6b9d','#ffd93d','#b388ff','#f3f1ec','#ff5c5c'];
+  const CHARACTERS = [
+    { id:'walk', name:'Walker', lvl:1, px:["....2222....","...255552...","..25333352..","..23333332..","..23433432..","...233332...","....2332....","..21111112..",".2111111112.",".2311111132.","..21111112..","...22..22..."] },
+    { id:'woman', name:'Strider', lvl:1, px:["....2222....","...255552...","..25555552..","..25333352..","..25434352..","..25333352..","...233332...","....2332....","..21111112..",".2311111132.","..21111112..","...22..22..."] },
+    { id:'slim', name:'Wisp', lvl:3, px:["....2222....","...255552...","...233332...","...243342...","....3333....","....2332....","....1111....","...311113...","....1111....","....1111....","....2..2....","....2..2...."] },
+    { id:'athletic', name:'Runner', lvl:5, px:["....2222....","...255552...","..21111112..","..23333332..","..23433432..","...233332...","....2332....","..23111132..",".2311111132.","..23111132..","...233332...","...22..22..."] },
+    { id:'strong', name:'Bruiser', lvl:8, px:["....2222....","...255552...","..25333352..","..23333332..","..23433432..","...233332...","....2332....",".2311111132.","231111111132",".2311111132.","..21111112..","...22..22..."] },
+    { id:'round', name:'Rambler', lvl:8, px:["....2222....","...255552...","..25333352..","..23333332..","..23433432..","...233332...","....2332....","..21111112..",".2111111112.","211111111112",".2111111112.","...22..22..."] },
+    { id:'funny', name:'Cap', lvl:12, px:["....2222....","...211112...","..21111112..","..23333332..","..24344342..","...233332...","...2333332..","..21111112..",".2111111112.",".2311111132.","..21111112..","...22..22..."] },
+    { id:'dog', name:'Good Boy', lvl:15, px:["............","............","..2......2..",".252....252.",".25552222552",".21111111112",".21111111112","..2.2..2.2..","..2.2..2.2..","............","............","............"] },
+    { id:'mower', name:'Mower', lvl:20, px:["............","......22....",".....2552...","....253352..","...2511112..","..25111112..",".2222222222.",".2111111112.",".2777777772.","..2.2..2.2..","...2....2...","............"] },
+    { id:'trimmer', name:'Strimmer', lvl:25, px:["....2222....","...255552...","..25333352..","..23433432..","...233332...","..21111112..",".2111111172.","..21111172..","...2222.7...","...2..2.7...","...2..2.666.","........666."] },
+    { id:'blower', name:'Blower', lvl:30, px:["....2222....","...255552...","..25333352..","..23433432..","...233332...","..21111112..",".211111112..","..2111112777","...22222.77.","...2..2..7..","...2..2.....","............"] },
+    { id:'tractor', name:'Tractor', lvl:40, px:["............","....22222...","....21112...","....21112...","..2222222...",".211111112..",".21111111222",".21111111112","222222222222",".2772...2772",".2772...2772","..22.....22."] },
+    { id:'dragon', name:'Dragon', lvl:60, fly:true, px:["............","..........2.",".2.......252","2522....2552","255522225552",".25111111552",".21111111112","..21111112..","..2.2..2.2..","...2....2...","............","............"] },
+    { id:'flyer', name:'Winged', lvl:80, fly:true, px:["...2....2...","..252..252..",".25552225552","..25333352..","..23433432..","...233332...","..21111112..",".2111111112.","..21111112..","...22..22...","............","............"] },
+    { id:'astro', name:'Spaceman', lvl:50, px:["....2222....","...244442...","..24444442..","..24433442..","..24444442..","...244442...","....2442....","..21111112..",".2111111112.",".2711111172.","..21111112..","...22..22..."] }
+  ];
+
+  const charById = id => CHARACTERS.find(c => c.id === id) || CHARACTERS[0];
+  const unlocked = c => (S.lvl || 1) >= c.lvl;
+
+  /** Grid to SVG. One rect per run of identical pixels, so the markup stays
+      small enough to sit in a map icon that moves every second. */
+  function charSvg(id, colour, size){ return pixelSvg(charById(id).px, colour, size); }
+
+  function pixelSvg(px, colour, size){
+    const n = px.length;
+    let r = '';
+    for (let y = 0; y < n; y++){
+      const row = px[y];
+      let x = 0;
+      while (x < row.length){
+        const ch = row[x];
+        if (ch === '.'){ x++; continue; }
+        let w = 1;
+        while (x + w < row.length && row[x+w] === ch) w++;
+        r += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="1" fill="' +
+             (ch === '1' ? colour : PAL[ch] || colour) + '"/>';
+        x += w;
+      }
+    }
+    return '<svg viewBox="0 0 12 12" width="' + size + '" height="' + size +
+           '" shape-rendering="crispEdges" aria-hidden="true">' + r + '</svg>';
+  }
+
+  function meIcon(){
+    const size = 34;
+    return L.divIcon({ className:'', iconSize:[size,size], iconAnchor:[size/2,size/2],
+      html:'<div class="me' + (charById(S.char || 'walk').fly ? ' fly' : '') + '" style="position:relative">' +
+            charSvg(S.char || 'walk', S.colour || palette()[0], size) + '</div>' });
+  }
+
+  function applyCharacter(){
+    if (meMarker) meMarker.setIcon(meIcon());
+    if (accCircle) accCircle.setStyle({ color: S.colour || palette()[0] });
+    document.documentElement.style.setProperty('--accent', S.colour || palette()[0]);
+  }
+
+  function renderPicker(){
+    const grid = $('pickChar');
+    grid.innerHTML = CHARACTERS.map(c => {
+      const open = unlocked(c);
+      return '<button type="button" class="pick' + (open ? '' : ' locked') + '" data-id="' + c.id +
+        '" aria-pressed="' + ((S.char || 'walk') === c.id) + '"' + (open ? '' : ' disabled') + '>' +
+        charSvg(c.id, open ? (S.colour || palette()[0]) : '#555b72', 30) +
+        '<span>' + (open ? c.name : 'Lv ' + c.lvl) + '</span></button>';
+    }).join('');
+    grid.onclick = e => {
+      const b = e.target.closest('button[data-id]');
+      if (!b || b.disabled) return;
+      S.char = b.dataset.id; save(); applyCharacter(); renderPicker();
+    };
+
+    const sw = $('pickColour');
+    sw.innerHTML = palette().map(c =>
+      '<button type="button" class="sw" data-c="' + c + '" style="background:' + c +
+      '" aria-pressed="' + ((S.colour || palette()[0]) === c) + '" aria-label="Colour"></button>').join('');
+    sw.onclick = e => {
+      const b = e.target.closest('button[data-c]');
+      if (!b) return;
+      S.colour = b.dataset.c; save(); applyCharacter(); renderPicker();
+    };
+  }
+
+  /** Called when the level changes: anything newly reachable is announced,
+      because an unlock nobody notices is not a reward. */
+  function announceUnlocks(before, after){
+    const fresh = CHARACTERS.filter(c => c.lvl > before && c.lvl <= after);
+    if (fresh.length) toast('Unlocked — ' + fresh.map(c => c.name).join(', '));
+  }
+
+
+  function renderModes(){
+    const g = $('pickMode');
+    g.innerHTML = MODES.map(m =>
+      '<button type="button" class="pick" data-m="' + m.id + '" aria-pressed="' + (S.mode === m.id) + '">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="' +
+      m.icon + '"/></svg><span>' + t(m.name, m.name) + '</span></button>').join('');
+    g.onclick = e => {
+      const b = e.target.closest('button[data-m]');
+      if (!b) return;
+      S.mode = b.dataset.m; prev = null; save(); renderModes(); updateStats();
+      toast(mode().name + ' — above ' + Math.round(mode().max * 3.6) + ' km/h nothing is revealed');
+    };
+  }
+
+  /** Steps only mean something on foot; a bike and a pool do not make them. */
+  const stepsToday = () => mode().steps
+    ? Math.round((S.days[today()] || 0) / ((S.stride || 75) / 100))
+    : null;
+
+  /** MET x kg x hours, with the hours taken from the distance at this mode's
+      own moderate pace rather than from how long the app was open. */
+  function kcalToday(){
+    const m = mode(), metres = S.days[today()] || 0;
+    const pace = { walk:1.35, run:2.8, bike:5.0, swim:0.9 }[m.id];
+    return Math.round(m.met * (S.kg || 70) * (metres / pace / 3600));
+  }
+
+
+  // ---------- what it is like outside ----------
+  // Google Maps has no weather to give; Open-Meteo does, free and with no
+  // key or account, which keeps this a page you can host anywhere. One call
+  // per quarter hour, and only once the app knows where you are.
+  let tempAt = 0;
+  async function updateTemp(lat, lng){
+    if (Date.now() - tempAt < 15 * 60 * 1000) return;
+    tempAt = Date.now();
+    try {
+      const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat.toFixed(3) +
+        '&longitude=' + lng.toFixed(3) + '&current=temperature_2m,apparent_temperature');
+      if (!r.ok) throw 0;
+      const j = await r.json();
+      const t = j.current && j.current.temperature_2m;
+      if (typeof t === 'number') $('sTemp').innerHTML = Math.round(t) + '<em>°C</em>';
+    } catch (_) {
+      // No signal, or the service is down. The dash stays; it is not news.
+      tempAt = 0;
+    }
+  }
+
+
+  // ---------- appearance ----------
+  // Okabe-Ito: eight colours chosen to stay distinguishable to the common
+  // forms of colour blindness. The default set is prettier; this one is
+  // readable, which matters more to the people who switch it on.
+  const COLOURS_SAFE = ['#E69F00','#56B4E9','#009E73','#F0E442','#0072B2','#D55E00','#CC79A7','#FFFFFF'];
+  const palette = () => (S.cbSafe ? COLOURS_SAFE : COLOURS);
+
+  const THEMES = [
+    { id:'dark',  name:'Dark',  icon:'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z' },
+    { id:'light', name:'Light', icon:'M12 4V2M12 22v-2M4 12H2M22 12h-2M6 6L4.5 4.5M19.5 19.5L18 18M6 18l-1.5 1.5M19.5 4.5L18 6M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z' },
+    { id:'auto',  name:'Auto',  icon:'M12 3a9 9 0 0 0 0 18zM12 3a9 9 0 0 1 0 18' },
+  ];
+
+  const prefersLight = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+
+  function applyAppearance(){
+    const root = document.documentElement;
+    const theme = S.theme === 'auto' ? (prefersLight() ? 'light' : 'dark') : S.theme;
+    root.dataset.theme = theme;
+    root.dataset.contrast = S.hiContrast ? 'high' : 'normal';
+    root.dataset.text = S.bigText ? 'large' : 'normal';
+    document.querySelector('meta[name="theme-color"]')
+      .setAttribute('content', theme === 'light' ? '#eceae4' : '#121628');
+    // A colour from the other palette would still be shown; move it across.
+    if (!palette().includes(S.colour)) S.colour = palette()[0];
+    applyCharacter();
+  }
+
+  const themeName = n => t(n, n);
+  function renderTheme(){
+    const g = $('pickTheme');
+    g.innerHTML = THEMES.map(t =>
+      '<button type="button" class="pick" data-t="' + t.id + '" aria-pressed="' + (S.theme === t.id) + '">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="' +
+      t.icon + '"/></svg><span>' + themeName(t.name) + '</span></button>').join('');
+    g.onclick = e => {
+      const b = e.target.closest('button[data-t]');
+      if (!b) return;
+      S.theme = b.dataset.t; save(); applyAppearance(); renderTheme();
+    };
+  }
+
+
+  // ---------- language ----------
+  // Greek is the default: this is a Cypriot app, and the browser's locale is
+  // never allowed to decide. The player's own choice is, and it is kept.
+  const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο"} };
+  /** Falls back to the English already written into the markup. */
+  const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
+
+  function applyLang(){
+    document.documentElement.lang = S.lang;
+    for (const el of document.querySelectorAll('[data-i18n]')){
+      // The English in the markup is the fallback, so it is captured once
+      // before anything overwrites it.
+      if (!el.dataset.en){
+        el.dataset.en = (el.firstChild && el.firstChild.nodeType === 3)
+          ? el.firstChild.nodeValue : el.textContent;
+      }
+      const v = t(el.dataset.i18n, el.dataset.en);
+      if (el.firstChild && el.firstChild.nodeType === 3) el.firstChild.nodeValue = v;
+      else el.textContent = v;
+    }
+    if (typeof watchId !== 'undefined' && watchId !== null) $('go').textContent = t('stop', 'Stop');
+  }
+
+  function renderLang(){
+    const g = $('pickLang');
+    g.innerHTML = LANGS.map(l =>
+      '<button type="button" class="pick" data-l="' + l.id + '" aria-pressed="' +
+      (S.lang === l.id) + '"><span>' + l.name + '</span></button>').join('');
+    g.onclick = e => {
+      const b = e.target.closest('button[data-l]');
+      if (!b) return;
+      S.lang = b.dataset.l; save();
+      applyLang(); renderLang(); renderModes(); renderTheme(); renderPicker();
+    };
+  }
+
+
+  // ---------- experience, milestones and company ----------
+  // Experience is the one currency: ground opened, distance covered and
+  // saying hello. Levels come from it, and characters come from levels, so
+  // everything in the game is paid for by moving.
+  const XP_PER_CELL = 1, XP_PER_10M = 1, XP_PER_GREET = 25;
+  const xpFor = lvl => (lvl - 1) * (lvl - 1) * 600;
+  const lvlFromXp = xp => Math.floor(Math.sqrt(Math.max(xp, 0) / 600)) + 1;
+
+  // All-time kilometres worth announcing. Close together early, so the first
+  // week feels like it is going somewhere, then further apart.
+  const MILESTONES = [1, 3, 5, 7, 10, 15, 20, 25, 30, 42, 50, 75, 100, 150, 200, 300, 500];
+
+  function checkMilestones(){
+    const km = S.total / 1000;
+    const done = S.miles || (S.miles = {});
+    for (const m of MILESTONES){
+      if (km < m || done[m]) continue;
+      done[m] = Date.now();
+      toast((S.lang === 'en' ? 'Achievement unlocked — ' : 'Επίτευγμα — ') + m + ' km');
+    }
+  }
+
+  const ANIMALS = {"cat":["............","..2......2..",".252....252.",".25552222552",".21111111112",".21411114112",".21111111112","..2.2..2.2..","..2.2..2.2..","..........2.",".........2..","............"],"bird":["............","............","....2222....","...211112...","..21141112..","..21111112..","..21111112..","...2111122..","....2222....","....2..2....","....2..2....","............"],"goat":["............","..2.....2...","..52...25...","..25222552..",".2111111112.",".2141111412.",".2111111112.","..2.2..2.2..","..2.2..2.2..","............","............","............"],"turtle":["............","............","....222222..","..2211111112",".21111111112",".21111111112","..2222222222","..2.2..2.2..","..2.2..2.2..","............","............","............"],"hedgie":["............","............","...2.2.2....","..2121212...",".2111111112.",".2111111132.","..21111132..","...222222...","....2..2....","............","............","............"]};
+  const ANIMAL_IDS = Object.keys(ANIMALS);
+  const ANIMAL_COLOURS = ['#c98b4b','#8fb3d9','#d9d2c3','#7fa86a','#c47b9c'];
+  const GREET_RADIUS = 30;   // metres you must be within to say hello
+  const MAX_FRIENDS = 3;
+
+  let friends = [];          // { id, lat, lng, kind, colour, marker }
+
+  /**
+   * Company only ever appears on ground already uncovered.
+   *
+   * That is a safety rule, not a design one: the game must never be a reason
+   * to step into a road, a field or the sea. If you have already walked it,
+   * it is somewhere you can be.
+   */
+  function spawnFriends(){
+    if (friends.length >= MAX_FRIENDS) return;
+    const keys = Object.keys(S.cells);
+    if (keys.length < 40) return;        // too little known ground to be sure
+    const here = S.last;
+    if (!here) return;
+
+    for (let tries = 0; tries < 40 && friends.length < MAX_FRIENDS; tries++){
+      const k = keys[(Math.random() * keys.length) | 0];
+      const comma = k.indexOf(',');
+      const i = +k.slice(0, comma), j = +k.slice(comma + 1);
+      const lat = (i + .5) * CELL, lng = (j + .5) * lngStep(i);
+      const d = dist(here[0], here[1], lat, lng);
+      // Near enough to walk to, far enough to be worth the walk.
+      if (d < 60 || d > 400) continue;
+      if (friends.some(f => dist(f.lat, f.lng, lat, lng) < 80)) continue;
+
+      const kind = ANIMAL_IDS[(Math.random() * ANIMAL_IDS.length) | 0];
+      const colour = ANIMAL_COLOURS[(Math.random() * ANIMAL_COLOURS.length) | 0];
+      const f = { id: k + ':' + Date.now(), lat, lng, kind, colour };
+      f.marker = L.marker([lat, lng], {
+        icon: L.divIcon({ className:'', iconSize:[30,30], iconAnchor:[15,15],
+          html:'<div class="friend">' + pixelSvg(ANIMALS[kind], colour, 30) + '</div>' }),
+        zIndexOffset: 900,
+      }).addTo(map);
+      f.marker.on('click', () => greet(f));
+      friends.push(f);
+    }
+  }
+
+  function greet(f){
+    const here = S.last;
+    const near = here && dist(here[0], here[1], f.lat, f.lng) <= GREET_RADIUS;
+    if (!near){
+      toast(S.lang === 'en' ? 'Too far away — walk closer to say hello'
+        : 'Πολύ μακριά — πλησίασε για να χαιρετήσεις');
+      return;
+    }
+    addXp(XP_PER_GREET);
+    map.removeLayer(f.marker);
+    friends = friends.filter(x => x !== f);
+    toast((S.lang === 'en' ? 'Hello! +' : 'Γεια! +') + XP_PER_GREET + ' XP');
+    save();
+  }
+
+  function addXp(n){
+    S.xp = (S.xp || 0) + n;
+  }
+
   function placeMe(lat,lng,acc){
-    if (!meMarker){ meMarker = L.marker([lat,lng],{icon:meIcon, interactive:false, zIndexOffset:1000}).addTo(map);
-      accCircle = L.circle([lat,lng],{radius:acc, color:'#ff8a3d', weight:1, fillOpacity:.08, interactive:false}).addTo(map); }
+    if (!meMarker){ meMarker = L.marker([lat,lng],{icon:meIcon(), interactive:false, zIndexOffset:1000}).addTo(map);
+      accCircle = L.circle([lat,lng],{radius:acc, color:S.colour||COLOURS[0], weight:1, fillOpacity:.08, interactive:false}).addTo(map); }
     meMarker.setLatLng([lat,lng]); accCircle.setLatLng([lat,lng]).setRadius(Math.min(acc,200));
   }
 
@@ -245,6 +717,8 @@ input[type=range]{accent-color:var(--accent);width:140px}
     if (!map) return;
     setGps(acc <= 35 ? 'on' : 'weak', simulated ? 'Test mode' : (acc <= 35 ? 'GPS ±'+Math.round(acc)+'m' : 'Weak GPS ±'+Math.round(acc)+'m'));
     placeMe(lat, lng, acc);
+    updateTemp(lat, lng);
+    spawnFriends();
     if (follow && !simulated) map.panTo([lat,lng], { animate:false });
     if (acc > 40) return;
     let newCells = 0;
@@ -252,11 +726,15 @@ input[type=range]{accent-color:var(--accent);width:140px}
     else {
       const d = dist(prev.lat, prev.lng, lat, lng), dt = Math.max((t - prev.t)/1000, .5);
       if (d < 4) return;
-      if (!simulated && d/dt > 7){ prev = {lat,lng,t}; setGps('weak','Too fast – paused'); return; } // in a car, skip
+      // Too fast for this mode: a car, a bus, a boat. Nothing is revealed
+      // and nothing is counted — staying active is the point.
+      if (!simulated && d/dt > mode().max){ prev = {lat,lng,t}; setGps('weak','Too fast for ' + mode().name.toLowerCase() + ' – paused'); return; }
       const steps = Math.max(1, Math.ceil(d/8));
       for (let s=1;s<=steps;s++) newCells += reveal(prev.lat+(lat-prev.lat)*s/steps, prev.lng+(lng-prev.lng)*s/steps);
       S.total += d; const day = today(); S.days[day] = (S.days[day]||0) + d;
       if (newCells) S.dayCells[day] = (S.dayCells[day]||0) + newCells;
+      addXp(newCells * XP_PER_CELL + Math.floor(d / 10) * XP_PER_10M);
+      checkMilestones();
     }
     prev = {lat,lng,t}; S.last = [lat,lng];
     if (newCells) redraw();
@@ -381,12 +859,18 @@ input[type=range]{accent-color:var(--accent);width:140px}
     $('sArea').innerHTML = (area < 10 ? area.toFixed(2) : area.toFixed(1)) + '<em>km²</em>';
     $('sToday').innerHTML = fmtKm(S.days[today()]||0) + '<em>km</em>';
     $('sTotal').innerHTML = fmtKm(S.total) + '<em>km</em>';
-    const lvl = Math.floor(Math.sqrt(S.count/400)) + 1, lo = (lvl-1)**2*400, hi = lvl**2*400;
+    const st = stepsToday();
+    $('sSteps').textContent = st === null ? '—' : st.toLocaleString('en-GB');
+    $('sKcal').innerHTML = kcalToday() + '<em>kcal</em>';
+    const xp = S.xp || 0;
+    const lvl = lvlFromXp(xp), lo = xpFor(lvl), hi = xpFor(lvl + 1);
     $('lvl').textContent = 'Lv ' + lvl;
-    $('bar').style.width = ((S.count-lo)/(hi-lo)*100).toFixed(1)+'%';
-    $('lvlNext').textContent = Math.round((S.count-lo)/(hi-lo)*100) + '%';
-    if (lvl > (S.lvl||1)) toast('Level up! You reached level ' + lvl);
+    $('bar').style.width = ((xp-lo)/(hi-lo)*100).toFixed(1)+'%';
+    $('lvlNext').textContent = (xp - lo) + ' / ' + (hi - lo) + ' XP';
+    if (lvl > (S.lvl||1)){ toast('Level up! You reached level ' + lvl); announceUnlocks(S.lvl||1, lvl); }
+    const lvlChanged = lvl !== (S.lvl||1);
     S.lvl = lvl;
+    if (lvlChanged && $('sheet').classList.contains('open')) renderPicker();
     // Levels are awarded above, so badges are checked after — otherwise the
     // level badges would always lag a fix behind.
     const d = derived();
@@ -407,8 +891,8 @@ input[type=range]{accent-color:var(--accent);width:140px}
   $('quests').onclick = () => openQuests(true);
   $('scrim').onclick = () => { openSheet(false); openQuests(false); };
 
-  $('radius').value = S.radius; $('radiusVal').textContent = S.radius+'m';
-  $('radius').oninput = e => { S.radius = +e.target.value; $('radiusVal').textContent = S.radius+'m'; save(); };
+  $('kg').value = S.kg; $('kg').onchange = e => { S.kg = Math.min(250, Math.max(30, +e.target.value || 70)); e.target.value = S.kg; save(); updateStats(); };
+  $('stride').value = S.stride; $('stride').onchange = e => { S.stride = Math.min(110, Math.max(40, +e.target.value || 75)); e.target.value = S.stride; save(); updateStats(); };
   $('wake').checked = S.wake; $('wake').onchange = e => { S.wake = e.target.checked; save(); if (S.wake && watchId!==null) lockScreen(); };
   $('test').checked = S.test; $('test').onchange = e => { S.test = e.target.checked; prev = null; save();
     if (S.test){ openSheet(false); toast('Test mode on: tap the map to walk'); setGps('on','Test mode'); } else if (watchId===null) setGps('','GPS off'); };
@@ -423,12 +907,195 @@ input[type=range]{accent-color:var(--accent);width:140px}
   let resetArmed = false;
   $('reset').onclick = () => { const b = $('reset');
     if (!resetArmed){ resetArmed = true; b.textContent = 'Tap again to reset'; b.classList.add('confirm'); setTimeout(()=>{ resetArmed=false; b.textContent='Reset'; b.classList.remove('confirm'); }, 3000); return; }
-    S.cells = {}; S.count = 0; S.total = 0; S.days = {}; S.dayCells = {}; S.lvl = 1; prev = null; save(); updateStats(); redraw();
+    // Experience, badges and milestones are kept: those walks happened.
+    S.cells = {}; S.count = 0; S.total = 0; S.days = {}; S.dayCells = {}; prev = null; save(); updateStats(); redraw();
     resetArmed = false; b.textContent = 'Reset'; b.classList.remove('confirm'); toast('Map reset'); };
 
   updateStats(); redraw();
-  if (S.last) placeMe(S.last[0], S.last[1], 15);
-})();
+  if (S.last){ placeMe(S.last[0], S.last[1], 15); updateTemp(S.last[0], S.last[1]); }
+
+  // ---------- who is signed in ----------
+  renderLang();
+  applyLang();
+  renderModes();
+  renderTheme();
+  renderPicker();
+  applyAppearance();
+
+  // ---------- appearance and zen controls ----------
+  $('hiC').checked = !!S.hiContrast;
+  $('hiC').onchange = e => { S.hiContrast = e.target.checked; save(); applyAppearance(); };
+  $('bigT').checked = !!S.bigText;
+  $('bigT').onchange = e => { S.bigText = e.target.checked; save(); applyAppearance(); setTimeout(() => map.invalidateSize(), 250); };
+  $('cbSafe').checked = !!S.cbSafe;
+  $('cbSafe').onchange = e => { S.cbSafe = e.target.checked; save(); applyAppearance(); renderPicker(); };
+
+  if (window.matchMedia) {
+    // Only follows the system while the player asked it to.
+    window.matchMedia('(prefers-color-scheme: light)')
+      .addEventListener('change', () => { if (S.theme === 'auto') applyAppearance(); });
+  }
+
+  $('zen').onclick = () => {
+    document.body.classList.add('zen');
+    openSheet(false); openQuests(false);
+  };
+  // Any tap on the map brings the panels back, so there is no hidden control
+  // to hunt for on a phone.
+  map.on('click', () => document.body.classList.remove('zen'));
+
+  $('who').hidden = false;
+  $('whoEmail').textContent = user.email || 'Signed in';
+  $('signout').onclick = () => sync.signOut();
+};
+</script>
+<script type="module">
+/**
+ * Accounts, by invitation only.
+ *
+ * Firebase Auth decides who gets in; there is no sign-up form, because
+ * accounts are created by hand in the Firebase console. Each walker's map
+ * lives at users/{uid} in Firestore, and the security rules let an account
+ * read and write only its own document.
+ *
+ * The map still works offline: local storage stays the source the app reads,
+ * and this module only seeds it on sign-in and pushes it back on save.
+ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut,
+  onAuthStateChanged, sendPasswordResetEmail, setPersistence, browserLocalPersistence,
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc,
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const $ = (id) => document.getElementById(id);
+const KEY = "uncover.v1";
+const fail = (msg) => {
+  $("gErr").textContent = msg;
+  $("gBtn").disabled = false;
+  $("gBtn").textContent = document.querySelector('#gTabs .on')?.dataset.mode === "up" ? "Create account" : "Sign in";
+};
+
+let config = null;
+try {
+  config = (await import("./firebase-config.js")).firebaseConfig;
+} catch (_) {
+  // Deployed before the Firebase project exists. Rather than show a door
+  // that opens onto nothing, run the game on this device alone: the map is
+  // kept in local storage and simply does not follow you anywhere yet.
+  document.getElementById("gate").remove();
+  window.__startUncover(
+    { email: "" },
+    { push(){}, signOut(){ try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); } },
+  );
+}
+
+if (config) {
+  const app = initializeApp(config);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  await setPersistence(auth, browserLocalPersistence).catch(() => {});
+
+  let started = false;
+  let pushT = 0;
+
+  const sync = {
+    /** Debounced so a walk writes once every few seconds, not once a step. */
+    push(json) {
+      const user = auth.currentUser;
+      if (!user) return;
+      clearTimeout(pushT);
+      pushT = setTimeout(() => {
+        setDoc(doc(db, "users", user.uid), { state: json, at: Date.now() }).catch(() => {});
+      }, 4000);
+    },
+    signOut() {
+      // The next account must not inherit this one's map.
+      try { localStorage.removeItem(KEY); } catch (_) {}
+      signOut(auth).then(() => location.reload());
+    },
+  };
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user || started) return;
+    started = true;
+
+    // Whichever copy has opened more ground wins. Walking on a second phone
+    // while offline should not erase the first one's map.
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (!snap.exists()) {
+        // First sign-in. `plan` is what the paywall will read once there is
+        // one; everyone is free until then.
+        await setDoc(doc(db, "users", user.uid), { plan: "free", since: Date.now() }, { merge: true });
+      }
+      const remote = snap.exists() ? snap.data().state : null;
+      if (remote) {
+        const localRaw = localStorage.getItem(KEY);
+        const size = (raw) => { try { return Object.keys(JSON.parse(raw).cells || {}).length; } catch (_) { return -1; } };
+        if (!localRaw || size(remote) >= size(localRaw)) localStorage.setItem(KEY, remote);
+      }
+    } catch (_) {
+      // Offline, or rules refused: carry on with whatever is on this phone.
+    }
+
+    $("gate").remove();
+    window.__startUncover(user, sync);
+  });
+
+  let mode = "in";
+  $("gTabs").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-mode]");
+    if (!btn) return;
+    mode = btn.dataset.mode;
+    for (const b of $("gTabs").children) b.classList.toggle("on", b === btn);
+    $("gBtn").textContent = mode === "in" ? "Sign in" : "Create account";
+    $("gPass").autocomplete = mode === "in" ? "current-password" : "new-password";
+    $("gPass").placeholder = mode === "in" ? "Password" : "Password — 6 characters or more";
+    $("gReset").hidden = mode !== "in";
+    $("gErr").textContent = "";
+  });
+
+  $("gateForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    $("gErr").textContent = "";
+    $("gErr").style.color = "";
+    $("gBtn").disabled = true;
+    $("gBtn").textContent = mode === "in" ? "Signing in…" : "Creating…";
+    const email = $("gEmail").value.trim(), pass = $("gPass").value;
+    try {
+      if (mode === "in") await signInWithEmailAndPassword(auth, email, pass);
+      else await createUserWithEmailAndPassword(auth, email, pass);
+    } catch (err) {
+      const code = String(err.code || "");
+      fail(
+        code.includes("too-many-requests") ? "Too many tries. Wait a minute." :
+        code.includes("network") ? "No connection." :
+        code.includes("email-already-in-use") ? "That email already has an account — sign in instead." :
+        code.includes("weak-password") ? "Six characters or more, please." :
+        code.includes("invalid-email") ? "That does not look like an email address." :
+        code.includes("operation-not-allowed") ? "New accounts are closed right now." :
+        mode === "in" ? "That email and password do not match an account." :
+        "Could not create that account.",
+      );
+    }
+  });
+
+  $("gReset").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = $("gEmail").value.trim();
+    if (!email) { $("gErr").textContent = "Put your email in first."; return; }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      $("gErr").style.color = "var(--muted)";
+      $("gErr").textContent = "If that account exists, a reset link is on its way.";
+    } catch (_) {
+      $("gErr").textContent = "Could not send that.";
+    }
+  });
+}
 </script>
 </body>
 </html>
