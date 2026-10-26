@@ -117,6 +117,11 @@ body.zen .zen-hint{opacity:.7}
   color:var(--accent-ink);font-family:var(--display);font-weight:800;font-size:16.5px;letter-spacing:-.01em;
   cursor:pointer;box-shadow:0 6px 20px rgba(255,138,61,.32);transition:transform .12s}
 #go:active{transform:scale(.97)}
+/* Left alone for a while, the controls step back rather than sit on top of
+   the map. Any touch brings them straight back to full strength. */
+.bottom,.float,.top{transition:opacity .5s ease}
+body.dim .bottom,body.dim .float{opacity:.32}
+body.dim .top{opacity:.55}
 #go.stop{background:var(--text);color:var(--fog);box-shadow:none}
 
 /* A quiet corner button, out of the way of the thumbs. */
@@ -192,6 +197,21 @@ input[type=range]{accent-color:var(--accent);width:140px}
 .bdg b{display:block;font-family:var(--display);font-weight:800;font-size:12px;line-height:1.2}
 .bdg small{display:block;color:var(--muted);font-size:10px;line-height:1.3;margin-top:2px}
 /* Who you are on the map: a character and a colour. */
+/* The card you get by tapping yourself: who you are, and how far up. */
+.me-card{text-align:center}
+.me-art{display:grid;place-items:center;width:104px;height:104px;margin:2px auto 10px;border-radius:50%;
+  background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.10), rgba(0,0,0,.18));border:1px solid var(--line)}
+.me-card h2{margin:0 0 10px}
+.me-lv{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:12px;color:var(--muted)}
+.me-lv #meLv{font-family:var(--display);font-weight:800;font-size:15px;color:var(--text);flex:none}
+.me-lv .bar{flex:1;height:6px;border-radius:6px;background:rgba(127,127,127,.22);overflow:hidden}
+.me-lv .bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:6px;transition:width .4s}
+.me-lv #meXp{flex:none;font-variant-numeric:tabular-nums}
+.me-next{margin:14px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.macro{background:var(--panel);padding:12px 8px}
+.macro .k{display:block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.macro .v{display:block;margin-top:3px;font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em}
 .pickgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
 .pick{display:grid;place-items:center;gap:6px;padding:12px 6px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font:500 11px var(--body)}
 .pick svg{width:30px;height:30px}
@@ -281,6 +301,16 @@ input[type=range]{accent-color:var(--accent);width:140px}
 <div class="zen-hint" data-i18n="zenHint">Tap the map to bring the panels back</div>
 <div class="toast" id="toast"></div>
 <div class="scrim" id="scrim"></div>
+<section class="sheet" id="mesheet" aria-label="Your character">
+  <div class="me-card">
+    <div class="me-art" id="meArt"></div>
+    <h2 id="meName">&nbsp;</h2>
+    <p class="me-lv"><span id="meLv">Lv 1</span><span class="bar"><i id="meBar"></i></span><span id="meXp"></span></p>
+    <div class="macros" id="meStats"></div>
+    <p class="me-next" id="meNext"></p>
+  </div>
+</section>
+
 <section class="sheet" id="qsheet" aria-label="Challenges and badges">
   <h2 data-i18n="challenges">Challenges</h2>
   <div id="qlist"></div>
@@ -950,8 +980,21 @@ window.__startUncover = (user, sync) => {
     S.xp = (S.xp || 0) + n;
   }
 
+
+  // The button row owns the bottom of the screen, so centring on the player
+  // would park them underneath it. Everything that recentres goes through
+  // here, which lifts the view so the character sits in clear space.
+  const LIFT = 58;
+  function centreOn(latlng, zoom, animate){
+    const z = zoom || map.getZoom();
+    const pt = map.project(latlng, z).add([0, LIFT]);
+    map.setView(map.unproject(pt, z), z, { animate: animate !== false });
+  }
+
   function placeMe(lat,lng,acc){
-    if (!meMarker){ meMarker = L.marker([lat,lng],{icon:meIcon(), interactive:false, zIndexOffset:1000}).addTo(map);
+    if (!meMarker){
+      meMarker = L.marker([lat,lng],{icon:meIcon(), interactive:true, keyboard:false, zIndexOffset:1000}).addTo(map);
+      meMarker.on('click', ev => { L.DomEvent.stop(ev); openMe(true); });
       accCircle = L.circle([lat,lng],{radius:acc, color:S.colour||COLOURS[0], weight:1, fillOpacity:.08, interactive:false}).addTo(map); }
     meMarker.setLatLng([lat,lng]); accCircle.setLatLng([lat,lng]).setRadius(Math.min(acc,200));
   }
@@ -962,7 +1005,7 @@ window.__startUncover = (user, sync) => {
     placeMe(lat, lng, acc);
     updateTemp(lat, lng);
     spawnMonsters();
-    if (follow && !simulated) map.panTo([lat,lng], { animate:false });
+    if (follow && !simulated) centreOn(L.latLng(lat, lng), null, false);
     if (acc > 40) return;
     let newCells = 0;
     if (!prev){ newCells += reveal(lat,lng); }
@@ -1068,6 +1111,39 @@ window.__startUncover = (user, sync) => {
     return Boolean(earned);
   }
 
+
+  /** The card you get by tapping your own character. */
+  function renderMe(){
+    const c = charById(S.char || 'walk');
+    const colour = S.colour || palette()[0];
+    $('meArt').innerHTML = charSvg(c.id, colour, 88);
+    $('meName').textContent = t(c.name, c.name);
+
+    const xp = S.xp || 0, lvl = S.lvl || 1, lo = xpFor(lvl), hi = xpFor(lvl + 1);
+    $('meLv').textContent = 'Lv ' + lvl;
+    $('meBar').style.width = (((xp - lo) / (hi - lo)) * 100).toFixed(1) + '%';
+    $('meXp').textContent = (xp - lo) + ' / ' + (hi - lo);
+
+    const d = derived();
+    const cell = (k, v) => '<div class="macro"><span class="k"></span><span class="v">' + v + '</span></div>';
+    $('meStats').innerHTML =
+      cell(0, fmtKm(S.total) + ' km') +
+      cell(1, (S.kills || 0)) +
+      cell(2, Object.keys(S.badges || {}).length + '/' + BADGES.length);
+    const keys = S.lang === 'en'
+      ? ['Walked', 'Defeated', 'Badges']
+      : ['Απόσταση', 'Νικημένα', 'Διακριτικά'];
+    [...$('meStats').querySelectorAll('.k')].forEach((el, i) => { el.textContent = keys[i]; });
+
+    // What the next level actually buys, so the climb has a reason.
+    const next = CHARACTERS.filter(x => x.lvl > lvl).sort((a, b) => a.lvl - b.lvl)[0];
+    $('meNext').textContent = next
+      ? (S.lang === 'en'
+          ? 'Next to unlock: ' + next.name + ' at level ' + next.lvl
+          : 'Επόμενο: ' + next.name + ' στο επίπεδο ' + next.lvl)
+      : (S.lang === 'en' ? 'Every character unlocked.' : 'Κέρδισες όλους τους χαρακτήρες.');
+  }
+
   function renderQuests(d){
     $('qlist').innerHTML = CHALLENGES.map(q => {
       const have = q.get(d), done = have >= q.target;
@@ -1125,8 +1201,10 @@ window.__startUncover = (user, sync) => {
 
   $('go').onclick = () => { watchId === null ? start() : stop(); };
   $('center').onclick = () => { follow = true; $('center').classList.add('active');
-    if (meMarker) map.setView(meMarker.getLatLng(), Math.max(map.getZoom(),16));
-    else navigator.geolocation && navigator.geolocation.getCurrentPosition(p => map.setView([p.coords.latitude,p.coords.longitude],16), () => toast('Location not available'), {enableHighAccuracy:true}); };
+    if (meMarker) centreOn(meMarker.getLatLng(), Math.max(map.getZoom(), 16));
+    else navigator.geolocation && navigator.geolocation.getCurrentPosition(
+      p => centreOn(L.latLng(p.coords.latitude, p.coords.longitude), 16),
+      () => toast('Location not available'), { enableHighAccuracy:true }); };
   $('layers').checked = !!S.sat;
   $('layers').onchange = e => {
     S.sat = e.target.checked;
@@ -1135,11 +1213,16 @@ window.__startUncover = (user, sync) => {
     save(); redraw();
   };
   const openSheet = o => { $('sheet').classList.toggle('open',o); $('scrim').classList.toggle('open',o); };
+  const openMe = o => {
+    $('mesheet').classList.toggle('open', o);
+    $('scrim').classList.toggle('open', o);
+    if (o) renderMe();
+  };
   const openQuests = o => { $('qsheet').classList.toggle('open',o); $('scrim').classList.toggle('open',o);
     if (o) renderQuests(derived()); };
   $('menu').onclick = () => openSheet(true);
   $('quests').onclick = () => openQuests(true);
-  $('scrim').onclick = () => { openSheet(false); openQuests(false); };
+  $('scrim').onclick = () => { openSheet(false); openQuests(false); openMe(false); };
 
   $('kg').value = S.kg; $('kg').onchange = e => { S.kg = Math.min(250, Math.max(30, +e.target.value || 70)); e.target.value = S.kg; save(); updateStats(); };
   $('stride').value = S.stride; $('stride').onchange = e => { S.stride = Math.min(110, Math.max(40, +e.target.value || 75)); e.target.value = S.stride; save(); updateStats(); };
@@ -1162,7 +1245,7 @@ window.__startUncover = (user, sync) => {
     resetArmed = false; b.textContent = 'Reset'; b.classList.remove('confirm'); toast('Map reset'); };
 
   updateStats(); redraw();
-  if (S.last){ placeMe(S.last[0], S.last[1], 15); updateTemp(S.last[0], S.last[1]); }
+  if (S.last){ placeMe(S.last[0], S.last[1], 15); centreOn(L.latLng(S.last[0], S.last[1]), null, false); updateTemp(S.last[0], S.last[1]); }
 
   // ---------- who is signed in ----------
   renderLang();
@@ -1197,9 +1280,21 @@ window.__startUncover = (user, sync) => {
 
   const setZen = on => {
     document.body.classList.toggle('zen', on);
-    if (on){ openSheet(false); openQuests(false); }
+    if (on){ openSheet(false); openQuests(false); openMe(false); }
   };
   $('zen').onclick = () => setZen(!document.body.classList.contains('zen'));
+
+  // Idle fade. Six seconds of nothing and the controls go quiet; any touch,
+  // key or map movement wakes them.
+  let dimT;
+  function wake(){
+    document.body.classList.remove('dim');
+    clearTimeout(dimT);
+    dimT = setTimeout(() => document.body.classList.add('dim'), 6000);
+  }
+  for (const ev of ['pointerdown','keydown','wheel']) window.addEventListener(ev, wake, { passive:true });
+  map.on('move zoom', wake);
+  wake();
 
   // Tapping the map is the obvious way to ask for just the map, so it
   // toggles the panels — except in test mode, where a tap is a step.
