@@ -58,42 +58,66 @@ html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-fami
 @keyframes shade{0%,100%{width:20px;opacity:.45}50%{width:14px;opacity:.3}}
 @media (prefers-reduced-motion: reduce){.me.fly,.me.fly::after,.friend{animation:none}}
 /* Just the map and the character. One tap anywhere brings the rest back. */
-body.zen .top,body.zen .bottom,body.zen .who{opacity:0;pointer-events:none;transition:opacity .25s}
+body.zen .top,body.zen .bottom,body.zen .who,body.zen .float{opacity:0;pointer-events:none;transition:opacity .25s}
 body.zen .leaflet-control-attribution{opacity:.35}
 .zen-hint{position:fixed;z-index:650;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .4s;pointer-events:none}
 body.zen .zen-hint{opacity:.7}
 .pick.locked{opacity:.45;cursor:not-allowed}
 .pick.locked span{color:var(--muted)}
 
-.top{position:fixed;z-index:600;top:calc(env(safe-area-inset-top,0px) + 12px);left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));
-  background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:14px 16px 12px}
-.brand{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.brand b{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em}
-.brand b span{color:var(--accent)}
-.gps{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;letter-spacing:.04em;text-transform:uppercase}
-.gps i{width:7px;height:7px;border-radius:50%;background:#666}
-.gps.on i{background:var(--good);box-shadow:0 0 0 4px rgba(95,211,154,.18)}
+/* ---------- the bar at the top ----------
+   One line by default: level, progress, today, temperature. Everything else
+   is behind a tap, because on a phone the map is what is worth the space. */
+.top{position:fixed;z-index:600;top:calc(env(safe-area-inset-top,0px) + 10px);
+  left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));
+  background:var(--panel);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+  border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  box-shadow:0 6px 24px rgba(0,0,0,.28)}
+.hud{display:flex;align-items:center;gap:10px;width:100%;padding:11px 14px;
+  background:none;border:0;color:var(--text);font:inherit;cursor:pointer;text-align:left}
+.hud .lv{font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:-.01em;flex:none;min-width:42px}
+.hud .bar{flex:1;height:5px;border-radius:5px;background:rgba(127,127,127,.22);overflow:hidden;min-width:28px}
+.hud .bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:5px;transition:width .4s}
+.hud-n{flex:none;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:-.01em}
+.hud-n em{font-style:normal;font-size:10px;color:var(--muted);font-family:var(--body);font-weight:500;margin-left:1px}
+.chev{flex:none;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s}
+.top.open .chev{transform:rotate(-135deg) translate(-2px,-2px)}
+
+.more{padding:0 14px 13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px 6px}
+.stat small{display:block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:1px}
+.stat strong{font-family:var(--display);font-weight:800;font-size:19px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}
+.stat strong em{font-style:normal;font-size:10px;color:var(--muted);font-family:var(--body);font-weight:500;margin-left:1px}
+.hud-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:11px;
+  padding-top:9px;border-top:1px solid var(--line);font-size:10px;color:var(--muted);letter-spacing:.06em}
+.gps{display:flex;align-items:center;gap:6px;text-transform:uppercase}
+.gps i{width:6px;height:6px;border-radius:50%;background:#6b7080;flex:none}
+.gps.on i{background:var(--good);box-shadow:0 0 0 3px rgba(95,211,154,.2)}
 .gps.weak i{background:#f2c14e}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat small{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.stat strong{font-family:var(--display);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.stat strong em{font-style:normal;font-size:12px;color:var(--muted);font-family:var(--body);font-weight:500;margin-left:2px}
-.lvl{margin-top:10px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
-.lvl b{color:var(--text);font-family:var(--display)}
-.bar{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
-.bar div{height:100%;width:0;background:var(--accent);transition:width .4s}
 
-.bottom{position:fixed;z-index:600;left:0;right:0;bottom:0;padding:12px max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px + var(--banner)) max(12px,env(safe-area-inset-left,0px));
+/* ---------- the controls ---------- */
+.bottom{position:fixed;z-index:600;left:0;right:0;bottom:0;
+  padding:12px max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px + var(--banner)) max(12px,env(safe-area-inset-left,0px));
   display:flex;gap:10px;align-items:center;justify-content:center}
-.round{flex:none;width:54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--text);display:grid;place-items:center;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);cursor:pointer}
-.round svg{width:22px;height:22px}
+.round{flex:none;width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:var(--panel);
+  color:var(--text);display:grid;place-items:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.22);transition:transform .12s}
+.round:active{transform:scale(.93)}
+.round svg{width:21px;height:21px}
 .round.active{color:var(--accent)}
-#go{flex:1 1 auto;max-width:220px;height:60px;border-radius:30px;border:0;background:var(--accent);color:var(--accent-ink);font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.01em;cursor:pointer;box-shadow:0 8px 24px rgba(255,138,61,.35)}
+#go{flex:1 1 auto;max-width:200px;height:56px;border-radius:28px;border:0;background:var(--accent);
+  color:var(--accent-ink);font-family:var(--display);font-weight:800;font-size:16.5px;letter-spacing:-.01em;
+  cursor:pointer;box-shadow:0 6px 20px rgba(255,138,61,.32);transition:transform .12s}
+#go:active{transform:scale(.97)}
 #go.stop{background:var(--text);color:var(--fog);box-shadow:none}
-button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-.toast{position:fixed;z-index:700;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px + var(--banner));transform:translateX(-50%);background:var(--panel);border:1px solid var(--line);padding:10px 14px;border-radius:14px;font-size:13px;max-width:calc(100% - 32px);text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;backdrop-filter:blur(14px)}
-.toast.show{opacity:1}
+/* A quiet corner button, out of the way of the thumbs. */
+.float{position:fixed;z-index:600;top:calc(env(safe-area-inset-top,0px) + 78px);right:max(10px,env(safe-area-inset-right,0px));
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--muted);
+  display:grid;place-items:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);cursor:pointer;opacity:.85}
+.float svg{width:17px;height:17px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 .sheet{position:fixed;z-index:800;inset:auto 0 0 0;background:#171b30;border-top:1px solid var(--line);border-radius:22px 22px 0 0;padding:18px max(18px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 20px) max(18px,env(safe-area-inset-left,0px));transform:translateY(105%);transition:transform .28s ease;max-height:80%;overflow:auto}
 .sheet.open{transform:none}
@@ -192,27 +216,36 @@ input[type=range]{accent-color:var(--accent);width:140px}
 
 <div id="map"></div>
 
-<header class="top">
-  <div class="brand"><b>Uncover<span>.</span></b><div class="gps" id="gps"><i></i><span id="gpsText">GPS off</span></div></div>
-  <div class="stats">
-    <div class="stat"><small data-i18n="revealed">Revealed</small><strong id="sArea">0<em>km²</em></strong></div>
-    <div class="stat"><small data-i18n="today">Today</small><strong id="sToday">0<em>km</em></strong></div>
-    <div class="stat"><small data-i18n="alltime">All time</small><strong id="sTotal">0<em>km</em></strong></div>
+<header class="top" id="top">
+  <button class="hud" id="hudToggle" aria-expanded="false" aria-controls="hudMore">
+    <span class="lv" id="lvl">Lv 1</span>
+    <span class="bar"><i id="bar"></i></span>
+    <span class="hud-n num" id="hudKm">0<em>km</em></span>
+    <span class="hud-n num" id="hudTemp">&mdash;</span>
+    <span class="chev" aria-hidden="true"></span>
+  </button>
+  <div class="more" id="hudMore" hidden>
+    <div class="stats">
+      <div class="stat"><small data-i18n="revealed">Revealed</small><strong id="sArea">0<em>km²</em></strong></div>
+      <div class="stat"><small data-i18n="today">Today</small><strong id="sToday">0<em>km</em></strong></div>
+      <div class="stat"><small data-i18n="alltime">All time</small><strong id="sTotal">0<em>km</em></strong></div>
+      <div class="stat"><small data-i18n="steps">Steps today</small><strong id="sSteps">0</strong></div>
+      <div class="stat"><small data-i18n="burned">Burned</small><strong id="sKcal">0<em>kcal</em></strong></div>
+      <div class="stat"><small data-i18n="outside">Outside</small><strong id="sTemp">&mdash;</strong></div>
+    </div>
+    <div class="hud-foot">
+      <span class="gps" id="gps"><i></i><span id="gpsText">GPS off</span></span>
+      <span id="lvlNext"></span>
+    </div>
   </div>
-  <div class="stats" style="margin-top:8px">
-    <div class="stat"><small data-i18n="steps">Steps today</small><strong id="sSteps">0</strong></div>
-    <div class="stat"><small data-i18n="burned">Burned</small><strong id="sKcal">0<em>kcal</em></strong></div>
-    <div class="stat"><small data-i18n="outside">Outside</small><strong id="sTemp">—</strong></div>
-  </div>
-  <div class="lvl"><b id="lvl">Lv 1</b><div class="bar"><div id="bar"></div></div><span id="lvlNext"></span></div>
 </header>
+
+<button class="float" id="zen" aria-label="Hide the panels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
 
 <nav class="bottom">
   <button class="round" id="center" aria-label="Center on me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
-  <button class="round" id="layers" aria-label="Map or satellite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
-  <button id="go" data-i18n="go">Start walking</button>
-  <button class="round" id="zen" aria-label="Hide the panels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
   <button class="round" id="quests" aria-label="Challenges and badges"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5H5v2a3 3 0 0 0 3 3M16 5h3v2a3 3 0 0 1-3 3"/><path d="M12 13v4M9 21h6"/></svg></button>
+  <button id="go" data-i18n="go">Start walking</button>
   <button class="round" id="menu" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </nav>
 <div class="who" id="who" hidden><span id="whoEmail"></span><button type="button" id="signout" data-i18n="signout">Sign out</button></div>
@@ -229,6 +262,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
 
 <section class="sheet" id="sheet" aria-label="Settings">
   <h2 data-i18n="settings">Settings</h2>
+  <div class="row"><p><span data-i18n="satellite">Satellite</span><small data-i18n="satelliteSub">Photographs instead of a drawn map</small></p><label class="switch"><input type="checkbox" id="layers"><span></span></label></div>
   <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="language">Language</span></p>
     <div class="pickgrid" id="pickLang" style="grid-template-columns:repeat(2,1fr)"></div>
   </div>
@@ -328,7 +362,6 @@ window.__startUncover = (user, sync) => {
   const streets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom:19, maxNativeZoom:18, attribution:'Map © Esri, HERE, Garmin, OpenStreetMap' });
   const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom:19, maxNativeZoom:18, attribution:'Imagery © Esri' });
   (S.sat ? sat : streets).addTo(map);
-  $('layers').classList.toggle('active', S.sat);
   map.attributionControl.setPosition('bottomleft').setPrefix('');
   // Esri and OpenStreetMap both require credit, so the line stays — folded
   // behind an info dot that opens on a tap. Leaflet rewrites the container's
@@ -532,7 +565,10 @@ window.__startUncover = (user, sync) => {
       if (!r.ok) throw 0;
       const j = await r.json();
       const t = j.current && j.current.temperature_2m;
-      if (typeof t === 'number') $('sTemp').innerHTML = Math.round(t) + '<em>°C</em>';
+      if (typeof t === 'number'){
+        const txt = Math.round(t) + '<em>°C</em>';
+        $('sTemp').innerHTML = txt; $('hudTemp').innerHTML = txt;
+      }
     } catch (_) {
       // No signal, or the service is down. The dash stays; it is not news.
       tempAt = 0;
@@ -858,6 +894,7 @@ window.__startUncover = (user, sync) => {
     const area = S.count * CELL_M * CELL_M / 1e6;
     $('sArea').innerHTML = (area < 10 ? area.toFixed(2) : area.toFixed(1)) + '<em>km²</em>';
     $('sToday').innerHTML = fmtKm(S.days[today()]||0) + '<em>km</em>';
+    $('hudKm').innerHTML = fmtKm(S.days[today()]||0) + '<em>km</em>';
     $('sTotal').innerHTML = fmtKm(S.total) + '<em>km</em>';
     const st = stepsToday();
     $('sSteps').textContent = st === null ? '—' : st.toLocaleString('en-GB');
@@ -883,7 +920,13 @@ window.__startUncover = (user, sync) => {
   $('center').onclick = () => { follow = true; $('center').classList.add('active');
     if (meMarker) map.setView(meMarker.getLatLng(), Math.max(map.getZoom(),16));
     else navigator.geolocation && navigator.geolocation.getCurrentPosition(p => map.setView([p.coords.latitude,p.coords.longitude],16), () => toast('Location not available'), {enableHighAccuracy:true}); };
-  $('layers').onclick = () => { S.sat = !S.sat; map.removeLayer(S.sat ? streets : sat); (S.sat ? sat : streets).addTo(map); $('layers').classList.toggle('active', S.sat); save(); redraw(); };
+  $('layers').checked = !!S.sat;
+  $('layers').onchange = e => {
+    S.sat = e.target.checked;
+    map.removeLayer(S.sat ? streets : sat);
+    (S.sat ? sat : streets).addTo(map);
+    save(); redraw();
+  };
   const openSheet = o => { $('sheet').classList.toggle('open',o); $('scrim').classList.toggle('open',o); };
   const openQuests = o => { $('qsheet').classList.toggle('open',o); $('scrim').classList.toggle('open',o);
     if (o) renderQuests(derived()); };
@@ -935,6 +978,15 @@ window.__startUncover = (user, sync) => {
     window.matchMedia('(prefers-color-scheme: light)')
       .addEventListener('change', () => { if (S.theme === 'auto') applyAppearance(); });
   }
+
+  // The bar is one line until you ask for the rest. On a phone the map is
+  // the thing worth looking at.
+  $('hudToggle').onclick = () => {
+    const open = $('hudMore').hidden;
+    $('hudMore').hidden = !open;
+    $('hudToggle').setAttribute('aria-expanded', String(open));
+    $('top').classList.toggle('open', open);
+  };
 
   $('zen').onclick = () => {
     document.body.classList.add('zen');
