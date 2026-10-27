@@ -472,7 +472,6 @@ input[type=range]{accent-color:var(--accent);width:140px}
   <div class="row"><p><span data-i18n="goal">Daily goal</span><small data-i18n="goalSub">The distance you aim for each day</small></p><div><input type="number" id="goal" min="500" max="30000" step="500" style="width:86px;padding:8px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-align:center"> m</div></div>
   <div class="row"><p><span data-i18n="stride">Step length</span><small data-i18n="strideSub">For the step count. 75 cm suits most people</small></p><div><input type="number" id="stride" min="40" max="110" step="1" style="width:76px;padding:8px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-align:center"> cm</div></div>
   <div class="row"><p><span data-i18n="wake">Keep screen on</span><small data-i18n="wakeSub">Tracking pauses when the screen locks</small></p><label class="switch"><input type="checkbox" id="wake"><span></span></label></div>
-  <div class="row"><p><span data-i18n="test">Test mode</span><small data-i18n="testSub">Tap the map to walk there, for trying it at home</small></p><label class="switch"><input type="checkbox" id="test"><span></span></label></div>
   <div class="row"><p><span data-i18n="backup">Backup</span><small data-i18n="backupSub">A copy you can keep</small></p><div class="btns"><button class="btn" id="exp" data-i18n="export">Export</button><button class="btn" id="imp" data-i18n="import">Import</button><input type="file" id="impFile" accept="application/json" hidden></div></div>
   <div class="row"><p><span data-i18n="reset">Reset map</span><small data-i18n="resetSub">Puts the fog back everywhere</small></p><button class="btn danger" id="reset" data-i18n="resetBtn">Reset</button></div>
   <p class="by"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="13" y="13" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="13" width="9" height="9" rx="2" fill="var(--accent)"/><rect x="13" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/></svg><span><span data-i18n="partof">Uncover is part of the</span> <a href="https://evzomethod.com" target="_blank" rel="noopener">EVZO&nbsp;Method</a></span></p>
@@ -489,7 +488,7 @@ window.__startUncover = (user, sync) => {
   const CELL_M = CELL * 111320;
   const DEFAULT_CENTER = { lat:34.7754, lng:32.4245 }; // Pafos
 
-  let S = { cells:{}, count:0, total:0, days:{}, dayCells:{}, badges:{}, kg:70, stride:75, goal:2000, wake:true, test:false, last:null, sat:false };
+  let S = { cells:{}, trail:{}, count:0, total:0, days:{}, dayCells:{}, badges:{}, kg:70, stride:75, goal:2000, wake:true, last:null, sat:false };
   try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e){}
   S.count = Object.keys(S.cells).length;
   S.badges = S.badges || {}; S.dayCells = S.dayCells || {};
@@ -509,7 +508,7 @@ window.__startUncover = (user, sync) => {
   // whole point of the thing. METs are the Compendium of Physical Activities
   // values for a moderate effort.
   const MODES = [
-    { id:'walk', name:'Walk',  max:2.8,  met:3.5, radius:40, steps:true,  icon:'M9 3v6l-3 6M15 7l2 5-3 2v5' },
+    { id:'walk', form:'box', name:'Walk',  max:2.8,  met:3.5, radius:40, steps:true,  icon:'M9 3v6l-3 6M15 7l2 5-3 2v5' },
     { id:'run',  name:'Run',   max:6.5,  met:9.8, radius:45, steps:true,  icon:'M10 2v5l-4 4 2 4M14 8l3 4-4 3v4' },
   ];
   const mode = () => MODES.find(m => m.id === S.mode) || MODES[0];
@@ -533,6 +532,12 @@ window.__startUncover = (user, sync) => {
   }
 
   function reveal(lat, lng){
+    // Where your feet actually were. Revealed ground is a circle around you
+    // and can take in the sea, a railway or somebody's field; the cell you
+    // were standing in cannot. Nothing is ever placed anywhere else.
+    S.trail = S.trail || {};
+    S.trail[Math.floor(lat / CELL) + ',' + Math.floor(lng / lngStep(Math.floor(lat / CELL)))] = 1;
+
     // Fixed per mode, never a setting: the only way to open more ground is
     // to cover more of it.
     const rad = reach(), dLat = rad/111320;
@@ -596,11 +601,22 @@ window.__startUncover = (user, sync) => {
   }
 
 
-  const fog = document.createElement('canvas'); fog.id = 'fog'; map.getContainer().appendChild(fog);
+  // The fog lives in a pane of its own, below the markers. Dropped straight
+  // into the map container it would sit on top of them, and you would lose
+  // sight of yourself the moment you stepped onto ground you had not walked.
+  const fog = document.createElement('canvas'); fog.id = 'fog';
+  map.createPane('fogPane');
+  const fogPane = map.getPane('fogPane');
+  fogPane.style.zIndex = 450;
+  fogPane.style.pointerEvents = 'none';
+  fogPane.appendChild(fog);
   const ctx = fog.getContext('2d'); const pattern = ctx.createPattern(tile, 'repeat');
   let raf = 0; const redraw = () => { if (!raf) raf = requestAnimationFrame(draw); };
   function draw(){
     raf = 0;
+    // The pane moves with the map; the canvas is drawn in screen space, so it
+    // is pushed back to where the screen actually is.
+    L.DomUtil.setPosition(fog, map.containerPointToLayerPoint([0, 0]));
     const size = map.getSize(), dpr = Math.min(window.devicePixelRatio || 1, 2);
     if (fog.width !== size.x*dpr || fog.height !== size.y*dpr){ fog.width = size.x*dpr; fog.height = size.y*dpr; fog.style.width = size.x+'px'; fog.style.height = size.y+'px'; }
     ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -630,7 +646,6 @@ window.__startUncover = (user, sync) => {
   map.whenReady(() => { map.invalidateSize(); redraw(); });
   redraw();
   map.on('dragstart', () => { follow = false; $('center').classList.remove('active'); });
-  map.on('click', e => { if (S.test) handleFix(e.latlng.lat, e.latlng.lng, 5, Date.now(), true); });
 
 
   // ---------- characters ----------
@@ -638,21 +653,21 @@ window.__startUncover = (user, sync) => {
   // uncovered, so the only way to earn one is to walk.
   const COLOURS = ['#ff8a3d','#5fd39a','#5aa9ff','#ff6b9d','#ffd93d','#b388ff','#f3f1ec','#ff5c5c'];
   const CHARACTERS = [
-    { id:'walk',    name:'Villager',    lvl:1,  top:'hair', body:'normal' },
-    { id:'woman',   name:'Maiden',      lvl:1,  top:'long', body:'normal', eyes:'happy' },
-    { id:'slim',    name:'Scout',       lvl:3,  top:'hood', body:'slim',   mouth:'flat' },
-    { id:'athletic',name:'Ranger',      lvl:5,  top:'hood', body:'slim',   prop:'bow' },
-    { id:'strong',  name:'Blacksmith',  lvl:8,  top:'hair', body:'strong', prop:'hammer', mouth:'grin' },
-    { id:'round',   name:'Innkeeper',   lvl:8,  top:'hair', body:'wide',   prop:'mug',    mouth:'grin', eyes:'happy' },
-    { id:'bard',    name:'Bard',        lvl:12, top:'cap',  body:'normal', prop:'lute' },
-    { id:'squire',  name:'Squire',      lvl:16, top:'helm', body:'normal', prop:'shield' },
-    { id:'monk',    name:'Monk',        lvl:20, top:'hood', body:'normal', beard:true, eyes:'happy' },
-    { id:'hunter',  name:'Huntsman',    lvl:25, top:'cap',  body:'normal', prop:'axe',    eyes:'cross', mouth:'grin' },
-    { id:'knight',  name:'Knight',      lvl:30, top:'helm', body:'strong', prop:'sword' },
-    { id:'wizard',  name:'Wizard',      lvl:35, top:'hat',  body:'normal', prop:'staff',  beard:true },
+    { id:'walk',    form:'box', name:'Villager',    lvl:1,  top:'hair', body:'normal' },
+    { id:'woman',   form:'pear', name:'Maiden',      lvl:1,  top:'long', body:'normal', eyes:'happy' },
+    { id:'slim',    form:'tall', name:'Scout',       lvl:3,  top:'hood', body:'slim',   mouth:'flat' },
+    { id:'athletic',form:'tall', name:'Ranger',      lvl:5,  top:'hood', body:'slim',   prop:'bow' },
+    { id:'strong',  form:'box', name:'Blacksmith',  lvl:8,  top:'hair', body:'strong', prop:'hammer', mouth:'grin' },
+    { id:'round',   form:'ball', name:'Innkeeper',   lvl:8,  top:'hair', body:'wide',   prop:'mug',    mouth:'grin', eyes:'happy' },
+    { id:'bard',    form:'pear', name:'Bard',        lvl:12, top:'cap',  body:'normal', prop:'lute' },
+    { id:'squire',  form:'box', name:'Squire',      lvl:16, top:'helm', body:'normal', prop:'shield' },
+    { id:'monk',    form:'pear', name:'Monk',        lvl:20, top:'hood', body:'normal', beard:true, eyes:'happy' },
+    { id:'hunter',  form:'box', name:'Huntsman',    lvl:25, top:'cap',  body:'normal', prop:'axe',    eyes:'cross', mouth:'grin' },
+    { id:'knight',  form:'box', name:'Knight',      lvl:30, top:'helm', body:'strong', prop:'sword' },
+    { id:'wizard',  form:'tall', name:'Wizard',      lvl:35, top:'hat',  body:'normal', prop:'staff',  beard:true },
     { id:'wolf',    name:'Dire Wolf',   lvl:40, creature:'wolf' },
-    { id:'paladin', name:'Paladin',     lvl:45, top:'wing', body:'strong', prop:'sword',  halo:true },
-    { id:'ninja',   name:'Assassin',    lvl:50, top:'mask', body:'slim',   prop:'dagger' },
+    { id:'paladin', form:'box', name:'Paladin',     lvl:45, top:'wing', body:'strong', prop:'sword',  halo:true },
+    { id:'ninja',   form:'tall', name:'Assassin',    lvl:50, top:'mask', body:'slim',   prop:'dagger' },
     { id:'rider',   name:'Horse Rider', lvl:55, creature:'horse',  rider:true },
     { id:'dragon',  name:'Dragon',      lvl:65, creature:'dragon', fly:true },
     { id:'drider',  name:'Dragonrider', lvl:80, creature:'dragon', rider:true, fly:true },
@@ -687,9 +702,36 @@ window.__startUncover = (user, sync) => {
    * is assembled from the parts below, so one colour change dresses a whole
    * character and nineteen of them cost no download at all.
    */
-  const INK3 = '#2b2533';            // the outline, never pure black
-  const OW   = 2.6;                  // its weight
+  const INK3 = '#241f2d';            // the outline, never pure black
+  const OW   = 3.0;                  // its weight
   const WHITE = '#fdfbf7';
+
+  /**
+   * Flat fills are what made the first attempt look like clip art. Every
+   * body is a gradient instead — lit from above, falling into shadow at the
+   * foot — plus a gloss near the top and a soft rim along the bottom edge.
+   * The defs for a drawing are gathered while it is built and emitted with
+   * it, so each drawing carries only its own.
+   */
+  let _gid = 0, _defs = [];
+  function lit(c, lift, drop){
+    const id = 'g' + (++_gid);
+    _defs.push('<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="' + shade(c, lift === undefined ? .46 : lift) + '"/>' +
+      '<stop offset=".55" stop-color="' + c + '"/>' +
+      '<stop offset="1" stop-color="' + shade(c, drop === undefined ? -.40 : drop) + '"/>' +
+      '</linearGradient>');
+    return 'url(#' + id + ')';
+  }
+  function svgOf(vb, size, build){
+    const keep = _defs;
+    _defs = [];
+    const art = build();
+    const out = '<svg viewBox="' + vb + '" width="' + size + '" height="' + size + '" aria-hidden="true">' +
+      (_defs.length ? '<defs>' + _defs.join('') + '</defs>' : '') + art + '</svg>';
+    _defs = keep;
+    return out;
+  }
 
   const P = (d, fill, w) =>
     '<path d="' + d + '" fill="' + (fill || 'none') + '" stroke="' + INK3 +
@@ -709,8 +751,49 @@ window.__startUncover = (user, sync) => {
     wide:   { l: 8, r:56, top:14, bot:55, dome:17 },
   };
 
-  function bodyPath(b){
-    const mid = (b.l + b.r) / 2;
+  /**
+   * Five silhouettes, not one.
+   *
+   * Everything used to be the same rounded box with a different hat, and it
+   * showed. A character is known by its outline before anything else, so the
+   * outline is what varies: a block, a ball, a pear, a tall one, and a ragged
+   * one for anything furry.
+   */
+  function bodyPath(b, form){
+    const mid = (b.l + b.r) / 2, w = b.r - b.l, h = b.bot - b.top;
+
+    if (form === 'ball'){
+      const cy = b.top + h * .52;
+      return 'M' + b.l + ' ' + cy +
+             'C' + b.l + ' ' + (b.top - 3) + ' ' + b.r + ' ' + (b.top - 3) + ' ' + b.r + ' ' + cy +
+             'C' + b.r + ' ' + (b.bot + 4) + ' ' + b.l + ' ' + (b.bot + 4) + ' ' + b.l + ' ' + cy + 'Z';
+    }
+    if (form === 'pear'){
+      const sx = b.l + w * .19, ex = b.r - w * .19, sy = b.top + h * .40;
+      return 'M' + sx + ' ' + sy +
+             'C' + sx + ' ' + (b.top - 2) + ' ' + ex + ' ' + (b.top - 2) + ' ' + ex + ' ' + sy +
+             'C' + (b.r + 1) + ' ' + (b.top + h * .70) + ' ' + b.r + ' ' + b.bot + ' ' + (b.r - 8) + ' ' + b.bot +
+             'L' + (b.l + 8) + ' ' + b.bot +
+             'C' + b.l + ' ' + b.bot + ' ' + (b.l - 1) + ' ' + (b.top + h * .70) + ' ' + sx + ' ' + sy + 'Z';
+    }
+    if (form === 'tall'){
+      const sx = b.l + w * .10, ex = b.r - w * .10;
+      return 'M' + sx + ' ' + (b.top + b.dome) +
+             'C' + sx + ' ' + (b.top - 5) + ' ' + ex + ' ' + (b.top - 5) + ' ' + ex + ' ' + (b.top + b.dome) +
+             'C' + (ex + 2) + ' ' + (b.bot - 10) + ' ' + b.r + ' ' + b.bot + ' ' + (b.r - 9) + ' ' + b.bot +
+             'L' + (b.l + 9) + ' ' + b.bot +
+             'C' + b.l + ' ' + b.bot + ' ' + (sx - 2) + ' ' + (b.bot - 10) + ' ' + sx + ' ' + (b.top + b.dome) + 'Z';
+    }
+    if (form === 'fluff'){
+      // A scalloped edge, so fur does not come out looking machined.
+      const n = 5, step = w / n;
+      let d = 'M' + b.l + ' ' + (b.top + b.dome) +
+              'C' + b.l + ' ' + (b.top + 1) + ' ' + (mid - 10) + ' ' + (b.top - 3) + ' ' + mid + ' ' + (b.top - 3) +
+              'C' + (mid + 10) + ' ' + (b.top - 3) + ' ' + b.r + ' ' + (b.top + 1) + ' ' + b.r + ' ' + (b.top + b.dome) +
+              'L' + b.r + ' ' + (b.bot - 7);
+      for (let i = 0; i < n; i++) d += 'q' + (-step / 2) + ' 9 ' + (-step) + ' 0';
+      return d + 'Z';
+    }
     return 'M' + b.l + ' ' + (b.top + b.dome) +
            'C' + b.l + ' ' + (b.top + 1) + ' ' + (mid - 10) + ' ' + b.top + ' ' + mid + ' ' + b.top +
            'C' + (mid + 10) + ' ' + b.top + ' ' + b.r + ' ' + (b.top + 1) + ' ' + b.r + ' ' + (b.top + b.dome) +
@@ -734,14 +817,25 @@ window.__startUncover = (user, sync) => {
   }
 
   /** A lit top and a shaded foot, which is what stops a flat fill reading flat. */
-  function shading(b){
-    const mid = (b.l + b.r) / 2;
-    return '<clipPath id="bc"><path d="' + bodyPath(b) + '"/></clipPath>' +
-      '<g clip-path="url(#bc)">' +
-      En(mid - (b.r - b.l) * .17, b.top + b.dome - 2, (b.r - b.l) * .26, 7, 'rgba(255,255,255,.26)') +
-      Pn('M' + b.l + ' ' + (b.bot - 11) + 'Q' + mid + ' ' + (b.bot - 16) + ' ' + b.r + ' ' + (b.bot - 11) +
-         'L' + b.r + ' ' + (b.bot + 2) + 'L' + b.l + ' ' + (b.bot + 2) + 'Z', 'rgba(0,0,0,.17)') +
+  function shading(b, form){
+    const mid = (b.l + b.r) / 2, id = 'c' + (++_gid);
+    return '<clipPath id="' + id + '"><path d="' + bodyPath(b, form) + '"/></clipPath>' +
+      '<g clip-path="url(#' + id + ')">' +
+      Pn('M' + b.l + ' ' + (b.bot - 13) + 'Q' + mid + ' ' + (b.bot - 19) + ' ' + b.r + ' ' + (b.bot - 13) +
+         'L' + b.r + ' ' + (b.bot + 3) + 'L' + b.l + ' ' + (b.bot + 3) + 'Z', 'rgba(26,16,32,.22)') +
+      En(mid - (b.r - b.l) * .20, b.top + b.dome - 3, (b.r - b.l) * .22, 6.5, 'rgba(255,255,255,.34)') +
+      En(mid - (b.r - b.l) * .27, b.top + b.dome - 6, 3.4, 3.0, 'rgba(255,255,255,.55)') +
       '</g>';
+  }
+
+  /** A little texture, so a coat is not one clean sheet of colour. */
+  function speckle(b, c, kind){
+    const mid = (b.l + b.r) / 2;
+    if (kind === 'wolf')
+      return En(mid - 11, 50, 4.5, 3, c) + En(mid + 11, 50, 4.5, 3, c);
+    if (kind === 'dragon')
+      return En(mid - 12, 46, 3, 2.2, c) + En(mid + 12, 46, 3, 2.2, c) + En(mid, 51, 3.4, 2.4, c);
+    return En(mid - 12, 51, 4, 2.6, c) + En(mid + 12, 51, 4, 2.6, c);
   }
 
   // ---------- the face ----------
@@ -906,8 +1000,9 @@ window.__startUncover = (user, sync) => {
       art += P('M' + (b.l + 2) + ' ' + 28 + 'q-24 -16 -26 -2 q11 3 13 14 q9 2 13 -5Z', colour);
       art += P('M' + (b.r - 2) + ' ' + 28 + 'q24 -16 26 -2 q-11 3 -13 14 q-9 2 -13 -5Z', colour);
     }
-    art += feet(b, dk) + arms(b, coat);
-    art += P(bodyPath(b), coat) + shading(b);
+    art += feet(b, lit(dk, .18, -.3)) + arms(b, lit(coat, .2, -.3));
+    const form = def.creature === 'wolf' ? 'fluff' : def.creature === 'dragon' ? 'ball' : 'box';
+    art += P(bodyPath(b, form), lit(coat)) + shading(b, form) + speckle(b, shade(coat, -.22), def.creature);
 
     if (def.id === 'wolf'){
       art += P('M' + (b.l + 7) + ' ' + (b.top + 4) + 'l-4 -15 13 8Z', coat) +
@@ -948,13 +1043,17 @@ window.__startUncover = (user, sync) => {
     if (def.creature) return beast(def, colour);
     const b = SHAPES[def.body || 'normal'], mid = (b.l + b.r) / 2;
     let art = '';
-    art += feet(b, '#4b3a2c');
-    art += arms(b, shade(colour, -.12));
+    art += feet(b, lit('#5a442f', .2, -.3));
+    art += arms(b, lit(shade(colour, -.10), .2, -.3));
     if (def.prop) art += prop(def.prop, b, colour);
-    art += P(bodyPath(b), colour) + shading(b);
+    art += P(bodyPath(b, def.form), lit(colour)) + shading(b, def.form);
     art += topper(def, b, colour);
     const hidden = def.top === 'helm' || def.top === 'wing';
-    if (!hidden) art += eyes(def.eyes || 'round', mid - 8, mid + 8);
+    if (!hidden){
+      art += eyes(def.eyes || 'round', mid - 8, mid + 8);
+      art += En(mid - 15, 37, 3.6, 2.4, 'rgba(240,110,130,.30)') +
+             En(mid + 15, 37, 3.6, 2.4, 'rgba(240,110,130,.30)');
+    }
     if (def.beard) art += beardOf(b);
     else if (!hidden && def.top !== 'mask') art += mouth(def.mouth || 'smile', mid);
     if (def.halo) art += haloOf(b);
@@ -983,9 +1082,9 @@ window.__startUncover = (user, sync) => {
   function charSvgVec(id, colour, size){
     const c = charById(id);
     // A margin, so halos, horns, hats and the companion are never clipped.
-    return '<svg viewBox="-16 -10 96 84" width="' + size + '" height="' + size + '" aria-hidden="true">' +
+    return svgOf('-16 -10 96 84', size, () =>
       ((S.lvl || 1) >= PET_LVL ? '<g transform="translate(-14 2)">' + pet(colour) + '</g>' : '') +
-      En(32, 62.5, 15, 3.4, 'rgba(0,0,0,.26)') + mascotParts(c, colour) + '</svg>';
+      En(32, 62.5, 15, 3.4, 'rgba(0,0,0,.26)') + mascotParts(c, colour));
   }
 
   /**
@@ -1328,14 +1427,22 @@ window.__startUncover = (user, sync) => {
     size = size || 50;
     return L.divIcon({ className:'', iconSize:[size, size], iconAnchor:[size / 2, size / 2],
       html:'<div class="mob">' +
-        '<svg viewBox="0 0 52 60" width="' + size + '" height="' + size + '" aria-hidden="true">' +
-        En(26, 55, 13, 3, 'rgba(0,0,0,.26)') + kind.draw(colour) + '</svg>' +
+        svgOf('0 0 52 60', size, () => En(26, 55, 13, 3, 'rgba(0,0,0,.26)') + kind.draw(colour)) +
         '<b>' + (S.lang === 'en' ? 'Tap' : 'Πάτα') + '</b></div>' });
   }
 
-  /** Somewhere you have already walked, within a sensible distance of a point. */
+  /**
+   * Somewhere you have actually walked, within a sensible distance of a point.
+   *
+   * This is the one safety rule the whole game rests on. It reads the trail —
+   * the cells your own feet passed through — and never the revealed map, so
+   * nothing can ever be put in water, on a motorway, on a railway or behind a
+   * fence. If you have stood there, you can stand there again. If the trail
+   * is too short to be sure, nothing is placed at all.
+   */
   function groundNear(lat, lng, min, max){
-    const keys = Object.keys(S.cells);
+    const keys = Object.keys(S.trail || {});
+    if (keys.length < 25) return null;
     for (let tries = 0; tries < 50; tries++){
       const k = keys[(Math.random() * keys.length) | 0];
       const comma = k.indexOf(',');
@@ -1371,7 +1478,7 @@ window.__startUncover = (user, sync) => {
     if (monsters.length >= MAX_MONSTERS) return;
     if (Date.now() < nextSpawn) return;
     const here = S.last;
-    if (Object.keys(S.cells).length < 40 || !here) return;
+    if (!here) return;
 
     const spot = groundNear(here[0], here[1], 90, 420);
     if (!spot) return;
@@ -1500,8 +1607,7 @@ window.__startUncover = (user, sync) => {
       pips += '<i' + (i < hp ? '' : ' class="out"') + '></i>';
     return L.divIcon({ className:'', iconSize:[size, size], iconAnchor:[size / 2, size / 2],
       html:'<div class="mob boss">' +
-        '<svg viewBox="-4 0 80 80" width="' + size + '" height="' + size + '" aria-hidden="true">' +
-        En(36, 72, 22, 4, 'rgba(0,0,0,.3)') + bossArt(b) + '</svg>' +
+        svgOf('-4 -12 80 92', size, () => En(36, 72, 22, 4, 'rgba(0,0,0,.3)') + bossArt(b)) +
         '<u>' + pips + '</u><b>' + b.name + '</b></div>' });
   }
 
@@ -1515,7 +1621,7 @@ window.__startUncover = (user, sync) => {
   function spawnBoss(){
     if (boss || monsters.length) return;
     const here = S.last;
-    if (!here || Object.keys(S.cells).length < 60) return;
+    if (!here) return;
     const b = dueBoss();
     if (!b) return;
     const spot = groundNear(here[0], here[1], 150, 450);
@@ -1693,7 +1799,7 @@ window.__startUncover = (user, sync) => {
     if (watchId !== null) navigator.geolocation.clearWatch(watchId);
     watchId = null; prev = null;
     $('go').textContent = 'Start walking'; $('go').classList.remove('stop');
-    if (!S.test) setGps('','GPS off');
+    setGps('','GPS off');
     if (wakeLock){ wakeLock.release().catch(()=>{}); wakeLock = null; }
     save();
     // A walk too short to mean anything does not get a card about it.
@@ -1931,9 +2037,6 @@ window.__startUncover = (user, sync) => {
   $('kg').value = S.kg; $('kg').onchange = e => { S.kg = Math.min(250, Math.max(30, +e.target.value || 70)); e.target.value = S.kg; save(); updateStats(); };
   $('stride').value = S.stride; $('stride').onchange = e => { S.stride = Math.min(110, Math.max(40, +e.target.value || 75)); e.target.value = S.stride; save(); updateStats(); };
   $('wake').checked = S.wake; $('wake').onchange = e => { S.wake = e.target.checked; save(); if (S.wake && watchId!==null) lockScreen(); };
-  $('test').checked = S.test; $('test').onchange = e => { S.test = e.target.checked; prev = null; save();
-    if (S.test){ openSheet(false); toast('Test mode on: tap the map to walk'); setGps('on','Test mode'); } else if (watchId===null) setGps('','GPS off'); };
-  if (S.test) setGps('on','Test mode');
 
   $('exp').onclick = () => { const blob = new Blob([JSON.stringify(S)], {type:'application/json'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'uncover-backup-'+today()+'.json'; a.click(); };
@@ -2002,7 +2105,7 @@ window.__startUncover = (user, sync) => {
 
   // Tapping the map is the obvious way to ask for just the map, so it
   // toggles the panels — except in test mode, where a tap is a step.
-  map.on('click', () => { if (!S.test) setZen(!document.body.classList.contains('zen')); });
+  map.on('click', () => setZen(!document.body.classList.contains('zen')));
 
   $('whoEmail').textContent = user.email || '';
   $('who').hidden = !user.email;
