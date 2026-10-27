@@ -23,7 +23,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <style>
 [hidden]{display:none!important}
 :root{
@@ -63,6 +62,12 @@ html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-fami
 .mob{position:relative;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));cursor:pointer;animation:bob 2.4s ease-in-out infinite;transform-origin:50% 90%}
 .mob b{position:absolute;left:50%;top:-13px;transform:translateX(-50%);font:700 9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:2px 6px;border-radius:7px;white-space:nowrap}
 .mob.hit{animation:pop .26s ease-out forwards}
+.mob.bolt{animation:bolt .5s ease-out}
+.mob.boss b{top:auto;bottom:-15px;font-size:9.5px;background:#b4342f;color:#fff;letter-spacing:.06em}
+.mob.boss u{position:absolute;left:50%;top:-11px;transform:translateX(-50%);display:flex;gap:3px;text-decoration:none}
+.mob.boss u i{width:9px;height:6px;border-radius:2px;background:#e8534a;border:1px solid rgba(0,0,0,.45)}
+.mob.boss u i.out{background:rgba(255,255,255,.18)}
+@keyframes bolt{0%{transform:scale(.4) translateY(-14px);opacity:0}60%{transform:scale(1.12)}100%{transform:none;opacity:1}}
 @keyframes pop{to{transform:scale(1.6);opacity:0}}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 /* Flying characters ride above their own shadow, which stays on the ground
@@ -287,10 +292,39 @@ input[type=range]{accent-color:var(--accent);width:140px}
   color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
 
 .charart{display:block;object-fit:contain;image-rendering:auto;user-select:none;-webkit-user-drag:none}
-/* The 3D figure brings its own shadow and its own depth, so it gets no
-   flat drop-shadow and no bobbing keyframe on top. */
-.me3host{width:104px;height:104px;pointer-events:auto;cursor:pointer}
-.me3host canvas{display:block;width:104px!important;height:104px!important}
+/* A bird crossing the sky above the map. It owns no ground, so it is a
+   plain overlay rather than a marker. */
+.bird{position:absolute;left:0;z-index:460;pointer-events:none;will-change:transform;
+  animation:birdX 13s linear forwards}
+.bird.rev{animation-name:birdXr}
+.bird .wob{pointer-events:auto;cursor:pointer;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45));
+  animation:birdY 2.6s ease-in-out infinite}
+.bird .wg.a{animation:flapA .34s ease-in-out infinite;transform-origin:62% 50%}
+.bird .wg.b{animation:flapB .34s ease-in-out infinite;transform-origin:38% 50%}
+.bird.rev .wob{transform:scaleX(-1)}
+.bird.hit .wob{animation:birdPop .34s ease-out forwards}
+@keyframes birdX{from{transform:translateX(-80px)}to{transform:translateX(calc(100vw + 80px))}}
+@keyframes birdXr{from{transform:translateX(calc(100vw + 80px))}to{transform:translateX(-80px)}}
+@keyframes birdY{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes flapA{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(22deg)}}
+@keyframes flapB{0%,100%{transform:rotate(16deg)}50%{transform:rotate(-22deg)}}
+@keyframes birdPop{to{transform:scale(1.5);opacity:0}}
+@media (prefers-reduced-motion: reduce){.bird .wg{animation:none}}
+
+/* The walk: the whole character lifts on each step and the feet take turns.
+   It runs only while you are actually moving. */
+.me{cursor:pointer}
+.me svg{display:block;overflow:visible}
+.me.go svg{animation:mstep .62s ease-in-out infinite}
+.me.go .ft.a{animation:mfootA .62s ease-in-out infinite}
+.me.go .ft.b{animation:mfootB .62s ease-in-out infinite}
+.me.go .am.a{animation:mfootB .62s ease-in-out infinite}
+.me.go .am.b{animation:mfootA .62s ease-in-out infinite}
+.me.go .pet{animation:mstep .62s ease-in-out .14s infinite}
+@keyframes mstep{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-2.5px) rotate(1.2deg)}}
+@keyframes mfootA{0%,100%{transform:translate(2px,-1.5px)}50%{transform:translate(-2px,0)}}
+@keyframes mfootB{0%,100%{transform:translate(-2px,0)}50%{transform:translate(2px,-1.5px)}}
+@media (prefers-reduced-motion: reduce){.me.go svg,.me.go .ft,.me.go .am{animation:none}}
 #gate{position:fixed;inset:0;z-index:900;background:var(--fog);display:grid;place-items:center;padding:24px}
 #gate .card{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 24px;text-align:center}
 #gate h1{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 6px}
@@ -485,10 +519,23 @@ window.__startUncover = (user, sync) => {
   function lngStep(i){ return CELL / Math.max(Math.cos(((i+.5)*CELL)*Math.PI/180), .05); }
   function dist(a,b,c,d){ const R=6371000, t=Math.PI/180, x=(c-a)*t, y=(d-b)*t;
     const h=Math.sin(x/2)**2+Math.cos(a*t)*Math.cos(c*t)*Math.sin(y/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
+  /**
+   * How far the fog lifts around you.
+   *
+   * It is not a setting — that would just mean everyone slides it to the top.
+   * It is earned: a wider horizon at level 10, and wider again at 50.
+   */
+  const REACH_STEPS = [{ lvl:50, add:22 }, { lvl:10, add:9 }];
+  function reach(){
+    const lvl = S.lvl || 1;
+    const step = REACH_STEPS.find(r => lvl >= r.lvl);
+    return mode().radius + (step ? step.add : 0);
+  }
+
   function reveal(lat, lng){
     // Fixed per mode, never a setting: the only way to open more ground is
     // to cover more of it.
-    const rad = mode().radius, dLat = rad/111320;
+    const rad = reach(), dLat = rad/111320;
     const i0 = Math.floor((lat-dLat)/CELL), i1 = Math.floor((lat+dLat)/CELL);
     let added = 0;
     for (let i=i0;i<=i1;i++){
@@ -512,7 +559,7 @@ window.__startUncover = (user, sync) => {
   { const g = tile.getContext('2d'); g.fillStyle = '#121628'; g.fillRect(0,0,22,22); g.fillStyle = 'rgba(255,255,255,.07)'; g.fillRect(10,10,2,2); }
 
   // ---------- app ----------
-  let watchId = null, prev = null, follow = true, wakeLock = null, meMarker = null, accCircle = null;
+  let watchId = null, prev = null, follow = true, wakeLock = null, meMarker = null, accCircle = null, walkT = 0;
   // What this outing alone was worth. Null between walks.
   let sess = null;
   const map = L.map('map', { zoomControl:false, zoomAnimation:false, fadeAnimation:false, minZoom:3, maxZoom:19 })
@@ -591,27 +638,27 @@ window.__startUncover = (user, sync) => {
   // uncovered, so the only way to earn one is to walk.
   const COLOURS = ['#ff8a3d','#5fd39a','#5aa9ff','#ff6b9d','#ffd93d','#b388ff','#f3f1ec','#ff5c5c'];
   const CHARACTERS = [
-    { id:'walk',    name:'Villager',  lvl:1,  hair:'short',  body:'normal' },
-    { id:'woman',   name:'Maiden',    lvl:1,  hair:'long',   body:'normal' },
-    { id:'slim',    name:'Scout',     lvl:3,  hair:'hood',   body:'slim' },
-    { id:'athletic',name:'Ranger',    lvl:5,  hair:'hood',   body:'slim',   prop:'bow' },
-    { id:'strong',  name:'Blacksmith',lvl:8,  hair:'short',  body:'strong', prop:'hammer' },
-    { id:'round',   name:'Innkeeper', lvl:8,  hair:'short',  body:'wide' },
-    { id:'bard',    name:'Bard',      lvl:12, hair:'cap',    body:'normal', prop:'lute' },
-    { id:'squire',  name:'Squire',    lvl:16, hair:'cap',    body:'normal', prop:'shield' },
-    { id:'monk',    name:'Monk',      lvl:20, hair:'hood',   body:'normal', beard:true },
-    { id:'hunter',  name:'Huntsman',  lvl:25, hair:'cap',    body:'normal', prop:'axe' },
-    { id:'knight',  name:'Knight',    lvl:30, hair:'helmet', body:'strong', prop:'sword' },
-    { id:'wizard',  name:'Wizard',    lvl:35, hair:'hat',    body:'normal', prop:'staff', beard:true },
-    { id:'wolf',    name:'Dire Wolf', lvl:40, creature:'wolf' },
-    { id:'paladin', name:'Paladin',   lvl:45, hair:'helmet', body:'strong', prop:'sword', halo:true },
-    { id:'ninja',   name:'Assassin',  lvl:50, hair:'mask',   body:'slim',   prop:'dagger' },
-    { id:'rider',   name:'Horse Rider', lvl:55, creature:'horse', rider:true },
-    { id:'dragon',  name:'Dragon',    lvl:65, creature:'dragon', fly:true },
+    { id:'walk',    name:'Villager',    lvl:1,  top:'hair', body:'normal' },
+    { id:'woman',   name:'Maiden',      lvl:1,  top:'long', body:'normal', eyes:'happy' },
+    { id:'slim',    name:'Scout',       lvl:3,  top:'hood', body:'slim',   mouth:'flat' },
+    { id:'athletic',name:'Ranger',      lvl:5,  top:'hood', body:'slim',   prop:'bow' },
+    { id:'strong',  name:'Blacksmith',  lvl:8,  top:'hair', body:'strong', prop:'hammer', mouth:'grin' },
+    { id:'round',   name:'Innkeeper',   lvl:8,  top:'hair', body:'wide',   prop:'mug',    mouth:'grin', eyes:'happy' },
+    { id:'bard',    name:'Bard',        lvl:12, top:'cap',  body:'normal', prop:'lute' },
+    { id:'squire',  name:'Squire',      lvl:16, top:'helm', body:'normal', prop:'shield' },
+    { id:'monk',    name:'Monk',        lvl:20, top:'hood', body:'normal', beard:true, eyes:'happy' },
+    { id:'hunter',  name:'Huntsman',    lvl:25, top:'cap',  body:'normal', prop:'axe',    eyes:'cross', mouth:'grin' },
+    { id:'knight',  name:'Knight',      lvl:30, top:'helm', body:'strong', prop:'sword' },
+    { id:'wizard',  name:'Wizard',      lvl:35, top:'hat',  body:'normal', prop:'staff',  beard:true },
+    { id:'wolf',    name:'Dire Wolf',   lvl:40, creature:'wolf' },
+    { id:'paladin', name:'Paladin',     lvl:45, top:'wing', body:'strong', prop:'sword',  halo:true },
+    { id:'ninja',   name:'Assassin',    lvl:50, top:'mask', body:'slim',   prop:'dagger' },
+    { id:'rider',   name:'Horse Rider', lvl:55, creature:'horse',  rider:true },
+    { id:'dragon',  name:'Dragon',      lvl:65, creature:'dragon', fly:true },
     { id:'drider',  name:'Dragonrider', lvl:80, creature:'dragon', rider:true, fly:true },
-    { id:'unicorn', name:'Unicorn',   lvl:95, creature:'unicorn' },
+    { id:'unicorn', name:'Unicorn',     lvl:95, creature:'unicorn' },
   ];
-  CHARACTERS.sort((a, b) => a.lvl - b.lvl);
+
   const charById = id => CHARACTERS.find(c => c.id === id) || CHARACTERS[0];
   const unlocked = c => (S.lvl || 1) >= c.lvl;
 
@@ -632,125 +679,322 @@ window.__startUncover = (user, sync) => {
   }
 
   const SHADOW = '<ellipse cx="24" cy="43.5" rx="10" ry="2.4" fill="rgba(0,0,0,.28)"/>';
-  const WIDTHS = { slim: 11, normal: 14, wide: 19, strong: 17 };
 
-  function face(){
-    return '<circle cx="24" cy="14.5" r="7.6" fill="' + SKIN + '"/>' +
-      '<circle cx="21.3" cy="14.6" r="1.15" fill="' + INK + '"/>' +
-      '<circle cx="26.7" cy="14.6" r="1.15" fill="' + INK + '"/>' +
-      '<path d="M21.9 18q2.1 1.5 4.2 0" stroke="' + INK + '" stroke-width="1.1" fill="none" stroke-linecap="round"/>';
+  // ---------- the cast ----------
+  /**
+   * Chunky mascots: one rounded body, a big face, stubby feet, and a heavy
+   * dark outline that holds up at the size a marker actually is. Everything
+   * is assembled from the parts below, so one colour change dresses a whole
+   * character and nineteen of them cost no download at all.
+   */
+  const INK3 = '#2b2533';            // the outline, never pure black
+  const OW   = 2.6;                  // its weight
+  const WHITE = '#fdfbf7';
+
+  const P = (d, fill, w) =>
+    '<path d="' + d + '" fill="' + (fill || 'none') + '" stroke="' + INK3 +
+    '" stroke-width="' + (w === undefined ? OW : w) + '" stroke-linejoin="round" stroke-linecap="round"/>';
+  const Pn = (d, fill) => '<path d="' + d + '" fill="' + fill + '"/>';
+  const E = (cx, cy, rx, ry, fill, w) =>
+    '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="' + (fill || 'none') +
+    '" stroke="' + INK3 + '" stroke-width="' + (w === undefined ? OW : w) + '"/>';
+  const En = (cx, cy, rx, ry, fill) =>
+    '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="' + fill + '"/>';
+
+  // ---------- the body ----------
+  const SHAPES = {
+    slim:   { l:17, r:47, top:12, bot:54, dome:13 },
+    normal: { l:13, r:51, top:11, bot:55, dome:15 },
+    strong: { l:10, r:54, top:12, bot:55, dome:14 },
+    wide:   { l: 8, r:56, top:14, bot:55, dome:17 },
+  };
+
+  function bodyPath(b){
+    const mid = (b.l + b.r) / 2;
+    return 'M' + b.l + ' ' + (b.top + b.dome) +
+           'C' + b.l + ' ' + (b.top + 1) + ' ' + (mid - 10) + ' ' + b.top + ' ' + mid + ' ' + b.top +
+           'C' + (mid + 10) + ' ' + b.top + ' ' + b.r + ' ' + (b.top + 1) + ' ' + b.r + ' ' + (b.top + b.dome) +
+           'L' + b.r + ' ' + (b.bot - 5) +
+           'C' + b.r + ' ' + (b.bot - 1) + ' ' + (b.r - 3) + ' ' + b.bot + ' ' + (b.r - 7) + ' ' + b.bot +
+           'L' + (b.l + 7) + ' ' + b.bot +
+           'C' + (b.l + 3) + ' ' + b.bot + ' ' + b.l + ' ' + (b.bot - 1) + ' ' + b.l + ' ' + (b.bot - 5) + 'Z';
   }
 
-  const HAIR = {
-    short: () => '<path d="M16.6 13.2a7.6 7.6 0 0 1 14.8 0q-3.4-2.6-7.4-2.6t-7.4 2.6z" fill="#4a3526"/>',
-    long: () => '<path d="M16.4 13.4a7.6 7.6 0 0 1 15.2 0v8.4q-1.8.6-2.6-1.2V14q-5-2.6-10 0v6.6q-.8 1.8-2.6 1.2z" fill="#56301d"/>',
-    hood: (c) => '<path d="M15.6 16q0-9.6 8.4-9.6T32.4 16q-1.6-1.2-2.9-1.5-1.3-4.3-5.5-4.3t-5.5 4.3q-1.3.3-2.9 1.5z" fill="' + shade(c, -0.32) + '"/>',
-    cap: (c) => '<path d="M16.4 12.6a7.6 7.6 0 0 1 15.2 0z" fill="' + c + '"/>' +
-      '<rect x="15" y="11.9" width="18" height="2.5" rx="1.25" fill="' + shade(c, -0.28) + '"/>' +
-      '<path d="M22 3.6q4 1.6 3 7" stroke="#c9304a" stroke-width="1.6" fill="none" stroke-linecap="round"/>',
-    hat: (c) => '<path d="M24 1.2 32.6 13H15.4z" fill="' + c + '"/>' +
-      '<rect x="12.4" y="12.3" width="23.2" height="2.9" rx="1.45" fill="' + shade(c, -0.33) + '"/>' +
-      '<circle cx="27.2" cy="7.4" r="1" fill="#ffe14d"/><circle cx="21.6" cy="9.8" r=".8" fill="#ffe14d"/>',
-    helmet: () => '<path d="M16.2 15.4a7.8 7.8 0 0 1 15.6 0z" fill="#aeb6ca"/>' +
-      '<rect x="15.8" y="13.8" width="16.4" height="2.6" rx="1.3" fill="#8b93a8"/>' +
-      '<rect x="19.4" y="16.6" width="9.2" height="1.9" rx=".95" fill="' + INK + '"/>' +
-      '<rect x="23.2" y="2.6" width="1.6" height="5.2" fill="#8b93a8"/>' +
-      '<path d="M24 1q3.6 1.4 2.6 5.4Q24 5 24 1z" fill="#c9304a"/>',
-    mask: () => '<path d="M16.6 13.2a7.6 7.6 0 0 1 14.8 0z" fill="' + INK + '"/>' +
-      '<path d="M16.5 16.5q7.5 2.4 15 0v4.3q-7.5 2-15 0z" fill="' + INK + '"/>',
-  };
+  /** Feet and arms sit behind the body, so only their ends show. */
+  function feet(b, c){
+    const y = b.bot - 3, w = 7, h = 9;
+    const one = x => P('M' + x + ' ' + y + 'h' + w + 'v' + (h - 4) +
+      'a3.5 3.5 0 0 1 -3.5 3.5 h0 a3.5 3.5 0 0 1 -3.5 -3.5 Z', c);
+    return '<g class="ft a">' + one(b.l + 5) + '</g><g class="ft b">' + one(b.r - 12) + '</g>';
+  }
+  function arms(b, c){
+    const y = b.top + b.dome + 13;
+    return '<g class="am a">' + P('M' + (b.l - 1) + ' ' + y + 'a5 5 0 0 0 -5 5 v4 a5 5 0 0 0 10 0 v-4 Z', c) + '</g>' +
+           '<g class="am b">' + P('M' + (b.r - 4) + ' ' + y + 'a5 5 0 0 1 5 5 v4 a5 5 0 0 1 -10 0 v-4 Z', c) + '</g>';
+  }
 
-  const PROPS = {
-    sword: () => '<path d="M33.6 34 42.4 15.6" stroke="#dde1ea" stroke-width="2.6" stroke-linecap="round"/>' +
-      '<path d="M31 33.2 36.8 35.8" stroke="#c9a227" stroke-width="2.4" stroke-linecap="round"/>',
-    dagger: () => '<path d="M33 33 38.4 22.6" stroke="#dde1ea" stroke-width="2" stroke-linecap="round"/>' +
-      '<path d="M31.2 32.4 35.4 34.4" stroke="#8b93a8" stroke-width="2" stroke-linecap="round"/>',
-    axe: () => '<path d="M33 37 38 18" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>' +
-      '<path d="M37.6 18q6-2 7 5-5 1-8-1z" fill="#aeb6ca"/>',
-    hammer: () => '<path d="M33 37 37.6 20" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>' +
-      '<rect x="32.6" y="14.4" width="11" height="6.4" rx="1.6" fill="#8b93a8" transform="rotate(-14 38 17.6)"/>',
-    staff: () => '<path d="M33.4 40 31 14.6" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>' +
-      '<circle cx="30.8" cy="12.4" r="3.1" fill="#8fd6ff" opacity=".9"/>',
-    bow: () => '<path d="M34 18q6 6 0 14" stroke="#6b4a2f" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<path d="M34 18 34 32" stroke="#e6e2d8" stroke-width="1" />',
-    lute: (c) => '<ellipse cx="33.6" cy="31" rx="5.4" ry="6.2" fill="#b6803f"/>' +
-      '<circle cx="33.6" cy="30.4" r="1.8" fill="' + shade('#b6803f', -0.4) + '"/>' +
-      '<path d="M35.6 25.6 41 16" stroke="#6b4a2f" stroke-width="2" stroke-linecap="round"/>',
-    shield: (c) => '<path d="M32.4 22h9v6q0 5.6-4.5 7.6Q32.4 33.6 32.4 28z" fill="' + shade(c, 0.25) + '" stroke="#8b93a8" stroke-width="1.4"/>',
-  };
+  /** A lit top and a shaded foot, which is what stops a flat fill reading flat. */
+  function shading(b){
+    const mid = (b.l + b.r) / 2;
+    return '<clipPath id="bc"><path d="' + bodyPath(b) + '"/></clipPath>' +
+      '<g clip-path="url(#bc)">' +
+      En(mid - (b.r - b.l) * .17, b.top + b.dome - 2, (b.r - b.l) * .26, 7, 'rgba(255,255,255,.26)') +
+      Pn('M' + b.l + ' ' + (b.bot - 11) + 'Q' + mid + ' ' + (b.bot - 16) + ' ' + b.r + ' ' + (b.bot - 11) +
+         'L' + b.r + ' ' + (b.bot + 2) + 'L' + b.l + ' ' + (b.bot + 2) + 'Z', 'rgba(0,0,0,.17)') +
+      '</g>';
+  }
 
-  /** A person: the body plan everything human hangs off. */
-  function person(def, c, opts){
-    const o = opts || {};
-    const w = WIDTHS[def.body] || 14, x = 24 - w / 2;
-    const top = def.body === 'strong' ? 21 : 22;
-    const dark = shade(c, -0.22), t = def.body === 'strong' ? 4.6 : 3.6;
-    let g = '';
-    if (!o.noShadow) g += SHADOW;
-    if (!o.noLegs){
-      g += '<rect x="18.4" y="31" width="5.2" height="11" rx="2.6" fill="' + shade(c, -0.42) + '"/>' +
-           '<rect x="24.4" y="31" width="5.2" height="11" rx="2.6" fill="' + shade(c, -0.42) + '"/>';
+  // ---------- the face ----------
+  const EYE_Y = 29;
+
+  function eyes(kind, x1, x2, look){
+    const pupil = (cx, dx) =>
+      En(cx + (dx || 0), EYE_Y + 1.2, 3.1, 3.4, INK3) +
+      En(cx + (dx || 0) - 1.1, EYE_Y - .6, 1.25, 1.35, WHITE);
+    if (kind === 'glow'){
+      return En(x1, EYE_Y, 4.6, 4.6, look || '#ffd34d') + En(x2, EYE_Y, 4.6, 4.6, look || '#ffd34d') +
+             En(x1, EYE_Y, 2.2, 2.4, 'rgba(255,255,255,.85)') + En(x2, EYE_Y, 2.2, 2.4, 'rgba(255,255,255,.85)');
     }
-    if (def.halo) g += '<ellipse cx="24" cy="3.6" rx="6.4" ry="1.8" fill="none" stroke="#ffe14d" stroke-width="1.4"/>';
-    g += '<rect x="' + x + '" y="' + top + '" width="' + w + '" height="' + (34 - top) + '" rx="' +
-         (def.body === 'wide' ? 8 : 6) + '" fill="' + c + '"/>';
-    g += '<rect x="' + (x - t + 0.4) + '" y="23" width="' + t + '" height="10" rx="' + (t / 2) + '" fill="' + dark + '"/>' +
-         '<rect x="' + (x + w - 0.4) + '" y="23" width="' + t + '" height="10" rx="' + (t / 2) + '" fill="' + dark + '"/>';
-    g += '<rect x="22.2" y="19.5" width="3.6" height="3.4" fill="' + SKIN_D + '"/>';
-    g += face();
-    if (HAIR[def.hair]) g += HAIR[def.hair](c);
-    if (def.beard) g += '<path d="M17.8 16.6q1.5 9.6 6.2 9.6t6.2-9.6q-6.2 3.2-12.4 0z" fill="#e9e6df"/>';
-    if (def.prop && PROPS[def.prop]) g += PROPS[def.prop](c);
-    return g;
+    if (kind === 'happy'){
+      return P('M' + (x1 - 5) + ' ' + (EYE_Y + 1) + 'q5 -7 10 0', 'none', 2.8) +
+             P('M' + (x2 - 5) + ' ' + (EYE_Y + 1) + 'q5 -7 10 0', 'none', 2.8);
+    }
+    let out = E(x1, EYE_Y, 5.6, 6.2, WHITE, 2.2) + E(x2, EYE_Y, 5.6, 6.2, WHITE, 2.2) +
+              pupil(x1, .6) + pupil(x2, .6);
+    if (kind === 'cross'){
+      out += P('M' + (x1 - 6.5) + ' ' + (EYE_Y - 7.5) + 'l9 3.5', 'none', 2.8) +
+             P('M' + (x2 + 6.5) + ' ' + (EYE_Y - 7.5) + 'l-9 3.5', 'none', 2.8);
+    }
+    return out;
   }
 
-  /** The ones that are not people. A mount carries a small rider. */
-  const CREATURES = {
-    wolf: (c) => SHADOW +
-      '<rect x="11" y="24" width="25" height="11" rx="5.5" fill="' + c + '"/>' +
-      '<rect x="13.6" y="33" width="4.2" height="9" rx="2.1" fill="' + shade(c, -0.36) + '"/>' +
-      '<rect x="29.4" y="33" width="4.2" height="9" rx="2.1" fill="' + shade(c, -0.36) + '"/>' +
-      '<path d="M35.6 26q8-4 8 3-5 0-8-1z" fill="' + shade(c, -0.2) + '"/>' +
-      '<circle cx="12.6" cy="19" r="7.2" fill="' + c + '"/>' +
-      '<path d="M7.4 14.6 6 7.4l5.6 3.8z" fill="' + shade(c, -0.34) + '"/>' +
-      '<path d="M17.8 14.6 19.2 7.4l-5.6 3.8z" fill="' + shade(c, -0.34) + '"/>' +
-      '<circle cx="10.4" cy="18.4" r="1.1" fill="#ffe14d"/>' +
-      '<circle cx="15" cy="18.4" r="1.1" fill="#ffe14d"/>' +
-      '<path d="M5.6 21.4q-3.4.6-4.6 2.6 3 .4 5-.6z" fill="' + shade(c, -0.25) + '"/>',
-    horse: (c) => SHADOW +
-      '<rect x="10" y="24" width="26" height="11" rx="5.5" fill="' + c + '"/>' +
-      '<rect x="13" y="33" width="4.4" height="9" rx="2.2" fill="' + shade(c, -0.32) + '"/>' +
-      '<rect x="29" y="33" width="4.4" height="9" rx="2.2" fill="' + shade(c, -0.32) + '"/>' +
-      '<path d="M33 26q7-3 8-12-5 3-9 7z" fill="' + c + '"/>' +
-      '<circle cx="38" cy="13.6" r="6.2" fill="' + c + '"/>' +
-      '<path d="M32.8 9.6q-5.6 1.2-7.4 8 4.8-2 8.4-3z" fill="' + shade(c, -0.3) + '"/>' +
-      '<circle cx="40.2" cy="13.4" r="1.2" fill="' + INK + '"/>' +
-      '<path d="M8.6 25.6q-4 1.4-5 5.4 3.6-1 5.6-2.6z" fill="' + shade(c, -0.3) + '"/>',
-    unicorn: (c) => CREATURES.horse(c) +
-      '<path d="M39.6 7.8 42.4 1l-5.6 5.4z" fill="#ffe14d"/>' +
-      '<path d="M32.8 9.6q-5.6 1.2-7.4 8 4.8-2 8.4-3z" fill="#ff8ec9"/>',
-    dragon: (c) => SHADOW +
-      '<path d="M21 17q14-10 17 2-7 2-11 1z" fill="' + shade(c, 0.32) + '"/>' +
-      '<rect x="9" y="23" width="27" height="12" rx="6" fill="' + c + '"/>' +
-      '<path d="M34 29q10-2 11.6 8.4-7.4-1-11.6-4.2z" fill="' + shade(c, -0.22) + '"/>' +
-      '<circle cx="11.4" cy="18" r="7.2" fill="' + c + '"/>' +
-      '<path d="M6.4 12.4 5 6l5.2 4z" fill="' + shade(c, -0.36) + '"/>' +
-      '<path d="M15.8 12 17.2 6l-5 4z" fill="' + shade(c, -0.36) + '"/>' +
-      '<circle cx="9.4" cy="17.4" r="1.3" fill="#ffe14d"/>' +
-      '<circle cx="14.2" cy="17.4" r="1.3" fill="#ffe14d"/>' +
-      '<path d="M5 21.6q-4.2 1.4-5 4.6 3.6-.6 5.6-2.4z" fill="#ff9d3d"/>' +
-      '<rect x="13.4" y="33.6" width="4.6" height="8.4" rx="2.3" fill="' + shade(c, -0.36) + '"/>' +
-      '<rect x="26.6" y="33.6" width="4.6" height="8.4" rx="2.3" fill="' + shade(c, -0.36) + '"/>',
-  };
+  function mouth(kind, cx, y){
+    y = y === undefined ? 42 : y;
+    if (kind === 'grin')
+      return P('M' + (cx - 9) + ' ' + y + 'q9 9 18 0 Z', WHITE, 2.4) +
+             P('M' + (cx - 4.5) + ' ' + (y + 1.2) + 'v4.2M' + (cx + 1.5) + ' ' + (y + 1.2) + 'v5', 'none', 1.6);
+    if (kind === 'fang')
+      return P('M' + (cx - 8) + ' ' + y + 'q8 8 16 0 Z', '#b1465b', 2.4) +
+             Pn('M' + (cx - 6) + ' ' + (y + .6) + 'l2.6 4 2.4 -4Z', WHITE) +
+             Pn('M' + (cx + 1) + ' ' + (y + .6) + 'l2.6 4 2.4 -4Z', WHITE);
+    if (kind === 'flat') return P('M' + (cx - 5) + ' ' + (y + 1) + 'h10', 'none', 2.6);
+    if (kind === 'oh')   return E(cx, y + 2, 4, 4.6, '#8d3a4d', 2.4);
+    return P('M' + (cx - 6.5) + ' ' + y + 'q6.5 6 13 0', 'none', 2.8);   // smile
+  }
 
-  /** Build one character's SVG at the size asked for. */
+  // ---------- what goes on top ----------
+  function topper(def, b, colour){
+    const mid = (b.l + b.r) / 2, t = b.top, d = b.dome;
+    const hair = '#4a3325';
+    switch (def.top){
+      case 'hair':
+        return P('M' + (b.l + 1) + ' ' + (t + d + 1) + 'q-1 -17 ' + (mid - b.l - 1) + ' -17 q' + (b.r - mid - 1) +
+                 ' 0 ' + (b.r - mid - 1) + ' 17 q-5 -8 -13 -7 q-9 -3 -' + (mid - b.l - 4) + ' 7Z', hair);
+      case 'long':
+        return P('M' + (b.l - 1) + ' ' + (t + d + 14) + 'q-2 -26 ' + (mid - b.l + 1) + ' -26 q' + (b.r - mid + 1) +
+                 ' 0 ' + (b.r - mid + 1) + ' 26 q-5 -8 -9 -16 q-8 6 -' + (b.r - b.l - 18) + ' 0 q-4 8 -9 16Z', hair) +
+               P('M' + (mid + 7) + ' ' + (t + 2) + 'l6 -5 1 7Z', colour);
+      case 'hood':
+        return P('M' + (b.l - 1) + ' ' + 42 + 'q-3 -32 ' + (mid - b.l + 1) + ' -32 q' + (b.r - mid + 1) +
+                 ' 0 ' + (b.r - mid + 1) + ' 32 q-4 -14 -' + (b.r - mid + 1) + ' -14 q-' + (mid - b.l + 1) +
+                 ' 0 -' + (mid - b.l + 1) + ' 14Z', shade(colour, -.30)) +
+               P('M' + (mid - 13) + ' 30 q0 -13 13 -13 q13 0 13 13 q0 13 -13 13 q-13 0 -13 -13Z', '#f3cda6');
+      case 'cap':
+        return P('M' + (b.l + 3) + ' ' + (t + d - 3) + 'q0 -15 ' + (mid - b.l - 3) + ' -15 q' + (b.r - mid - 3) +
+                 ' 0 ' + (b.r - mid - 3) + ' 15 q-10 -5 -' + (b.r - b.l - 6) + ' 0Z', '#4a3325') +
+               P('M' + (b.l + 2) + ' ' + (t + 9) + 'q' + (mid - b.l - 2) + ' -14 ' + (b.r - b.l - 4) + ' 0Z', colour) +
+               P('M' + (b.l - 2) + ' ' + (t + 8) + 'h' + (b.r - b.l + 4) + 'a2.2 2.2 0 0 1 0 4.4 h-' + (b.r - b.l + 4) +
+                 'a2.2 2.2 0 0 1 0 -4.4Z', shade(colour, -.32)) +
+               P('M' + (mid + 9) + ' ' + (t + 8) + 'q8 -9 3 -14 q-2 8 -8 12Z', '#e8565f');
+      case 'helm':
+        return P('M' + (b.l + 1) + ' ' + (t + d + 4) + 'q0 -19 ' + (mid - b.l - 1) + ' -19 q' + (b.r - mid - 1) +
+                 ' 0 ' + (b.r - mid - 1) + ' 19 Z', '#c9cfdc') +
+               Pn('M' + (b.l + 4) + ' ' + (t + d - 3) + 'h' + (b.r - b.l - 8) + 'v6h-' + (b.r - b.l - 8) + 'Z', INK3) +
+               En(mid - 7, t + d, 2.4, 2.1, '#ffd96b') + En(mid + 7, t + d, 2.4, 2.1, '#ffd96b') +
+               P('M' + (mid - 2.5) + ' ' + (t - 4) + 'h5v-9h-5Z', colour) +
+               P('M' + mid + ' ' + (t + d + 4) + 'v-14', 'none', 2.2);
+      case 'wing':
+        return P('M' + (b.l + 1) + ' ' + (t + d + 4) + 'q0 -19 ' + (mid - b.l - 1) + ' -19 q' + (b.r - mid - 1) +
+                 ' 0 ' + (b.r - mid - 1) + ' 19 Z', '#f0e3bd') +
+               Pn('M' + (b.l + 4) + ' ' + (t + d - 3) + 'h' + (b.r - b.l - 8) + 'v6h-' + (b.r - b.l - 8) + 'Z', INK3) +
+               En(mid - 7, t + d, 2.4, 2.1, '#8fe1ff') + En(mid + 7, t + d, 2.4, 2.1, '#8fe1ff') +
+               P('M' + (b.l + 1) + ' ' + (t + 7) + 'l-9 -5 2 8Z', WHITE) +
+               P('M' + (b.r - 1) + ' ' + (t + 7) + 'l9 -5 -2 8Z', WHITE);
+      case 'hat':
+        return P('M' + (b.l - 3) + ' ' + (t + 8) + 'q' + (mid - b.l + 3) + ' 7 ' + (b.r - b.l + 6) + ' 0 q-' +
+                 (mid - b.l + 3) + ' -6 -' + (b.r - b.l + 6) + ' 0Z', shade(colour, -.25)) +
+               P('M' + (mid - 11) + ' ' + (t + 8) + 'q3 -26 11 -30 q8 4 11 30Z', colour) +
+               En(mid + 1, t - 13, 2.6, 2.6, '#ffe36b');
+      case 'mask':
+        return P('M' + (b.l + 1) + ' ' + (t + d) + 'q0 -16 ' + (mid - b.l - 1) + ' -16 q' + (b.r - mid - 1) +
+                 ' 0 ' + (b.r - mid - 1) + ' 16 Z', '#2f3444') +
+               Pn('M' + (b.l + 1) + ' ' + (EYE_Y + 8) + 'h' + (b.r - b.l - 2) + 'v' + (b.bot - EYE_Y - 10) +
+                  'h-' + (b.r - b.l - 2) + 'Z', '#2f3444');
+      case 'horns':
+        return P('M' + (b.l + 5) + ' ' + (t + 4) + 'q-8 -8 -2 -13 q6 4 8 10Z', shade(colour, -.35)) +
+               P('M' + (b.r - 5) + ' ' + (t + 4) + 'q8 -8 2 -13 q-6 4 -8 10Z', shade(colour, -.35));
+      case 'ears':
+        return P('M' + (b.l + 6) + ' ' + (t + 5) + 'l-2 -13 11 6Z', colour) +
+               P('M' + (b.r - 6) + ' ' + (t + 5) + 'l2 -13 -11 6Z', colour);
+      case 'bear':
+        return E(b.l + 7, t + 3, 6, 6, colour) + E(b.r - 7, t + 3, 6, 6, colour);
+      default: return '';
+    }
+  }
+
+  function beardOf(b){
+    const mid = (b.l + b.r) / 2;
+    return P('M' + (mid - 10) + ' ' + 40 + 'q10 -4 20 0 q-2 16 -10 18 q-8 -2 -10 -18Z', '#f2ede2');
+  }
+  function haloOf(b){
+    return E((b.l + b.r) / 2, b.top - 7, 10, 3.2, '#ffd96b', 2.2);
+  }
+
+  // ---------- props ----------
+  function prop(kind, b, colour){
+    const x = b.r + 1, y = b.top + b.dome + 15;
+    switch (kind){
+      case 'sword':
+        return '<g transform="translate(' + x + ' ' + y + ') rotate(18)">' +
+          P('M-2 2h5v-26l-2.5 -5l-2.5 5Z', '#d7dde9') + P('M-6 2h13v4h-13Z', '#e3b24f') +
+          P('M-2 6h5v8h-5Z', '#7a4f2e') + '</g>';
+      case 'dagger':
+        return '<g transform="translate(' + x + ' ' + y + ') rotate(18)">' +
+          P('M-1.5 2h4v-14l-2 -4l-2 4Z', '#d7dde9') + P('M-5 2h11v3h-11Z', '#9aa3b4') +
+          P('M-1.5 5h4v6h-4Z', '#33373f') + '</g>';
+      case 'axe':
+        return '<g transform="translate(' + x + ' ' + y + ') rotate(14)">' +
+          P('M-1.5 10v-28h3v28Z', '#8a5f3b') +
+          P('M1 -18q11 2 11 9 q-7 3 -11 1Z', '#ccd3e0') + '</g>';
+      case 'hammer':
+        return '<g transform="translate(' + x + ' ' + y + ') rotate(14)">' +
+          P('M-2 10v-24h4v24Z', '#8a5f3b') +
+          P('M-7 -22h14v10h-14Z', '#9099ab') + '</g>';
+      case 'staff':
+        return '<g transform="translate(' + x + ' ' + y + ') rotate(10)">' +
+          P('M-1.5 12v-30h3v30Z', '#8a5f3b') + E(0, -22, 5.5, 5.5, '#7fd8ff') + '</g>';
+      case 'bow':
+        return '<g transform="translate(' + (x + 2) + ' ' + (y - 4) + ')">' +
+          P('M0 -16q12 16 0 32', 'none', 3) + P('M0 -16 0 16', 'none', 1.6) + '</g>';
+      case 'lute':
+        return '<g transform="translate(' + (x - 1) + ' ' + (y + 2) + ') rotate(16)">' +
+          E(0, 4, 8, 10, '#a9703f') + En(0, 4, 3, 3, INK3) + P('M-2 -6h4v-16h-4Z', '#7a4f2e') + '</g>';
+      case 'shield':
+        return '<g transform="translate(' + (x + 1) + ' ' + (y + 2) + ')">' +
+          P('M0 -12q9 2 9 8 q0 10 -9 14 q-9 -4 -9 -14 q0 -6 9 -8Z', colour) +
+          En(0, 1, 3, 3, '#e3b24f') + '</g>';
+      case 'mug':
+        return '<g transform="translate(' + x + ' ' + (y + 2) + ')">' +
+          P('M-6 -8h12v14a3 3 0 0 1 -3 3h-6a3 3 0 0 1 -3 -3Z', '#e8e2d6') +
+          P('M6 -4h3a4 4 0 0 1 0 8h-3', 'none', 2.2) +
+          Pn('M-4.5 -6.5h9v4h-9Z', '#c89b52') + '</g>';
+      default: return '';
+    }
+  }
+
+  // ---------- the beasts ----------
+  const COATS = { wolf:'#8e919f', horse:'#a9663d', unicorn:'#f4f1ea', dragon:'#5fb46a' };
+
+  function beast(def, colour){
+    const b = SHAPES.normal, mid = (b.l + b.r) / 2;
+    const coat = COATS[def.creature] || colour;
+    let art = '';
+    const dk = shade(coat, -.28);
+
+    if (def.id === 'dragon' || def.id === 'drider'){
+      // The wings carry the player's colour, so the swatch still shows.
+      art += P('M' + (b.l + 2) + ' ' + 28 + 'q-24 -16 -26 -2 q11 3 13 14 q9 2 13 -5Z', colour);
+      art += P('M' + (b.r - 2) + ' ' + 28 + 'q24 -16 26 -2 q-11 3 -13 14 q-9 2 -13 -5Z', colour);
+    }
+    art += feet(b, dk) + arms(b, coat);
+    art += P(bodyPath(b), coat) + shading(b);
+
+    if (def.id === 'wolf'){
+      art += P('M' + (b.l + 7) + ' ' + (b.top + 4) + 'l-4 -15 13 8Z', coat) +
+             P('M' + (b.r - 7) + ' ' + (b.top + 4) + 'l4 -15 -13 8Z', coat) +
+             eyes('glow', mid - 9, mid + 9) +
+             E(mid, 42, 9.5, 7.5, shade(coat, .34)) +
+             P('M' + (mid - 3.4) + ' 36.5 q3.4 -3 6.8 0 q-1.4 3 -3.4 3 q-2 0 -3.4 -3Z', INK3, 1.4) +
+             mouth('fang', mid, 43);
+    } else if (def.id === 'dragon' || def.id === 'drider'){
+      art += P('M' + (mid - 10) + ' ' + (b.top + 2) + 'q-7 -11 2 -13 q5 5 6 12Z', dk) +
+             P('M' + (mid + 10) + ' ' + (b.top + 2) + 'q7 -11 -2 -13 q-5 5 -6 12Z', dk) +
+             P('M' + (mid - 6) + ' ' + (b.top + 1) + 'h12v-4h-12Z', shade(coat, -.18)) +
+             eyes('glow', mid - 9, mid + 9, '#ffd34d') +
+             E(mid, 42, 9.5, 7.5, shade(coat, .30)) + mouth('fang', mid, 43);
+    } else {   // horse and unicorn
+      const mane = def.id === 'unicorn' ? colour : shade(coat, -.34);
+      art += P('M' + (b.l + 8) + ' ' + (b.top + 3) + 'l-3 -13 11 7Z', coat) +
+             P('M' + (b.r - 8) + ' ' + (b.top + 3) + 'l3 -13 -11 7Z', coat) +
+             P('M' + (mid - 11) + ' ' + (b.top + 3) + 'q3 -11 11 -11 q8 0 11 11 q-5 -4 -11 -4 q-6 0 -11 4Z', mane) +
+             eyes('round', mid - 9, mid + 9) +
+             E(mid, 43, 10, 7.5, shade(coat, .32)) +
+             En(mid - 3.6, 41, 1.8, 1.5, INK3) + En(mid + 3.6, 41, 1.8, 1.5, INK3) +
+             mouth('smile', mid, 46);
+      if (def.id === 'unicorn')
+        art += P('M' + mid + ' ' + (b.top - 16) + 'l4.5 17 -9 0Z', '#ffe08a');
+    }
+
+    if (def.rider){
+      // A small one riding a big one, drawn the same way so they match.
+      art = '<g transform="translate(24 -18) scale(.5)">' +
+        mascotParts({ id:'knight', top:'helm', body:'normal', prop:'sword' }, colour) + '</g>' + art;
+    }
+    return art;
+  }
+
+  // ---------- assembly ----------
+  function mascotParts(def, colour){
+    if (def.creature) return beast(def, colour);
+    const b = SHAPES[def.body || 'normal'], mid = (b.l + b.r) / 2;
+    let art = '';
+    art += feet(b, '#4b3a2c');
+    art += arms(b, shade(colour, -.12));
+    if (def.prop) art += prop(def.prop, b, colour);
+    art += P(bodyPath(b), colour) + shading(b);
+    art += topper(def, b, colour);
+    const hidden = def.top === 'helm' || def.top === 'wing';
+    if (!hidden) art += eyes(def.eyes || 'round', mid - 8, mid + 8);
+    if (def.beard) art += beardOf(b);
+    else if (!hidden && def.top !== 'mask') art += mouth(def.mouth || 'smile', mid);
+    if (def.halo) art += haloOf(b);
+    return art;
+  }
+
+  /**
+   * The companion that walks beside you from level 5. It is not a character
+   * you pick and it fights nothing — it is there so the walk has company.
+   */
+  const PET_LVL = 5;
+  function pet(colour){
+    const c = shade(colour, .12), d = shade(colour, -.30);
+    return '<g class="pet">' +
+      En(11, 60, 8, 2.4, 'rgba(0,0,0,.24)') +
+      '<g class="ft a">' + P('M5 52h5v3a2.5 2.5 0 0 1 -5 0Z', d) + '</g>' +
+      '<g class="ft b">' + P('M13 52h5v3a2.5 2.5 0 0 1 -5 0Z', d) + '</g>' +
+      P('M3 48q-1 -10 8 -10 q9 0 8 10 q0 6 -8 6 q-8 0 -8 -6Z', c) +
+      P('M5 40l-1.5 -7 6 3.5Z', c) + P('M17 40l1.5 -7 -6 3.5Z', c) +
+      En(8, 45, 1.9, 2.1, INK3) + En(14, 45, 1.9, 2.1, INK3) +
+      En(7.3, 44.3, .75, .8, WHITE) + En(13.3, 44.3, .75, .8, WHITE) +
+      P('M9.4 49q1.6 1.6 3.2 0', 'none', 1.5) +
+      '</g>';
+  }
+
+  function charSvgVec(id, colour, size){
+    const c = charById(id);
+    // A margin, so halos, horns, hats and the companion are never clipped.
+    return '<svg viewBox="-16 -10 96 84" width="' + size + '" height="' + size + '" aria-hidden="true">' +
+      ((S.lvl || 1) >= PET_LVL ? '<g transform="translate(-14 2)">' + pet(colour) + '</g>' : '') +
+      En(32, 62.5, 15, 3.4, 'rgba(0,0,0,.26)') + mascotParts(c, colour) + '</svg>';
+  }
+
   /**
    * Drawn artwork, where there is any.
    *
-   * The vectors below are a stand-in. Put a square image at art/<id>.webp,
-   * list its id in art/manifest.json, and it replaces the vector everywhere
-   * — map marker, picker, profile card — with no other change. Anything not
-   * listed keeps its vector, so the set can be replaced a few at a time.
+   * The mascots below are drawn in code. Put a square image at art/<id>.webp,
+   * list its id in art/manifest.json, and it replaces that character
+   * everywhere. Anything unlisted keeps its mascot, so the set can be
+   * replaced a few at a time.
    */
   const ART = Object.create(null);
   (async () => {
@@ -765,644 +1009,31 @@ window.__startUncover = (user, sync) => {
 
   /** Redraw everything that shows a character, once artwork arrives. */
   function refreshArt(){
-    STILLS.clear();
-    if (meMarker){ meMarker.setIcon(meIcon()); mount3(); }
+    if (meMarker) meMarker.setIcon(meIcon());
     if ($('sheet').classList.contains('open')) renderPicker();
     if ($('mesheet').classList.contains('open')) renderMe();
-  }
-
-  // ---------- characters in three dimensions ----------
-  /**
-   * The flat drawings below are the fallback. Where WebGL is available the
-   * cast is built as lit, shaded geometry instead: the figure stands on a
-   * ground that catches its shadow, swings its arms and legs as you move,
-   * and turns to face the way you are going.
-   *
-   * Two renderers, deliberately. The small one lives inside the map marker
-   * and runs a loop; the other renders a character once, hands back a still,
-   * and that still is cached — so the picker costs one frame per face it has
-   * never shown before, and nothing after that.
-   */
-  const V3 = { ok:false };
-  const MARK3 = 104;
-  const STILLS = new Map();
-
-  const SKIN3  = '#efc49c';
-  const HAIRC  = '#3a2a1e', STEEL = '#c3c9d6', STEEL_D = '#7d8697';
-  const LEATH  = '#6b4a2f', WOOD = '#8a5f3b', GOLD = '#e8be5a';
-
-  const MATS = new Map();
-  function mt(hex, kind){
-    const key = hex + '|' + (kind || '');
-    let m = MATS.get(key);
-    if (m) return m;
-    const o = { color: new THREE.Color(hex) };
-    if (kind === 'metal'){ o.metalness = .72; o.roughness = .30; o.envMapIntensity = 1.5; }
-    else if (kind === 'skin'){ o.metalness = 0; o.roughness = .68; }
-    else if (kind === 'glow'){ o.metalness = .1; o.roughness = .3; o.emissive = new THREE.Color(hex); o.emissiveIntensity = .75; }
-    else { o.metalness = .04; o.roughness = .88; o.envMapIntensity = 1.1; }
-    m = new THREE.MeshStandardMaterial(o);
-    MATS.set(key, m);
-    return m;
-  }
-
-  const gCap = (r, l) => new THREE.CapsuleGeometry(r, l, 4, 12);
-  const gBall = r => new THREE.SphereGeometry(r, 18, 14);
-  const gBox = (w, h, d) => new THREE.BoxGeometry(w, h, d);
-  const gCyl = (rt, rb, h) => new THREE.CylinderGeometry(rt, rb, h, 14);
-  const gCone = (r, h) => new THREE.ConeGeometry(r, h, 14);
-
-  function pc(geo, material, x, y, z){
-    const m = new THREE.Mesh(geo, material);
-    m.position.set(x || 0, y || 0, z || 0);
-    m.castShadow = true;
-    return m;
-  }
-  /** A limb hangs from a pivot, so the pivot is what the walk cycle turns. */
-  function limb(x, y, z){
-    const g = new THREE.Group();
-    g.position.set(x, y, z);
-    return g;
-  }
-
-  // ---------- the parts a person is made of ----------
-  // Half-widths. The arms hang clear of the chest, or the figure reads as a
-  // sack at the size this is actually seen.
-  const BODY = {
-    slim:   { chest:.175, shoulder:.205, hip:.100, belly:.155 },
-    normal: { chest:.200, shoulder:.235, hip:.112, belly:.182 },
-    strong: { chest:.248, shoulder:.300, hip:.128, belly:.205 },
-    wide:   { chest:.250, shoulder:.250, hip:.140, belly:.290 },
-  };
-
-  /** Two dark beads on the face. Nothing reads as a person without them. */
-  function eyes(g, y){
-    for (const sx of [-1, 1]){
-      const e = new THREE.Mesh(gBall(.021), mt('#20232e'));
-      e.position.set(sx * .052, y === undefined ? .012 : y, .133);
-      g.add(e);
-    }
-  }
-
-  function headgear(g, def, colour){
-    const hc = mt(HAIRC);
-    const hood = def.hair === 'hood', helm = def.hair === 'helmet';
-
-    if (def.hair === 'short'){
-      const h = pc(gBall(.155), hc, 0, .048, -.014); h.scale.set(1, .64, 1.04); g.add(h);
-    } else if (def.hair === 'long'){
-      const h = pc(gBall(.155), hc, 0, .042, -.02); h.scale.set(1.02, .70, 1.04); g.add(h);
-      const back = pc(gBall(.148), hc, 0, -.03, -.072); back.scale.set(1, 1.15, .82); g.add(back);
-      g.add(pc(gCap(.046, .17), hc,  .128, -.11, -.025));
-      g.add(pc(gCap(.046, .17), hc, -.128, -.11, -.025));
-    } else if (hood){
-      // Pushed back far enough that the face is still a face.
-      const h = pc(gBall(.186), mt(colour), 0, .030, -.078); h.scale.set(1, 1.02, .94); g.add(h);
-      const peak = pc(gCone(.10, .20), mt(colour), 0, .14, -.175); peak.rotation.x = .9; g.add(h, peak);
-      const brim = pc(new THREE.TorusGeometry(.152, .030, 8, 20), mt(shade(colour, -.24)), 0, .005, .018);
-      brim.rotation.x = -.30; g.add(brim);
-    } else if (def.hair === 'cap'){
-      const h = pc(gBall(.152), hc, 0, .035, -.02); h.scale.set(1, .62, 1.02); g.add(h);
-      g.add(pc(gCyl(.138, .152, .11), mt(colour), 0, .112, -.01));
-      const brim = pc(gBox(.26, .02, .14), mt(shade(colour, -.25)), 0, .062, .105);
-      brim.rotation.x = -.12; g.add(brim);
-    } else if (helm){
-      const dome = pc(gBall(.166), mt(STEEL, 'metal'), 0, .042, 0); dome.scale.set(1, .98, 1.02); g.add(dome);
-      g.add(pc(new THREE.TorusGeometry(.162, .022, 8, 20), mt(STEEL_D, 'metal'), 0, .03, 0));
-      for (const sx of [-1, 1]) g.add(pc(gBox(.05, .20, .17), mt(STEEL, 'metal'), sx * .122, -.045, .012));
-      g.add(pc(gBox(.034, .20, .06), mt(STEEL_D, 'metal'), 0, -.02, .128));
-      g.add(pc(gBox(.024, .095, .30), mt(colour), 0, .185, -.025));
-    } else if (def.hair === 'hat'){
-      g.add(pc(gBall(.152), hc, 0, .035, -.02));
-      g.add(pc(gCyl(.30, .30, .02), mt(colour), 0, .095, 0));
-      g.add(pc(gCone(.16, .52), mt(colour), 0, .37, 0));
-      g.add(pc(new THREE.TorusGeometry(.135, .024, 8, 18), mt(GOLD, 'glow'), 0, .14, 0));
-    } else if (def.hair === 'mask'){
-      const h = pc(gBall(.155), mt('#1b1e2b'), 0, .038, -.012); h.scale.set(1, .70, 1.04); g.add(h);
-      g.add(pc(gBox(.26, .085, .055), mt('#13161f'), 0, -.058, .118));
-    }
-
-    if (!helm) eyes(g, def.hair === 'mask' ? .022 : .012);
-    if (def.beard) {
-      const b = pc(gCap(.072, .115), mt('#efeae1'), 0, -.135, .062);
-      b.scale.set(1.3, 1, .72); g.add(b);
-    }
-    if (def.halo){
-      const h = pc(new THREE.TorusGeometry(.135, .015, 8, 24), mt(GOLD, 'glow'), 0, .27, 0);
-      h.rotation.x = Math.PI / 2; h.castShadow = false; g.add(h);
-    }
-  }
-
-  function propFor(kind, colour){
-    const g = new THREE.Group();
-    if (kind === 'sword'){
-      g.add(pc(gBox(.055, .66, .016), mt(STEEL, 'metal'), 0, .40, 0));
-      g.add(pc(gBox(.22, .035, .035), mt(GOLD, 'metal'), 0, .07, 0));
-      g.add(pc(gCyl(.028, .028, .14), mt(LEATH), 0, -.02, 0));
-    } else if (kind === 'dagger'){
-      g.add(pc(gBox(.04, .26, .013), mt(STEEL, 'metal'), 0, .17, 0));
-      g.add(pc(gCyl(.024, .024, .10), mt('#2a2e3c'), 0, 0, 0));
-    } else if (kind === 'axe'){
-      g.add(pc(gCyl(.026, .026, .68), mt(WOOD), 0, .22, 0));
-      const head = pc(gBox(.055, .20, .13), mt(STEEL, 'metal'), 0, .50, .085);
-      head.rotation.y = .18; g.add(head);
-    } else if (kind === 'hammer'){
-      g.add(pc(gCyl(.03, .03, .60), mt(WOOD), 0, .18, 0));
-      g.add(pc(gBox(.13, .15, .22), mt('#4a5060', 'metal'), 0, .48, 0));
-    } else if (kind === 'staff'){
-      g.add(pc(gCyl(.026, .032, .98), mt(WOOD), 0, .36, 0));
-      g.add(pc(gBall(.072), mt('#7fd8ff', 'glow'), 0, .88, 0));
-    } else if (kind === 'bow'){
-      const arc = pc(new THREE.TorusGeometry(.33, .022, 8, 26, Math.PI * 1.12), mt(WOOD), 0, .28, 0);
-      arc.rotation.z = -Math.PI / 2 - .55; g.add(arc);
-      g.add(pc(gBox(.006, .62, .006), mt('#e4ded0'), .055, .28, 0));
-    } else if (kind === 'lute'){
-      const bowl = pc(gBall(.17), mt(WOOD), 0, .14, 0); bowl.scale.set(1, 1.18, .62); g.add(bowl);
-      g.add(pc(gBox(.055, .44, .035), mt('#6a4628'), 0, .46, 0));
-      g.add(pc(gBall(.055), mt('#2b1c10'), 0, .18, .095));
-    } else if (kind === 'shield'){
-      const s = pc(gCyl(.26, .26, .045), mt(colour), 0, .16, 0);
-      s.rotation.x = Math.PI / 2; g.add(s);
-      const rim = pc(new THREE.TorusGeometry(.26, .026, 8, 24), mt(STEEL, 'metal'), 0, .16, 0); g.add(rim);
-      g.add(pc(gBall(.06), mt(GOLD, 'metal'), 0, .16, .04));
-    }
-    return g;
-  }
-
-  /** A person. Returns a group whose userData names the parts that move. */
-  function person3(def, colour, opts){
-    opts = opts || {};
-    const b = BODY[def.body || 'normal'];
-    const plate = def.hair === 'helmet';
-    const cloth = mt(colour, plate ? 'metal' : '');
-    const sleeve = mt(shade(colour, -.16), plate ? 'metal' : '');
-    const trouser = mt(shade(colour, -.42));
-    const skin = mt(SKIN3, 'skin');
-    const g = new THREE.Group();
-    const body = new THREE.Group(); g.add(body);
-
-    // Chest tapering to a waist, rather than one even barrel.
-    const chest = pc(gCap(b.chest, .20), cloth, 0, 1.30, 0);
-    chest.scale.set(1, 1, .68); body.add(chest);
-    const belly = pc(gCap(b.belly, .13), cloth, 0, 1.08, 0);
-    belly.scale.set(1, 1, .70); body.add(belly);
-    const belt = pc(gCyl(b.belly + .012, b.belly + .012, .055), mt(LEATH), 0, .99, 0);
-    belt.scale.set(1, 1, .72); body.add(belt);
-    body.add(pc(gBox(.072, .055, .03), mt(GOLD, 'metal'), 0, .99, b.belly * .70 + .01));
-
-    // Shoulders sit narrower than the arms, so the arms keep their outline.
-    const yoke = pc(gCap(b.shoulder - .035, .055), cloth, 0, 1.44, 0);
-    yoke.scale.set(1, 1, .64); body.add(yoke);
-    if (plate) for (const sx of [-1, 1]){
-      const pld = pc(gBall(.115), mt(STEEL, 'metal'), sx * (b.shoulder + .01), 1.44, 0);
-      pld.scale.set(1, .76, 1); body.add(pld);
-    }
-
-    const head = new THREE.Group(); head.position.set(0, 1.70, 0); body.add(head);
-    body.add(pc(gCyl(.055, .062, .09), skin, 0, 1.545, 0));
-    const skull = pc(gBall(.148), skin, 0, 0, 0); skull.scale.set(1, 1.06, .98); head.add(skull);
-    headgear(head, def, colour);
-
-    const legs = [];
-    for (const sx of [-1, 1]){
-      const L = limb(sx * b.hip, .96, 0);
-      L.add(pc(gCap(.082, .46), trouser, 0, -.30, 0));
-      L.add(pc(gBox(.135, .085, .225), mt('#33281f'), 0, -.60, .035));
-      body.add(L); legs.push(L);
-    }
-
-    const arms = [];
-    for (const sx of [-1, 1]){
-      const A = limb(sx * (b.shoulder + .055), 1.42, 0);
-      A.add(pc(gCap(.058, .34), sleeve, 0, -.22, 0));
-      A.add(pc(gBall(.064), skin, 0, -.43, 0));
-      body.add(A); arms.push(A);
-    }
-
-    if (def.prop){
-      const hand = propFor(def.prop, colour);
-      hand.position.set(0, -.44, .03);
-      // Held out from the body, or it disappears into the silhouette.
-      hand.rotation.set(def.prop === 'shield' ? .22 : -.16, 0, def.prop === 'shield' ? 0 : -.20);
-      arms[1].add(hand);
-    }
-
-    g.userData = { legs, arms, body, bodyY: body.position.y, kind:'biped' };
-    if (opts.seated){
-      legs[0].rotation.x = -1.35; legs[1].rotation.x = -1.35;
-      g.userData.legs = null;
-    }
-    return g;
-  }
-
-  // ---------- the beasts ----------
-  function quadruped(colour, kind){
-    const g = new THREE.Group();
-    const body = new THREE.Group(); g.add(body);
-    const horsey = kind === 'horse' || kind === 'unicorn';
-    const coat = mt(colour), dark = mt(shade(colour, -.28)), light = mt(shade(colour, .22));
-
-    const backY = horsey ? 1.04 : .70;
-    const hull = pc(gCap(horsey ? .26 : .215, horsey ? .76 : .70), coat, 0, backY, 0);
-    hull.rotation.x = Math.PI / 2; hull.scale.set(1, 1, .94); body.add(hull);
-    // A deeper chest at the front is most of what separates a dog from a tube.
-    const chest = pc(gBall(horsey ? .27 : .235), coat, 0, backY - .02, horsey ? .30 : .26);
-    chest.scale.set(1, 1.06, .9); body.add(chest);
-    body.add(pc(gBall(horsey ? .24 : .20), coat, 0, backY + .01, horsey ? -.34 : -.30));
-
-    const neckLen = horsey ? .46 : .22;
-    const neck = pc(gCap(horsey ? .125 : .155, neckLen), coat,
-                    0, backY + (horsey ? .34 : .14), horsey ? .32 : .36);
-    neck.rotation.x = horsey ? .52 : 1.05; body.add(neck);
-    if (!horsey){
-      const ruff = pc(new THREE.TorusGeometry(.19, .07, 8, 18), dark, 0, backY + .13, .30);
-      ruff.rotation.x = 1.1; body.add(ruff);
-    }
-
-    const head = new THREE.Group();
-    head.position.set(0, horsey ? 1.72 : .92, horsey ? .54 : .62); body.add(head);
-    const skull = pc(gBall(horsey ? .118 : .150), coat, 0, 0, 0);
-    skull.scale.set(horsey ? .82 : .96, 1, horsey ? 1.25 : 1.05); head.add(skull);
-
-    // A long muzzle, tapering, is what makes it read as an animal at a glance.
-    const muz = pc(gCyl(horsey ? .062 : .062, horsey ? .082 : .105, horsey ? .34 : .32), coat,
-                   0, horsey ? -.11 : -.045, horsey ? .22 : .22);
-    muz.rotation.x = Math.PI / 2 + (horsey ? .25 : .06); head.add(muz);
-    head.add(pc(gBall(.040), mt('#1b1b22'), 0, horsey ? -.17 : -.055, horsey ? .34 : .38));
-    if (kind === 'wolf'){
-      head.add(pc(gBox(.11, .035, .10), mt('#f4efe6'), 0, -.095, .30));
-    }
-
-    const eyeC = kind === 'wolf' ? '#ffcf5a' : '#17171f';
-    for (const sx of [-1, 1])
-      head.add(pc(gBall(.030), mt(eyeC, kind === 'wolf' ? 'glow' : ''), sx * .075, .050, .115));
-
-    for (const sx of [-1, 1]){
-      const ear = pc(gCone(horsey ? .042 : .062, horsey ? .14 : .19), dark, sx * .085, .17, -.03);
-      ear.rotation.x = kind === 'wolf' ? -.12 : -.22;
-      ear.rotation.z = sx * .18; head.add(ear);
-    }
-    if (kind === 'unicorn'){
-      const horn = pc(gCone(.034, .36), mt('#fff0c8', 'glow'), 0, .27, .04);
-      horn.rotation.x = -.22; head.add(horn);
-    }
-    if (horsey){
-      for (let k = 0; k < 7; k++){
-        const t = k / 6;
-        const tuft = pc(gCap(.038, .10), dark, 0, backY + .18 + t * .50, .14 + t * .32);
-        tuft.scale.set(.6, 1, 1.3); tuft.rotation.x = .5; body.add(tuft);
-      }
-    }
-
-    const legs = [];
-    const lx = horsey ? .155 : .145, lz = horsey ? .30 : .30;
-    const top = horsey ? .96 : .62, len = horsey ? .72 : .44;
-    for (const [sx, sz] of [[-1,1],[1,1],[-1,-1],[1,-1]]){
-      const L = limb(sx * lx, top, sz * lz);
-      L.add(pc(gCap(horsey ? .058 : .050, len * .55), coat, 0, -len * .30, 0));
-      L.add(pc(gCap(horsey ? .044 : .040, len * .48), dark, 0, -len * .74, 0));
-      L.add(pc(gCyl(.062, .072, .08), mt('#2c2724'), 0, -len - .05, 0));
-      body.add(L); legs.push(L);
-    }
-
-    const tail = kind === 'wolf'
-      ? pc(gCap(.075, .40), dark, 0, backY + .14, -.50)
-      : pc(gCap(.062, .50), dark, 0, backY + .10, -.44);
-    tail.rotation.x = kind === 'wolf' ? -.75 : -.35; body.add(tail);
-    if (kind === 'unicorn') tail.material = light;
-
-    g.userData = { quad: legs, body, bodyY: body.position.y, kind:'quad', saddle: horsey ? 1.22 : .88 };
-    return g;
-  }
-
-  function dragon3(colour){
-    const g = new THREE.Group();
-    const body = new THREE.Group(); g.add(body);
-    const scale = mt(colour), belly = mt(shade(colour, .38)), dark = mt(shade(colour, -.34));
-
-    const hull = pc(gCap(.30, .54), scale, 0, .92, 0);
-    hull.rotation.x = Math.PI / 2; hull.scale.set(1, 1, .96); body.add(hull);
-    body.add(pc(gBall(.30), scale, 0, .94, .26));
-    const bel = pc(gCap(.165, .38), belly, 0, .78, .10);
-    bel.rotation.x = Math.PI / 2; body.add(bel);
-
-    // A long neck carried high, which is the whole reason a dragon is a dragon.
-    const n1 = pc(gCap(.145, .34), scale, 0, 1.32, .30); n1.rotation.x = .30; body.add(n1);
-    const n2 = pc(gCap(.115, .34), scale, 0, 1.68, .46); n2.rotation.x = .52; body.add(n2);
-    const head = new THREE.Group(); head.position.set(0, 1.92, .62); body.add(head);
-    const skull = pc(gBall(.175), scale, 0, 0, 0); skull.scale.set(.95, .88, 1.25); head.add(skull);
-    const jaw = pc(gCyl(.075, .115, .30), scale, 0, -.045, .22);
-    jaw.rotation.x = Math.PI / 2 + .08; head.add(jaw);
-    head.add(pc(gBall(.035), mt('#ffd34d', 'glow'),  .088, .062, .14));
-    head.add(pc(gBall(.035), mt('#ffd34d', 'glow'), -.088, .062, .14));
-    for (const sx of [-1, 1]){
-      const horn = pc(gCone(.046, .34), dark, sx * .092, .13, -.09);
-      horn.rotation.x = .95; horn.rotation.z = sx * -.22; head.add(horn);
-      head.add(pc(gCone(.03, .11), dark, sx * .072, -.055, .30));
-    }
-
-    const wings = [];
-    for (const sx of [-1, 1]){
-      const W = limb(sx * .22, 1.30, -.06);
-      const sh = new THREE.Shape();
-      sh.moveTo(0, 0); sh.lineTo(1.05, .40); sh.lineTo(.98, .04);
-      sh.lineTo(.76, -.18); sh.lineTo(.48, -.30); sh.lineTo(.20, -.22);
-      sh.closePath();
-      const mem = new THREE.Mesh(new THREE.ShapeGeometry(sh),
-        new THREE.MeshStandardMaterial({ color:new THREE.Color(shade(colour, -.10)),
-          roughness:.86, metalness:.02, side:THREE.DoubleSide }));
-      mem.scale.x = sx; mem.position.set(0, .14, -.04); mem.rotation.x = -.22;
-      mem.castShadow = true; W.add(mem);
-      for (const [ex, ey] of [[1.05,.40],[.76,-.18]]){
-        const rib = pc(gCap(.016, Math.hypot(ex, ey) - .05), dark, sx * ex / 2, .14 + ey / 2, -.045);
-        rib.rotation.z = -sx * (Math.PI / 2 - Math.atan2(ey, ex));
-        rib.rotation.x = -.22; W.add(rib);
-      }
-      body.add(W); wings.push(W);
-    }
-
-    const legs = [];
-    for (const [sx, sz] of [[-1,1],[1,1],[-1,-1],[1,-1]]){
-      const front = sz > 0;
-      const L = limb(sx * (front ? .19 : .24), .80, sz * .26);
-      L.add(pc(gCap(front ? .058 : .085, front ? .20 : .26), scale, 0, front ? -.14 : -.17, 0));
-      L.add(pc(gCap(front ? .044 : .058, front ? .18 : .22), dark, 0, front ? -.32 : -.40, 0));
-      L.add(pc(gBox(.16, .07, .20), dark, 0, front ? -.44 : -.54, .06));
-      body.add(L); legs.push(L);
-    }
-
-    // Spines down the back, and a tail that tapers to a point.
-    for (let k = 0; k < 5; k++){
-      const sp = pc(gCone(.045 - k * .005, .16), dark, 0, 1.30 - k * .02, .16 - k * .16);
-      body.add(sp);
-    }
-    let tz = -.40, ty = 1.00, r = .165;
-    for (let k = 0; k < 6; k++){
-      body.add(pc(gBall(r), scale, 0, ty, tz));
-      r *= .78; tz -= r * 2.0; ty -= .05;
-    }
-    body.add(pc(gCone(.09, .26), dark, 0, ty + .02, tz - .06));
-
-    g.userData = { quad: legs, wings, body, bodyY: body.position.y, kind:'dragon', saddle: 1.24 };
-    return g;
-  }
-
-  /** One character, ready to pose. */
-  function build3(id, colour){
-    const c = charById(id);
-    let g;
-    if (c.creature === 'dragon') g = dragon3(colour);
-    else if (c.creature) g = quadruped(colour, c.creature);
-    else g = person3(c, colour);
-
-    if (c.rider){
-      const seat = person3({ hair:'helmet', body:'normal', prop:'sword' }, shade(colour, -.35), { seated:true });
-      const k = .62;
-      seat.scale.setScalar(k);
-      // Hips land on the back, which is what the saddle height means.
-      seat.position.set(0, (g.userData.saddle || 1.1) - .96 * k,
-                        c.creature === 'dragon' ? -.02 : -.14);
-      g.add(seat);
-      g.userData.rider = seat;
-    }
-    // Head-on, a four-legged animal is a muzzle and two ears. Turned a little,
-    // it is unmistakable — so the beasts carry a standing offset and keep it
-    // whichever way you are walking.
-    if (c.creature){
-      const turned = new THREE.Group();
-      turned.rotation.y = c.creature === 'dragon' ? -.12 : -.38;
-      while (g.children.length) turned.add(g.children[0]);
-      turned.userData = g.userData;
-      const outer = new THREE.Group();
-      outer.add(turned);
-      outer.userData = g.userData;
-      g = outer;
-    }
-
-    // Everything is drawn against the same box, so a dragon does not dwarf a villager.
-    const box = new THREE.Box3().setFromObject(g);
-    const h = Math.max(box.max.y - box.min.y, .001);
-    const w = Math.max(box.max.x - box.min.x, box.max.z - box.min.z, .001);
-    const k = Math.min(1.95 / h, 2.05 / w);
-    g.scale.multiplyScalar(k);
-    g.position.y = -box.min.y * k;
-    return g;
-  }
-
-  // ---------- posing ----------
-  function pose3(g, phase, amp){
-    const u = g.userData;
-    if (!u) return;
-    const s = Math.sin(phase), c2 = Math.cos(phase * 2);
-    if (u.legs){
-      u.legs[0].rotation.x =  s * .62 * amp;
-      u.legs[1].rotation.x = -s * .62 * amp;
-    }
-    if (u.arms){
-      u.arms[0].rotation.x = -s * .48 * amp;
-      u.arms[1].rotation.x =  s * .48 * amp;
-      u.arms[0].rotation.z =  .08;
-      u.arms[1].rotation.z = -.08;
-    }
-    if (u.quad){
-      // Diagonal pairs, which is what a four-legged animal actually does.
-      u.quad[0].rotation.x =  s * .55 * amp;
-      u.quad[3].rotation.x =  s * .55 * amp;
-      u.quad[1].rotation.x = -s * .55 * amp;
-      u.quad[2].rotation.x = -s * .55 * amp;
-    }
-    if (u.wings){
-      const f = Math.sin(phase * .8) * .55 + .22;
-      u.wings[0].rotation.z =  f;
-      u.wings[1].rotation.z = -f;
-      u.wings[0].rotation.x = u.wings[1].rotation.x = Math.cos(phase * .8) * .12;
-    }
-    if (u.body){
-      u.body.position.y = u.bodyY + (u.wings ? Math.sin(phase * .8) * .06 : Math.abs(c2) * .035 * amp);
-      u.body.rotation.z = s * .035 * amp;
-    }
-    if (u.rider) u.rider.position.y = u.rider.userData.seatY === undefined
-      ? (u.rider.userData.seatY = u.rider.position.y)
-      : u.rider.userData.seatY;
-  }
-
-  // ---------- the two renderers ----------
-  function skyEnv(renderer){
-    const c = document.createElement('canvas'); c.width = 16; c.height = 96;
-    const g = c.getContext('2d');
-    const grd = g.createLinearGradient(0, 0, 0, 96);
-    grd.addColorStop(0,   '#eaf3ff');
-    grd.addColorStop(.46, '#a9bed6');
-    grd.addColorStop(.52, '#7a6b58');
-    grd.addColorStop(1,   '#2b2620');
-    g.fillStyle = grd; g.fillRect(0, 0, 16, 96);
-    const tex = new THREE.CanvasTexture(c);
-    tex.mapping = THREE.EquirectangularReflectionMapping;
-    const pm = new THREE.PMREMGenerator(renderer);
-    const rt = pm.fromEquirectangular(tex);
-    pm.dispose(); tex.dispose();
-    return rt.texture;
-  }
-
-  function makeStage(size, shadows){
-    const r = new THREE.WebGLRenderer({ alpha:true, antialias:true, powerPreference:'low-power' });
-    r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    r.setSize(size, size, false);
-    r.shadowMap.enabled = shadows;
-    r.shadowMap.type = THREE.PCFSoftShadowMap;
-    if ('outputColorSpace' in r) r.outputColorSpace = THREE.SRGBColorSpace;
-
-    const scene = new THREE.Scene();
-    scene.environment = skyEnv(r);
-    const cam = new THREE.PerspectiveCamera(30, 1, .1, 40);
-    cam.position.set(.85, 2.30, 3.75);
-    cam.lookAt(0, .98, 0);
-
-    scene.add(new THREE.HemisphereLight(0xd8e9ff, 0x55452f, 1.45));
-    const key = new THREE.DirectionalLight(0xfff4e2, 2.1);
-    key.position.set(2.4, 5.0, 3.0);
-    if (shadows){
-      key.castShadow = true;
-      key.shadow.mapSize.set(512, 512);
-      const sc = key.shadow.camera;
-      sc.left = -2.4; sc.right = 2.4; sc.top = 3.4; sc.bottom = -.8; sc.near = .5; sc.far = 14;
-      sc.updateProjectionMatrix();
-      key.shadow.bias = -.0012;
-    }
-    scene.add(key);
-    const rim = new THREE.DirectionalLight(0x9ec3ff, 1.15);
-    rim.position.set(-3.2, 1.8, -2.6); scene.add(rim);
-    const back = new THREE.DirectionalLight(0xffe9c8, .85);
-    back.position.set(.4, 2.2, -3.6); scene.add(back);
-
-    if (shadows){
-      const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.ShadowMaterial({ opacity:.42 }));
-      floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
-    }
-    const root = new THREE.Group(); scene.add(root);
-    return { r, scene, cam, root };
-  }
-
-  function init3(){
-    if (!window.THREE || !THREE.CapsuleGeometry) return false;
-    try { V3.live = makeStage(MARK3, true); }
-    catch (e){ console.warn('3D characters unavailable:', e); return false; }
-    V3.live.r.domElement.className = 'me3';
-    V3.ok = true;
-    return true;
-  }
-
-  /** A character, rendered once and kept as an image. */
-  function still3(id, colour){
-    const key = id + '|' + colour;
-    let url = STILLS.get(key);
-    if (url) return url;
-    const st = V3.live;
-    // Borrow the stage: step the player off it, render the portrait larger
-    // than the marker needs, then put everything back before the frame ends.
-    const keep = L3.g;
-    if (keep) st.root.remove(keep);
-    const g = build3(id, colour);
-    pose3(g, 0, 0);
-    st.root.add(g);
-    st.r.setSize(224, 224, false);
-    st.r.render(st.scene, st.cam);
-    url = st.r.domElement.toDataURL('image/png');
-    st.root.remove(g);
-    st.r.setSize(MARK3, MARK3, false);
-    if (keep){ st.root.add(keep); st.r.render(st.scene, st.cam); }
-    STILLS.set(key, url);
-    return url;
-  }
-
-  // ---------- the living marker ----------
-  const L3 = { g:null, id:null, colour:null, phase:0, amp:0, want:0, face:0, moved:0, last:0 };
-
-  function live3(){
-    const id = S.char || 'walk', colour = S.colour || palette()[0];
-    if (L3.id === id && L3.colour === colour) return;
-    if (L3.g) V3.live.root.remove(L3.g);
-    L3.g = build3(id, colour);
-    L3.face = L3.want = 0;
-    L3.g.rotation.y = 0;
-    V3.live.root.add(L3.g);
-    L3.id = id; L3.colour = colour;
-  }
-
-  /** Called on every fix, so the figure walks only while you do. */
-  function stride3(bearing){
-    if (!V3.ok) return;
-    if (bearing !== null && bearing !== undefined) L3.want = bearing;
-    L3.moved = performance.now();
-  }
-
-  function loop3(now){
-    requestAnimationFrame(loop3);
-    if (!V3.ok || !L3.g) return;
-    const host = V3.live.r.domElement;
-    if (!host.isConnected || document.hidden) return;
-
-    const dt = Math.min((now - (L3.last || now)) / 1000, .1);
-    L3.last = now;
-
-    // The walk fades in and out rather than snapping, so a lost fix does not
-    // make the character stutter.
-    const want = (performance.now() - L3.moved < 2600) ? 1 : 0;
-    L3.amp += (want - L3.amp) * Math.min(dt * 4, 1);
-    const flying = charById(L3.id).fly;
-    L3.phase += dt * (flying ? 3.4 : 7.4 * Math.max(L3.amp, .001));
-    pose3(L3.g, L3.phase, flying ? 1 : L3.amp);
-
-    // Turn the short way round.
-    let d = L3.want - L3.face;
-    while (d >  Math.PI) d -= Math.PI * 2;
-    while (d < -Math.PI) d += Math.PI * 2;
-    L3.face += d * Math.min(dt * 5, 1);
-    L3.g.rotation.y = L3.face;
-
-    V3.live.r.render(V3.live.scene, V3.live.cam);
   }
 
   function charSvg(id, colour, size){
     if (ART[id]) return '<img class="charart" src="' + ART[id] + '" width="' + size +
       '" height="' + size + '" alt="" draggable="false">';
-    if (V3.ok) return '<img class="charart" src="' + still3(id, colour) + '" width="' + size +
-      '" height="' + size + '" alt="" draggable="false">';
-    const c = charById(id);
-    let art;
-    if (c.creature){
-      art = CREATURES[c.creature](colour);
-      if (c.rider){
-        // Half-size rider, seated on the mount's back.
-        const seat = person({ hair:'helmet', body:'normal', prop:'sword' }, shade(colour, -0.3),
-                            { noShadow:true, noLegs:true });
-        art += '<g transform="translate(10.5 -4.5) scale(0.56)">' + seat + '</g>';
-      }
-    } else {
-      art = person(c, colour);
-    }
-    return '<svg viewBox="0 0 48 48" width="' + size + '" height="' + size + '" aria-hidden="true">' + art + '</svg>';
-  }
-
-  /** The marker holds the live canvas, so the figure in it actually walks. */
-  function mount3(){
-    if (!V3.ok || !meMarker) return;
-    const el = meMarker.getElement();
-    const host = el && el.querySelector('.me3host');
-    if (host && V3.live.r.domElement.parentNode !== host) host.appendChild(V3.live.r.domElement);
+    return charSvgVec(id, colour, size);
   }
 
   function meIcon(){
-    if (V3.ok){
-      live3();
-      return L.divIcon({ className:'', iconSize:[MARK3, MARK3], iconAnchor:[MARK3 / 2, MARK3 * .80],
-        html:'<div class="me3host"></div>' });
-    }
-    const size = 34;
-    return L.divIcon({ className:'', iconSize:[size,size], iconAnchor:[size/2,size/2],
-      html:'<div class="me' + (charById(S.char || 'walk').fly ? ' fly' : '') + '" style="position:relative">' +
-            charSvg(S.char || 'walk', S.colour || palette()[0], size) + '</div>' });
+    const size = 76;
+    const c = charById(S.char || 'walk');
+    return L.divIcon({ className:'', iconSize:[size, size], iconAnchor:[size / 2, size * .78],
+      html:'<div class="me' + (c.fly ? ' fly' : '') + '" style="position:relative">' +
+            charSvg(c.id, S.colour || palette()[0], size) + '</div>' });
   }
+
+  /** The legs only move while you do. */
+  function walking(on){
+    const el = meMarker && meMarker.getElement();
+    if (el) el.firstChild.classList.toggle('go', on);
+  }
+
 
   function applyCharacter(){
     if (meMarker) meMarker.setIcon(meIcon());
@@ -1438,9 +1069,23 @@ window.__startUncover = (user, sync) => {
 
   /** Called when the level changes: anything newly reachable is announced,
       because an unlock nobody notices is not a reward. */
+  // Levels that give something other than a new character.
+  const PERKS = [
+    { lvl:PET_LVL, en:'A companion walks with you now.', el:'Τώρα έχεις παρέα στον δρόμο.' },
+    { lvl:10,      en:'The fog lifts a little wider around you.', el:'Η ομίχλη ανοίγει λίγο πιο πλατιά γύρω σου.' },
+    { lvl:50,      en:'Wider still — you see further than most.', el:'Ακόμα πιο πλατιά — βλέπεις πιο μακριά από τους περισσότερους.' },
+  ];
+
   function announceUnlocks(before, after){
     const fresh = CHARACTERS.filter(c => c.lvl > before && c.lvl <= after);
     if (fresh.length) toast('Unlocked — ' + fresh.map(c => c.name).join(', '));
+    for (const p of PERKS){
+      if (p.lvl > before && p.lvl <= after){
+        setTimeout(() => toast(S.lang === 'en' ? p.en : p.el), 1400);
+        // The companion appears on the marker, so it has to be redrawn.
+        if (p.lvl === PET_LVL && meMarker) setTimeout(() => meMarker.setIcon(meIcon()), 200);
+      }
+    }
   }
 
 
@@ -1544,7 +1189,7 @@ window.__startUncover = (user, sync) => {
   // Greek is the default: this is a Cypriot app, and the browser's locale is
   // never allowed to decide. The player's own choice is, and it is kept.
   const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
-  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο."} };
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο.", "birdHit": "Ένα πουλί! +% XP"} };
   /** Falls back to the English already written into the markup. */
   const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
 
@@ -1604,55 +1249,72 @@ window.__startUncover = (user, sync) => {
   }
 
   // ---------- monsters ----------
-  // Drawn in the same flat style as the characters, and worth experience for
-  // the walk it took to reach them. Each carries what it is worth, so a
-  // tougher thing further up the ladder pays more.
+  /**
+   * Drawn the same way as the cast: one chunky shape, a heavy outline, far
+   * too many teeth. Each kind does one thing, and the thing it does is the
+   * reason to walk a bit further than you meant to.
+   *
+   *   flee   hops once to another patch of ground you have already walked
+   *   split  comes apart into two smaller ones, each worth half
+   *   rare   turns up seldom and pays for the surprise
+   */
+  const TEETH = (cx, y, w, n) => {
+    let d = '';
+    for (let i = 0; i < n; i++){
+      const x = cx - w / 2 + (w / n) * i;
+      d += 'M' + x + ' ' + y + 'l' + (w / n / 2) + ' ' + (w / n) + 'l' + (w / n / 2) + ' -' + (w / n) + 'Z';
+    }
+    return Pn(d, WHITE);
+  };
+
+  const maw = (cx, cy, rx, ry, teeth) =>
+    E(cx, cy, rx, ry, '#8e2d44', 2.4) + TEETH(cx, cy - ry + .6, rx * 1.5, teeth || 4);
+
+  const bigEye = (cx, cy, r, iris) =>
+    E(cx, cy, r, r * 1.08, WHITE, 2.4) + En(cx + r * .12, cy + r * .1, r * .42, r * .46, iris || INK3) +
+    En(cx - r * .22, cy - r * .3, r * .2, r * .22, 'rgba(255,255,255,.95)');
+
   const MONSTERS = [
-    { id:'slime',    name:'Slime',    xp:20,  draw:(c) => SHADOW +
-      '<path d="M7 38q0-17 17-17t17 17z" fill="' + c + '"/>' +
-      '<ellipse cx="24" cy="38" rx="17" ry="3" fill="' + shade(c, -0.25) + '"/>' +
-      '<circle cx="18.6" cy="30" r="2" fill="' + INK + '"/><circle cx="29.4" cy="30" r="2" fill="' + INK + '"/>' +
-      '<path d="M20.6 34.6q3.4 2.4 6.8 0" stroke="' + INK + '" stroke-width="1.3" fill="none" stroke-linecap="round"/>' +
-      '<ellipse cx="15.6" cy="26" rx="3" ry="2" fill="rgba(255,255,255,.4)"/>' },
-    { id:'bat',      name:'Bat',      xp:30,  draw:(c) => SHADOW +
-      '<path d="M22 20Q10 10 2 16q6 2 7 9 7-2 13-5z" fill="' + shade(c, -0.2) + '"/>' +
-      '<path d="M26 20q12-10 20-4-6 2-7 9-7-2-13-5z" fill="' + shade(c, -0.2) + '"/>' +
-      '<ellipse cx="24" cy="25" rx="7" ry="8.5" fill="' + c + '"/>' +
-      '<path d="M19.6 18.4 18.4 12l4.4 4z" fill="' + c + '"/>' +
-      '<path d="M28.4 18.4 29.6 12l-4.4 4z" fill="' + c + '"/>' +
-      '<circle cx="21.4" cy="23.6" r="1.5" fill="#ffe14d"/><circle cx="26.6" cy="23.6" r="1.5" fill="#ffe14d"/>' +
-      '<path d="M22 28.6h4l-2 2.4z" fill="#fff"/>' },
-    { id:'goblin',   name:'Goblin',   xp:45,  draw:(c) => SHADOW +
-      '<rect x="17" y="24" width="14" height="13" rx="5" fill="' + shade(c, -0.15) + '"/>' +
-      '<rect x="18.6" y="36" width="4.4" height="6" rx="2.2" fill="' + shade(c, -0.4) + '"/>' +
-      '<rect x="25" y="36" width="4.4" height="6" rx="2.2" fill="' + shade(c, -0.4) + '"/>' +
-      '<circle cx="24" cy="16" r="8" fill="' + c + '"/>' +
-      '<path d="M16.6 13.4 7 9.6l8 7.8z" fill="' + c + '"/>' +
-      '<path d="M31.4 13.4 41 9.6l-8 7.8z" fill="' + c + '"/>' +
-      '<circle cx="21" cy="15.4" r="1.5" fill="#c9304a"/><circle cx="27" cy="15.4" r="1.5" fill="#c9304a"/>' +
-      '<path d="M20.4 19.6h7.2l-1.6 2.4h-4z" fill="#fff"/>' +
-      '<path d="M32 34 39 22" stroke="#aeb6ca" stroke-width="2.2" stroke-linecap="round"/>' },
-    { id:'skeleton', name:'Skeleton', xp:65,  draw:() => SHADOW +
-      '<rect x="20.6" y="24" width="6.8" height="12" rx="2" fill="#e6e2d8"/>' +
-      '<path d="M17 26h14M17 30h14" stroke="#c6c1b4" stroke-width="1.6" stroke-linecap="round"/>' +
-      '<rect x="19" y="35.4" width="3.4" height="6.6" rx="1.7" fill="#e6e2d8"/>' +
-      '<rect x="25.6" y="35.4" width="3.4" height="6.6" rx="1.7" fill="#e6e2d8"/>' +
-      '<circle cx="24" cy="15.4" r="8" fill="#f2efe6"/>' +
-      '<ellipse cx="20.8" cy="15" rx="2.3" ry="2.7" fill="' + INK + '"/>' +
-      '<ellipse cx="27.2" cy="15" rx="2.3" ry="2.7" fill="' + INK + '"/>' +
-      '<path d="M22.4 20.4h3.2M21.6 22.4h4.8" stroke="' + INK + '" stroke-width="1.2" stroke-linecap="round"/>' +
-      '<path d="M31 34 41 18" stroke="#c6c1b4" stroke-width="2.4" stroke-linecap="round"/>' },
-    { id:'imp',      name:'Imp',      xp:90,  draw:(c) => SHADOW +
-      '<path d="M9 22q6-12 15-12t15 12q-5 16-15 16T9 22z" fill="' + c + '"/>' +
-      '<path d="M15.4 11 11.6 3.4l7.4 4.6z" fill="' + shade(c, -0.3) + '"/>' +
-      '<path d="M32.6 11 36.4 3.4l-7.4 4.6z" fill="' + shade(c, -0.3) + '"/>' +
-      '<path d="M8 22q-6 2-6 8 4-1 7-4z" fill="' + shade(c, -0.2) + '"/>' +
-      '<path d="M40 22q6 2 6 8-4-1-7-4z" fill="' + shade(c, -0.2) + '"/>' +
-      '<path d="M18 20.6q2.6-2.6 5 0" stroke="#ffe14d" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<path d="M25 20.6q2.4-2.6 5 0" stroke="#ffe14d" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<path d="M19 28q5 4 10 0-5 1.6-10 0z" fill="#fff"/>' },
+    { id:'slime', name:'Slime', xp:22, trait:'split', draw: c =>
+      P('M6 40q0 -22 20 -22 q20 0 20 22 q0 8 -20 8 q-20 0 -20 -8Z', c) +
+      En(16, 26, 5, 4, 'rgba(255,255,255,.28)') +
+      bigEye(19, 32, 5.4) + bigEye(33, 32, 5.4) +
+      P('M20 42q6 5 12 0', 'none', 2.4) },
+
+    { id:'peeper', name:'Peeper', xp:34, draw: c =>
+      P('M7 34q0 -24 19 -24 q19 0 19 24 q0 14 -19 14 q-19 0 -19 -14Z', c) +
+      P('M14 12l-3 -9 9 5Z', shade(c, -.3)) + P('M38 12l3 -9 -9 5Z', shade(c, -.3)) +
+      bigEye(26, 24, 9, '#2f1030') +
+      maw(26, 39, 9, 5, 5) },
+
+    { id:'gobbler', name:'Gobbler', xp:48, trait:'flee', draw: c =>
+      P('M8 36q0 -18 18 -18 q18 0 18 18 q0 12 -18 12 q-18 0 -18 -12Z', c) +
+      P('M16 19q-4 -12 2 -14 q3 6 2 13Z', c, 2.2) + P('M36 19q4 -12 -2 -14 q-3 6 -2 13Z', c, 2.2) +
+      bigEye(18, 14, 4.6) + bigEye(34, 14, 4.6) +
+      maw(26, 36, 12, 7, 6) +
+      P('M14 48l-3 6M38 48l3 6', 'none', 2.6) },
+
+    { id:'flapper', name:'Flapper', xp:62, draw: c =>
+      P('M18 28q-13 -14 -17 -4 q7 1 9 10Z', shade(c, -.18)) +
+      P('M34 28q13 -14 17 -4 q-7 1 -9 10Z', shade(c, -.18)) +
+      P('M26 12q13 0 13 15 q0 15 -13 15 q-13 0 -13 -15 q0 -15 13 -15Z', c) +
+      P('M18 13l-2 -9 8 4Z', c) + P('M34 13l2 -9 -8 4Z', c) +
+      bigEye(26, 22, 8, '#3a0f12') +
+      maw(26, 36, 7, 4, 4) },
+
+    { id:'spook', name:'Spook', xp:80, draw: c =>
+      P('M9 36q0 -26 17 -26 q17 0 17 26 l0 12 l-5 -5 l-6 5 l-6 -5 l-6 5 l-5 -5Z', c) +
+      bigEye(20, 25, 5.2) + bigEye(33, 25, 5.2) +
+      maw(26, 38, 6, 5, 4) },
+
+    { id:'ember', name:'Emberling', xp:140, trait:'rare', draw: () =>
+      P('M26 4q6 10 1 17 q7 1 9 9 q3 -3 4 -8 q6 8 6 16 q0 12 -20 12 q-20 0 -20 -12 q0 -12 10 -18 q-2 -9 10 -16Z', '#ff9d2e') +
+      P('M26 20q8 6 8 16 q0 8 -8 8 q-8 0 -8 -8 q0 -10 8 -16Z', '#ffd24d') +
+      bigEye(21, 32, 4.4, '#7a2e06') + bigEye(31, 32, 4.4, '#7a2e06') +
+      P('M21 40q5 5 10 0 Z', '#8e2d44', 2) },
   ];
-  const MONSTER_COLOURS = ['#6fbf73','#8a6bd0','#c9304a','#3f8fd0','#d08a3f'];
+
+  const MONSTER_COLOURS = ['#6fbf73','#8a6bd0','#e0603f','#3f8fd0','#c9d6e2','#d94f84'];
   const REACH = 30;          // metres you must be within to strike
   const MAX_MONSTERS = 1;
   // A thing to fight is an event, not scenery. One at a time, and a quiet
@@ -1662,50 +1324,86 @@ window.__startUncover = (user, sync) => {
   let monsters = [];
   let nextSpawn = Date.now() + GAP_MIN * .4 + Math.random() * GAP_SPREAD;
 
+  function mobIcon(kind, colour, size){
+    size = size || 50;
+    return L.divIcon({ className:'', iconSize:[size, size], iconAnchor:[size / 2, size / 2],
+      html:'<div class="mob">' +
+        '<svg viewBox="0 0 52 60" width="' + size + '" height="' + size + '" aria-hidden="true">' +
+        En(26, 55, 13, 3, 'rgba(0,0,0,.26)') + kind.draw(colour) + '</svg>' +
+        '<b>' + (S.lang === 'en' ? 'Tap' : 'Πάτα') + '</b></div>' });
+  }
+
+  /** Somewhere you have already walked, within a sensible distance of a point. */
+  function groundNear(lat, lng, min, max){
+    const keys = Object.keys(S.cells);
+    for (let tries = 0; tries < 50; tries++){
+      const k = keys[(Math.random() * keys.length) | 0];
+      const comma = k.indexOf(',');
+      const i = +k.slice(0, comma), j = +k.slice(comma + 1);
+      const la = (i + .5) * CELL, ln = (j + .5) * lngStep(i);
+      const d = dist(lat, lng, la, ln);
+      if (d >= min && d <= max) return [la, ln];
+    }
+    return null;
+  }
+
+  function addMob(kind, colour, lat, lng, xp, size){
+    const m = { lat, lng, kind, colour, xp: xp || kind.xp, size: size || 50 };
+    m.marker = L.marker([lat, lng], { icon: mobIcon(kind, colour, m.size), zIndexOffset: 900 }).addTo(map);
+    m.marker.on('click', ev => { L.DomEvent.stop(ev); strike(m); });
+    monsters.push(m);
+    m.gone = setTimeout(() => {
+      map.removeLayer(m.marker);
+      monsters = monsters.filter(x => x !== m);
+    }, 300000);
+    return m;
+  }
+
   /**
    * Monsters only ever appear on ground already uncovered.
    *
    * That is a safety rule, not a design one: the game must never be a reason
    * to step into a road, a field or the sea. If you have already walked it,
-   * it is somewhere you can be.
+   * it is somewhere you can be. The same rule governs where a fleeing one
+   * lands.
    */
   function spawnMonsters(){
     if (monsters.length >= MAX_MONSTERS) return;
     if (Date.now() < nextSpawn) return;
-    const keys = Object.keys(S.cells);
     const here = S.last;
-    if (keys.length < 40 || !here) return;   // too little known ground to be sure
+    if (Object.keys(S.cells).length < 40 || !here) return;
 
-    for (let tries = 0; tries < 40 && monsters.length < MAX_MONSTERS; tries++){
-      const k = keys[(Math.random() * keys.length) | 0];
-      const comma = k.indexOf(',');
-      const i = +k.slice(0, comma), j = +k.slice(comma + 1);
-      const lat = (i + .5) * CELL, lng = (j + .5) * lngStep(i);
-      const d = dist(here[0], here[1], lat, lng);
-      // Near enough to walk to, far enough to be worth the walk.
-      if (d < 90 || d > 420) continue;
+    const spot = groundNear(here[0], here[1], 90, 420);
+    if (!spot) return;
 
-      // Tougher things show up as you climb, so the ladder keeps its shape.
-      const reach = Math.min(MONSTERS.length, 1 + Math.floor((S.lvl || 1) / 8));
-      const kind = MONSTERS[(Math.random() * reach) | 0];
-      const colour = MONSTER_COLOURS[(Math.random() * MONSTER_COLOURS.length) | 0];
-      const m = { lat, lng, kind, colour };
-      m.marker = L.marker([lat, lng], {
-        icon: L.divIcon({ className:'', iconSize:[42,42], iconAnchor:[21,21],
-          html:'<div class="mob">' +
-            '<svg viewBox="0 0 48 48" width="42" height="42" aria-hidden="true">' + kind.draw(colour) + '</svg>' +
-            '<b>' + (S.lang === 'en' ? 'Tap' : 'Πάτα') + '</b></div>' }),
-        zIndexOffset: 900,
-      }).addTo(map);
-      m.marker.on('click', (ev) => { L.DomEvent.stop(ev); strike(m); });
-      monsters.push(m);
-      // Left alone it wanders off, so the map does not silt up with things
-      // you walked past once.
-      m.gone = setTimeout(() => {
-        map.removeLayer(m.marker);
-        monsters = monsters.filter(x => x !== m);
-      }, 300000);
-      nextSpawn = Date.now() + GAP_MIN + Math.random() * GAP_SPREAD;
+    // Tougher things show up as you climb, so the ladder keeps its shape.
+    const lvl = S.lvl || 1;
+    const pool = MONSTERS.filter(k => {
+      if (k.trait === 'rare') return lvl >= 12 && Math.random() < .12;
+      return MONSTERS.indexOf(k) <= Math.floor(lvl / 9);
+    });
+    const kind = (pool.length ? pool : [MONSTERS[0]])[(Math.random() * (pool.length || 1)) | 0];
+    const colour = MONSTER_COLOURS[(Math.random() * MONSTER_COLOURS.length) | 0];
+    addMob(kind, colour, spot[0], spot[1]);
+    nextSpawn = Date.now() + GAP_MIN + Math.random() * GAP_SPREAD;
+  }
+
+  /** A fleeing one bolts the first time you close on it. */
+  function maybeFlee(){
+    const here = S.last;
+    if (!here) return;
+    for (const m of monsters){
+      if (m.kind.trait !== 'flee' || m.fled) continue;
+      if (dist(here[0], here[1], m.lat, m.lng) > REACH + 25) continue;
+      const spot = groundNear(m.lat, m.lng, 50, 140);
+      if (!spot) continue;
+      m.fled = true;
+      m.lat = spot[0]; m.lng = spot[1];
+      m.marker.setLatLng(spot);
+      const el = m.marker.getElement();
+      if (el) el.querySelector('.mob').classList.add('bolt');
+      toast(S.lang === 'en' ? m.kind.name + ' bolted — after it!'
+                            : m.kind.name + ' το έσκασε — πίσω του!');
     }
   }
 
@@ -1718,15 +1416,199 @@ window.__startUncover = (user, sync) => {
     }
     const el = m.marker.getElement();
     if (el) el.querySelector('.mob').classList.add('hit');
-    S.kills = (S.kills || 0) + 1;
-    addXp(m.kind.xp);
-    toast(m.kind.name + ' — +' + m.kind.xp + ' XP');
     clearTimeout(m.gone);
-    setTimeout(() => { map.removeLayer(m.marker); }, 260);
+    setTimeout(() => map.removeLayer(m.marker), 260);
     monsters = monsters.filter(x => x !== m);
-    nextSpawn = Date.now() + GAP_MIN + Math.random() * GAP_SPREAD;
+
+    // A slime does not die; it becomes two smaller problems.
+    if (m.kind.trait === 'split' && !m.half){
+      const half = Math.max(8, Math.round(m.xp / 2));
+      for (const off of [-1, 1]){
+        const spot = groundNear(m.lat, m.lng, 15, 60);
+        if (!spot) continue;
+        const kid = addMob(m.kind, m.colour, spot[0], spot[1], half, 34);
+        kid.half = true;
+      }
+      toast(S.lang === 'en' ? 'It split in two!' : 'Κόπηκε στα δύο!');
+      return;
+    }
+
+    S.kills = (S.kills || 0) + 1;
+    addXp(m.xp);
+    toast(m.kind.name + ' — +' + m.xp + ' XP');
+    if (!monsters.length) nextSpawn = Date.now() + GAP_MIN + Math.random() * GAP_SPREAD;
     updateStats(); save();
   }
+
+  // ---------- bosses ----------
+  /**
+   * A boss is not a bigger monster, it is a longer walk.
+   *
+   * It turns up once, when you first reach its level, and it takes several
+   * hits to put down. After every hit it stomps off a few hundred metres and
+   * waits, so beating one costs most of a kilometre on your feet. That is the
+   * whole point: the reward is for the distance, and the fight is the excuse.
+   */
+  function bossArt(b){
+    const c = b.colour, dk = shade(c, -.30), lt = shade(c, .40);
+    const ey = b.eyes === 1
+      ? bigEye(36, 27, 11, '#2a1a05')
+      : bigEye(27, 27, 7.5, '#2a1a05') + bigEye(45, 27, 7.5, '#2a1a05');
+    const brow = b.eyes === 1
+      ? P('M23 14q13 -7 26 0', 'none', 4.2)
+      : P('M17 16q10 -7 20 -2M35 14q10 -5 20 2', 'none', 4.2);
+    return '' +
+      // Legs and arms sit outside the bulk, which is what makes it a brute
+      // rather than another blob with a face.
+      P('M19 52h13v14a6.5 6.5 0 0 1 -13 0Z', dk) +
+      P('M40 52h13v14a6.5 6.5 0 0 1 -13 0Z', dk) +
+      P('M16 28q-13 3 -13 16 q0 13 10 14 q9 0 9 -14 q0 -13 -6 -16Z', dk) +
+      P('M56 28q13 3 13 16 q0 13 -10 14 q-9 0 -9 -14 q0 -13 6 -16Z', dk) +
+      // the bulk
+      P('M12 34q0 -28 24 -28 q24 0 24 28 q0 26 -24 26 q-24 0 -24 -26Z', c) +
+      // a belly that hangs
+      P('M20 40q0 -6 16 -6 q16 0 16 6 q0 19 -16 19 q-16 0 -16 -19Z', lt) +
+      // horns
+      (b.horns === 'curl'
+        ? P('M16 14q-16 -3 -15 -13 q13 -1 19 9Z', '#efe3c6') +
+          P('M56 14q16 -3 15 -13 q-13 -1 -19 9Z', '#efe3c6')
+        : P('M16 12l-7 -18 17 9Z', '#efe3c6') +
+          P('M56 12l7 -18 -17 9Z', '#efe3c6')) +
+      ey + brow +
+      // a mouth it cannot close, and tusks that is why
+      P('M23 42q13 12 26 0 Z', '#7d2338', 2.8) +
+      Pn('M26 43l3.5 7 3.5 -7Z', WHITE) + Pn('M39 43l3.5 7 3.5 -7Z', WHITE) +
+      P('M24 44q-3 -10 -8 -12 q1 10 5 14Z', '#f7f1e2') +
+      P('M48 44q3 -10 8 -12 q-1 10 -5 14Z', '#f7f1e2') +
+      // knuckles
+      En(10, 52, 2.2, 2.2, 'rgba(0,0,0,.25)') + En(62, 52, 2.2, 2.2, 'rgba(0,0,0,.25)');
+  }
+
+  const BOSSES = [
+    { id:'grunt',  name:'Grunt the Green', lvl:10, hp:3, xp:420,  colour:'#8bbf4a', horns:'spike', eyes:2 },
+    { id:'frost',  name:'Frostbelly',      lvl:25, hp:4, xp:900,  colour:'#5aa9ff', horns:'spike', eyes:2 },
+    { id:'crim',   name:'The Crimson',     lvl:50, hp:5, xp:2200, colour:'#d9453f', horns:'curl',  eyes:2 },
+    { id:'oneeye', name:'Old One-Eye',     lvl:80, hp:6, xp:5000, colour:'#9b63d4', horns:'curl',  eyes:1 },
+  ];
+
+  let boss = null;
+
+  function bossIcon(b, hp){
+    const size = 96;
+    let pips = '';
+    for (let i = 0; i < b.hp; i++)
+      pips += '<i' + (i < hp ? '' : ' class="out"') + '></i>';
+    return L.divIcon({ className:'', iconSize:[size, size], iconAnchor:[size / 2, size / 2],
+      html:'<div class="mob boss">' +
+        '<svg viewBox="-4 0 80 80" width="' + size + '" height="' + size + '" aria-hidden="true">' +
+        En(36, 72, 22, 4, 'rgba(0,0,0,.3)') + bossArt(b) + '</svg>' +
+        '<u>' + pips + '</u><b>' + b.name + '</b></div>' });
+  }
+
+  /** The one boss you are owed, if you are owed one. */
+  function dueBoss(){
+    const lvl = S.lvl || 1;
+    S.bosses = S.bosses || {};
+    return BOSSES.filter(b => lvl >= b.lvl && !S.bosses[b.id]).pop() || null;
+  }
+
+  function spawnBoss(){
+    if (boss || monsters.length) return;
+    const here = S.last;
+    if (!here || Object.keys(S.cells).length < 60) return;
+    const b = dueBoss();
+    if (!b) return;
+    const spot = groundNear(here[0], here[1], 150, 450);
+    if (!spot) return;
+
+    boss = { def:b, hp:b.hp, lat:spot[0], lng:spot[1] };
+    boss.marker = L.marker(spot, { icon: bossIcon(b, b.hp), zIndexOffset: 950 }).addTo(map);
+    boss.marker.on('click', ev => { L.DomEvent.stop(ev); hitBoss(); });
+    toast(S.lang === 'en' ? b.name + ' has shown up. Go and find it.'
+                          : 'Εμφανίστηκε ο ' + b.name + '. Πήγαινε να τον βρεις.');
+  }
+
+  function hitBoss(){
+    const here = S.last;
+    if (!here) return;
+    if (dist(here[0], here[1], boss.lat, boss.lng) > REACH){
+      toast(S.lang === 'en' ? 'Still too far. Walk to it.' : 'Ακόμα μακριά. Περπάτα ως εκεί.');
+      return;
+    }
+    boss.hp--;
+    const el = boss.marker.getElement();
+    if (el) el.querySelector('.mob').classList.add('hit');
+
+    if (boss.hp <= 0){
+      const b = boss.def;
+      S.bosses[b.id] = Date.now();
+      S.kills = (S.kills || 0) + 1;
+      addXp(b.xp);
+      const dead = boss.marker;
+      setTimeout(() => map.removeLayer(dead), 300);
+      boss = null;
+      toast(b.name + ' is done — +' + b.xp + ' XP');
+      updateStats(); save();
+      return;
+    }
+
+    // Hurt, and not staying put about it.
+    const spot = groundNear(boss.lat, boss.lng, 120, 320);
+    setTimeout(() => {
+      if (!boss) return;
+      if (spot){ boss.lat = spot[0]; boss.lng = spot[1]; boss.marker.setLatLng(spot); }
+      boss.marker.setIcon(bossIcon(boss.def, boss.hp));
+      const e2 = boss.marker.getElement();
+      if (e2) e2.querySelector('.mob').classList.add('bolt');
+    }, 300);
+    toast(S.lang === 'en'
+      ? 'It roars and stomps off. ' + boss.hp + ' to go.'
+      : 'Μουγκρίζει και φεύγει. Μένουν ' + boss.hp + '.');
+    save();
+  }
+
+  /**
+   * Every so often a bird crosses overhead. It is not a monster: there is no
+   * walking to it and no distance check, because it is in the air. Tap it
+   * before it leaves and the walk is worth a little more.
+   */
+  const BIRD_XP = 30, BIRD_GAP = 180000, BIRD_SPREAD = 300000;
+  let birdAt = Date.now() + 40000 + Math.random() * BIRD_SPREAD;
+
+  function birdSvg(){
+    const body = '#5a6478', wing = '#8d99af';
+    return '<svg viewBox="0 0 44 30" width="44" height="30" aria-hidden="true">' +
+      '<g class="wg a">' + P('M20 15q-9 -11 -18 -6 q7 3 9 9Z', wing, 2) + '</g>' +
+      '<g class="wg b">' + P('M24 15q9 -11 18 -6 q-7 3 -9 9Z', wing, 2) + '</g>' +
+      P('M14 15q0 -7 8 -7 q8 0 8 7 q0 7 -8 7 q-8 0 -8 -7Z', body, 2) +
+      P('M30 13l6 2 -6 2Z', '#e8a33d', 1.6) +
+      En(26, 13, 1.7, 1.8, WHITE) + En(26.4, 13.2, .9, 1, INK3) +
+      '</svg>';
+  }
+
+  function sendBird(){
+    const host = map.getContainer();
+    const el = document.createElement('div');
+    const fromLeft = Math.random() < .5;
+    el.className = 'bird' + (fromLeft ? '' : ' rev');
+    el.style.top = (12 + Math.random() * 34) + '%';
+    el.innerHTML = '<div class="wob">' + birdSvg() + '</div>';
+    host.appendChild(el);
+
+    const leave = setTimeout(() => el.remove(), 13000);
+    el.addEventListener('click', ev => {
+      ev.stopPropagation();
+      clearTimeout(leave);
+      el.classList.add('hit');
+      addXp(BIRD_XP);
+      S.birds = (S.birds || 0) + 1;
+      toast(t('birdHit', 'A bird! +' + BIRD_XP + ' XP').replace('%', BIRD_XP));
+      setTimeout(() => el.remove(), 340);
+      updateStats(); save();
+    });
+    birdAt = Date.now() + BIRD_GAP + Math.random() * BIRD_SPREAD;
+  }
+
 
   function addXp(n){
     S.xp = (S.xp || 0) + n;
@@ -1757,7 +1639,6 @@ window.__startUncover = (user, sync) => {
     if (!meMarker){
       meMarker = L.marker([lat,lng],{icon:meIcon(), interactive:true, keyboard:false, zIndexOffset:1000}).addTo(map);
       meMarker.on('click', ev => { L.DomEvent.stop(ev); openMe(true); });
-      mount3();
       accCircle = L.circle([lat,lng],{radius:acc, color:S.colour||COLOURS[0], weight:1, fillOpacity:.08, interactive:false}).addTo(map); }
     meMarker.setLatLng([lat,lng]); accCircle.setLatLng([lat,lng]).setRadius(Math.min(acc,200));
   }
@@ -1767,7 +1648,8 @@ window.__startUncover = (user, sync) => {
     setGps(acc <= 35 ? 'on' : 'weak', simulated ? 'Test mode' : (acc <= 35 ? 'GPS ±'+Math.round(acc)+'m' : 'Weak GPS ±'+Math.round(acc)+'m'));
     placeMe(lat, lng, acc);
     updateTemp(lat, lng);
-    spawnMonsters();
+    spawnMonsters(); maybeFlee(); spawnBoss();
+    if (Date.now() > birdAt) sendBird();
     if (follow && !simulated) centreOn(L.latLng(lat, lng), null, false);
     if (acc > 40) return;
     let newCells = 0;
@@ -1780,7 +1662,8 @@ window.__startUncover = (user, sync) => {
       if (!simulated && d/dt > mode().max){ prev = {lat,lng,t}; setGps('weak','Too fast for ' + mode().name.toLowerCase() + ' – paused'); return; }
       const steps = Math.max(1, Math.ceil(d/8));
       for (let s=1;s<=steps;s++) newCells += reveal(prev.lat+(lat-prev.lat)*s/steps, prev.lng+(lng-prev.lng)*s/steps);
-      stride3(bearing(prev.lat, prev.lng, lat, lng));
+      walking(true); clearTimeout(walkT);
+      walkT = setTimeout(() => walking(false), 2600);
       S.total += d; const day = today(); S.days[day] = (S.days[day]||0) + d;
       if (sess) sess.m += d;
       if (newCells) S.dayCells[day] = (S.dayCells[day]||0) + newCells;
@@ -2124,13 +2007,6 @@ window.__startUncover = (user, sync) => {
   $('whoEmail').textContent = user.email || '';
   $('who').hidden = !user.email;
   $('signout').onclick = () => sync.signOut();
-
-  // Last of all: the 3D stage needs every part above it to exist first, and
-  // the marker may already be on the map wearing its flat icon.
-  if (init3()){
-    requestAnimationFrame(loop3);
-    if (meMarker){ meMarker.setIcon(meIcon()); mount3(); }
-  }
 };
 </script>
 <script type="module">
