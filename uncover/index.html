@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <style>
 [hidden]{display:none!important}
 :root{
@@ -286,6 +287,10 @@ input[type=range]{accent-color:var(--accent);width:140px}
   color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
 
 .charart{display:block;object-fit:contain;image-rendering:auto;user-select:none;-webkit-user-drag:none}
+/* The 3D figure brings its own shadow and its own depth, so it gets no
+   flat drop-shadow and no bobbing keyframe on top. */
+.me3host{width:104px;height:104px;pointer-events:auto;cursor:pointer}
+.me3host canvas{display:block;width:104px!important;height:104px!important}
 #gate{position:fixed;inset:0;z-index:900;background:var(--fog);display:grid;place-items:center;padding:24px}
 #gate .card{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 24px;text-align:center}
 #gate h1{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 6px}
@@ -417,7 +422,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
     <div class="pickgrid" id="pickLang" style="grid-template-columns:repeat(2,1fr)"></div>
   </div>
   <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="moving">How you are moving</span><small data-i18n="movingSub">Each one has its own speed limit, so a car reveals nothing</small></p>
-    <div class="pickgrid" id="pickMode" style="grid-template-columns:repeat(4,1fr)"></div>
+    <div class="pickgrid" id="pickMode" style="grid-template-columns:repeat(2,1fr)"></div>
   </div>
   <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="character">Your character</span><small data-i18n="characterSub">Who walks the map, and in what colour</small></p>
     <div class="pickgrid" id="pickChar"></div>
@@ -472,10 +477,9 @@ window.__startUncover = (user, sync) => {
   const MODES = [
     { id:'walk', name:'Walk',  max:2.8,  met:3.5, radius:40, steps:true,  icon:'M9 3v6l-3 6M15 7l2 5-3 2v5' },
     { id:'run',  name:'Run',   max:6.5,  met:9.8, radius:45, steps:true,  icon:'M10 2v5l-4 4 2 4M14 8l3 4-4 3v4' },
-    { id:'bike', name:'Cycle', max:13.0, met:7.5, radius:55, steps:false, icon:'M5 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 14l3-6h4' },
-    { id:'swim', name:'Swim',  max:2.2,  met:8.3, radius:35, steps:false, icon:'M3 18c2 0 2-1.5 4.5-1.5S10 18 12 18s2-1.5 4.5-1.5S19 18 21 18M6 11l4-3 4 3' },
   ];
   const mode = () => MODES.find(m => m.id === S.mode) || MODES[0];
+  if (!MODES.some(m => m.id === S.mode)) S.mode = 'walk';
 
   // ---------- grid ----------
   function lngStep(i){ return CELL / Math.max(Math.cos(((i+.5)*CELL)*Math.PI/180), .05); }
@@ -761,13 +765,608 @@ window.__startUncover = (user, sync) => {
 
   /** Redraw everything that shows a character, once artwork arrives. */
   function refreshArt(){
-    if (meMarker) meMarker.setIcon(meIcon());
+    STILLS.clear();
+    if (meMarker){ meMarker.setIcon(meIcon()); mount3(); }
     if ($('sheet').classList.contains('open')) renderPicker();
     if ($('mesheet').classList.contains('open')) renderMe();
   }
 
+  // ---------- characters in three dimensions ----------
+  /**
+   * The flat drawings below are the fallback. Where WebGL is available the
+   * cast is built as lit, shaded geometry instead: the figure stands on a
+   * ground that catches its shadow, swings its arms and legs as you move,
+   * and turns to face the way you are going.
+   *
+   * Two renderers, deliberately. The small one lives inside the map marker
+   * and runs a loop; the other renders a character once, hands back a still,
+   * and that still is cached — so the picker costs one frame per face it has
+   * never shown before, and nothing after that.
+   */
+  const V3 = { ok:false };
+  const MARK3 = 104;
+  const STILLS = new Map();
+
+  const SKIN3  = '#efc49c';
+  const HAIRC  = '#3a2a1e', STEEL = '#c3c9d6', STEEL_D = '#7d8697';
+  const LEATH  = '#6b4a2f', WOOD = '#8a5f3b', GOLD = '#e8be5a';
+
+  const MATS = new Map();
+  function mt(hex, kind){
+    const key = hex + '|' + (kind || '');
+    let m = MATS.get(key);
+    if (m) return m;
+    const o = { color: new THREE.Color(hex) };
+    if (kind === 'metal'){ o.metalness = .72; o.roughness = .30; o.envMapIntensity = 1.5; }
+    else if (kind === 'skin'){ o.metalness = 0; o.roughness = .68; }
+    else if (kind === 'glow'){ o.metalness = .1; o.roughness = .3; o.emissive = new THREE.Color(hex); o.emissiveIntensity = .75; }
+    else { o.metalness = .04; o.roughness = .88; o.envMapIntensity = 1.1; }
+    m = new THREE.MeshStandardMaterial(o);
+    MATS.set(key, m);
+    return m;
+  }
+
+  const gCap = (r, l) => new THREE.CapsuleGeometry(r, l, 4, 12);
+  const gBall = r => new THREE.SphereGeometry(r, 18, 14);
+  const gBox = (w, h, d) => new THREE.BoxGeometry(w, h, d);
+  const gCyl = (rt, rb, h) => new THREE.CylinderGeometry(rt, rb, h, 14);
+  const gCone = (r, h) => new THREE.ConeGeometry(r, h, 14);
+
+  function pc(geo, material, x, y, z){
+    const m = new THREE.Mesh(geo, material);
+    m.position.set(x || 0, y || 0, z || 0);
+    m.castShadow = true;
+    return m;
+  }
+  /** A limb hangs from a pivot, so the pivot is what the walk cycle turns. */
+  function limb(x, y, z){
+    const g = new THREE.Group();
+    g.position.set(x, y, z);
+    return g;
+  }
+
+  // ---------- the parts a person is made of ----------
+  // Half-widths. The arms hang clear of the chest, or the figure reads as a
+  // sack at the size this is actually seen.
+  const BODY = {
+    slim:   { chest:.175, shoulder:.205, hip:.100, belly:.155 },
+    normal: { chest:.200, shoulder:.235, hip:.112, belly:.182 },
+    strong: { chest:.248, shoulder:.300, hip:.128, belly:.205 },
+    wide:   { chest:.250, shoulder:.250, hip:.140, belly:.290 },
+  };
+
+  /** Two dark beads on the face. Nothing reads as a person without them. */
+  function eyes(g, y){
+    for (const sx of [-1, 1]){
+      const e = new THREE.Mesh(gBall(.021), mt('#20232e'));
+      e.position.set(sx * .052, y === undefined ? .012 : y, .133);
+      g.add(e);
+    }
+  }
+
+  function headgear(g, def, colour){
+    const hc = mt(HAIRC);
+    const hood = def.hair === 'hood', helm = def.hair === 'helmet';
+
+    if (def.hair === 'short'){
+      const h = pc(gBall(.155), hc, 0, .048, -.014); h.scale.set(1, .64, 1.04); g.add(h);
+    } else if (def.hair === 'long'){
+      const h = pc(gBall(.155), hc, 0, .042, -.02); h.scale.set(1.02, .70, 1.04); g.add(h);
+      const back = pc(gBall(.148), hc, 0, -.03, -.072); back.scale.set(1, 1.15, .82); g.add(back);
+      g.add(pc(gCap(.046, .17), hc,  .128, -.11, -.025));
+      g.add(pc(gCap(.046, .17), hc, -.128, -.11, -.025));
+    } else if (hood){
+      // Pushed back far enough that the face is still a face.
+      const h = pc(gBall(.186), mt(colour), 0, .030, -.078); h.scale.set(1, 1.02, .94); g.add(h);
+      const peak = pc(gCone(.10, .20), mt(colour), 0, .14, -.175); peak.rotation.x = .9; g.add(h, peak);
+      const brim = pc(new THREE.TorusGeometry(.152, .030, 8, 20), mt(shade(colour, -.24)), 0, .005, .018);
+      brim.rotation.x = -.30; g.add(brim);
+    } else if (def.hair === 'cap'){
+      const h = pc(gBall(.152), hc, 0, .035, -.02); h.scale.set(1, .62, 1.02); g.add(h);
+      g.add(pc(gCyl(.138, .152, .11), mt(colour), 0, .112, -.01));
+      const brim = pc(gBox(.26, .02, .14), mt(shade(colour, -.25)), 0, .062, .105);
+      brim.rotation.x = -.12; g.add(brim);
+    } else if (helm){
+      const dome = pc(gBall(.166), mt(STEEL, 'metal'), 0, .042, 0); dome.scale.set(1, .98, 1.02); g.add(dome);
+      g.add(pc(new THREE.TorusGeometry(.162, .022, 8, 20), mt(STEEL_D, 'metal'), 0, .03, 0));
+      for (const sx of [-1, 1]) g.add(pc(gBox(.05, .20, .17), mt(STEEL, 'metal'), sx * .122, -.045, .012));
+      g.add(pc(gBox(.034, .20, .06), mt(STEEL_D, 'metal'), 0, -.02, .128));
+      g.add(pc(gBox(.024, .095, .30), mt(colour), 0, .185, -.025));
+    } else if (def.hair === 'hat'){
+      g.add(pc(gBall(.152), hc, 0, .035, -.02));
+      g.add(pc(gCyl(.30, .30, .02), mt(colour), 0, .095, 0));
+      g.add(pc(gCone(.16, .52), mt(colour), 0, .37, 0));
+      g.add(pc(new THREE.TorusGeometry(.135, .024, 8, 18), mt(GOLD, 'glow'), 0, .14, 0));
+    } else if (def.hair === 'mask'){
+      const h = pc(gBall(.155), mt('#1b1e2b'), 0, .038, -.012); h.scale.set(1, .70, 1.04); g.add(h);
+      g.add(pc(gBox(.26, .085, .055), mt('#13161f'), 0, -.058, .118));
+    }
+
+    if (!helm) eyes(g, def.hair === 'mask' ? .022 : .012);
+    if (def.beard) {
+      const b = pc(gCap(.072, .115), mt('#efeae1'), 0, -.135, .062);
+      b.scale.set(1.3, 1, .72); g.add(b);
+    }
+    if (def.halo){
+      const h = pc(new THREE.TorusGeometry(.135, .015, 8, 24), mt(GOLD, 'glow'), 0, .27, 0);
+      h.rotation.x = Math.PI / 2; h.castShadow = false; g.add(h);
+    }
+  }
+
+  function propFor(kind, colour){
+    const g = new THREE.Group();
+    if (kind === 'sword'){
+      g.add(pc(gBox(.055, .66, .016), mt(STEEL, 'metal'), 0, .40, 0));
+      g.add(pc(gBox(.22, .035, .035), mt(GOLD, 'metal'), 0, .07, 0));
+      g.add(pc(gCyl(.028, .028, .14), mt(LEATH), 0, -.02, 0));
+    } else if (kind === 'dagger'){
+      g.add(pc(gBox(.04, .26, .013), mt(STEEL, 'metal'), 0, .17, 0));
+      g.add(pc(gCyl(.024, .024, .10), mt('#2a2e3c'), 0, 0, 0));
+    } else if (kind === 'axe'){
+      g.add(pc(gCyl(.026, .026, .68), mt(WOOD), 0, .22, 0));
+      const head = pc(gBox(.055, .20, .13), mt(STEEL, 'metal'), 0, .50, .085);
+      head.rotation.y = .18; g.add(head);
+    } else if (kind === 'hammer'){
+      g.add(pc(gCyl(.03, .03, .60), mt(WOOD), 0, .18, 0));
+      g.add(pc(gBox(.13, .15, .22), mt('#4a5060', 'metal'), 0, .48, 0));
+    } else if (kind === 'staff'){
+      g.add(pc(gCyl(.026, .032, .98), mt(WOOD), 0, .36, 0));
+      g.add(pc(gBall(.072), mt('#7fd8ff', 'glow'), 0, .88, 0));
+    } else if (kind === 'bow'){
+      const arc = pc(new THREE.TorusGeometry(.33, .022, 8, 26, Math.PI * 1.12), mt(WOOD), 0, .28, 0);
+      arc.rotation.z = -Math.PI / 2 - .55; g.add(arc);
+      g.add(pc(gBox(.006, .62, .006), mt('#e4ded0'), .055, .28, 0));
+    } else if (kind === 'lute'){
+      const bowl = pc(gBall(.17), mt(WOOD), 0, .14, 0); bowl.scale.set(1, 1.18, .62); g.add(bowl);
+      g.add(pc(gBox(.055, .44, .035), mt('#6a4628'), 0, .46, 0));
+      g.add(pc(gBall(.055), mt('#2b1c10'), 0, .18, .095));
+    } else if (kind === 'shield'){
+      const s = pc(gCyl(.26, .26, .045), mt(colour), 0, .16, 0);
+      s.rotation.x = Math.PI / 2; g.add(s);
+      const rim = pc(new THREE.TorusGeometry(.26, .026, 8, 24), mt(STEEL, 'metal'), 0, .16, 0); g.add(rim);
+      g.add(pc(gBall(.06), mt(GOLD, 'metal'), 0, .16, .04));
+    }
+    return g;
+  }
+
+  /** A person. Returns a group whose userData names the parts that move. */
+  function person3(def, colour, opts){
+    opts = opts || {};
+    const b = BODY[def.body || 'normal'];
+    const plate = def.hair === 'helmet';
+    const cloth = mt(colour, plate ? 'metal' : '');
+    const sleeve = mt(shade(colour, -.16), plate ? 'metal' : '');
+    const trouser = mt(shade(colour, -.42));
+    const skin = mt(SKIN3, 'skin');
+    const g = new THREE.Group();
+    const body = new THREE.Group(); g.add(body);
+
+    // Chest tapering to a waist, rather than one even barrel.
+    const chest = pc(gCap(b.chest, .20), cloth, 0, 1.30, 0);
+    chest.scale.set(1, 1, .68); body.add(chest);
+    const belly = pc(gCap(b.belly, .13), cloth, 0, 1.08, 0);
+    belly.scale.set(1, 1, .70); body.add(belly);
+    const belt = pc(gCyl(b.belly + .012, b.belly + .012, .055), mt(LEATH), 0, .99, 0);
+    belt.scale.set(1, 1, .72); body.add(belt);
+    body.add(pc(gBox(.072, .055, .03), mt(GOLD, 'metal'), 0, .99, b.belly * .70 + .01));
+
+    // Shoulders sit narrower than the arms, so the arms keep their outline.
+    const yoke = pc(gCap(b.shoulder - .035, .055), cloth, 0, 1.44, 0);
+    yoke.scale.set(1, 1, .64); body.add(yoke);
+    if (plate) for (const sx of [-1, 1]){
+      const pld = pc(gBall(.115), mt(STEEL, 'metal'), sx * (b.shoulder + .01), 1.44, 0);
+      pld.scale.set(1, .76, 1); body.add(pld);
+    }
+
+    const head = new THREE.Group(); head.position.set(0, 1.70, 0); body.add(head);
+    body.add(pc(gCyl(.055, .062, .09), skin, 0, 1.545, 0));
+    const skull = pc(gBall(.148), skin, 0, 0, 0); skull.scale.set(1, 1.06, .98); head.add(skull);
+    headgear(head, def, colour);
+
+    const legs = [];
+    for (const sx of [-1, 1]){
+      const L = limb(sx * b.hip, .96, 0);
+      L.add(pc(gCap(.082, .46), trouser, 0, -.30, 0));
+      L.add(pc(gBox(.135, .085, .225), mt('#33281f'), 0, -.60, .035));
+      body.add(L); legs.push(L);
+    }
+
+    const arms = [];
+    for (const sx of [-1, 1]){
+      const A = limb(sx * (b.shoulder + .055), 1.42, 0);
+      A.add(pc(gCap(.058, .34), sleeve, 0, -.22, 0));
+      A.add(pc(gBall(.064), skin, 0, -.43, 0));
+      body.add(A); arms.push(A);
+    }
+
+    if (def.prop){
+      const hand = propFor(def.prop, colour);
+      hand.position.set(0, -.44, .03);
+      // Held out from the body, or it disappears into the silhouette.
+      hand.rotation.set(def.prop === 'shield' ? .22 : -.16, 0, def.prop === 'shield' ? 0 : -.20);
+      arms[1].add(hand);
+    }
+
+    g.userData = { legs, arms, body, bodyY: body.position.y, kind:'biped' };
+    if (opts.seated){
+      legs[0].rotation.x = -1.35; legs[1].rotation.x = -1.35;
+      g.userData.legs = null;
+    }
+    return g;
+  }
+
+  // ---------- the beasts ----------
+  function quadruped(colour, kind){
+    const g = new THREE.Group();
+    const body = new THREE.Group(); g.add(body);
+    const horsey = kind === 'horse' || kind === 'unicorn';
+    const coat = mt(colour), dark = mt(shade(colour, -.28)), light = mt(shade(colour, .22));
+
+    const backY = horsey ? 1.04 : .70;
+    const hull = pc(gCap(horsey ? .26 : .215, horsey ? .76 : .70), coat, 0, backY, 0);
+    hull.rotation.x = Math.PI / 2; hull.scale.set(1, 1, .94); body.add(hull);
+    // A deeper chest at the front is most of what separates a dog from a tube.
+    const chest = pc(gBall(horsey ? .27 : .235), coat, 0, backY - .02, horsey ? .30 : .26);
+    chest.scale.set(1, 1.06, .9); body.add(chest);
+    body.add(pc(gBall(horsey ? .24 : .20), coat, 0, backY + .01, horsey ? -.34 : -.30));
+
+    const neckLen = horsey ? .46 : .22;
+    const neck = pc(gCap(horsey ? .125 : .155, neckLen), coat,
+                    0, backY + (horsey ? .34 : .14), horsey ? .32 : .36);
+    neck.rotation.x = horsey ? .52 : 1.05; body.add(neck);
+    if (!horsey){
+      const ruff = pc(new THREE.TorusGeometry(.19, .07, 8, 18), dark, 0, backY + .13, .30);
+      ruff.rotation.x = 1.1; body.add(ruff);
+    }
+
+    const head = new THREE.Group();
+    head.position.set(0, horsey ? 1.72 : .92, horsey ? .54 : .62); body.add(head);
+    const skull = pc(gBall(horsey ? .118 : .150), coat, 0, 0, 0);
+    skull.scale.set(horsey ? .82 : .96, 1, horsey ? 1.25 : 1.05); head.add(skull);
+
+    // A long muzzle, tapering, is what makes it read as an animal at a glance.
+    const muz = pc(gCyl(horsey ? .062 : .062, horsey ? .082 : .105, horsey ? .34 : .32), coat,
+                   0, horsey ? -.11 : -.045, horsey ? .22 : .22);
+    muz.rotation.x = Math.PI / 2 + (horsey ? .25 : .06); head.add(muz);
+    head.add(pc(gBall(.040), mt('#1b1b22'), 0, horsey ? -.17 : -.055, horsey ? .34 : .38));
+    if (kind === 'wolf'){
+      head.add(pc(gBox(.11, .035, .10), mt('#f4efe6'), 0, -.095, .30));
+    }
+
+    const eyeC = kind === 'wolf' ? '#ffcf5a' : '#17171f';
+    for (const sx of [-1, 1])
+      head.add(pc(gBall(.030), mt(eyeC, kind === 'wolf' ? 'glow' : ''), sx * .075, .050, .115));
+
+    for (const sx of [-1, 1]){
+      const ear = pc(gCone(horsey ? .042 : .062, horsey ? .14 : .19), dark, sx * .085, .17, -.03);
+      ear.rotation.x = kind === 'wolf' ? -.12 : -.22;
+      ear.rotation.z = sx * .18; head.add(ear);
+    }
+    if (kind === 'unicorn'){
+      const horn = pc(gCone(.034, .36), mt('#fff0c8', 'glow'), 0, .27, .04);
+      horn.rotation.x = -.22; head.add(horn);
+    }
+    if (horsey){
+      for (let k = 0; k < 7; k++){
+        const t = k / 6;
+        const tuft = pc(gCap(.038, .10), dark, 0, backY + .18 + t * .50, .14 + t * .32);
+        tuft.scale.set(.6, 1, 1.3); tuft.rotation.x = .5; body.add(tuft);
+      }
+    }
+
+    const legs = [];
+    const lx = horsey ? .155 : .145, lz = horsey ? .30 : .30;
+    const top = horsey ? .96 : .62, len = horsey ? .72 : .44;
+    for (const [sx, sz] of [[-1,1],[1,1],[-1,-1],[1,-1]]){
+      const L = limb(sx * lx, top, sz * lz);
+      L.add(pc(gCap(horsey ? .058 : .050, len * .55), coat, 0, -len * .30, 0));
+      L.add(pc(gCap(horsey ? .044 : .040, len * .48), dark, 0, -len * .74, 0));
+      L.add(pc(gCyl(.062, .072, .08), mt('#2c2724'), 0, -len - .05, 0));
+      body.add(L); legs.push(L);
+    }
+
+    const tail = kind === 'wolf'
+      ? pc(gCap(.075, .40), dark, 0, backY + .14, -.50)
+      : pc(gCap(.062, .50), dark, 0, backY + .10, -.44);
+    tail.rotation.x = kind === 'wolf' ? -.75 : -.35; body.add(tail);
+    if (kind === 'unicorn') tail.material = light;
+
+    g.userData = { quad: legs, body, bodyY: body.position.y, kind:'quad', saddle: horsey ? 1.22 : .88 };
+    return g;
+  }
+
+  function dragon3(colour){
+    const g = new THREE.Group();
+    const body = new THREE.Group(); g.add(body);
+    const scale = mt(colour), belly = mt(shade(colour, .38)), dark = mt(shade(colour, -.34));
+
+    const hull = pc(gCap(.30, .54), scale, 0, .92, 0);
+    hull.rotation.x = Math.PI / 2; hull.scale.set(1, 1, .96); body.add(hull);
+    body.add(pc(gBall(.30), scale, 0, .94, .26));
+    const bel = pc(gCap(.165, .38), belly, 0, .78, .10);
+    bel.rotation.x = Math.PI / 2; body.add(bel);
+
+    // A long neck carried high, which is the whole reason a dragon is a dragon.
+    const n1 = pc(gCap(.145, .34), scale, 0, 1.32, .30); n1.rotation.x = .30; body.add(n1);
+    const n2 = pc(gCap(.115, .34), scale, 0, 1.68, .46); n2.rotation.x = .52; body.add(n2);
+    const head = new THREE.Group(); head.position.set(0, 1.92, .62); body.add(head);
+    const skull = pc(gBall(.175), scale, 0, 0, 0); skull.scale.set(.95, .88, 1.25); head.add(skull);
+    const jaw = pc(gCyl(.075, .115, .30), scale, 0, -.045, .22);
+    jaw.rotation.x = Math.PI / 2 + .08; head.add(jaw);
+    head.add(pc(gBall(.035), mt('#ffd34d', 'glow'),  .088, .062, .14));
+    head.add(pc(gBall(.035), mt('#ffd34d', 'glow'), -.088, .062, .14));
+    for (const sx of [-1, 1]){
+      const horn = pc(gCone(.046, .34), dark, sx * .092, .13, -.09);
+      horn.rotation.x = .95; horn.rotation.z = sx * -.22; head.add(horn);
+      head.add(pc(gCone(.03, .11), dark, sx * .072, -.055, .30));
+    }
+
+    const wings = [];
+    for (const sx of [-1, 1]){
+      const W = limb(sx * .22, 1.30, -.06);
+      const sh = new THREE.Shape();
+      sh.moveTo(0, 0); sh.lineTo(1.05, .40); sh.lineTo(.98, .04);
+      sh.lineTo(.76, -.18); sh.lineTo(.48, -.30); sh.lineTo(.20, -.22);
+      sh.closePath();
+      const mem = new THREE.Mesh(new THREE.ShapeGeometry(sh),
+        new THREE.MeshStandardMaterial({ color:new THREE.Color(shade(colour, -.10)),
+          roughness:.86, metalness:.02, side:THREE.DoubleSide }));
+      mem.scale.x = sx; mem.position.set(0, .14, -.04); mem.rotation.x = -.22;
+      mem.castShadow = true; W.add(mem);
+      for (const [ex, ey] of [[1.05,.40],[.76,-.18]]){
+        const rib = pc(gCap(.016, Math.hypot(ex, ey) - .05), dark, sx * ex / 2, .14 + ey / 2, -.045);
+        rib.rotation.z = -sx * (Math.PI / 2 - Math.atan2(ey, ex));
+        rib.rotation.x = -.22; W.add(rib);
+      }
+      body.add(W); wings.push(W);
+    }
+
+    const legs = [];
+    for (const [sx, sz] of [[-1,1],[1,1],[-1,-1],[1,-1]]){
+      const front = sz > 0;
+      const L = limb(sx * (front ? .19 : .24), .80, sz * .26);
+      L.add(pc(gCap(front ? .058 : .085, front ? .20 : .26), scale, 0, front ? -.14 : -.17, 0));
+      L.add(pc(gCap(front ? .044 : .058, front ? .18 : .22), dark, 0, front ? -.32 : -.40, 0));
+      L.add(pc(gBox(.16, .07, .20), dark, 0, front ? -.44 : -.54, .06));
+      body.add(L); legs.push(L);
+    }
+
+    // Spines down the back, and a tail that tapers to a point.
+    for (let k = 0; k < 5; k++){
+      const sp = pc(gCone(.045 - k * .005, .16), dark, 0, 1.30 - k * .02, .16 - k * .16);
+      body.add(sp);
+    }
+    let tz = -.40, ty = 1.00, r = .165;
+    for (let k = 0; k < 6; k++){
+      body.add(pc(gBall(r), scale, 0, ty, tz));
+      r *= .78; tz -= r * 2.0; ty -= .05;
+    }
+    body.add(pc(gCone(.09, .26), dark, 0, ty + .02, tz - .06));
+
+    g.userData = { quad: legs, wings, body, bodyY: body.position.y, kind:'dragon', saddle: 1.24 };
+    return g;
+  }
+
+  /** One character, ready to pose. */
+  function build3(id, colour){
+    const c = charById(id);
+    let g;
+    if (c.creature === 'dragon') g = dragon3(colour);
+    else if (c.creature) g = quadruped(colour, c.creature);
+    else g = person3(c, colour);
+
+    if (c.rider){
+      const seat = person3({ hair:'helmet', body:'normal', prop:'sword' }, shade(colour, -.35), { seated:true });
+      const k = .62;
+      seat.scale.setScalar(k);
+      // Hips land on the back, which is what the saddle height means.
+      seat.position.set(0, (g.userData.saddle || 1.1) - .96 * k,
+                        c.creature === 'dragon' ? -.02 : -.14);
+      g.add(seat);
+      g.userData.rider = seat;
+    }
+    // Head-on, a four-legged animal is a muzzle and two ears. Turned a little,
+    // it is unmistakable — so the beasts carry a standing offset and keep it
+    // whichever way you are walking.
+    if (c.creature){
+      const turned = new THREE.Group();
+      turned.rotation.y = c.creature === 'dragon' ? -.12 : -.38;
+      while (g.children.length) turned.add(g.children[0]);
+      turned.userData = g.userData;
+      const outer = new THREE.Group();
+      outer.add(turned);
+      outer.userData = g.userData;
+      g = outer;
+    }
+
+    // Everything is drawn against the same box, so a dragon does not dwarf a villager.
+    const box = new THREE.Box3().setFromObject(g);
+    const h = Math.max(box.max.y - box.min.y, .001);
+    const w = Math.max(box.max.x - box.min.x, box.max.z - box.min.z, .001);
+    const k = Math.min(1.95 / h, 2.05 / w);
+    g.scale.multiplyScalar(k);
+    g.position.y = -box.min.y * k;
+    return g;
+  }
+
+  // ---------- posing ----------
+  function pose3(g, phase, amp){
+    const u = g.userData;
+    if (!u) return;
+    const s = Math.sin(phase), c2 = Math.cos(phase * 2);
+    if (u.legs){
+      u.legs[0].rotation.x =  s * .62 * amp;
+      u.legs[1].rotation.x = -s * .62 * amp;
+    }
+    if (u.arms){
+      u.arms[0].rotation.x = -s * .48 * amp;
+      u.arms[1].rotation.x =  s * .48 * amp;
+      u.arms[0].rotation.z =  .08;
+      u.arms[1].rotation.z = -.08;
+    }
+    if (u.quad){
+      // Diagonal pairs, which is what a four-legged animal actually does.
+      u.quad[0].rotation.x =  s * .55 * amp;
+      u.quad[3].rotation.x =  s * .55 * amp;
+      u.quad[1].rotation.x = -s * .55 * amp;
+      u.quad[2].rotation.x = -s * .55 * amp;
+    }
+    if (u.wings){
+      const f = Math.sin(phase * .8) * .55 + .22;
+      u.wings[0].rotation.z =  f;
+      u.wings[1].rotation.z = -f;
+      u.wings[0].rotation.x = u.wings[1].rotation.x = Math.cos(phase * .8) * .12;
+    }
+    if (u.body){
+      u.body.position.y = u.bodyY + (u.wings ? Math.sin(phase * .8) * .06 : Math.abs(c2) * .035 * amp);
+      u.body.rotation.z = s * .035 * amp;
+    }
+    if (u.rider) u.rider.position.y = u.rider.userData.seatY === undefined
+      ? (u.rider.userData.seatY = u.rider.position.y)
+      : u.rider.userData.seatY;
+  }
+
+  // ---------- the two renderers ----------
+  function skyEnv(renderer){
+    const c = document.createElement('canvas'); c.width = 16; c.height = 96;
+    const g = c.getContext('2d');
+    const grd = g.createLinearGradient(0, 0, 0, 96);
+    grd.addColorStop(0,   '#eaf3ff');
+    grd.addColorStop(.46, '#a9bed6');
+    grd.addColorStop(.52, '#7a6b58');
+    grd.addColorStop(1,   '#2b2620');
+    g.fillStyle = grd; g.fillRect(0, 0, 16, 96);
+    const tex = new THREE.CanvasTexture(c);
+    tex.mapping = THREE.EquirectangularReflectionMapping;
+    const pm = new THREE.PMREMGenerator(renderer);
+    const rt = pm.fromEquirectangular(tex);
+    pm.dispose(); tex.dispose();
+    return rt.texture;
+  }
+
+  function makeStage(size, shadows){
+    const r = new THREE.WebGLRenderer({ alpha:true, antialias:true, powerPreference:'low-power' });
+    r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    r.setSize(size, size, false);
+    r.shadowMap.enabled = shadows;
+    r.shadowMap.type = THREE.PCFSoftShadowMap;
+    if ('outputColorSpace' in r) r.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene = new THREE.Scene();
+    scene.environment = skyEnv(r);
+    const cam = new THREE.PerspectiveCamera(30, 1, .1, 40);
+    cam.position.set(.85, 2.30, 3.75);
+    cam.lookAt(0, .98, 0);
+
+    scene.add(new THREE.HemisphereLight(0xd8e9ff, 0x55452f, 1.45));
+    const key = new THREE.DirectionalLight(0xfff4e2, 2.1);
+    key.position.set(2.4, 5.0, 3.0);
+    if (shadows){
+      key.castShadow = true;
+      key.shadow.mapSize.set(512, 512);
+      const sc = key.shadow.camera;
+      sc.left = -2.4; sc.right = 2.4; sc.top = 3.4; sc.bottom = -.8; sc.near = .5; sc.far = 14;
+      sc.updateProjectionMatrix();
+      key.shadow.bias = -.0012;
+    }
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x9ec3ff, 1.15);
+    rim.position.set(-3.2, 1.8, -2.6); scene.add(rim);
+    const back = new THREE.DirectionalLight(0xffe9c8, .85);
+    back.position.set(.4, 2.2, -3.6); scene.add(back);
+
+    if (shadows){
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.ShadowMaterial({ opacity:.42 }));
+      floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+    }
+    const root = new THREE.Group(); scene.add(root);
+    return { r, scene, cam, root };
+  }
+
+  function init3(){
+    if (!window.THREE || !THREE.CapsuleGeometry) return false;
+    try { V3.live = makeStage(MARK3, true); }
+    catch (e){ console.warn('3D characters unavailable:', e); return false; }
+    V3.live.r.domElement.className = 'me3';
+    V3.ok = true;
+    return true;
+  }
+
+  /** A character, rendered once and kept as an image. */
+  function still3(id, colour){
+    const key = id + '|' + colour;
+    let url = STILLS.get(key);
+    if (url) return url;
+    const st = V3.live;
+    // Borrow the stage: step the player off it, render the portrait larger
+    // than the marker needs, then put everything back before the frame ends.
+    const keep = L3.g;
+    if (keep) st.root.remove(keep);
+    const g = build3(id, colour);
+    pose3(g, 0, 0);
+    st.root.add(g);
+    st.r.setSize(224, 224, false);
+    st.r.render(st.scene, st.cam);
+    url = st.r.domElement.toDataURL('image/png');
+    st.root.remove(g);
+    st.r.setSize(MARK3, MARK3, false);
+    if (keep){ st.root.add(keep); st.r.render(st.scene, st.cam); }
+    STILLS.set(key, url);
+    return url;
+  }
+
+  // ---------- the living marker ----------
+  const L3 = { g:null, id:null, colour:null, phase:0, amp:0, want:0, face:0, moved:0, last:0 };
+
+  function live3(){
+    const id = S.char || 'walk', colour = S.colour || palette()[0];
+    if (L3.id === id && L3.colour === colour) return;
+    if (L3.g) V3.live.root.remove(L3.g);
+    L3.g = build3(id, colour);
+    L3.face = L3.want = 0;
+    L3.g.rotation.y = 0;
+    V3.live.root.add(L3.g);
+    L3.id = id; L3.colour = colour;
+  }
+
+  /** Called on every fix, so the figure walks only while you do. */
+  function stride3(bearing){
+    if (!V3.ok) return;
+    if (bearing !== null && bearing !== undefined) L3.want = bearing;
+    L3.moved = performance.now();
+  }
+
+  function loop3(now){
+    requestAnimationFrame(loop3);
+    if (!V3.ok || !L3.g) return;
+    const host = V3.live.r.domElement;
+    if (!host.isConnected || document.hidden) return;
+
+    const dt = Math.min((now - (L3.last || now)) / 1000, .1);
+    L3.last = now;
+
+    // The walk fades in and out rather than snapping, so a lost fix does not
+    // make the character stutter.
+    const want = (performance.now() - L3.moved < 2600) ? 1 : 0;
+    L3.amp += (want - L3.amp) * Math.min(dt * 4, 1);
+    const flying = charById(L3.id).fly;
+    L3.phase += dt * (flying ? 3.4 : 7.4 * Math.max(L3.amp, .001));
+    pose3(L3.g, L3.phase, flying ? 1 : L3.amp);
+
+    // Turn the short way round.
+    let d = L3.want - L3.face;
+    while (d >  Math.PI) d -= Math.PI * 2;
+    while (d < -Math.PI) d += Math.PI * 2;
+    L3.face += d * Math.min(dt * 5, 1);
+    L3.g.rotation.y = L3.face;
+
+    V3.live.r.render(V3.live.scene, V3.live.cam);
+  }
+
   function charSvg(id, colour, size){
     if (ART[id]) return '<img class="charart" src="' + ART[id] + '" width="' + size +
+      '" height="' + size + '" alt="" draggable="false">';
+    if (V3.ok) return '<img class="charart" src="' + still3(id, colour) + '" width="' + size +
       '" height="' + size + '" alt="" draggable="false">';
     const c = charById(id);
     let art;
@@ -785,7 +1384,20 @@ window.__startUncover = (user, sync) => {
     return '<svg viewBox="0 0 48 48" width="' + size + '" height="' + size + '" aria-hidden="true">' + art + '</svg>';
   }
 
+  /** The marker holds the live canvas, so the figure in it actually walks. */
+  function mount3(){
+    if (!V3.ok || !meMarker) return;
+    const el = meMarker.getElement();
+    const host = el && el.querySelector('.me3host');
+    if (host && V3.live.r.domElement.parentNode !== host) host.appendChild(V3.live.r.domElement);
+  }
+
   function meIcon(){
+    if (V3.ok){
+      live3();
+      return L.divIcon({ className:'', iconSize:[MARK3, MARK3], iconAnchor:[MARK3 / 2, MARK3 * .80],
+        html:'<div class="me3host"></div>' });
+    }
     const size = 34;
     return L.divIcon({ className:'', iconSize:[size,size], iconAnchor:[size/2,size/2],
       html:'<div class="me' + (charById(S.char || 'walk').fly ? ' fly' : '') + '" style="position:relative">' +
@@ -1118,10 +1730,21 @@ window.__startUncover = (user, sync) => {
     map.setView(map.unproject(pt, z), z, { animate: animate !== false });
   }
 
+  /** Where you are heading, as a compass angle in radians. */
+  function bearing(la1, lo1, la2, lo2){
+    const r = Math.PI / 180;
+    const y = Math.sin((lo2 - lo1) * r) * Math.cos(la2 * r);
+    const x = Math.cos(la1 * r) * Math.sin(la2 * r) -
+              Math.sin(la1 * r) * Math.cos(la2 * r) * Math.cos((lo2 - lo1) * r);
+    // The model starts facing the camera, which is south on the map.
+    return Math.PI - Math.atan2(y, x);
+  }
+
   function placeMe(lat,lng,acc){
     if (!meMarker){
       meMarker = L.marker([lat,lng],{icon:meIcon(), interactive:true, keyboard:false, zIndexOffset:1000}).addTo(map);
       meMarker.on('click', ev => { L.DomEvent.stop(ev); openMe(true); });
+      mount3();
       accCircle = L.circle([lat,lng],{radius:acc, color:S.colour||COLOURS[0], weight:1, fillOpacity:.08, interactive:false}).addTo(map); }
     meMarker.setLatLng([lat,lng]); accCircle.setLatLng([lat,lng]).setRadius(Math.min(acc,200));
   }
@@ -1144,6 +1767,7 @@ window.__startUncover = (user, sync) => {
       if (!simulated && d/dt > mode().max){ prev = {lat,lng,t}; setGps('weak','Too fast for ' + mode().name.toLowerCase() + ' – paused'); return; }
       const steps = Math.max(1, Math.ceil(d/8));
       for (let s=1;s<=steps;s++) newCells += reveal(prev.lat+(lat-prev.lat)*s/steps, prev.lng+(lng-prev.lng)*s/steps);
+      stride3(bearing(prev.lat, prev.lng, lat, lng));
       S.total += d; const day = today(); S.days[day] = (S.days[day]||0) + d;
       if (sess) sess.m += d;
       if (newCells) S.dayCells[day] = (S.dayCells[day]||0) + newCells;
@@ -1487,6 +2111,13 @@ window.__startUncover = (user, sync) => {
   $('whoEmail').textContent = user.email || '';
   $('who').hidden = !user.email;
   $('signout').onclick = () => sync.signOut();
+
+  // Last of all: the 3D stage needs every part above it to exist first, and
+  // the marker may already be on the map wearing its flat icon.
+  if (init3()){
+    requestAnimationFrame(loop3);
+    if (meMarker){ meMarker.setIcon(meIcon()); mount3(); }
+  }
 };
 </script>
 <script type="module">
