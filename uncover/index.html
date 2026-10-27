@@ -1654,9 +1654,13 @@ window.__startUncover = (user, sync) => {
   ];
   const MONSTER_COLOURS = ['#6fbf73','#8a6bd0','#c9304a','#3f8fd0','#d08a3f'];
   const REACH = 30;          // metres you must be within to strike
-  const MAX_MONSTERS = 3;
+  const MAX_MONSTERS = 1;
+  // A thing to fight is an event, not scenery. One at a time, and a quiet
+  // stretch of several minutes between them, so finding one still counts.
+  const GAP_MIN = 240000, GAP_SPREAD = 420000;
 
   let monsters = [];
+  let nextSpawn = Date.now() + GAP_MIN * .4 + Math.random() * GAP_SPREAD;
 
   /**
    * Monsters only ever appear on ground already uncovered.
@@ -1667,6 +1671,7 @@ window.__startUncover = (user, sync) => {
    */
   function spawnMonsters(){
     if (monsters.length >= MAX_MONSTERS) return;
+    if (Date.now() < nextSpawn) return;
     const keys = Object.keys(S.cells);
     const here = S.last;
     if (keys.length < 40 || !here) return;   // too little known ground to be sure
@@ -1678,8 +1683,7 @@ window.__startUncover = (user, sync) => {
       const lat = (i + .5) * CELL, lng = (j + .5) * lngStep(i);
       const d = dist(here[0], here[1], lat, lng);
       // Near enough to walk to, far enough to be worth the walk.
-      if (d < 50 || d > 400) continue;
-      if (monsters.some(m => dist(m.lat, m.lng, lat, lng) < 80)) continue;
+      if (d < 90 || d > 420) continue;
 
       // Tougher things show up as you climb, so the ladder keeps its shape.
       const reach = Math.min(MONSTERS.length, 1 + Math.floor((S.lvl || 1) / 8));
@@ -1695,6 +1699,13 @@ window.__startUncover = (user, sync) => {
       }).addTo(map);
       m.marker.on('click', (ev) => { L.DomEvent.stop(ev); strike(m); });
       monsters.push(m);
+      // Left alone it wanders off, so the map does not silt up with things
+      // you walked past once.
+      m.gone = setTimeout(() => {
+        map.removeLayer(m.marker);
+        monsters = monsters.filter(x => x !== m);
+      }, 300000);
+      nextSpawn = Date.now() + GAP_MIN + Math.random() * GAP_SPREAD;
     }
   }
 
@@ -1710,8 +1721,10 @@ window.__startUncover = (user, sync) => {
     S.kills = (S.kills || 0) + 1;
     addXp(m.kind.xp);
     toast(m.kind.name + ' — +' + m.kind.xp + ' XP');
+    clearTimeout(m.gone);
     setTimeout(() => { map.removeLayer(m.marker); }, 260);
     monsters = monsters.filter(x => x !== m);
+    nextSpawn = Date.now() + GAP_MIN + Math.random() * GAP_SPREAD;
     updateStats(); save();
   }
 
