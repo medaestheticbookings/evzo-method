@@ -1200,7 +1200,7 @@ window.__startUncover = (user, sync) => {
       cell(en ? 'Time' : 'Χρόνος', mins + '<em>min</em>') +
       cell(en ? 'Burned' : 'Θερμίδες', kcal + '<em>kcal</em>') +
       cell(en ? 'Steps' : 'Βήματα', steps === null ? '&mdash;' : steps.toLocaleString('en-GB')) +
-      cell(en ? 'New ground' : 'Νέο έδαφος', (ground >= 1e5 ? (ground/1e6).toFixed(2) + '<em>km²</em>' : Math.round(ground) + '<em>m²</em>')) +
+      cell(en ? 'New ground' : 'Νέο έδαφος', (ground >= 1e4 ? (ground/1e6).toFixed(2) + '<em>km²</em>' : Math.round(ground).toLocaleString('en-GB') + '<em>m²</em>')) +
       cell('XP', '+' + xp) +
       cell(en ? 'All time' : 'Σύνολο', fmtKm(S.total) + '<em>km</em>');
 
