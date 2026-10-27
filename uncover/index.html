@@ -285,6 +285,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
 #sumsheet .close{width:100%;margin-top:16px;padding:14px;border:0;border-radius:14px;background:var(--accent);
   color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
 
+.charart{display:block;object-fit:contain;image-rendering:auto;user-select:none;-webkit-user-drag:none}
 #gate{position:fixed;inset:0;z-index:900;background:var(--fog);display:grid;place-items:center;padding:24px}
 #gate .card{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 24px;text-align:center}
 #gate h1{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 6px}
@@ -739,7 +740,35 @@ window.__startUncover = (user, sync) => {
   };
 
   /** Build one character's SVG at the size asked for. */
+  /**
+   * Drawn artwork, where there is any.
+   *
+   * The vectors below are a stand-in. Put a square image at art/<id>.webp,
+   * list its id in art/manifest.json, and it replaces the vector everywhere
+   * — map marker, picker, profile card — with no other change. Anything not
+   * listed keeps its vector, so the set can be replaced a few at a time.
+   */
+  const ART = Object.create(null);
+  (async () => {
+    try {
+      const r = await fetch('art/manifest.json', { cache:'no-cache' });
+      if (!r.ok) return;
+      const m = await r.json();
+      for (const id of (m.ids || [])) ART[id] = 'art/' + id + '.' + (m.ext || 'webp');
+      if (Object.keys(ART).length) refreshArt();
+    } catch (_) { /* no artwork yet, and that is fine */ }
+  })();
+
+  /** Redraw everything that shows a character, once artwork arrives. */
+  function refreshArt(){
+    if (meMarker) meMarker.setIcon(meIcon());
+    if ($('sheet').classList.contains('open')) renderPicker();
+    if ($('mesheet').classList.contains('open')) renderMe();
+  }
+
   function charSvg(id, colour, size){
+    if (ART[id]) return '<img class="charart" src="' + ART[id] + '" width="' + size +
+      '" height="' + size + '" alt="" draggable="false">';
     const c = charById(id);
     let art;
     if (c.creature){
