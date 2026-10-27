@@ -256,6 +256,35 @@ input[type=range]{accent-color:var(--accent);width:140px}
 .by .mark{font-size:16px}
 .by a{color:var(--muted)}
 
+/* ---------- coming back ----------
+   A streak is the one number that decides whether someone opens the app
+   tomorrow, so it sits in the bar that is always on screen. */
+.streak{display:inline-flex;align-items:center;gap:3px;flex:none;padding:2px 7px 2px 5px;border-radius:999px;
+  background:rgba(255,138,61,.16);color:var(--accent);font:800 12px var(--display);font-variant-numeric:tabular-nums}
+.streak svg{width:12px;height:12px}
+.streak.cold{background:rgba(127,127,127,.18);color:var(--muted)}
+
+/* Today's goal: one bar, so progress is a glance and not a sum. */
+.goal{margin-top:11px}
+.goal .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.goal .lab b{font:800 12px var(--display);color:var(--text);letter-spacing:0;font-variant-numeric:tabular-nums}
+.goal .track{height:7px;border-radius:7px;background:rgba(127,127,127,.22);overflow:hidden}
+.goal .track i{display:block;height:100%;width:0;border-radius:7px;background:var(--accent);transition:width .5s ease}
+.goal.done .track i{background:var(--good)}
+
+/* What you just did, the moment you stop. The walk has to end on a number,
+   or it ends on nothing. */
+#sumsheet .big{text-align:center;margin:2px 0 18px}
+#sumsheet .big strong{display:block;font-family:var(--display);font-weight:800;font-size:46px;letter-spacing:-.03em;line-height:1}
+#sumsheet .big strong em{font-style:normal;font-size:17px;color:var(--muted);margin-left:3px}
+#sumsheet .big span{display:block;margin-top:4px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+#sumsheet .note{display:flex;align-items:center;gap:9px;margin:18px 0 0;padding:13px 14px;border-radius:14px;
+  background:rgba(255,138,61,.12);font-size:13.5px;line-height:1.45}
+#sumsheet .note svg{width:19px;height:19px;flex:none;color:var(--accent)}
+#sumsheet .close{width:100%;margin-top:16px;padding:14px;border:0;border-radius:14px;background:var(--accent);
+  color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
+
 #gate{position:fixed;inset:0;z-index:900;background:var(--fog);display:grid;place-items:center;padding:24px}
 #gate .card{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 24px;text-align:center}
 #gate h1{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 6px}
@@ -316,6 +345,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
 <header class="top" id="top">
   <button class="hud" id="hudToggle" aria-expanded="false" aria-controls="hudMore">
     <span class="lv" id="lvl">Lv 1</span>
+    <span class="streak cold" id="hudStreak" title="Day streak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2s1.2 3.4-1.2 5.8C8.4 10.2 6 11.8 6 15a6 6 0 0 0 12 0c0-2.6-1.4-4-2.6-5.6-.6 1-1.4 1.6-2.2 1.8.6-2.6-.2-5.6-1.2-9.2z" fill="currentColor"/></svg><b>0</b></span>
     <span class="bar"><i id="bar"></i></span>
     <span class="hud-n num" id="hudKm">0<em>km</em></span>
     <span class="hud-n num" id="hudTemp">&mdash;</span>
@@ -329,6 +359,10 @@ input[type=range]{accent-color:var(--accent);width:140px}
       <div class="stat"><small data-i18n="steps">Steps today</small><strong id="sSteps">0</strong></div>
       <div class="stat"><small data-i18n="burned">Burned</small><strong id="sKcal">0<em>kcal</em></strong></div>
       <div class="stat"><small data-i18n="outside">Outside</small><strong id="sTemp">&mdash;</strong></div>
+    </div>
+    <div class="goal" id="goalWrap">
+      <div class="lab"><span data-i18n="goalToday">Today's goal</span><b id="goalTxt">0 / 2.0 km</b></div>
+      <div class="track"><i id="goalBar"></i></div>
     </div>
     <div class="hud-foot">
       <span class="gps" id="gps"><i></i><span id="gpsText">GPS off</span></span>
@@ -349,6 +383,14 @@ input[type=range]{accent-color:var(--accent);width:140px}
 <div class="zen-hint" data-i18n="zenHint">Tap the map to bring the panels back</div>
 <div class="toast" id="toast"></div>
 <div class="scrim" id="scrim"></div>
+<section class="sheet" id="sumsheet" aria-label="What you just walked">
+  <h2 id="sumTitle">Nice one.</h2>
+  <div class="big"><strong id="sumKm">0<em>km</em></strong><span id="sumMode">Walk</span></div>
+  <div class="stats" id="sumStats"></div>
+  <div class="note" id="sumNote" hidden></div>
+  <button type="button" class="close" id="sumClose" data-i18n="done">Done</button>
+</section>
+
 <section class="sheet" id="mesheet" aria-label="Your character">
   <div class="me-card">
     <div class="me-art" id="meArt"></div>
@@ -387,6 +429,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
     <div class="row" style="border-top:0"><p><span data-i18n="cbsafe">Colour-blind safe palette</span><small data-i18n="cbsafeSub">Swaps the character colours for ones that stay apart</small></p><label class="switch"><input type="checkbox" id="cbSafe"><span></span></label></div>
   </div>
   <div class="row"><p><span data-i18n="weight">Your weight</span><small data-i18n="weightSub">Only used to work out calories</small></p><div><input type="number" id="kg" min="30" max="250" step="1" style="width:76px;padding:8px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-align:center"> kg</div></div>
+  <div class="row"><p><span data-i18n="goal">Daily goal</span><small data-i18n="goalSub">The distance you aim for each day</small></p><div><input type="number" id="goal" min="500" max="30000" step="500" style="width:86px;padding:8px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-align:center"> m</div></div>
   <div class="row"><p><span data-i18n="stride">Step length</span><small data-i18n="strideSub">For the step count. 75 cm suits most people</small></p><div><input type="number" id="stride" min="40" max="110" step="1" style="width:76px;padding:8px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-align:center"> cm</div></div>
   <div class="row"><p><span data-i18n="wake">Keep screen on</span><small data-i18n="wakeSub">Tracking pauses when the screen locks</small></p><label class="switch"><input type="checkbox" id="wake"><span></span></label></div>
   <div class="row"><p><span data-i18n="test">Test mode</span><small data-i18n="testSub">Tap the map to walk there, for trying it at home</small></p><label class="switch"><input type="checkbox" id="test"><span></span></label></div>
@@ -406,7 +449,7 @@ window.__startUncover = (user, sync) => {
   const CELL_M = CELL * 111320;
   const DEFAULT_CENTER = { lat:34.7754, lng:32.4245 }; // Pafos
 
-  let S = { cells:{}, count:0, total:0, days:{}, dayCells:{}, badges:{}, kg:70, stride:75, wake:true, test:false, last:null, sat:false };
+  let S = { cells:{}, count:0, total:0, days:{}, dayCells:{}, badges:{}, kg:70, stride:75, goal:2000, wake:true, test:false, last:null, sat:false };
   try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e){}
   S.count = Object.keys(S.cells).length;
   S.badges = S.badges || {}; S.dayCells = S.dayCells || {};
@@ -465,6 +508,8 @@ window.__startUncover = (user, sync) => {
 
   // ---------- app ----------
   let watchId = null, prev = null, follow = true, wakeLock = null, meMarker = null, accCircle = null;
+  // What this outing alone was worth. Null between walks.
+  let sess = null;
   const map = L.map('map', { zoomControl:false, zoomAnimation:false, fadeAnimation:false, minZoom:3, maxZoom:19 })
     .setView(S.last ? [S.last[0], S.last[1]] : [DEFAULT_CENTER.lat, DEFAULT_CENTER.lng], 16);
   const streets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom:19, maxNativeZoom:18, attribution:'Map © Esri, HERE, Garmin, OpenStreetMap' });
@@ -858,7 +903,7 @@ window.__startUncover = (user, sync) => {
   // Greek is the default: this is a Cypriot app, and the browser's locale is
   // never allowed to decide. The player's own choice is, and it is kept.
   const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
-  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της"} };
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο."} };
   /** Falls back to the English already written into the markup. */
   const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
 
@@ -1071,10 +1116,12 @@ window.__startUncover = (user, sync) => {
       const steps = Math.max(1, Math.ceil(d/8));
       for (let s=1;s<=steps;s++) newCells += reveal(prev.lat+(lat-prev.lat)*s/steps, prev.lng+(lng-prev.lng)*s/steps);
       S.total += d; const day = today(); S.days[day] = (S.days[day]||0) + d;
+      if (sess) sess.m += d;
       if (newCells) S.dayCells[day] = (S.dayCells[day]||0) + newCells;
       addXp(newCells * XP_PER_CELL + Math.floor(d / 10) * XP_PER_10M);
       checkMilestones();
     }
+    if (sess) sess.cells += newCells;
     prev = {lat,lng,t}; S.last = [lat,lng];
     if (newCells) redraw();
     updateStats(); save();
@@ -1083,6 +1130,7 @@ window.__startUncover = (user, sync) => {
   function start(){
     if (!('geolocation' in navigator)){ toast('This browser has no GPS access.'); return; }
     prev = null; follow = true; $('center').classList.add('active');
+    sess = { m:0, cells:0, xp0:S.xp || 0, t0:Date.now(), mode:S.mode || 'walk' };
     setGps('weak','Finding you…');
     watchId = navigator.geolocation.watchPosition(
       p => handleFix(p.coords.latitude, p.coords.longitude, p.coords.accuracy, p.timestamp, false),
@@ -1099,6 +1147,46 @@ window.__startUncover = (user, sync) => {
     if (!S.test) setGps('','GPS off');
     if (wakeLock){ wakeLock.release().catch(()=>{}); wakeLock = null; }
     save();
+    // A walk too short to mean anything does not get a card about it.
+    if (sess && sess.m >= 50) showSummary(sess);
+    sess = null;
+  }
+
+  /** The card at the end of a walk: what it came to, and a reason to repeat it. */
+  function showSummary(ss){
+    const m = MODES.find(x => x.id === ss.mode) || MODES[0];
+    const mins = Math.max(1, Math.round((Date.now() - ss.t0) / 60000));
+    const xp = Math.max(0, (S.xp || 0) - ss.xp0);
+    const steps = m.steps ? Math.round(ss.m / ((S.stride || 75) / 100)) : null;
+    const kcal = Math.round(m.met * (S.kg || 70) * (mins / 60));
+    const ground = ss.cells * CELL_M * CELL_M;
+
+    $('sumTitle').textContent = t('sumTitle', 'Nice one.');
+    $('sumKm').innerHTML = fmtKm(ss.m) + '<em>km</em>';
+    $('sumMode').textContent = t(m.name, m.name);
+
+    const cell = (k, v) => '<div class="stat"><small>' + k + '</small><strong>' + v + '</strong></div>';
+    const en = S.lang === 'en';
+    $('sumStats').innerHTML =
+      cell(en ? 'Time' : 'Χρόνος', mins + '<em>min</em>') +
+      cell(en ? 'Burned' : 'Θερμίδες', kcal + '<em>kcal</em>') +
+      cell(en ? 'Steps' : 'Βήματα', steps === null ? '&mdash;' : steps.toLocaleString('en-GB')) +
+      cell(en ? 'New ground' : 'Νέο έδαφος', (ground >= 1e5 ? (ground/1e6).toFixed(2) + '<em>km²</em>' : Math.round(ground) + '<em>m²</em>')) +
+      cell('XP', '+' + xp) +
+      cell(en ? 'All time' : 'Σύνολο', fmtKm(S.total) + '<em>km</em>');
+
+    // One line that points at tomorrow, not at what just happened.
+    const goal = S.goal || 2000, done = walked(today()), n = streak();
+    let note = '';
+    if (done >= goal && n > 1) note = en ? 'Goal done — that is ' + n + ' days in a row.'
+                                        : 'Ο στόχος έπεσε — ' + n + ' μέρες σερί.';
+    else if (done >= goal)     note = en ? "Today's goal done. Come back tomorrow and it becomes a streak."
+                                        : 'Ο στόχος της ημέρας έπεσε. Έλα και αύριο για να γίνει σερί.';
+    else                       note = en ? fmtKm(goal - done) + ' km more today and the goal is yours.'
+                                        : 'Άλλα ' + fmtKm(goal - done) + ' km σήμερα και ο στόχος είναι δικός σου.';
+    $('sumNote').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg><span>' + note + '</span>';
+    $('sumNote').hidden = false;
+    openSum(true);
   }
   async function lockScreen(){ try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e){} }
   document.addEventListener('visibilitychange', () => { if (document.visibilityState==='visible' && watchId!==null && S.wake) lockScreen(); });
@@ -1235,6 +1323,15 @@ window.__startUncover = (user, sync) => {
     const st = stepsToday();
     $('sSteps').textContent = st === null ? '—' : st.toLocaleString('en-GB');
     $('sKcal').innerHTML = kcalToday() + '<em>kcal</em>';
+
+    // Streak and goal, the two numbers that decide tomorrow.
+    const n = streak(), chip = $('hudStreak');
+    chip.querySelector('b').textContent = n;
+    chip.classList.toggle('cold', n === 0);
+    const goal = S.goal || 2000, done = walked(today());
+    $('goalBar').style.width = Math.min(100, done / goal * 100).toFixed(1) + '%';
+    $('goalWrap').classList.toggle('done', done >= goal);
+    $('goalTxt').textContent = fmtKm(done) + ' / ' + fmtKm(goal) + ' km';
     const xp = S.xp || 0;
     const lvl = lvlFromXp(xp), lo = xpFor(lvl), hi = xpFor(lvl + 1);
     $('lvl').textContent = 'Lv ' + lvl;
@@ -1266,6 +1363,10 @@ window.__startUncover = (user, sync) => {
     save(); redraw();
   };
   const openSheet = o => { $('sheet').classList.toggle('open',o); $('scrim').classList.toggle('open',o); };
+  const openSum = o => {
+    $('sumsheet').classList.toggle('open', o);
+    $('scrim').classList.toggle('open', o);
+  };
   const openMe = o => {
     $('mesheet').classList.toggle('open', o);
     $('scrim').classList.toggle('open', o);
@@ -1275,7 +1376,8 @@ window.__startUncover = (user, sync) => {
     if (o) renderQuests(derived()); };
   $('menu').onclick = () => openSheet(true);
   $('quests').onclick = () => openQuests(true);
-  $('scrim').onclick = () => { openSheet(false); openQuests(false); openMe(false); };
+  $('scrim').onclick = () => { openSheet(false); openQuests(false); openMe(false); openSum(false); };
+  $('sumClose').onclick = () => openSum(false);
 
   $('kg').value = S.kg; $('kg').onchange = e => { S.kg = Math.min(250, Math.max(30, +e.target.value || 70)); e.target.value = S.kg; save(); updateStats(); };
   $('stride').value = S.stride; $('stride').onchange = e => { S.stride = Math.min(110, Math.max(40, +e.target.value || 75)); e.target.value = S.stride; save(); updateStats(); };
@@ -1333,7 +1435,7 @@ window.__startUncover = (user, sync) => {
 
   const setZen = on => {
     document.body.classList.toggle('zen', on);
-    if (on){ openSheet(false); openQuests(false); openMe(false); }
+    if (on){ openSheet(false); openQuests(false); openMe(false); openSum(false); }
   };
   $('zen').onclick = () => setZen(!document.body.classList.contains('zen'));
 
