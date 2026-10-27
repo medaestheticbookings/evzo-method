@@ -11,7 +11,14 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Uncover</title>
+<title>Uncover — EVZO Method</title>
+<meta name="description" content="Uncover is the movement game of the EVZO Method. The world starts covered; every step you walk, run, cycle or swim clears it.">
+<meta property="og:title" content="Uncover — EVZO Method">
+<meta property="og:description" content="The world starts covered. Walk to uncover it.">
+<meta property="og:url" content="https://evzomethod.com/uncover/">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%23121628'/%3E%3Ccircle cx='24' cy='24' r='15.5' fill='none' stroke='%23ff8a3d' stroke-width='2.5'/%3E%3Crect x='16' y='16' width='7' height='7' rx='1.6' fill='%23f3f1ec' opacity='.3'/%3E%3Crect x='25' y='16' width='7' height='7' rx='1.6' fill='%23ff8a3d'/%3E%3Crect x='16' y='25' width='7' height='7' rx='1.6' fill='%23f3f1ec' opacity='.3'/%3E%3Crect x='25' y='25' width='7' height='7' rx='1.6' fill='%23f3f1ec' opacity='.3'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%23121628'/%3E%3Ccircle cx='24' cy='24' r='15.5' fill='none' stroke='%23ff8a3d' stroke-width='2.5'/%3E%3Crect x='25' y='16' width='7' height='7' rx='1.6' fill='%23ff8a3d'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -222,11 +229,40 @@ input[type=range]{accent-color:var(--accent);width:140px}
 .sw{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
 .sw[aria-pressed="true"]{border-color:#fff}
 /* Sign-in gate. Covers everything until Firebase says who this is. */
+/* ---------- EVZO Method · Uncover ----------
+   EVZO Method is the parent brand; Uncover is the game under it. Both are
+   said once, in that order, wherever the app introduces itself. */
+.mark{width:1em;height:1em;display:block;color:var(--text)}
+.eyebrow{display:flex;align-items:center;justify-content:center;gap:7px;
+  font:700 10px/1 var(--body);letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.eyebrow .mark{font-size:17px}
+.wordmark{font-family:var(--display);font-weight:800;letter-spacing:-.03em}
+
+/* The first second of the app, so the brand lands before the form does.
+   Pure CSS: it fades and leaves whether or not any script runs. */
+#splash{position:fixed;inset:0;z-index:1200;background:var(--fog);display:grid;place-items:center;
+  pointer-events:none;animation:splashOut .5s ease 1.25s forwards}
+#splash .in{text-align:center;animation:splashIn .6s cubic-bezier(.2,.8,.3,1) both}
+#splash .mark{font-size:56px;margin:0 auto 18px}
+#splash .wordmark{font-size:38px;margin:0}
+#splash small{display:block;margin-top:10px;font:700 10px/1 var(--body);letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+@keyframes splashIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes splashOut{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion: reduce){#splash{animation-delay:.6s}#splash .in{animation:none}}
+
+/* The line that closes the settings sheet: who makes this. */
+.by{display:flex;align-items:center;justify-content:center;gap:8px;margin:18px 0 4px;
+  font-size:12px;color:var(--muted);text-align:center}
+.by .mark{font-size:16px}
+.by a{color:var(--muted)}
+
 #gate{position:fixed;inset:0;z-index:900;background:var(--fog);display:grid;place-items:center;padding:24px}
 #gate .card{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 24px;text-align:center}
 #gate h1{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 6px}
 #gate h1 span{color:var(--accent)}
 #gate p{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 20px}
+#gate .tagline{color:var(--text);font-size:15px;margin:0 0 16px}
+#gate .eyebrow{margin-bottom:12px}
 #gate input{width:100%;margin-bottom:10px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);font:500 16px var(--body);text-align:center}
 #gate input:focus{outline:2px solid var(--accent);outline-offset:2px}
 #gate button{width:100%;padding:15px;border:0;border-radius:14px;background:var(--accent);color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
@@ -247,9 +283,19 @@ input[type=range]{accent-color:var(--accent);width:140px}
 </style>
 </head>
 <body>
+<div id="splash" aria-hidden="true">
+  <div class="in">
+    <svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="13" y="13" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/><rect x="26" y="13" width="9" height="9" rx="2" fill="var(--accent)"/><rect x="13" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/><rect x="26" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/></svg>
+    <p class="wordmark">Uncover</p>
+    <small>EVZO Method</small>
+  </div>
+</div>
+
 <div id="gate">
   <div class="card">
+    <p class="eyebrow"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="13" y="13" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/><rect x="26" y="13" width="9" height="9" rx="2" fill="var(--accent)"/><rect x="13" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/><rect x="26" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/></svg><span>EVZO Method</span></p>
     <h1>Uncover<span>.</span></h1>
+    <p class="tagline" data-i18n="tagline">The world starts covered. Walk to uncover it.</p>
     <p id="gateMsg">Sign in to walk, or make an account — it takes a moment and your map follows you.</p>
     <div class="tabs" id="gTabs">
       <button type="button" class="on" data-mode="in" data-i18n="signin">Sign in</button>
@@ -346,6 +392,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
   <div class="row"><p><span data-i18n="test">Test mode</span><small data-i18n="testSub">Tap the map to walk there, for trying it at home</small></p><label class="switch"><input type="checkbox" id="test"><span></span></label></div>
   <div class="row"><p><span data-i18n="backup">Backup</span><small data-i18n="backupSub">A copy you can keep</small></p><div class="btns"><button class="btn" id="exp" data-i18n="export">Export</button><button class="btn" id="imp" data-i18n="import">Import</button><input type="file" id="impFile" accept="application/json" hidden></div></div>
   <div class="row"><p><span data-i18n="reset">Reset map</span><small data-i18n="resetSub">Puts the fog back everywhere</small></p><button class="btn danger" id="reset" data-i18n="resetBtn">Reset</button></div>
+  <p class="by"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="13" y="13" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/><rect x="26" y="13" width="9" height="9" rx="2" fill="var(--accent)"/><rect x="13" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/><rect x="26" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".30"/></svg><span><span data-i18n="partof">Uncover is part of the</span> <a href="https://evzomethod.com" target="_blank" rel="noopener">EVZO&nbsp;Method</a></span></p>
 </section>
 
 <script>
@@ -811,7 +858,7 @@ window.__startUncover = (user, sync) => {
   // Greek is the default: this is a Cypriot app, and the browser's locale is
   // never allowed to decide. The player's own choice is, and it is kept.
   const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
-  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο"} };
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της"} };
   /** Falls back to the English already written into the markup. */
   const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
 
