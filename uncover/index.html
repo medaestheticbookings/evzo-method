@@ -481,6 +481,10 @@ window.__startUncover = (user, sync) => {
     ctx.globalCompositeOperation = 'source-over';
   }
   map.on('move zoom resize viewreset', redraw);
+  // The map's first setView happens before this canvas exists, so without an
+  // explicit first paint the fog only appears once something moves.
+  map.whenReady(() => { map.invalidateSize(); redraw(); });
+  redraw();
   map.on('dragstart', () => { follow = false; $('center').classList.remove('active'); });
   map.on('click', e => { if (S.test) handleFix(e.latlng.lat, e.latlng.lng, 5, Date.now(), true); });
 
