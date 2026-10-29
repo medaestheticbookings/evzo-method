@@ -58,7 +58,7 @@ html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-fami
 .leaflet-control-attribution a{color:var(--muted)!important;text-decoration:none}
 .attr-i{display:inline-grid;place-items:center;width:18px;height:18px;flex:none;font-style:normal;font-size:10px;color:var(--muted);cursor:pointer}
 .attr-t{padding-right:9px;white-space:nowrap}
-.me{filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
+.me{filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
 .mob{position:relative;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));cursor:pointer;animation:bob 2.4s ease-in-out infinite;transform-origin:50% 90%}
 .mob b{position:absolute;left:50%;top:-13px;transform:translateX(-50%);font:700 9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:2px 6px;border-radius:7px;white-space:nowrap}
 .mob.hit{animation:pop .26s ease-out forwards}
@@ -82,7 +82,7 @@ body.zen .top,body.zen .bottom,body.zen .float{opacity:0;pointer-events:none;tra
 body.zen .leaflet-control-attribution{opacity:.35}
 .zen-hint{position:fixed;z-index:650;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .4s;pointer-events:none}
 body.zen .zen-hint{opacity:.7}
-.pick.locked{opacity:.45;cursor:not-allowed}
+.pick.locked{opacity:.62;cursor:not-allowed}
 .pick.locked span{color:var(--muted)}
 
 /* ---------- the bar at the top ----------
@@ -208,7 +208,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
 .bdg{text-align:center;opacity:.35}
 .bdg.on{opacity:1}
 .bdg i{display:grid;place-items:center;width:46px;height:46px;margin:0 auto 6px;border-radius:50%;border:1px solid var(--line);font-style:normal;font-size:20px}
-.bdg.on i{border-color:var(--accent);background:rgba(255,138,61,.12)}
+.bdg.on i{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 14%, transparent)}
 .bdg b{display:block;font-family:var(--display);font-weight:800;font-size:12px;line-height:1.2}
 .bdg small{display:block;color:var(--muted);font-size:10px;line-height:1.3;margin-top:2px}
 /* Who you are on the map: a character and a colour. */
@@ -228,9 +228,14 @@ input[type=range]{accent-color:var(--accent);width:140px}
 .macro .k{display:block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .macro .v{display:block;margin-top:3px;font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em}
 .pickgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+@media (max-width:360px){.pick svg,.pick img{width:52px;height:52px}}
 .pick{display:grid;place-items:center;gap:6px;padding:12px 6px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font:500 11px var(--body)}
-.pick svg{width:30px;height:30px}
-.pick[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,138,61,.12)}
+.pick svg,.pick img{width:62px;height:62px}
+.pick.locked{position:relative}
+.pick.locked svg{filter:grayscale(1) brightness(1.25) contrast(.85)}
+.pick.locked::after{content:"";position:absolute;top:10px;right:10px;width:13px;height:13px;
+  border:2px solid var(--muted);border-radius:3px;border-top-width:7px;border-top-left-radius:7px;border-top-right-radius:7px;opacity:.9}
+.pick[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 14%, transparent)}
 .swatches{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
 .sw{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
 .sw[aria-pressed="true"]{border-color:#fff}
@@ -256,6 +261,8 @@ input[type=range]{accent-color:var(--accent);width:140px}
 @keyframes splashOut{to{opacity:0;visibility:hidden}}
 @media (prefers-reduced-motion: reduce){#splash{animation-delay:.6s}#splash .in{animation:none}}
 
+.fine{margin:0;font-size:12.5px;line-height:1.55;color:var(--muted)}
+
 /* The line that closes the settings sheet: who makes this. */
 .by{display:flex;align-items:center;justify-content:center;gap:8px;margin:18px 0 4px;
   font-size:12px;color:var(--muted);text-align:center}
@@ -266,7 +273,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
    A streak is the one number that decides whether someone opens the app
    tomorrow, so it sits in the bar that is always on screen. */
 .streak{display:inline-flex;align-items:center;gap:3px;flex:none;padding:2px 7px 2px 5px;border-radius:999px;
-  background:rgba(255,138,61,.16);color:var(--accent);font:800 12px var(--display);font-variant-numeric:tabular-nums}
+  background:color-mix(in srgb, var(--accent) 18%, transparent);color:var(--accent);font:800 12px var(--display);font-variant-numeric:tabular-nums}
 .streak svg{width:12px;height:12px}
 .streak.cold{background:rgba(127,127,127,.18);color:var(--muted)}
 
@@ -286,7 +293,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
 #sumsheet .big strong em{font-style:normal;font-size:17px;color:var(--muted);margin-left:3px}
 #sumsheet .big span{display:block;margin-top:4px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 #sumsheet .note{display:flex;align-items:center;gap:9px;margin:18px 0 0;padding:13px 14px;border-radius:14px;
-  background:rgba(255,138,61,.12);font-size:13.5px;line-height:1.45}
+  background:color-mix(in srgb, var(--accent) 14%, transparent);font-size:13.5px;line-height:1.45}
 #sumsheet .note svg{width:19px;height:19px;flex:none;color:var(--accent)}
 #sumsheet .close{width:100%;margin-top:16px;padding:14px;border:0;border-radius:14px;background:var(--accent);
   color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
@@ -365,7 +372,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
     <p class="eyebrow"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="13" y="13" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="13" width="9" height="9" rx="2" fill="var(--accent)"/><rect x="13" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/></svg><span>EVZO Method</span></p>
     <h1>Uncover<span>.</span></h1>
     <p class="tagline" data-i18n="tagline">The world starts covered. Walk to uncover it.</p>
-    <p id="gateMsg">Sign in to walk, or make an account — it takes a moment and your map follows you.</p>
+    <p id="gateMsg">Sign in to walk. New accounts need an invite code, and your map follows you from phone to phone.</p>
     <div class="tabs" id="gTabs">
       <button type="button" class="on" data-mode="in" data-i18n="signin">Sign in</button>
       <button type="button" data-mode="up" data-i18n="signup">Create account</button>
@@ -373,6 +380,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
     <form id="gateForm">
       <input id="gEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email" required>
       <input id="gPass" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required minlength="6">
+      <input id="gCode" type="text" autocomplete="off" spellcheck="false" placeholder="Invite code" aria-label="Invite code" hidden>
       <button id="gBtn" type="submit" data-i18n="signin">Sign in</button>
     </form>
     <div class="err" id="gErr" role="alert"></div>
@@ -474,6 +482,9 @@ input[type=range]{accent-color:var(--accent);width:140px}
   <div class="row"><p><span data-i18n="wake">Keep screen on</span><small data-i18n="wakeSub">Tracking pauses when the screen locks</small></p><label class="switch"><input type="checkbox" id="wake"><span></span></label></div>
   <div class="row"><p><span data-i18n="backup">Backup</span><small data-i18n="backupSub">A copy you can keep</small></p><div class="btns"><button class="btn" id="exp" data-i18n="export">Export</button><button class="btn" id="imp" data-i18n="import">Import</button><input type="file" id="impFile" accept="application/json" hidden></div></div>
   <div class="row"><p><span data-i18n="reset">Reset map</span><small data-i18n="resetSub">Puts the fog back everywhere</small></p><button class="btn danger" id="reset" data-i18n="resetBtn">Reset</button></div>
+  <div class="row" style="display:block"><p style="margin-bottom:8px"><span data-i18n="privacy">Your data</span><small data-i18n="privacySub">What is kept, and where</small></p>
+    <p class="fine" data-i18n="privacyBody">Uncover keeps the map you have uncovered, your distance, level and settings. With an account they are stored against your email so the map follows you between phones; without one they never leave this device. Nothing is sold, shared or used for advertising, and there is no tracking of any kind. Delete your account and the lot goes with it.</p>
+  </div>
   <p class="by"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="13" y="13" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="13" width="9" height="9" rx="2" fill="var(--accent)"/><rect x="13" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/></svg><span><span data-i18n="partof">Uncover is part of the</span> <a href="https://evzomethod.com" target="_blank" rel="noopener">EVZO&nbsp;Method</a></span></p>
 </section>
 
@@ -1146,7 +1157,7 @@ window.__startUncover = (user, sync) => {
       const open = unlocked(c);
       return '<button type="button" class="pick' + (open ? '' : ' locked') + '" data-id="' + c.id +
         '" aria-pressed="' + ((S.char || 'walk') === c.id) + '"' + (open ? '' : ' disabled') + '>' +
-        charSvg(c.id, open ? (S.colour || palette()[0]) : '#555b72', 30) +
+        charSvg(c.id, open ? (S.colour || palette()[0]) : '#6e7488', 62) +
         '<span>' + (open ? c.name : 'Lv ' + c.lvl) + '</span></button>';
     }).join('');
     grid.onclick = e => {
@@ -1288,7 +1299,7 @@ window.__startUncover = (user, sync) => {
   // Greek is the default: this is a Cypriot app, and the browser's locale is
   // never allowed to decide. The player's own choice is, and it is kept.
   const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
-  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο.", "birdHit": "Ένα πουλί! +% XP"} };
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο.", "birdHit": "Ένα πουλί! +% XP", "privacy": "Τα δεδομένα σου", "privacySub": "Τι κρατάμε, και πού", "privacyBody": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Με λογαριασμό αποθηκεύονται στο email σου ώστε ο χάρτης να σε ακολουθεί από συσκευή σε συσκευή· χωρίς λογαριασμό δεν φεύγουν ποτέ από αυτό το τηλέφωνο. Τίποτα δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν διαγράψεις τον λογαριασμό σου, φεύγουν όλα μαζί του.", "invite": "Κωδικός πρόσκλησης", "inviteBad": "Αυτός ο κωδικός δεν ισχύει."} };
   /** Falls back to the English already written into the markup. */
   const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
 
@@ -2208,6 +2219,32 @@ if (config) {
     window.__startUncover(user, sync);
   });
 
+  /**
+   * Sign-up is by invitation.
+   *
+   * Only the SHA-256 of each code is in here, so reading the page does not
+   * hand anyone a working code. It is a door, not a vault: pair it with the
+   * Firestore rules, and hand codes out one at a time. To add one, run
+   *   node -e "console.log(require('crypto').createHash('sha256').update('YOUR-CODE').digest('hex'))"
+   * and paste the result into the list.
+   */
+  const INVITES = [
+    "57b7df95c73872f0b78060192dbc60807029cdfc8b4450eef629fab94fcc96d6", // EVZO-WALK
+    "089aeecd596611e12b0f02cc026ce998fd25a37578ea7c3e75b6d97d6f077b19", // EVZO-START
+    "be08b04626335704c5d971b8a91b02150507090c0e19f59926d40cce20622532", // EVZO-FRIEND
+    "a81d0c0bd954325df9bc83be639d6474b48a9acfbad8d75f51e585ab582feb06", // EVZO-TEAM
+    "83fb118caff5892ac460e432e71df816cb813e6a9c85b6bcea7988470efa1fc0", // EVZO-GIFT
+  ];
+
+  async function goodCode(raw){
+    const code = String(raw || "").trim().toUpperCase();
+    if (!code) return false;
+    const bytes = new TextEncoder().encode(code);
+    const hash = await crypto.subtle.digest("SHA-256", bytes);
+    const hex = [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("");
+    return INVITES.includes(hex);
+  }
+
   let mode = "in";
   $("gTabs").addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-mode]");
@@ -2218,6 +2255,8 @@ if (config) {
     $("gPass").autocomplete = mode === "in" ? "current-password" : "new-password";
     $("gPass").placeholder = mode === "in" ? "Password" : "Password — 6 characters or more";
     $("gReset").hidden = mode !== "in";
+    $("gCode").hidden = mode === "in";
+    $("gCode").required = mode !== "in";
     $("gErr").textContent = "";
   });
 
@@ -2230,7 +2269,13 @@ if (config) {
     const email = $("gEmail").value.trim(), pass = $("gPass").value;
     try {
       if (mode === "in") await signInWithEmailAndPassword(auth, email, pass);
-      else await createUserWithEmailAndPassword(auth, email, pass);
+      else {
+        if (!(await goodCode($("gCode").value))){
+          fail("That invite code is not valid.");
+          return;
+        }
+        await createUserWithEmailAndPassword(auth, email, pass);
+      }
     } catch (err) {
       const code = String(err.code || "");
       fail(
