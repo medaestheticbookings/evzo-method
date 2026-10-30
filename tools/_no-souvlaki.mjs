@@ -1,0 +1,12 @@
+import { readFileSync, writeFileSync } from "node:fs";
+const p = "content/batch-15.json";
+const d = JSON.parse(readFileSync(p, "utf8"));
+const s = d.posts[0].slides;
+d._note3 = "Every photograph checked against its label before posting. The soup is puree, not whole-lentil fakes; the fish is sardines, whose numbers differ from white fish; the yoghurt carries raspberries, not honey. Each slide now says what its picture shows.";
+s[3].food = "Lentil soup";
+s[3].note = "Around 290 kcal and 18 g of protein. This is a dinner, not a starter, and treating it as a starter is why you are hungry again at ten.";
+s[4].food = "Grilled sardines";
+s[4].note = "About 375 kcal and 44 g of protein, with more omega-3 than salmon at a third of the price. The best-value plate on any taverna menu.";
+s[5].note = "20 g of protein before anything goes on top. A handful of raspberries adds 30 kcal. Two spoons of honey would add 120.";
+writeFileSync(p, JSON.stringify(d, null, 2) + "\n", "utf8");
+console.log(s.slice(1, 6).map(x => `${x.food} [${x.photo.split("/")[1]}]`).join(" | "));

@@ -348,6 +348,9 @@ input[type=range]{accent-color:var(--accent);width:140px}
 #gate .tabs button.on{background:rgba(255,255,255,.10);color:var(--text)}
 #gate .err{color:#ff8e8e;font-size:13px;min-height:18px;margin-top:12px}
 #gate .foot{margin:16px 0 0;font-size:12px}
+#gate .foot+.foot{margin-top:9px}
+#gate .foot button{width:auto;padding:0;background:none;border:0;color:var(--muted);
+  font:600 12px var(--body);text-decoration:underline;cursor:pointer}
 .setup .card{max-width:420px;width:100%}
 .setup h1{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;margin:0 0 6px}
 .setup h1 span{color:var(--accent)}
@@ -385,6 +388,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
     </form>
     <div class="err" id="gErr" role="alert"></div>
     <p class="foot"><a href="#" id="gReset" style="color:var(--muted)">Forgot your password?</a></p>
+    <p class="foot"><button type="button" id="gLang">Ελληνικά</button></p>
   </div>
 </div>
 
@@ -504,9 +508,24 @@ window.__startUncover = (user, sync) => {
   S.count = Object.keys(S.cells).length;
   S.badges = S.badges || {}; S.dayCells = S.dayCells || {};
   S.kg = S.kg || 70; S.stride = S.stride || 75; S.mode = S.mode || 'walk';
-  S.theme = S.theme || 'dark'; S.lang = S.lang || 'el';
+  S.theme = S.theme || 'dark';
+  // The sign-in door asked first; honour what was chosen there.
+  try { S.lang = S.lang || localStorage.getItem('uncover.lang') || 'el'; } catch(e){ S.lang = S.lang || 'el'; }
   S.xp = S.xp || 0; S.miles = S.miles || {};
   try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch(e){}
+
+  // Until there is a project behind the sign-in, nothing leaves the phone at
+  // all. The note in settings says whichever of those two is actually true.
+  if (!sync.remote){
+    const note = document.querySelector('[data-i18n="privacyBody"]');
+    if (note){
+      note.dataset.i18n = 'privacyLocal';
+      note.textContent = 'Uncover keeps the map you have uncovered, your distance, level and settings. '
+        + 'They are held on this phone and nowhere else \u2014 your account here only keeps your map apart '
+        + 'from anyone else walking on the same phone. Nothing is sent to a server, sold, shared or used '
+        + 'for advertising, and there is no tracking of any kind. Clear the app\u2019s storage and it all goes.';
+    }
+  }
   let saveT; const save = () => { clearTimeout(saveT); saveT = setTimeout(() => {
     const json = JSON.stringify(S);
     try { localStorage.setItem(KEY, json); } catch(e){ toast('Could not save. Storage full?'); }
@@ -1299,7 +1318,7 @@ window.__startUncover = (user, sync) => {
   // Greek is the default: this is a Cypriot app, and the browser's locale is
   // never allowed to decide. The player's own choice is, and it is kept.
   const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
-  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο.", "birdHit": "Ένα πουλί! +% XP", "privacy": "Τα δεδομένα σου", "privacySub": "Τι κρατάμε, και πού", "privacyBody": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Με λογαριασμό αποθηκεύονται στο email σου ώστε ο χάρτης να σε ακολουθεί από συσκευή σε συσκευή· χωρίς λογαριασμό δεν φεύγουν ποτέ από αυτό το τηλέφωνο. Τίποτα δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν διαγράψεις τον λογαριασμό σου, φεύγουν όλα μαζί του.", "invite": "Κωδικός πρόσκλησης", "inviteBad": "Αυτός ο κωδικός δεν ισχύει."} };
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο.", "birdHit": "Ένα πουλί! +% XP", "privacy": "Τα δεδομένα σου", "privacySub": "Τι κρατάμε, και πού", "privacyBody": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Με λογαριασμό αποθηκεύονται στο email σου ώστε ο χάρτης να σε ακολουθεί από συσκευή σε συσκευή· χωρίς λογαριασμό δεν φεύγουν ποτέ από αυτό το τηλέφωνο. Τίποτα δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν διαγράψεις τον λογαριασμό σου, φεύγουν όλα μαζί του.", "privacyLocal": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Μένουν σε αυτό το τηλέφωνο και πουθενά αλλού — ο λογαριασμός σου εδώ απλώς κρατά τον χάρτη σου χωριστά από όποιον άλλον περπατά με το ίδιο τηλέφωνο. Τίποτα δεν στέλνεται σε διακομιστή, δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν σβήσεις τα δεδομένα της εφαρμογής, φεύγουν όλα.", "invite": "Κωδικός πρόσκλησης", "inviteBad": "Αυτός ο κωδικός δεν ισχύει."} };
   /** Falls back to the English already written into the markup. */
   const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
 
@@ -1328,6 +1347,7 @@ window.__startUncover = (user, sync) => {
       const b = e.target.closest('button[data-l]');
       if (!b) return;
       S.lang = b.dataset.l; save();
+      try { localStorage.setItem('uncover.lang', S.lang); } catch(e){}
       applyLang(); renderLang(); renderModes(); renderTheme(); renderPicker();
     };
   }
@@ -2149,22 +2169,219 @@ const KEY = "uncover.v1";
 const fail = (msg) => {
   $("gErr").textContent = msg;
   $("gBtn").disabled = false;
-  $("gBtn").textContent = document.querySelector('#gTabs .on')?.dataset.mode === "up" ? "Create account" : "Sign in";
+  $("gBtn").textContent = t(mode === "in" ? "signin" : "signup");
 };
+
+const EN = {
+  tagline: "The world starts covered. Walk to uncover it.",
+  msgSync: "Sign in to walk. New accounts need an invite code, and your map follows you from phone to phone.",
+  msgLocal: "Sign in to walk. New accounts need an invite code. Your map stays on this phone.",
+  signin: "Sign in", signup: "Create account", signing: "Signing in…", creating: "Creating…",
+  email: "Email", pass: "Password", passNew: "Password — 6 characters or more",
+  code: "Invite code", forgot: "Forgot your password?", other: "Ελληνικά",
+  sent: "If that account exists, a reset link is on its way.",
+  noSend: "Could not send that.", needEmail: "Put your email in first.",
+  badCode: "That invite code is not valid.",
+  taken: "That email already has an account — sign in instead.",
+  weak: "Six characters or more, please.",
+  badEmail: "That does not look like an email address.",
+  noMatch: "That email and password do not match an account.",
+  noMake: "Could not create that account.",
+  closed: "New accounts are closed right now.",
+  busy: "Too many tries. Wait a minute.", offline: "No connection.",
+  noReset: "No reset can be sent from this phone. Make a new account with an invite code.",
+};
+
+const EL = {
+  tagline: "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.",
+  msgSync: "Συνδέσου για να περπατήσεις. Οι νέοι λογαριασμοί χρειάζονται κωδικό πρόσκλησης, και ο χάρτης σου σε ακολουθεί από τηλέφωνο σε τηλέφωνο.",
+  msgLocal: "Συνδέσου για να περπατήσεις. Οι νέοι λογαριασμοί χρειάζονται κωδικό πρόσκλησης. Ο χάρτης σου μένει σε αυτό το τηλέφωνο.",
+  signin: "Σύνδεση", signup: "Δημιουργία λογαριασμού",
+  signing: "Σύνδεση…", creating: "Δημιουργία…",
+  email: "Email", pass: "Κωδικός", passNew: "Κωδικός — 6 χαρακτήρες ή παραπάνω",
+  code: "Κωδικός πρόσκλησης", forgot: "Ξέχασες τον κωδικό σου;", other: "English",
+  sent: "Αν υπάρχει αυτός ο λογαριασμός, ο σύνδεσμος επαναφοράς έρχεται.",
+  noSend: "Δεν στάλθηκε.", needEmail: "Βάλε πρώτα το email σου.",
+  badCode: "Αυτός ο κωδικός πρόσκλησης δεν ισχύει.",
+  taken: "Αυτό το email έχει ήδη λογαριασμό — κάνε σύνδεση.",
+  weak: "Έξι χαρακτήρες ή παραπάνω, παρακαλώ.",
+  badEmail: "Αυτό δεν μοιάζει με email.",
+  noMatch: "Το email και ο κωδικός δεν ταιριάζουν με λογαριασμό.",
+  noMake: "Δεν δημιουργήθηκε ο λογαριασμός.",
+  closed: "Οι νέοι λογαριασμοί είναι κλειστοί τώρα.",
+  busy: "Πολλές προσπάθειες. Περίμενε ένα λεπτό.",
+  offline: "Δεν υπάρχει σύνδεση.",
+  noReset: "Από αυτό το τηλέφωνο δεν στέλνεται επαναφορά. Φτιάξε νέο λογαριασμό με κωδικό πρόσκλησης.",
+};
+
+/* The door opens in Greek, like the rest of it. The markup is English so
+   that it still reads if this script never runs. */
+let lang = "el";
+try { lang = localStorage.getItem("uncover.lang")
+           || JSON.parse(localStorage.getItem(KEY) || "{}").lang || "el"; } catch (_) {}
+const t = (k) => (lang === "en" ? EN : EL)[k];
+let local = false;                       // true once we know there is no project
+
+function paintGate(){
+  document.documentElement.lang = lang;
+  $("gate").querySelector(".tagline").textContent = t("tagline");
+  $("gateMsg").textContent = t(local ? "msgLocal" : "msgSync");
+  const [inTab, upTab] = $("gTabs").children;
+  inTab.textContent = t("signin");
+  upTab.textContent = t("signup");
+  const up = upTab.classList.contains("on");
+  $("gEmail").placeholder = t("email");
+  $("gPass").placeholder = t(up ? "passNew" : "pass");
+  $("gCode").placeholder = t("code");
+  $("gBtn").textContent = t(up ? "signup" : "signin");
+  $("gReset").textContent = t("forgot");
+  $("gLang").textContent = t("other");
+}
+
+$("gLang").addEventListener("click", () => {
+  lang = lang === "el" ? "en" : "el";
+  try { localStorage.setItem("uncover.lang", lang); } catch (_) {}
+  paintGate();
+});
+
+/**
+ * Sign-up is by invitation.
+ *
+ * Only the SHA-256 of each code is in here, so reading the page does not
+ * hand anyone a working code. It is a door, not a vault: pair it with the
+ * Firestore rules, and hand codes out one at a time. To add one, run
+ *   node -e "console.log(require('crypto').createHash('sha256').update('YOUR-CODE').digest('hex'))"
+ * and paste the result into the list.
+ */
+const INVITES = [
+  "57b7df95c73872f0b78060192dbc60807029cdfc8b4450eef629fab94fcc96d6", // EVZO-WALK
+  "089aeecd596611e12b0f02cc026ce998fd25a37578ea7c3e75b6d97d6f077b19", // EVZO-START
+  "be08b04626335704c5d971b8a91b02150507090c0e19f59926d40cce20622532", // EVZO-FRIEND
+  "a81d0c0bd954325df9bc83be639d6474b48a9acfbad8d75f51e585ab582feb06", // EVZO-TEAM
+  "83fb118caff5892ac460e432e71df816cb813e6a9c85b6bcea7988470efa1fc0", // EVZO-GIFT
+];
+
+const hex = (buf) => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+
+async function goodCode(raw){
+  const code = String(raw || "").trim().toUpperCase();
+  if (!code) return false;
+  return INVITES.includes(hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(code))));
+}
+
+let mode = "in";
+$("gTabs").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-mode]");
+  if (!btn) return;
+  mode = btn.dataset.mode;
+  for (const b of $("gTabs").children) b.classList.toggle("on", b === btn);
+  $("gPass").autocomplete = mode === "in" ? "current-password" : "new-password";
+  $("gReset").hidden = mode !== "in" && !local;
+  $("gCode").hidden = mode === "in";
+  $("gCode").required = mode !== "in";
+  $("gErr").textContent = "";
+  $("gErr").style.color = "";
+  paintGate();
+});
+
+/**
+ * Accounts without a server.
+ *
+ * Carrying a map between phones needs Firebase, and Firebase needs a project
+ * somebody has to create. Until there is one, the door still works: an
+ * account lives on this phone, keeps its own map, and still needs an invite
+ * code to exist at all. The password is kept as a PBKDF2 hash with its own
+ * salt, so what is stored is not a list of readable passwords.
+ *
+ * It is the lock on a door inside your own house. It keeps two people's maps
+ * apart on a shared phone; it is not a bank, and it is not pretending to be.
+ */
+function localAccounts(){
+  local = true;
+  paintGate();
+
+  const USERS = "uncover.users", WHO = "uncover.who";
+  const slot = (email) => "uncover.map." + email;
+  const norm = (e) => String(e || "").trim().toLowerCase();
+  const readUsers = () => { try { return JSON.parse(localStorage.getItem(USERS)) || {}; } catch (_) { return {}; } };
+  const writeUsers = (u) => { try { localStorage.setItem(USERS, JSON.stringify(u)); } catch (_) {} };
+
+  async function stretch(pass, salt){
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveBits"]);
+    return hex(await crypto.subtle.deriveBits(
+      { name: "PBKDF2", salt: enc.encode(salt), iterations: 150000, hash: "SHA-256" }, key, 256));
+  }
+
+  /** Put this account's map where the game reads it, then hand over. */
+  function enter(email){
+    try { localStorage.setItem(WHO, email); } catch (_) {}
+    const saved = localStorage.getItem(slot(email));
+    if (saved) localStorage.setItem(KEY, saved);
+    $("gate").remove();
+    window.__startUncover({ email }, {
+      remote: false,
+      push(json){ try { localStorage.setItem(slot(email), json); } catch (_) {} },
+      signOut(){
+        try { localStorage.removeItem(WHO); localStorage.removeItem(KEY); } catch (_) {}
+        location.reload();
+      },
+    });
+  }
+
+  // Signed in here already, so do not ask again.
+  const who = localStorage.getItem(WHO);
+  if (who && readUsers()[who]) return enter(who);
+
+  // A map uncovered before accounts existed. The first account to be made on
+  // this phone inherits it, so nobody loses their walking by signing up.
+  const orphan = localStorage.getItem(KEY);
+  try { localStorage.removeItem(KEY); } catch (_) {}
+
+  $("gateForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    $("gErr").textContent = "";
+    $("gErr").style.color = "";
+    $("gBtn").disabled = true;
+    $("gBtn").textContent = t(mode === "in" ? "signing" : "creating");
+
+    const email = norm($("gEmail").value), pass = $("gPass").value, users = readUsers();
+
+    if (mode === "in"){
+      const rec = users[email];
+      if (!rec || (await stretch(pass, rec.salt)) !== rec.hash) return fail(t("noMatch"));
+      return enter(email);
+    }
+
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail(t("badEmail"));
+    if (pass.length < 6) return fail(t("weak"));
+    if (users[email]) return fail(t("taken"));
+    if (!(await goodCode($("gCode").value))) return fail(t("badCode"));
+
+    const first = Object.keys(users).length === 0;
+    const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
+    users[email] = { salt, hash: await stretch(pass, salt), at: Date.now(), plan: "free" };
+    writeUsers(users);
+    if (first && orphan) localStorage.setItem(slot(email), orphan);
+    enter(email);
+  });
+
+  $("gReset").addEventListener("click", (e) => {
+    e.preventDefault();
+    $("gErr").style.color = "var(--muted)";
+    $("gErr").textContent = t("noReset");
+  });
+}
 
 let config = null;
 try {
-  config = (await import("./firebase-config.js")).firebaseConfig;
-} catch (_) {
-  // Deployed before the Firebase project exists. Rather than show a door
-  // that opens onto nothing, run the game on this device alone: the map is
-  // kept in local storage and simply does not follow you anywhere yet.
-  document.getElementById("gate").remove();
-  window.__startUncover(
-    { email: "" },
-    { push(){}, signOut(){ try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); } },
-  );
-}
+  const c = (await import("./firebase-config.js")).firebaseConfig;
+  // The file ships with placeholders in it. Half a config is worse than none:
+  // it would put up a door that cannot open.
+  if (c && c.apiKey && !String(c.apiKey).includes("REPLACE_ME")) config = c;
+} catch (_) { /* no project yet, and the local door below covers that */ }
+
+paintGate();
 
 if (config) {
   const app = initializeApp(config);
@@ -2176,6 +2393,7 @@ if (config) {
   let pushT = 0;
 
   const sync = {
+    remote: true,
     /** Debounced so a walk writes once every few seconds, not once a step. */
     push(json) {
       const user = auth.currentUser;
@@ -2219,53 +2437,12 @@ if (config) {
     window.__startUncover(user, sync);
   });
 
-  /**
-   * Sign-up is by invitation.
-   *
-   * Only the SHA-256 of each code is in here, so reading the page does not
-   * hand anyone a working code. It is a door, not a vault: pair it with the
-   * Firestore rules, and hand codes out one at a time. To add one, run
-   *   node -e "console.log(require('crypto').createHash('sha256').update('YOUR-CODE').digest('hex'))"
-   * and paste the result into the list.
-   */
-  const INVITES = [
-    "57b7df95c73872f0b78060192dbc60807029cdfc8b4450eef629fab94fcc96d6", // EVZO-WALK
-    "089aeecd596611e12b0f02cc026ce998fd25a37578ea7c3e75b6d97d6f077b19", // EVZO-START
-    "be08b04626335704c5d971b8a91b02150507090c0e19f59926d40cce20622532", // EVZO-FRIEND
-    "a81d0c0bd954325df9bc83be639d6474b48a9acfbad8d75f51e585ab582feb06", // EVZO-TEAM
-    "83fb118caff5892ac460e432e71df816cb813e6a9c85b6bcea7988470efa1fc0", // EVZO-GIFT
-  ];
-
-  async function goodCode(raw){
-    const code = String(raw || "").trim().toUpperCase();
-    if (!code) return false;
-    const bytes = new TextEncoder().encode(code);
-    const hash = await crypto.subtle.digest("SHA-256", bytes);
-    const hex = [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("");
-    return INVITES.includes(hex);
-  }
-
-  let mode = "in";
-  $("gTabs").addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-mode]");
-    if (!btn) return;
-    mode = btn.dataset.mode;
-    for (const b of $("gTabs").children) b.classList.toggle("on", b === btn);
-    $("gBtn").textContent = mode === "in" ? "Sign in" : "Create account";
-    $("gPass").autocomplete = mode === "in" ? "current-password" : "new-password";
-    $("gPass").placeholder = mode === "in" ? "Password" : "Password — 6 characters or more";
-    $("gReset").hidden = mode !== "in";
-    $("gCode").hidden = mode === "in";
-    $("gCode").required = mode !== "in";
-    $("gErr").textContent = "";
-  });
-
   $("gateForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     $("gErr").textContent = "";
     $("gErr").style.color = "";
     $("gBtn").disabled = true;
-    $("gBtn").textContent = mode === "in" ? "Signing in…" : "Creating…";
+    $("gBtn").textContent = t(mode === "in" ? "signing" : "creating");
     const email = $("gEmail").value.trim(), pass = $("gPass").value;
     try {
       if (mode === "in") await signInWithEmailAndPassword(auth, email, pass);
@@ -2278,31 +2455,32 @@ if (config) {
       }
     } catch (err) {
       const code = String(err.code || "");
-      fail(
-        code.includes("too-many-requests") ? "Too many tries. Wait a minute." :
-        code.includes("network") ? "No connection." :
-        code.includes("email-already-in-use") ? "That email already has an account — sign in instead." :
-        code.includes("weak-password") ? "Six characters or more, please." :
-        code.includes("invalid-email") ? "That does not look like an email address." :
-        code.includes("operation-not-allowed") ? "New accounts are closed right now." :
-        mode === "in" ? "That email and password do not match an account." :
-        "Could not create that account.",
-      );
+      fail(t(
+        code.includes("too-many-requests") ? "busy" :
+        code.includes("network") ? "offline" :
+        code.includes("email-already-in-use") ? "taken" :
+        code.includes("weak-password") ? "weak" :
+        code.includes("invalid-email") ? "badEmail" :
+        code.includes("operation-not-allowed") ? "closed" :
+        mode === "in" ? "noMatch" : "noMake",
+      ));
     }
   });
 
   $("gReset").addEventListener("click", async (e) => {
     e.preventDefault();
     const email = $("gEmail").value.trim();
-    if (!email) { $("gErr").textContent = "Put your email in first."; return; }
+    if (!email) { $("gErr").textContent = t("needEmail"); return; }
     try {
       await sendPasswordResetEmail(auth, email);
       $("gErr").style.color = "var(--muted)";
-      $("gErr").textContent = "If that account exists, a reset link is on its way.";
+      $("gErr").textContent = t("sent");
     } catch (_) {
-      $("gErr").textContent = "Could not send that.";
+      $("gErr").textContent = t("noSend");
     }
   });
+} else {
+  localAccounts();
 }
 </script>
 </body>
