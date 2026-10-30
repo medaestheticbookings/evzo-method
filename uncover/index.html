@@ -60,6 +60,7 @@ html,body{height:100%;margin:0;background:var(--fog);color:var(--text);font-fami
 .attr-t{padding-right:9px;white-space:nowrap}
 .me{filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
 .mob{position:relative;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));cursor:pointer;animation:bob 2.4s ease-in-out infinite;transform-origin:50% 90%}
+.mob.chest{filter:drop-shadow(0 0 11px rgba(242,196,87,.55)) drop-shadow(0 3px 4px rgba(0,0,0,.5))}
 .mob b{position:absolute;left:50%;top:-13px;transform:translateX(-50%);font:700 9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:2px 6px;border-radius:7px;white-space:nowrap}
 .mob.hit{animation:pop .26s ease-out forwards}
 .mob.bolt{animation:bolt .5s ease-out}
@@ -263,6 +264,13 @@ input[type=range]{accent-color:var(--accent);width:140px}
 
 .fine{margin:0;font-size:12.5px;line-height:1.55;color:var(--muted)}
 
+/* The thought you are handed on the way in. One line to get you out of the
+   door, one thing worth knowing about what walking actually does. */
+#hisheet .eyebrow{justify-content:center;margin-bottom:14px}
+#hisheet h2{font-family:var(--display);font-weight:800;font-size:23px;line-height:1.25;
+  text-align:center;margin:0 0 12px;letter-spacing:-.01em}
+.hi-fact{margin:0 0 20px;text-align:center;color:var(--muted);font-size:14.5px;line-height:1.6}
+
 /* The line that closes the settings sheet: who makes this. */
 .by{display:flex;align-items:center;justify-content:center;gap:8px;margin:18px 0 4px;
   font-size:12px;color:var(--muted);text-align:center}
@@ -295,7 +303,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
 #sumsheet .note{display:flex;align-items:center;gap:9px;margin:18px 0 0;padding:13px 14px;border-radius:14px;
   background:color-mix(in srgb, var(--accent) 14%, transparent);font-size:13.5px;line-height:1.45}
 #sumsheet .note svg{width:19px;height:19px;flex:none;color:var(--accent)}
-#sumsheet .close{width:100%;margin-top:16px;padding:14px;border:0;border-radius:14px;background:var(--accent);
+#sumsheet .close,#hisheet .close{width:100%;margin-top:16px;padding:14px;border:0;border-radius:14px;background:var(--accent);
   color:var(--accent-ink);font:800 16px var(--display);cursor:pointer}
 
 .charart{display:block;object-fit:contain;image-rendering:auto;user-select:none;-webkit-user-drag:none}
@@ -441,6 +449,13 @@ input[type=range]{accent-color:var(--accent);width:140px}
   <div class="stats" id="sumStats"></div>
   <div class="note" id="sumNote" hidden></div>
   <button type="button" class="close" id="sumClose" data-i18n="done">Done</button>
+</section>
+
+<section class="sheet" id="hisheet" aria-label="A thought for the walk">
+  <p class="eyebrow"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="13" y="13" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="13" width="9" height="9" rx="2" fill="var(--accent)"/><rect x="13" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/><rect x="26" y="26" width="9" height="9" rx="2" fill="currentColor" opacity=".45"/></svg><span>EVZO Method</span></p>
+  <h2 id="hiLine">&nbsp;</h2>
+  <p class="hi-fact" id="hiFact"></p>
+  <button type="button" class="close" id="hiClose" data-i18n="hiGo">Let's walk</button>
 </section>
 
 <section class="sheet" id="mesheet" aria-label="Your character">
@@ -1318,7 +1333,7 @@ window.__startUncover = (user, sync) => {
   // Greek is the default: this is a Cypriot app, and the browser's locale is
   // never allowed to decide. The player's own choice is, and it is kept.
   const LANGS = [{ id:'el', name:'Ελληνικά' }, { id:'en', name:'English' }];
-  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο.", "birdHit": "Ένα πουλί! +% XP", "privacy": "Τα δεδομένα σου", "privacySub": "Τι κρατάμε, και πού", "privacyBody": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Με λογαριασμό αποθηκεύονται στο email σου ώστε ο χάρτης να σε ακολουθεί από συσκευή σε συσκευή· χωρίς λογαριασμό δεν φεύγουν ποτέ από αυτό το τηλέφωνο. Τίποτα δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν διαγράψεις τον λογαριασμό σου, φεύγουν όλα μαζί του.", "privacyLocal": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Μένουν σε αυτό το τηλέφωνο και πουθενά αλλού — ο λογαριασμός σου εδώ απλώς κρατά τον χάρτη σου χωριστά από όποιον άλλον περπατά με το ίδιο τηλέφωνο. Τίποτα δεν στέλνεται σε διακομιστή, δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν σβήσεις τα δεδομένα της εφαρμογής, φεύγουν όλα.", "invite": "Κωδικός πρόσκλησης", "inviteBad": "Αυτός ο κωδικός δεν ισχύει."} };
+  const STR = { el: {"revealed": "Αποκαλύφθηκαν", "today": "Σήμερα", "alltime": "Σύνολο", "steps": "Βήματα σήμερα", "burned": "Θερμίδες", "outside": "Έξω", "settings": "Ρυθμίσεις", "challenges": "Προκλήσεις", "badges": "Διακριτικά", "language": "Γλώσσα", "moving": "Πώς κινείσαι", "movingSub": "Κάθε τρόπος έχει όριο ταχύτητας — με αυτοκίνητο δεν αποκαλύπτεται τίποτα", "character": "Ο χαρακτήρας σου", "characterSub": "Ποιος περπατά στον χάρτη, και σε ποιο χρώμα", "appearance": "Εμφάνιση", "appearanceSub": "Θέμα, αντίθεση και μέγεθος κειμένου", "contrast": "Μεγαλύτερη αντίθεση", "contrastSub": "Συμπαγές φόντο και καθαρές άκρες", "bigtext": "Μεγαλύτερα γράμματα", "cbsafe": "Παλέτα για αχρωματοψία", "cbsafeSub": "Χρώματα που ξεχωρίζουν μεταξύ τους", "weight": "Το βάρος σου", "weightSub": "Μόνο για τον υπολογισμό θερμίδων", "stride": "Μήκος βήματος", "strideSub": "Για τα βήματα. Τα 75 cm ταιριάζουν στους περισσότερους", "radius": "Ακτίνα αποκάλυψης", "radiusSub": "Πόσος χάρτης ανοίγει γύρω σου", "wake": "Οθόνη πάντα αναμμένη", "wakeSub": "Η καταγραφή σταματά όταν κλειδώνει η οθόνη", "test": "Δοκιμαστική λειτουργία", "testSub": "Πάτα τον χάρτη για να περπατήσεις εκεί", "backup": "Αντίγραφο", "backupSub": "Ένα αντίγραφο δικό σου", "export": "Εξαγωγή", "import": "Εισαγωγή", "reset": "Επαναφορά χάρτη", "resetSub": "Βάζει ξανά την ομίχλη παντού", "resetBtn": "Επαναφορά", "go": "Ξεκίνα", "stop": "Σταμάτα", "signin": "Σύνδεση", "signup": "Δημιουργία λογαριασμού", "signout": "Αποσύνδεση", "zenHint": "Πάτα τον χάρτη για να επιστρέψουν τα πάνελ", "Walk": "Περπάτημα", "Run": "Τρέξιμο", "Cycle": "Ποδήλατο", "Swim": "Κολύμβηση", "satellite": "Δορυφόρος", "satelliteSub": "Φωτογραφίες αντί για σχέδιο", "account": "Λογαριασμός", "Dark": "Σκούρο", "Light": "Ανοιχτό", "Auto": "Αυτόματο", "tagline": "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.", "partof": "Το Uncover είναι μέρος της", "goalToday": "Στόχος ημέρας", "goal": "Ημερήσιος στόχος", "goalSub": "Η απόσταση που βάζεις στόχο κάθε μέρα", "done": "Έτοιμο", "sumTitle": "Μπράβο.", "birdHit": "Ένα πουλί! +% XP", "privacy": "Τα δεδομένα σου", "privacySub": "Τι κρατάμε, και πού", "privacyBody": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Με λογαριασμό αποθηκεύονται στο email σου ώστε ο χάρτης να σε ακολουθεί από συσκευή σε συσκευή· χωρίς λογαριασμό δεν φεύγουν ποτέ από αυτό το τηλέφωνο. Τίποτα δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν διαγράψεις τον λογαριασμό σου, φεύγουν όλα μαζί του.", "privacyLocal": "Το Uncover κρατά τον χάρτη που αποκάλυψες, την απόστασή σου, το επίπεδο και τις ρυθμίσεις σου. Μένουν σε αυτό το τηλέφωνο και πουθενά αλλού — ο λογαριασμός σου εδώ απλώς κρατά τον χάρτη σου χωριστά από όποιον άλλον περπατά με το ίδιο τηλέφωνο. Τίποτα δεν στέλνεται σε διακομιστή, δεν πωλείται, δεν μοιράζεται και δεν χρησιμοποιείται για διαφημίσεις, και δεν υπάρχει καμία παρακολούθηση. Αν σβήσεις τα δεδομένα της εφαρμογής, φεύγουν όλα.", "hiGo": "Πάμε", "invite": "Κωδικός πρόσκλησης", "inviteBad": "Αυτός ο κωδικός δεν ισχύει."} };
   /** Falls back to the English already written into the markup. */
   const t = (k, en) => (S.lang === 'en' ? (en || k) : (STR.el[k] || en || k));
 
@@ -1780,12 +1795,165 @@ window.__startUncover = (user, sync) => {
     meMarker.setLatLng([lat,lng]); accCircle.setLatLng([lat,lng]).setRadius(Math.min(acc,200));
   }
 
+  // ---------- the chest of the day ----------
+  /**
+   * One chest a day, and it is the only thing here placed where you have
+   * never been.
+   *
+   * Everything else lands on your own trail, which is how the game keeps
+   * people out of the sea and off the motorway. A chest cannot work that
+   * way: its whole job is to pull you down a street you would not otherwise
+   * take. So its spot is not guessed. OpenStreetMap is asked which ways
+   * around you are footpaths and quiet streets, and the chest goes on one of
+   * those or it does not appear at all. No answer, no chest \u2014 which is better
+   * than a chest in the harbour.
+   */
+  const CHEST_MIN = 350, CHEST_MAX = 900, CHEST_RETRY = 900000;
+  const WALKABLE = "footway|path|pedestrian|living_street|residential|steps|track|cycleway|unclassified|service";
+  let chest = null, chestBusy = false, chestTry = 0;
+
+  function chestIcon(label){
+    return L.divIcon({ className: '', iconSize: [84, 84], iconAnchor: [42, 42],
+      html: '<div class="mob chest">' +
+        svgOf('-4 8 72 64', 84, () =>
+          En(32, 62, 19, 4, 'rgba(0,0,0,.3)') +
+          P('M9 32h46v24a4 4 0 0 1 -4 4H13a4 4 0 0 1 -4 -4Z', lit('#b9762f')) +
+          P('M9 32q0 -15 23 -15 q23 0 23 15Z', lit('#d9a157')) +
+          Pn('M9 36h46v7H9Z', '#6b4a22') +
+          P('M27 30h10v14h-10Z', lit('#f2c457')) +
+          En(32, 37, 3.2, 3.8, '#4a3113')) +
+        '<b>' + label + '</b></div>' });
+  }
+
+  /** The cell a point falls in, the same way the fog counts them. */
+  function cellOf(lat, lng){
+    const i = Math.floor(lat / CELL);
+    return i + ',' + Math.floor(lng / lngStep(i));
+  }
+
+  /**
+   * Asks the map what is walkable around here. Null if it will not say.
+   *
+   * The public Overpass servers are free and often full — a 502 saying every
+   * worker is busy is an ordinary afternoon. So three are tried in turn and
+   * the first that answers wins. If none do, there is simply no chest today;
+   * nothing in the game breaks, it just does not appear.
+   */
+  const OVERPASS = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter',
+    'https://overpass.private.coffee/api/interpreter',
+  ];
+
+  async function askOverpass(q){
+    for (const url of OVERPASS){
+      const stop = new AbortController();
+      const bail = setTimeout(() => stop.abort(), 15000);
+      try {
+        const r = await fetch(url, {
+          method: 'POST', signal: stop.signal,
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'data=' + encodeURIComponent(q),
+        });
+        if (r.ok) return await r.json();
+      } catch (_) {
+        /* that one is down or slow; the next one might not be */
+      } finally {
+        clearTimeout(bail);
+      }
+    }
+    return null;
+  }
+
+  async function chestSpot(lat, lng){
+    const data = await askOverpass('[out:json][timeout:14];'
+      + 'way["highway"~"^(' + WALKABLE + ')$"]["access"!~"private|no"]["tunnel"!~"."]'
+      + '(around:' + CHEST_MAX + ',' + lat.toFixed(5) + ',' + lng.toFixed(5) + ');'
+      + 'node(w);out skel 2000;');
+
+    // Nobody answered. Rather than skip the day, fall back to the far side of
+    // your own trail: less of an adventure, but ground you have stood on, so
+    // the one rule this game cannot break stays unbroken.
+    if (!data || !data.elements) return groundNear(lat, lng, CHEST_MIN, CHEST_MAX);
+
+    const far = data.elements.filter(n =>
+      n.lat != null && dist(lat, lng, n.lat, n.lon) >= CHEST_MIN);
+    if (!far.length) return groundNear(lat, lng, CHEST_MIN, CHEST_MAX);
+    // Under fog by preference. A chest on a street you know is a chore.
+    const dark = far.filter(n => !S.cells[cellOf(n.lat, n.lon)]);
+    const from = dark.length ? dark : far;
+    const pick = from[(Math.random() * from.length) | 0];
+    return [pick.lat, pick.lon];
+  }
+
+  function showChest(lat, lng, away){
+    chest = { lat, lng };
+    chest.marker = L.marker([lat, lng], { icon: chestIcon(away), zIndexOffset: 940 }).addTo(map);
+    chest.marker.on('click', ev => { L.DomEvent.stop(ev); openChest(); });
+  }
+
+  async function wantChest(lat, lng){
+    if (chest){
+      const el = chest.marker.getElement();
+      const away = Math.round(dist(lat, lng, chest.lat, chest.lng)) + ' m';
+      if (el) el.querySelector('b').textContent = away;
+      return;
+    }
+    if (chestBusy || S.chestDay === today() || Date.now() < chestTry) return;
+    if (Object.keys(S.cells).length < 15) return;      // let them walk first
+
+    // One already waiting from earlier today, put back where it was.
+    if (S.chest && S.chest.day === today()){
+      showChest(S.chest.lat, S.chest.lng, Math.round(dist(lat, lng, S.chest.lat, S.chest.lng)) + ' m');
+      return;
+    }
+
+    chestBusy = true;
+    const spot = await chestSpot(lat, lng);
+    chestBusy = false;
+    if (!spot){ chestTry = Date.now() + CHEST_RETRY; return; }
+
+    S.chest = { lat: spot[0], lng: spot[1], day: today() };
+    save();
+    const away = Math.round(dist(lat, lng, spot[0], spot[1]));
+    showChest(spot[0], spot[1], away + ' m');
+    toast(S.lang === 'en'
+      ? 'A chest, ' + away + ' m away. Go and get it.'
+      : '\u0388\u03bd\u03b1 \u03c3\u03b5\u03bd\u03c4\u03bf\u03cd\u03ba\u03b9, ' + away + ' m \u03bc\u03b1\u03ba\u03c1\u03b9\u03ac. \u03a0\u03ae\u03b3\u03b1\u03b9\u03bd\u03b5 \u03bd\u03b1 \u03c4\u03bf \u03c0\u03ac\u03c1\u03b5\u03b9\u03c2.');
+  }
+
+  function openChest(){
+    const here = S.last;
+    if (!here || !chest) return;
+    const d = dist(here[0], here[1], chest.lat, chest.lng);
+    if (d > REACH){
+      toast(S.lang === 'en'
+        ? 'Still ' + Math.round(d) + ' m away. Walk to it.'
+        : '\u0391\u03ba\u03cc\u03bc\u03b1 ' + Math.round(d) + ' m \u03bc\u03b1\u03ba\u03c1\u03b9\u03ac. \u03a0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b1 \u03c9\u03c2 \u03b5\u03ba\u03b5\u03af.');
+      return;
+    }
+    const xp = 150 + (S.lvl || 1) * 40;
+    const el = chest.marker.getElement();
+    if (el) el.querySelector('.mob').classList.add('hit');
+    const gone = chest.marker;
+    setTimeout(() => map.removeLayer(gone), 300);
+    chest = null;
+    S.chest = null;
+    S.chestDay = today();
+    S.chests = (S.chests || 0) + 1;
+    addXp(xp);
+    toast(S.lang === 'en'
+      ? 'The chest is open \u2014 +' + xp + ' XP'
+      : '\u03a4\u03bf \u03c3\u03b5\u03bd\u03c4\u03bf\u03cd\u03ba\u03b9 \u03ac\u03bd\u03bf\u03b9\u03be\u03b5 \u2014 +' + xp + ' XP');
+    updateStats(); save();
+  }
+
   function handleFix(lat, lng, acc, t, simulated){
     if (!map) return;
     setGps(acc <= 35 ? 'on' : 'weak', simulated ? 'Test mode' : (acc <= 35 ? 'GPS ±'+Math.round(acc)+'m' : 'Weak GPS ±'+Math.round(acc)+'m'));
     placeMe(lat, lng, acc);
     updateTemp(lat, lng);
-    spawnMonsters(); maybeFlee(); spawnBoss();
+    spawnMonsters(); maybeFlee(); spawnBoss(); wantChest(lat, lng);
     if (Date.now() > birdAt) sendBird();
     if (follow && !simulated) centreOn(L.latLng(lat, lng), null, false);
     if (acc > 40) return;
@@ -2053,6 +2221,10 @@ window.__startUncover = (user, sync) => {
     $('sumsheet').classList.toggle('open', o);
     $('scrim').classList.toggle('open', o);
   };
+  const openHello = o => {
+    $('hisheet').classList.toggle('open', o);
+    $('scrim').classList.toggle('open', o);
+  };
   const openMe = o => {
     $('mesheet').classList.toggle('open', o);
     $('scrim').classList.toggle('open', o);
@@ -2138,9 +2310,155 @@ window.__startUncover = (user, sync) => {
   // toggles the panels — except in test mode, where a tap is a step.
   map.on('click', () => setZen(!document.body.classList.contains('zen')));
 
+  // ---------- a thought on the way in ----------
+  /**
+   * Every time somebody opens the app they get one line to get them out of
+   * the door, and one thing that is actually true about walking. They rotate
+   * one onward per visit rather than at random, so nobody gets the same card
+   * twice running, and the whole set comes round eventually.
+   *
+   * The facts are the ordinary, well-established kind \u2014 no claims that need a
+   * footnote to survive. If one of these ever cannot be said plainly, it does
+   * not belong on this card.
+   */
+  const WISDOM = [
+    { m:["The hardest part is the door.",
+         "\u03a4\u03bf \u03b4\u03cd\u03c3\u03ba\u03bf\u03bb\u03bf \u03b5\u03af\u03bd\u03b1\u03b9 \u03b7 \u03c0\u03cc\u03c1\u03c4\u03b1."],
+      f:["Half an hour of brisk walking on most days is exactly what the World Health Organization asks of adults: 150 minutes a week.",
+         "\u039c\u03b9\u03c3\u03ae \u03ce\u03c1\u03b1 \u03b3\u03c1\u03ae\u03b3\u03bf\u03c1\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03c4\u03b9\u03c2 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03b5\u03c2 \u03bc\u03ad\u03c1\u03b5\u03c2 \u03b5\u03af\u03bd\u03b1\u03b9 \u03b1\u03ba\u03c1\u03b9\u03b2\u03ce\u03c2 \u03cc\u03c3\u03bf \u03b6\u03b7\u03c4\u03ac \u03bf \u03a0\u03b1\u03b3\u03ba\u03cc\u03c3\u03bc\u03b9\u03bf\u03c2 \u039f\u03c1\u03b3\u03b1\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2 \u03a5\u03b3\u03b5\u03af\u03b1\u03c2: 150 \u03bb\u03b5\u03c0\u03c4\u03ac \u03c4\u03b7\u03bd \u03b5\u03b2\u03b4\u03bf\u03bc\u03ac\u03b4\u03b1."] },
+
+    { m:["Slow is still forward.",
+         "\u0391\u03c1\u03b3\u03ac \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03ac\u03bb\u03b9 \u03bc\u03c0\u03c1\u03bf\u03c3\u03c4\u03ac."],
+      f:["Most of the benefit from steps has arrived by about 7,000 a day. The famous 10,000 was the name of a Japanese pedometer sold in the 1960s, not a finding.",
+         "\u03a4\u03bf \u03bc\u03b5\u03b3\u03b1\u03bb\u03cd\u03c4\u03b5\u03c1\u03bf \u03cc\u03c6\u03b5\u03bb\u03bf\u03c2 \u03b1\u03c0\u03cc \u03c4\u03b1 \u03b2\u03ae\u03bc\u03b1\u03c4\u03b1 \u03ad\u03c7\u03b5\u03b9 \u03ae\u03b4\u03b7 \u03ad\u03c1\u03b8\u03b5\u03b9 \u03c3\u03c4\u03b1 7.000 \u03c4\u03b7\u03bd \u03b7\u03bc\u03ad\u03c1\u03b1. \u03a4\u03b1 \u03c0\u03b5\u03c1\u03af\u03c6\u03b7\u03bc\u03b1 10.000 \u03ae\u03c4\u03b1\u03bd \u03c4\u03bf \u03cc\u03bd\u03bf\u03bc\u03b1 \u03b5\u03bd\u03cc\u03c2 \u03b9\u03b1\u03c0\u03c9\u03bd\u03b9\u03ba\u03bf\u03cd \u03b2\u03b7\u03bc\u03b1\u03c4\u03bf\u03bc\u03b5\u03c4\u03c1\u03b7\u03c4\u03ae \u03c4\u03bf\u03c5 1960, \u03cc\u03c7\u03b9 \u03b5\u03cd\u03c1\u03b7\u03bc\u03b1 \u03ad\u03c1\u03b5\u03c5\u03bd\u03b1\u03c2."] },
+
+    { m:["You have never once regretted a walk.",
+         "\u03a0\u03bf\u03c4\u03ad \u03b4\u03b5\u03bd \u03bc\u03b5\u03c4\u03ac\u03bd\u03b9\u03c9\u03c3\u03b5\u03c2 \u03b3\u03b9\u03b1 \u03ad\u03bd\u03b1 \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1."],
+      f:["A walk soon after a meal flattens the rise in blood sugar more than the same walk taken hours later.",
+         "\u0388\u03bd\u03b1 \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03bb\u03af\u03b3\u03bf \u03bc\u03b5\u03c4\u03ac \u03c4\u03bf \u03c6\u03b1\u03b3\u03b7\u03c4\u03cc \u03c1\u03af\u03c7\u03bd\u03b5\u03b9 \u03c4\u03b7\u03bd \u03b1\u03bd\u03ad\u03b2\u03b1\u03c3\u03bc\u03b1 \u03c4\u03bf\u03c5 \u03c3\u03b1\u03ba\u03c7\u03ac\u03c1\u03bf\u03c5 \u03c0\u03b9\u03bf \u03c0\u03bf\u03bb\u03cd \u03b1\u03c0\u03cc \u03c4\u03bf \u03af\u03b4\u03b9\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03ce\u03c1\u03b5\u03c2 \u03b1\u03c1\u03b3\u03cc\u03c4\u03b5\u03c1\u03b1."] },
+
+    { m:["Ten minutes counts. Start there.",
+         "\u0394\u03ad\u03ba\u03b1 \u03bb\u03b5\u03c0\u03c4\u03ac \u03bc\u03b5\u03c4\u03c1\u03ac\u03bd\u03b5. \u039e\u03b5\u03ba\u03af\u03bd\u03b1 \u03b1\u03c0\u03cc \u03b5\u03ba\u03b5\u03af."],
+      f:["Mood lifts after roughly ten minutes of walking \u2014 long before anything changes in your fitness.",
+         "\u0397 \u03b4\u03b9\u03ac\u03b8\u03b5\u03c3\u03b7 \u03b1\u03bd\u03b5\u03b2\u03b1\u03af\u03bd\u03b5\u03b9 \u03bc\u03b5\u03c4\u03ac \u03b1\u03c0\u03cc \u03c0\u03b5\u03c1\u03af\u03c0\u03bf\u03c5 \u03b4\u03ad\u03ba\u03b1 \u03bb\u03b5\u03c0\u03c4\u03ac \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u2014 \u03c0\u03bf\u03bb\u03cd \u03c0\u03c1\u03b9\u03bd \u03b1\u03bb\u03bb\u03ac\u03be\u03b5\u03b9 \u03bf\u03c4\u03b9\u03b4\u03ae\u03c0\u03bf\u03c4\u03b5 \u03c3\u03c4\u03b7 \u03c6\u03cd\u03c3\u03b9\u03ba\u03ae \u03c3\u03bf\u03c5 \u03ba\u03b1\u03c4\u03ac\u03c3\u03c4\u03b1\u03c3\u03b7."] },
+
+    { m:["Your legs are the oldest medicine you own.",
+         "\u03a4\u03b1 \u03c0\u03cc\u03b4\u03b9\u03b1 \u03c3\u03bf\u03c5 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c4\u03bf \u03c0\u03b1\u03bb\u03b9\u03cc\u03c4\u03b5\u03c1\u03bf \u03c6\u03ac\u03c1\u03bc\u03b1\u03ba\u03bf \u03c0\u03bf\u03c5 \u03ad\u03c7\u03b5\u03b9\u03c2."],
+      f:["Walking carries your own weight through hip and spine, which is what keeps bone strong as you age. Sitting does not.",
+         "\u03a4\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03c0\u03b5\u03c1\u03bd\u03ac \u03c4\u03bf \u03b2\u03ac\u03c1\u03bf\u03c2 \u03c3\u03bf\u03c5 \u03b1\u03c0\u03cc \u03bb\u03b5\u03ba\u03ac\u03bd\u03b7 \u03ba\u03b1\u03b9 \u03c3\u03c0\u03bf\u03bd\u03b4\u03c5\u03bb\u03b9\u03ba\u03ae \u03c3\u03c4\u03ae\u03bb\u03b7, \u03ba\u03b1\u03b9 \u03b1\u03c5\u03c4\u03cc \u03ba\u03c1\u03b1\u03c4\u03ac \u03c4\u03b1 \u03bf\u03c3\u03c4\u03ac \u03b3\u03b5\u03c1\u03ac \u03bc\u03b5 \u03c4\u03b1 \u03c7\u03c1\u03cc\u03bd\u03b9\u03b1. \u03a4\u03bf \u03ba\u03ac\u03b8\u03b9\u03c3\u03bc\u03b1 \u03cc\u03c7\u03b9."] },
+
+    { m:["Go out even when you do not feel like it. Especially then.",
+         "\u0392\u03b3\u03b5\u03c2 \u03ad\u03be\u03c9 \u03b1\u03ba\u03cc\u03bc\u03b1 \u03ba\u03b1\u03b9 \u03cc\u03c4\u03b1\u03bd \u03b4\u03b5\u03bd \u03ad\u03c7\u03b5\u03b9\u03c2 \u03cc\u03c1\u03b5\u03be\u03b7. \u039a\u03c5\u03c1\u03af\u03c9\u03c2 \u03c4\u03cc\u03c4\u03b5."],
+      f:["Daylight early in the day sets your body clock, and a body clock that is set falls asleep more easily that night.",
+         "\u03a4\u03bf \u03c6\u03c9\u03c2 \u03c4\u03b7\u03c2 \u03bc\u03ad\u03c1\u03b1\u03c2 \u03bd\u03c9\u03c1\u03af\u03c2 \u03c1\u03c5\u03b8\u03bc\u03af\u03b6\u03b5\u03b9 \u03c4\u03bf \u03b2\u03b9\u03bf\u03bb\u03bf\u03b3\u03b9\u03ba\u03cc \u03c3\u03bf\u03c5 \u03c1\u03bf\u03bb\u03cc\u03b9, \u03ba\u03b1\u03b9 \u03ad\u03bd\u03b1 \u03c1\u03c5\u03b8\u03bc\u03b9\u03c3\u03bc\u03ad\u03bd\u03bf \u03c1\u03bf\u03bb\u03cc\u03b9 \u03ba\u03bf\u03b9\u03bc\u03ac\u03c4\u03b1\u03b9 \u03c0\u03b9\u03bf \u03b5\u03cd\u03ba\u03bf\u03bb\u03b1 \u03c4\u03bf \u03b2\u03c1\u03ac\u03b4\u03c5."] },
+
+    { m:["The street you never turn down is the one worth turning down.",
+         "\u039f \u03b4\u03c1\u03cc\u03bc\u03bf\u03c2 \u03c0\u03bf\u03c5 \u03b4\u03b5\u03bd \u03c3\u03c4\u03c1\u03af\u03b2\u03b5\u03b9\u03c2 \u03c0\u03bf\u03c4\u03ad \u03b5\u03af\u03bd\u03b1\u03b9 \u03b1\u03c5\u03c4\u03cc\u03c2 \u03c0\u03bf\u03c5 \u03b1\u03be\u03af\u03b6\u03b5\u03b9."],
+      f:["People come up with more new ideas while walking than while sitting, and the effect lasts a while after they sit back down.",
+         "\u039f\u03b9 \u03ac\u03bd\u03b8\u03c1\u03c9\u03c0\u03bf\u03b9 \u03b2\u03b3\u03ac\u03b6\u03bf\u03c5\u03bd \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03b5\u03c2 \u03bd\u03ad\u03b5\u03c2 \u03b9\u03b4\u03ad\u03b5\u03c2 \u03c0\u03b5\u03c1\u03c0\u03b1\u03c4\u03ce\u03bd\u03c4\u03b1\u03c2 \u03c0\u03b1\u03c1\u03ac \u03ba\u03b1\u03b8\u03b9\u03c3\u03c4\u03ce\u03c2, \u03ba\u03b1\u03b9 \u03c4\u03bf \u03b1\u03c0\u03bf\u03c4\u03ad\u03bb\u03b5\u03c3\u03bc\u03b1 \u03ba\u03c1\u03b1\u03c4\u03ac \u03ba\u03b1\u03b9 \u03bb\u03af\u03b3\u03bf \u03b1\u03c6\u03bf\u03cd \u03ba\u03b1\u03b8\u03af\u03c3\u03bf\u03c5\u03bd \u03be\u03b1\u03bd\u03ac."] },
+
+    { m:["Pace yourself by your breath, not your watch.",
+         "\u039a\u03c1\u03ac\u03c4\u03b1 \u03c1\u03c5\u03b8\u03bc\u03cc \u03bc\u03b5 \u03c4\u03b7\u03bd \u03b1\u03bd\u03ac\u03c3\u03b1 \u03c3\u03bf\u03c5, \u03cc\u03c7\u03b9 \u03bc\u03b5 \u03c4\u03bf \u03c1\u03bf\u03bb\u03cc\u03b9."],
+      f:["Brisk has a simple test: you can still talk, but you could not comfortably sing.",
+         "\u03a4\u03bf \u00ab\u03b3\u03c1\u03ae\u03b3\u03bf\u03c1\u03bf\u00bb \u03ad\u03c7\u03b5\u03b9 \u03b1\u03c0\u03bb\u03cc \u03c4\u03b5\u03c3\u03c4: \u03bc\u03c0\u03bf\u03c1\u03b5\u03af\u03c2 \u03b1\u03ba\u03cc\u03bc\u03b1 \u03bd\u03b1 \u03bc\u03b9\u03bb\u03ae\u03c3\u03b5\u03b9\u03c2, \u03b1\u03bb\u03bb\u03ac \u03b4\u03b5\u03bd \u03b8\u03b1 \u03bc\u03c0\u03bf\u03c1\u03bf\u03cd\u03c3\u03b5\u03c2 \u03ac\u03bd\u03b5\u03c4\u03b1 \u03bd\u03b1 \u03c4\u03c1\u03b1\u03b3\u03bf\u03c5\u03b4\u03ae\u03c3\u03b5\u03b9\u03c2."] },
+
+    { m:["Rain is just weather.",
+         "\u0397 \u03b2\u03c1\u03bf\u03c7\u03ae \u03b5\u03af\u03bd\u03b1\u03b9 \u03b1\u03c0\u03bb\u03ce\u03c2 \u03ba\u03b1\u03b9\u03c1\u03cc\u03c2."],
+      f:["About 100 steps a minute is moderate effort for most adults. That is the pace the guidelines mean by brisk.",
+         "\u03a0\u03b5\u03c1\u03af\u03c0\u03bf\u03c5 100 \u03b2\u03ae\u03bc\u03b1\u03c4\u03b1 \u03c4\u03bf \u03bb\u03b5\u03c0\u03c4\u03cc \u03b5\u03af\u03bd\u03b1\u03b9 \u03bc\u03ad\u03c4\u03c1\u03b9\u03b1 \u03ad\u03bd\u03c4\u03b1\u03c3\u03b7 \u03b3\u03b9\u03b1 \u03c4\u03bf\u03c5\u03c2 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03bf\u03c5\u03c2. \u0391\u03c5\u03c4\u03cc\u03bd \u03c4\u03bf\u03bd \u03c1\u03c5\u03b8\u03bc\u03cc \u03b5\u03bd\u03bd\u03bf\u03bf\u03cd\u03bd \u03bf\u03b9 \u03bf\u03b4\u03b7\u03b3\u03af\u03b5\u03c2."] },
+
+    { m:["A hill is a gift.",
+         "\u039c\u03b9\u03b1 \u03b1\u03bd\u03b7\u03c6\u03cc\u03c1\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03b4\u03ce\u03c1\u03bf."],
+      f:["Going uphill raises the effort faster than going faster on the flat, and it is far kinder to the knees than running.",
+         "\u0397 \u03b1\u03bd\u03b7\u03c6\u03cc\u03c1\u03b1 \u03b1\u03bd\u03b5\u03b2\u03ac\u03b6\u03b5\u03b9 \u03c4\u03b7\u03bd \u03ad\u03bd\u03c4\u03b1\u03c3\u03b7 \u03c0\u03b9\u03bf \u03b3\u03c1\u03ae\u03b3\u03bf\u03c1\u03b1 \u03b1\u03c0\u03cc \u03c4\u03bf \u03bd\u03b1 \u03c0\u03b1\u03c2 \u03c0\u03b9\u03bf \u03b3\u03c1\u03ae\u03b3\u03bf\u03c1\u03b1 \u03c3\u03c4\u03bf \u03af\u03c3\u03b9\u03bf\u03bc\u03b1, \u03ba\u03b1\u03b9 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03bf\u03bb\u03cd \u03c0\u03b9\u03bf \u03ae\u03c0\u03b9\u03b1 \u03c3\u03c4\u03b1 \u03b3\u03cc\u03bd\u03b1\u03c4\u03b1 \u03b1\u03c0\u03cc \u03c4\u03bf \u03c4\u03c1\u03ad\u03be\u03b9\u03bc\u03bf."] },
+
+    { m:["Short and often beats long and never.",
+         "\u039b\u03af\u03b3\u03bf \u03ba\u03b1\u03b9 \u03c3\u03c5\u03c7\u03bd\u03ac \u03ba\u03b5\u03c1\u03b4\u03af\u03b6\u03b5\u03b9 \u03c4\u03bf \u03c0\u03bf\u03bb\u03cd \u03ba\u03b1\u03b9 \u03c0\u03bf\u03c4\u03ad."],
+      f:["Breaking up a long sit with a few minutes of walking each hour measurably improves blood sugar and circulation.",
+         "\u0391\u03bd \u03c3\u03c0\u03ac\u03c3\u03b5\u03b9\u03c2 \u03c4\u03b9\u03c2 \u03ce\u03c1\u03b5\u03c2 \u03ba\u03b1\u03b8\u03b9\u03c3\u03c4\u03cc\u03c2 \u03bc\u03b5 \u03bb\u03af\u03b3\u03b1 \u03bb\u03b5\u03c0\u03c4\u03ac \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03ba\u03ac\u03b8\u03b5 \u03ce\u03c1\u03b1, \u03b2\u03b5\u03bb\u03c4\u03b9\u03ce\u03bd\u03bf\u03bd\u03c4\u03b1\u03b9 \u03b1\u03b9\u03c3\u03b8\u03b7\u03c4\u03ac \u03c4\u03bf \u03c3\u03ac\u03ba\u03c7\u03b1\u03c1\u03bf \u03ba\u03b1\u03b9 \u03b7 \u03ba\u03c5\u03ba\u03bb\u03bf\u03c6\u03bf\u03c1\u03af\u03b1."] },
+
+    { m:["Let your arms swing.",
+         "\u0386\u03c3\u03b5 \u03c4\u03b1 \u03c7\u03ad\u03c1\u03b9\u03b1 \u03c3\u03bf\u03c5 \u03bd\u03b1 \u03ba\u03bf\u03c5\u03bd\u03b9\u03bf\u03cd\u03bd\u03c4\u03b1\u03b9."],
+      f:["Swinging your arms makes walking measurably cheaper in energy. Holding them still costs you more, not less.",
+         "\u03a4\u03bf \u03ba\u03bf\u03cd\u03bd\u03b7\u03bc\u03b1 \u03c4\u03c9\u03bd \u03c7\u03b5\u03c1\u03b9\u03ce\u03bd \u03ba\u03ac\u03bd\u03b5\u03b9 \u03c4\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03bc\u03b5\u03c4\u03c1\u03ae\u03c3\u03b9\u03bc\u03b1 \u03c0\u03b9\u03bf \u03bf\u03b9\u03ba\u03bf\u03bd\u03bf\u03bc\u03b9\u03ba\u03cc. \u0391\u03bd \u03c4\u03b1 \u03ba\u03c1\u03b1\u03c4\u03ac\u03c2 \u03b1\u03ba\u03af\u03bd\u03b7\u03c4\u03b1, \u03c3\u03bf\u03c5 \u03ba\u03bf\u03c3\u03c4\u03af\u03b6\u03b5\u03b9 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03bf."] },
+
+    { m:["Walk where there are trees, if you can.",
+         "\u03a0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b1 \u03b5\u03ba\u03b5\u03af \u03c0\u03bf\u03c5 \u03ad\u03c7\u03b5\u03b9 \u03b4\u03ad\u03bd\u03c4\u03c1\u03b1, \u03b1\u03bd \u03bc\u03c0\u03bf\u03c1\u03b5\u03af\u03c2."],
+      f:["A walk through green space quiets the loop of repeated worry more than the same walk beside traffic.",
+         "\u0388\u03bd\u03b1 \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03c3\u03c4\u03bf \u03c0\u03c1\u03ac\u03c3\u03b9\u03bd\u03bf \u03b7\u03c1\u03b5\u03bc\u03b5\u03af \u03c4\u03b7 \u03c3\u03ba\u03ad\u03c8\u03b7 \u03c0\u03bf\u03c5 \u03b3\u03c5\u03c1\u03af\u03b6\u03b5\u03b9 \u03be\u03b1\u03bd\u03ac \u03ba\u03b1\u03b9 \u03be\u03b1\u03bd\u03ac \u03c0\u03b9\u03bf \u03c0\u03bf\u03bb\u03cd \u03b1\u03c0\u03cc \u03c4\u03bf \u03af\u03b4\u03b9\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03b4\u03af\u03c0\u03bb\u03b1 \u03c3\u03c4\u03b1 \u03b1\u03c5\u03c4\u03bf\u03ba\u03af\u03bd\u03b7\u03c4\u03b1."] },
+
+    { m:["Consistency, not intensity.",
+         "\u03a3\u03c5\u03bd\u03ad\u03c0\u03b5\u03b9\u03b1, \u03cc\u03c7\u03b9 \u03ad\u03bd\u03c4\u03b1\u03c3\u03b7."],
+      f:["Walking regularly lowers the risk of heart disease, stroke and type 2 diabetes. Not one heroic walk \u2014 the regular ones.",
+         "\u03a4\u03bf \u03c4\u03b1\u03ba\u03c4\u03b9\u03ba\u03cc \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03c1\u03af\u03c7\u03bd\u03b5\u03b9 \u03c4\u03bf\u03bd \u03ba\u03af\u03bd\u03b4\u03c5\u03bd\u03bf \u03ba\u03b1\u03c1\u03b4\u03b9\u03ac\u03c2, \u03b5\u03b3\u03ba\u03b5\u03c6\u03b1\u03bb\u03b9\u03ba\u03bf\u03cd \u03ba\u03b1\u03b9 \u03b4\u03b9\u03b1\u03b2\u03ae\u03c4\u03b7 \u03c4\u03cd\u03c0\u03bf\u03c5 2. \u038c\u03c7\u03b9 \u03ad\u03bd\u03b1 \u03b7\u03c1\u03c9\u03b9\u03ba\u03cc \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u2014 \u03c4\u03b1 \u03c4\u03b1\u03ba\u03c4\u03b9\u03ba\u03ac."] },
+
+    { m:["Your future self is watching.",
+         "\u039f \u03bc\u03b5\u03bb\u03bb\u03bf\u03bd\u03c4\u03b9\u03ba\u03cc\u03c2 \u03b5\u03b1\u03c5\u03c4\u03cc\u03c2 \u03c3\u03bf\u03c5 \u03c3\u03b5 \u03ba\u03bf\u03b9\u03c4\u03ac\u03b6\u03b5\u03b9."],
+      f:["How fast a person walks in midlife is one of the better simple signs of how well they are ageing.",
+         "\u03a4\u03bf \u03c0\u03cc\u03c3\u03bf \u03b3\u03c1\u03ae\u03b3\u03bf\u03c1\u03b1 \u03c0\u03b5\u03c1\u03c0\u03b1\u03c4\u03ac \u03ba\u03ac\u03c0\u03bf\u03b9\u03bf\u03c2 \u03c3\u03c4\u03b7 \u03bc\u03ad\u03c3\u03b7 \u03b7\u03bb\u03b9\u03ba\u03af\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03ad\u03bd\u03b1 \u03b1\u03c0\u03cc \u03c4\u03b1 \u03ba\u03b1\u03bb\u03cd\u03c4\u03b5\u03c1\u03b1 \u03b1\u03c0\u03bb\u03ac \u03c3\u03b7\u03bc\u03ac\u03b4\u03b9\u03b1 \u03c4\u03bf\u03c5 \u03c0\u03ce\u03c2 \u03b3\u03b5\u03c1\u03bd\u03ac\u03b5\u03b9."] },
+
+    { m:["The map does not fill itself.",
+         "\u039f \u03c7\u03ac\u03c1\u03c4\u03b7\u03c2 \u03b4\u03b5\u03bd \u03b3\u03b5\u03bc\u03af\u03b6\u03b5\u03b9 \u03bc\u03cc\u03bd\u03bf\u03c2 \u03c4\u03bf\u03c5."],
+      f:["Walking burns roughly three times the energy of sitting still. A steady run is about three times that again.",
+         "\u03a4\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03ba\u03b1\u03af\u03b5\u03b9 \u03c0\u03b5\u03c1\u03af\u03c0\u03bf\u03c5 \u03c4\u03c1\u03b5\u03b9\u03c2 \u03c6\u03bf\u03c1\u03ad\u03c2 \u03c4\u03b7\u03bd \u03b5\u03bd\u03ad\u03c1\u03b3\u03b5\u03b9\u03b1 \u03c4\u03bf\u03c5 \u03ba\u03b1\u03b8\u03af\u03c3\u03bc\u03b1\u03c4\u03bf\u03c2. \u0388\u03bd\u03b1 \u03c3\u03c4\u03b1\u03b8\u03b5\u03c1\u03cc \u03c4\u03c1\u03ad\u03be\u03b9\u03bc\u03bf \u03c0\u03b5\u03c1\u03af\u03c0\u03bf\u03c5 \u03c4\u03c1\u03b5\u03b9\u03c2 \u03c6\u03bf\u03c1\u03ad\u03c2 \u03b1\u03ba\u03cc\u03bc\u03b1."] },
+
+    { m:["There is no such thing as a wasted walk.",
+         "\u0394\u03b5\u03bd \u03c5\u03c0\u03ac\u03c1\u03c7\u03b5\u03b9 \u03c7\u03b1\u03bc\u03ad\u03bd\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1."],
+      f:["A gentle walk after eating helps the stomach empty and settles bloating. Lying down does the opposite.",
+         "\u0388\u03bd\u03b1 \u03ae\u03c1\u03b5\u03bc\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03bc\u03b5\u03c4\u03ac \u03c4\u03bf \u03c6\u03b1\u03b3\u03b7\u03c4\u03cc \u03b2\u03bf\u03b7\u03b8\u03ac \u03c4\u03bf \u03c3\u03c4\u03bf\u03bc\u03ac\u03c7\u03b9 \u03bd\u03b1 \u03b1\u03b4\u03b5\u03b9\u03ac\u03c3\u03b5\u03b9 \u03ba\u03b1\u03b9 \u03ba\u03cc\u03b2\u03b5\u03b9 \u03c4\u03bf \u03c6\u03bf\u03cd\u03c3\u03ba\u03c9\u03bc\u03b1. \u03a4\u03bf \u03be\u03ac\u03c0\u03bb\u03c9\u03bc\u03b1 \u03ba\u03ac\u03bd\u03b5\u03b9 \u03c4\u03bf \u03b1\u03bd\u03c4\u03af\u03b8\u03b5\u03c4\u03bf."] },
+
+    { m:["Boredom is the start of a new route.",
+         "\u0397 \u03b2\u03b1\u03c1\u03b5\u03bc\u03ac\u03c1\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03b7 \u03b1\u03c1\u03c7\u03ae \u03bc\u03b9\u03b1\u03c2 \u03ba\u03b1\u03b9\u03bd\u03bf\u03cd\u03c1\u03b3\u03b9\u03b1\u03c2 \u03b4\u03b9\u03b1\u03b4\u03c1\u03bf\u03bc\u03ae\u03c2."],
+      f:["Finding your way through unfamiliar streets works the part of the brain that handles memory and place. A known route asks almost nothing of it.",
+         "\u03a4\u03bf \u03bd\u03b1 \u03b2\u03c1\u03b5\u03b9\u03c2 \u03c4\u03bf\u03bd \u03b4\u03c1\u03cc\u03bc\u03bf \u03c3\u03bf\u03c5 \u03c3\u03b5 \u03ac\u03b3\u03bd\u03c9\u03c3\u03c4\u03b1 \u03c3\u03bf\u03ba\u03ac\u03ba\u03b9\u03b1 \u03b4\u03bf\u03c5\u03bb\u03b5\u03cd\u03b5\u03b9 \u03c4\u03bf \u03ba\u03bf\u03bc\u03bc\u03ac\u03c4\u03b9 \u03c4\u03bf\u03c5 \u03b5\u03b3\u03ba\u03b5\u03c6\u03ac\u03bb\u03bf\u03c5 \u03c0\u03bf\u03c5 \u03ba\u03c1\u03b1\u03c4\u03ac \u03bc\u03bd\u03ae\u03bc\u03b7 \u03ba\u03b1\u03b9 \u03c7\u03ce\u03c1\u03bf. \u039c\u03b9\u03b1 \u03b3\u03bd\u03c9\u03c3\u03c4\u03ae \u03b4\u03b9\u03b1\u03b4\u03c1\u03bf\u03bc\u03ae \u03b4\u03b5\u03bd \u03c4\u03bf\u03c5 \u03b6\u03b7\u03c4\u03ac \u03c3\u03c7\u03b5\u03b4\u03cc\u03bd \u03c4\u03af\u03c0\u03bf\u03c4\u03b1."] },
+
+    { m:["Shoes on. Decide afterwards.",
+         "\u0392\u03ac\u03bb\u03b5 \u03c4\u03b1 \u03c0\u03b1\u03c0\u03bf\u03cd\u03c4\u03c3\u03b9\u03b1. \u0391\u03c0\u03bf\u03c6\u03ac\u03c3\u03b9\u03c3\u03b5 \u03bc\u03b5\u03c4\u03ac."],
+      f:["Motivation usually follows action rather than leading it. The decision to go is the hard part; the going rarely is.",
+         "\u0397 \u03b4\u03b9\u03ac\u03b8\u03b5\u03c3\u03b7 \u03c3\u03c5\u03bd\u03ae\u03b8\u03c9\u03c2 \u03ad\u03c1\u03c7\u03b5\u03c4\u03b1\u03b9 \u03bc\u03b5\u03c4\u03ac \u03c4\u03b7\u03bd \u03c0\u03c1\u03ac\u03be\u03b7, \u03cc\u03c7\u03b9 \u03c0\u03c1\u03b9\u03bd. \u03a4\u03bf \u03b4\u03cd\u03c3\u03ba\u03bf\u03bb\u03bf \u03b5\u03af\u03bd\u03b1\u03b9 \u03b7 \u03b1\u03c0\u03cc\u03c6\u03b1\u03c3\u03b7 \u03bd\u03b1 \u03b2\u03b3\u03b5\u03b9\u03c2 \u2014 \u03c3\u03c0\u03ac\u03bd\u03b9\u03b1 \u03c4\u03bf \u03af\u03b4\u03b9\u03bf \u03c4\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1."] },
+
+    { m:["Leave the headphones at home once a week.",
+         "\u0386\u03c6\u03b7\u03c3\u03b5 \u03c4\u03b1 \u03b1\u03ba\u03bf\u03c5\u03c3\u03c4\u03b9\u03ba\u03ac \u03c3\u03c0\u03af\u03c4\u03b9 \u03bc\u03b9\u03b1 \u03c6\u03bf\u03c1\u03ac \u03c4\u03b7\u03bd \u03b5\u03b2\u03b4\u03bf\u03bc\u03ac\u03b4\u03b1."],
+      f:["Walking without anything in your ears lets attention wander, and a wandering mind is where most people solve the thing they were stuck on.",
+         "\u03a4\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03c7\u03c9\u03c1\u03af\u03c2 \u03ae\u03c7\u03bf \u03c3\u03c4\u03b1 \u03b1\u03c5\u03c4\u03b9\u03ac \u03b1\u03c6\u03ae\u03bd\u03b5\u03b9 \u03c4\u03bf \u03bc\u03c5\u03b1\u03bb\u03cc \u03bd\u03b1 \u03c0\u03bb\u03b1\u03bd\u03b7\u03b8\u03b5\u03af, \u03ba\u03b1\u03b9 \u03b5\u03ba\u03b5\u03af \u03bb\u03cd\u03bd\u03bf\u03bd\u03c4\u03b1\u03b9 \u03c4\u03b1 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03b1 \u03c0\u03bf\u03c5 \u03ad\u03c7\u03bf\u03c5\u03bd \u03ba\u03bf\u03bb\u03bb\u03ae\u03c3\u03b5\u03b9."] },
+
+    { m:["Every step is a vote for your knees.",
+         "\u039a\u03ac\u03b8\u03b5 \u03b2\u03ae\u03bc\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03bc\u03b9\u03b1 \u03c8\u03ae\u03c6\u03bf\u03c2 \u03b3\u03b9\u03b1 \u03c4\u03b1 \u03b3\u03cc\u03bd\u03b1\u03c4\u03ac \u03c3\u03bf\u03c5."],
+      f:["Walking strengthens the muscle around the knee. For mild arthritis it is advised, not avoided.",
+         "\u03a4\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03b4\u03c5\u03bd\u03b1\u03bc\u03ce\u03bd\u03b5\u03b9 \u03c4\u03bf\u03c5\u03c2 \u03bc\u03c5\u03c2 \u03b3\u03cd\u03c1\u03c9 \u03b1\u03c0\u03cc \u03c4\u03bf \u03b3\u03cc\u03bd\u03b1\u03c4\u03bf. \u03a3\u03c4\u03b7\u03bd \u03ae\u03c0\u03b9\u03b1 \u03b1\u03c1\u03b8\u03c1\u03af\u03c4\u03b9\u03b4\u03b1 \u03c3\u03c5\u03c3\u03c4\u03ae\u03bd\u03b5\u03c4\u03b1\u03b9, \u03b4\u03b5\u03bd \u03b1\u03c0\u03bf\u03c6\u03b5\u03cd\u03b3\u03b5\u03c4\u03b1\u03b9."] },
+
+    { m:["You can walk off most moods.",
+         "\u03a4\u03b9\u03c2 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03b5\u03c2 \u03b4\u03b9\u03b1\u03b8\u03ad\u03c3\u03b5\u03b9\u03c2 \u03c4\u03b9\u03c2 \u03c0\u03b5\u03c1\u03c0\u03b1\u03c4\u03ac\u03c2 \u03ba\u03b1\u03b9 \u03c6\u03b5\u03cd\u03b3\u03bf\u03c5\u03bd."],
+      f:["Exercise, walking very much included, is recommended as a treatment for mild depression \u2014 not merely as something that helps alongside one.",
+         "\u0397 \u03ac\u03c3\u03ba\u03b7\u03c3\u03b7, \u03bc\u03b5 \u03c4\u03bf \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03bc\u03ad\u03c3\u03b1, \u03c3\u03c5\u03c3\u03c4\u03ae\u03bd\u03b5\u03c4\u03b1\u03b9 \u03c9\u03c2 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1 \u03b3\u03b9\u03b1 \u03c4\u03b7\u03bd \u03ae\u03c0\u03b9\u03b1 \u03ba\u03b1\u03c4\u03ac\u03b8\u03bb\u03b9\u03c8\u03b7 \u2014 \u03cc\u03c7\u03b9 \u03b1\u03c0\u03bb\u03ce\u03c2 \u03c9\u03c2 \u03ba\u03ac\u03c4\u03b9 \u03c0\u03bf\u03c5 \u03b2\u03bf\u03b7\u03b8\u03ac\u03b5\u03b9 \u03b4\u03af\u03c0\u03bb\u03b1 \u03c3\u03b5 \u03bc\u03af\u03b1."] },
+
+    { m:["Cold is a reason, not an excuse.",
+         "\u03a4\u03bf \u03ba\u03c1\u03cd\u03bf \u03b5\u03af\u03bd\u03b1\u03b9 \u03bb\u03cc\u03b3\u03bf\u03c2, \u03cc\u03c7\u03b9 \u03b4\u03b9\u03ba\u03b1\u03b9\u03bf\u03bb\u03bf\u03b3\u03af\u03b1."],
+      f:["In cold air your body spends a little extra energy keeping you warm while you walk. The walk costs you more and gives you more.",
+         "\u03a3\u03c4\u03bf \u03ba\u03c1\u03cd\u03bf \u03c4\u03bf \u03c3\u03ce\u03bc\u03b1 \u03be\u03bf\u03b4\u03b5\u03cd\u03b5\u03b9 \u03bb\u03af\u03b3\u03b7 \u03c0\u03b1\u03c1\u03b1\u03c0\u03ac\u03bd\u03c9 \u03b5\u03bd\u03ad\u03c1\u03b3\u03b5\u03b9\u03b1 \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03c3\u03b5 \u03ba\u03c1\u03b1\u03c4\u03ae\u03c3\u03b5\u03b9 \u03b6\u03b5\u03c3\u03c4\u03cc \u03b5\u03bd\u03ce \u03c0\u03b5\u03c1\u03c0\u03b1\u03c4\u03ac\u03c2. \u03a3\u03bf\u03c5 \u03ba\u03bf\u03c3\u03c4\u03af\u03b6\u03b5\u03b9 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03bf \u03ba\u03b1\u03b9 \u03c3\u03bf\u03c5 \u03b4\u03af\u03bd\u03b5\u03b9 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03b1."] },
+
+    { m:["Finish at the far corner.",
+         "\u03a4\u03b5\u03bb\u03b5\u03af\u03c9\u03c3\u03b5 \u03c3\u03c4\u03b7\u03bd \u03ac\u03ba\u03c1\u03b7 \u03c4\u03b7\u03c2 \u03b3\u03b5\u03b9\u03c4\u03bf\u03bd\u03b9\u03ac\u03c2."],
+      f:["A walk after dinner instead of straight to the sofa is one of the smallest changes with a measurable effect on blood sugar.",
+         "\u0388\u03bd\u03b1 \u03c0\u03b5\u03c1\u03c0\u03ac\u03c4\u03b7\u03bc\u03b1 \u03bc\u03b5\u03c4\u03ac \u03c4\u03bf \u03b2\u03c1\u03b1\u03b4\u03b9\u03bd\u03cc, \u03b1\u03bd\u03c4\u03af \u03b3\u03b9\u03b1 \u03ba\u03b1\u03c4\u03b5\u03c5\u03b8\u03b5\u03af\u03b1\u03bd \u03c3\u03c4\u03bf\u03bd \u03ba\u03b1\u03bd\u03b1\u03c0\u03ad, \u03b5\u03af\u03bd\u03b1\u03b9 \u03bc\u03b9\u03b1 \u03b1\u03c0\u03cc \u03c4\u03b9\u03c2 \u03bc\u03b9\u03ba\u03c1\u03cc\u03c4\u03b5\u03c1\u03b5\u03c2 \u03b1\u03bb\u03bb\u03b1\u03b3\u03ad\u03c2 \u03bc\u03b5 \u03bc\u03b5\u03c4\u03c1\u03ae\u03c3\u03b9\u03bc\u03b7 \u03b5\u03c0\u03af\u03b4\u03c1\u03b1\u03c3\u03b7 \u03c3\u03c4\u03bf \u03c3\u03ac\u03ba\u03c7\u03b1\u03c1\u03bf."] },
+  ];
+
+  function showHello(){
+    S.wis = ((S.wis || 0) + 1) % WISDOM.length;
+    const w = WISDOM[S.wis], i = S.lang === 'en' ? 0 : 1;
+    $('hiLine').textContent = w.m[i];
+    $('hiFact').textContent = w.f[i];
+    openHello(true);
+    save();
+  }
+
   $('whoEmail').textContent = user.email || '';
   $('who').hidden = !user.email;
   $('signout').onclick = () => sync.signOut();
+
+  // The splash is still fading at this point; let it finish first.
+  $('hiClose').onclick = () => openHello(false);
+  setTimeout(showHello, 1500);
 };
 </script>
 <script type="module">
