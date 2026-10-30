@@ -2174,8 +2174,8 @@ const fail = (msg) => {
 
 const EN = {
   tagline: "The world starts covered. Walk to uncover it.",
-  msgSync: "Sign in to walk. New accounts need an invite code, and your map follows you from phone to phone.",
-  msgLocal: "Sign in to walk. New accounts need an invite code. Your map stays on this phone.",
+  msgSync: "Sign in to walk, or make an account \u2014 your map then follows you from phone to phone.",
+  msgLocal: "Sign in to walk, or make an account. Your map stays on this phone.",
   signin: "Sign in", signup: "Create account", signing: "Signing in…", creating: "Creating…",
   email: "Email", pass: "Password", passNew: "Password — 6 characters or more",
   code: "Invite code", forgot: "Forgot your password?", other: "Ελληνικά",
@@ -2194,8 +2194,8 @@ const EN = {
 
 const EL = {
   tagline: "Ο κόσμος ξεκινά καλυμμένος. Περπάτα για να τον αποκαλύψεις.",
-  msgSync: "Συνδέσου για να περπατήσεις. Οι νέοι λογαριασμοί χρειάζονται κωδικό πρόσκλησης, και ο χάρτης σου σε ακολουθεί από τηλέφωνο σε τηλέφωνο.",
-  msgLocal: "Συνδέσου για να περπατήσεις. Οι νέοι λογαριασμοί χρειάζονται κωδικό πρόσκλησης. Ο χάρτης σου μένει σε αυτό το τηλέφωνο.",
+  msgSync: "Συνδέσου για να περπατήσεις, ή φτιάξε λογαριασμό — ο χάρτης σου σε ακολουθεί από τηλέφωνο σε τηλέφωνο.",
+  msgLocal: "Συνδέσου για να περπατήσεις, ή φτιάξε λογαριασμό. Ο χάρτης σου μένει σε αυτό το τηλέφωνο.",
   signin: "Σύνδεση", signup: "Δημιουργία λογαριασμού",
   signing: "Σύνδεση…", creating: "Δημιουργία…",
   email: "Email", pass: "Κωδικός", passNew: "Κωδικός — 6 χαρακτήρες ή παραπάνω",
@@ -2245,7 +2245,13 @@ $("gLang").addEventListener("click", () => {
 });
 
 /**
- * Sign-up is by invitation.
+ * Sign-up is open. Flip this to true and it is by invitation again: the code
+ * field comes back and nobody gets an account without one.
+ */
+const INVITE_ONLY = false;
+
+/**
+ * The codes, for when it is.
  *
  * Only the SHA-256 of each code is in here, so reading the page does not
  * hand anyone a working code. It is a door, not a vault: pair it with the
@@ -2277,8 +2283,8 @@ $("gTabs").addEventListener("click", (e) => {
   for (const b of $("gTabs").children) b.classList.toggle("on", b === btn);
   $("gPass").autocomplete = mode === "in" ? "current-password" : "new-password";
   $("gReset").hidden = mode !== "in" && !local;
-  $("gCode").hidden = mode === "in";
-  $("gCode").required = mode !== "in";
+  $("gCode").hidden = mode === "in" || !INVITE_ONLY;
+  $("gCode").required = mode !== "in" && INVITE_ONLY;
   $("gErr").textContent = "";
   $("gErr").style.color = "";
   paintGate();
@@ -2356,7 +2362,7 @@ function localAccounts(){
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail(t("badEmail"));
     if (pass.length < 6) return fail(t("weak"));
     if (users[email]) return fail(t("taken"));
-    if (!(await goodCode($("gCode").value))) return fail(t("badCode"));
+    if (INVITE_ONLY && !(await goodCode($("gCode").value))) return fail(t("badCode"));
 
     const first = Object.keys(users).length === 0;
     const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
@@ -2447,8 +2453,8 @@ if (config) {
     try {
       if (mode === "in") await signInWithEmailAndPassword(auth, email, pass);
       else {
-        if (!(await goodCode($("gCode").value))){
-          fail("That invite code is not valid.");
+        if (INVITE_ONLY && !(await goodCode($("gCode").value))){
+          fail(t("badCode"));
           return;
         }
         await createUserWithEmailAndPassword(auth, email, pass);
