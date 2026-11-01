@@ -355,6 +355,12 @@ input[type=range]{accent-color:var(--accent);width:140px}
 #gate .tabs button{flex:1;padding:10px;border:0;border-radius:10px;background:none;color:var(--muted);font:700 13px var(--body);cursor:pointer}
 #gate .tabs button.on{background:rgba(255,255,255,.10);color:var(--text)}
 #gate .err{color:#ff8e8e;font-size:13px;min-height:18px;margin-top:12px}
+/* Nobody remembers which email they used. On a phone that keeps its own
+   accounts there is no reason to make them: the list is right here. */
+#gWho{margin:-2px 0 10px;text-align:left}
+#gWho small{display:block;color:var(--muted);font-size:11.5px;margin-bottom:6px}
+#gWho button{width:auto;margin:0 6px 6px 0;padding:7px 11px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(255,255,255,.05);color:var(--text);font:600 12.5px var(--body);cursor:pointer}
 #gate .foot{margin:16px 0 0;font-size:12px}
 #gate .foot+.foot{margin-top:9px}
 #gate .foot button{width:auto;padding:0;background:none;border:0;color:var(--muted);
@@ -390,6 +396,7 @@ input[type=range]{accent-color:var(--accent);width:140px}
     </div>
     <form id="gateForm">
       <input id="gEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email" required>
+      <div id="gWho" hidden></div>
       <input id="gPass" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required minlength="6">
       <input id="gCode" type="text" autocomplete="off" spellcheck="false" placeholder="Invite code" aria-label="Invite code" hidden>
       <button id="gBtn" type="submit" data-i18n="signin">Sign in</button>
@@ -2487,7 +2494,7 @@ const KEY = "uncover.v1";
 const fail = (msg) => {
   $("gErr").textContent = msg;
   $("gBtn").disabled = false;
-  $("gBtn").textContent = t(mode === "in" ? "signin" : "signup");
+  $("gBtn").textContent = t(resetting ? "setPass" : mode === "in" ? "signin" : "signup");
 };
 
 const EN = {
@@ -2507,7 +2514,9 @@ const EN = {
   noMake: "Could not create that account.",
   closed: "New accounts are closed right now.",
   busy: "Too many tries. Wait a minute.", offline: "No connection.",
-  noReset: "No reset can be sent from this phone. Make a new account with an invite code.",
+  whoHere: "Accounts on this phone", setPass: "Set a new password", setting: "Saving\u2026",
+  resetHow: "Pick your email below, then type the new password you want. This works only because everything is kept on this phone \u2014 whoever is holding it can do the same.",
+  noAccount: "No account on this phone uses that email.",
 };
 
 const EL = {
@@ -2529,7 +2538,9 @@ const EL = {
   closed: "Οι νέοι λογαριασμοί είναι κλειστοί τώρα.",
   busy: "Πολλές προσπάθειες. Περίμενε ένα λεπτό.",
   offline: "Δεν υπάρχει σύνδεση.",
-  noReset: "Από αυτό το τηλέφωνο δεν στέλνεται επαναφορά. Φτιάξε νέο λογαριασμό με κωδικό πρόσκλησης.",
+  whoHere: "Λογαριασμοί σε αυτό το τηλέφωνο", setPass: "Όρισε νέο κωδικό", setting: "Αποθήκευση…",
+  resetHow: "Διάλεξε το email σου από κάτω και γράψε τον καινούργιο κωδικό που θέλεις. Δουλεύει μόνο επειδή όλα μένουν σε αυτό το τηλέφωνο — όποιος το κρατά μπορεί να κάνει το ίδιο.",
+  noAccount: "Κανένας λογαριασμός σε αυτό το τηλέφωνο δεν έχει αυτό το email.",
 };
 
 /* The door opens in Greek, like the rest of it. The markup is English so
@@ -2539,6 +2550,7 @@ try { lang = localStorage.getItem("uncover.lang")
            || JSON.parse(localStorage.getItem(KEY) || "{}").lang || "el"; } catch (_) {}
 const t = (k) => (lang === "en" ? EN : EL)[k];
 let local = false;                       // true once we know there is no project
+let resetting = false;                   // choosing a new password on this phone
 
 function paintGate(){
   document.documentElement.lang = lang;
@@ -2549,9 +2561,9 @@ function paintGate(){
   upTab.textContent = t("signup");
   const up = upTab.classList.contains("on");
   $("gEmail").placeholder = t("email");
-  $("gPass").placeholder = t(up ? "passNew" : "pass");
+  $("gPass").placeholder = t(up || resetting ? "passNew" : "pass");
   $("gCode").placeholder = t("code");
-  $("gBtn").textContent = t(up ? "signup" : "signin");
+  $("gBtn").textContent = t(resetting ? "setPass" : up ? "signup" : "signin");
   $("gReset").textContent = t("forgot");
   $("gLang").textContent = t("other");
 }
@@ -2598,6 +2610,7 @@ $("gTabs").addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-mode]");
   if (!btn) return;
   mode = btn.dataset.mode;
+  resetting = false;
   for (const b of $("gTabs").children) b.classList.toggle("on", b === btn);
   $("gPass").autocomplete = mode === "in" ? "current-password" : "new-password";
   $("gReset").hidden = mode !== "in" && !local;
@@ -2662,14 +2675,53 @@ function localAccounts(){
   const orphan = localStorage.getItem(KEY);
   try { localStorage.removeItem(KEY); } catch (_) {}
 
+  /**
+   * Which emails have an account here.
+   *
+   * Nobody remembers which address they signed up with, and on a phone that
+   * keeps its own accounts there is no reason to make them: the list is not a
+   * secret from whoever is holding the phone, because the maps are not either.
+   */
+  function showWhos(){
+    const names = Object.keys(readUsers());
+    const box = $("gWho");
+    box.hidden = !names.length || mode !== "in";
+    if (box.hidden) return;
+    box.innerHTML = '<small>' + t("whoHere") + '</small>' + names.map(n =>
+      '<button type="button" data-who="' + n.replace(/"/g, "&quot;") + '">' + n + '</button>').join("");
+  }
+
+  $("gWho").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-who]");
+    if (!b) return;
+    $("gEmail").value = b.dataset.who;
+    $("gPass").focus();
+  });
+  $("gTabs").addEventListener("click", showWhos);
+  showWhos();
+
   $("gateForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     $("gErr").textContent = "";
     $("gErr").style.color = "";
     $("gBtn").disabled = true;
-    $("gBtn").textContent = t(mode === "in" ? "signing" : "creating");
+    $("gBtn").textContent = t(resetting ? "setting" : mode === "in" ? "signing" : "creating");
 
     const email = norm($("gEmail").value), pass = $("gPass").value, users = readUsers();
+
+    // A forgotten password, on a phone with no server to ask. The map is
+    // worth more than the lock here, so the password can be replaced — and
+    // the card says plainly that holding the phone is all it takes.
+    if (resetting){
+      const rec = users[email];
+      if (!rec) return fail(t("noAccount"));
+      if (pass.length < 6) return fail(t("weak"));
+      const fresh = hex(crypto.getRandomValues(new Uint8Array(16)));
+      users[email] = Object.assign({}, rec, { salt: fresh, hash: await stretch(pass, fresh) });
+      writeUsers(users);
+      resetting = false;
+      return enter(email);
+    }
 
     if (mode === "in"){
       const rec = users[email];
@@ -2692,8 +2744,13 @@ function localAccounts(){
 
   $("gReset").addEventListener("click", (e) => {
     e.preventDefault();
+    resetting = true;
+    mode = "in";
+    $("gPass").value = "";
+    paintGate();
+    showWhos();
     $("gErr").style.color = "var(--muted)";
-    $("gErr").textContent = t("noReset");
+    $("gErr").textContent = t("resetHow");
   });
 }
 
