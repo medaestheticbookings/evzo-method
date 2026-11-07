@@ -233,6 +233,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
     </div>
     <div class="hbtns">
       <span class="lvl" id="lvl-pill">Lv 1</span>
+      <button class="iconbtn" id="help-btn" aria-label="help">?</button>
       <button class="iconbtn" id="lang-btn">EN</button>
     </div>
   </div></header>
@@ -505,6 +506,23 @@ nav button[aria-pressed="true"]{color:var(--accent)}
   </div>
 </div></div>
 
+<!-- help bot -->
+<div class="panel" id="helpp" hidden style="justify-content:flex-start">
+  <div style="width:100%;max-width:420px;display:flex;flex-direction:column;gap:12px;text-align:left">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div id="bot-art" style="flex:none"></div>
+      <div style="min-width:0"><h3 id="bot-name"></h3><p class="sub" id="bot-role"></p></div>
+    </div>
+    <div id="chat" style="display:flex;flex-direction:column;gap:9px;max-height:46vh;overflow-y:auto"></div>
+    <div id="chat-quick" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    <div style="display:flex;gap:7px">
+      <input type="text" id="chat-in" style="flex:1" maxlength="120">
+      <button class="flat go" id="chat-send" style="width:auto;padding:12px 16px">→</button>
+    </div>
+    <button class="flat" id="help-close" data-t="close"></button>
+  </div>
+</div>
+
 <!-- mood check -->
 <div class="panel" id="mood" hidden>
   <p class="sub" id="mood-when"></p>
@@ -715,6 +733,17 @@ var FORTUNES=[
 ["Το τηλέφωνο είναι εργαλείο. Μόλις του το θύμισες.","The phone is a tool. You just reminded it."],
 ["Η επόμενη ώρα σου ανήκει.","The next hour belongs to you."],
 ["Κανείς δεν έγινε καλύτερος κάνοντας scroll.","Nobody ever got better at anything by scrolling."]];
+/* Real, published quotes. Greek is a translation; the English is the original wording. */
+var QUOTES=[
+["Είναι ωραίο να γιορτάζεις την επιτυχία, αλλά είναι πιο σημαντικό να ακούς τα μαθήματα της αποτυχίας.","It's fine to celebrate success, but it is more important to heed the lessons of failure.","Bill Gates"],
+["Η υπομονή είναι βασικό στοιχείο της επιτυχίας.","Patience is a key element of success.","Bill Gates"],
+["Είμαστε πεισματάρηδες με το όραμα. Είμαστε ευέλικτοι με τις λεπτομέρειες.","We are stubborn on vision. We are flexible on details.","Jeff Bezos"],
+["Αν διπλασιάσεις τα πειράματα που κάνεις τον χρόνο, διπλασιάζεις και την εφευρετικότητά σου.","If you double the number of experiments you do per year, you're going to double your inventiveness.","Jeff Bezos"],
+["Η επιμονή είναι πολύ σημαντική. Δεν πρέπει να τα παρατάς, εκτός αν αναγκαστείς.","Persistence is very important. You should not give up unless you are forced to give up.","Elon Musk"],
+["Δούλεψε σαν τρελός. Αν οι άλλοι βάζουν 40 ώρες την εβδομάδα κι εσύ 80, θα πετύχεις σε τέσσερις μήνες ό,τι εκείνοι σε έναν χρόνο.","Work like hell. If other people are putting in 40-hour work weeks and you're putting in 100-hour work weeks, you will achieve in four months what it takes them a year.","Elon Musk"],
+["Ο μεγαλύτερος κίνδυνος είναι να μην πάρεις κανένα ρίσκο.","The biggest risk is not taking any risk.","Mark Zuckerberg"],
+["Το τελειωμένο είναι καλύτερο από το τέλειο.","Done is better than perfect.","Mark Zuckerberg"],
+["Ο όγκος ακυρώνει την τύχη.","Volume negates luck.","Alex Hormozi"]];
 var EXA=[["Νόμιζα ότι","I thought"],["Έπρεπε να ελέγξω αν","I had to check whether"],["Ένιωσα ότι","I sensed that"],["Ξαφνικά θυμήθηκα ότι","I suddenly remembered that"]];
 var EXB=[["δόνησε το κινητό","the phone buzzed"],["κάποιος με χρειαζόταν","someone needed me"],["είχα επείγουσα ιδέα","I had an urgent idea"],["έπρεπε να δω την ώρα","I had to check the time"]];
 var EXC=[["και χάθηκαν 40 λεπτά.","and 40 minutes vanished."],["και κατέληξα σε βίντεο με γάτες.","and I ended up watching cat videos."],["και δεν θυμάμαι τι έψαχνα.","and I don't remember what I was looking for."]];
@@ -1136,7 +1165,8 @@ function finish(completed,reason){
   if(trophy)rows+='<div class="kv"><span>'+t("trophy")+'</span><b>🏆</b></div>';
   got.forEach(function(a){rows+='<div class="kv"><span>'+t("achievements")+'</span><b>'+a.e+' '+a.n[li]+'</b></div>'});
   $("d-rewards").innerHTML=rows;
-  $("d-fortune").textContent=completed?pick(FORTUNES)[li]:pick(ROASTS)[li];
+  if(completed&&Math.random()<0.5){var q=pick(QUOTES);$("d-fortune").textContent="“"+q[li]+"”  — "+q[2]}
+  else $("d-fortune").textContent=completed?pick(FORTUNES)[li]:pick(ROASTS)[li];
   $("done").hidden=false;renderAll();
   if(completed)askMoodAfter(wasPomo);
 }
@@ -1297,6 +1327,83 @@ $("wipe-data").addEventListener("click",function(){
   try{localStorage.removeItem(KEY)}catch(e){}
   root={lang:null,active:null,cookie:false,profiles:{}};location.reload()});
 function copy(txt){try{navigator.clipboard.writeText(txt).then(function(){banner(t("copied"))}).catch(function(){banner(txt)})}catch(e){banner(txt)}}
+
+/* ---------- help bot (answers from the app's own data, no network) ---------- */
+var BOTQ=[
+{k:["block","app","instagram","tiktok","μπλοκαρ","εφαρμογ","κλειδ"],
+ q:["Μπλοκάρει εφαρμογές;","Does it block apps?"],
+ a:["Όχι, και κανένα site δεν μπορεί. Ο browser δεν έχει δικαίωμα να αγγίξει άλλες εφαρμογές. Αυτό που κάνει το GrowthLock: μετράει τον χρόνο, καταλαβαίνει πότε φεύγεις, και σου βάζει εμπόδια για να γυρίσεις. Για πραγματικό μπλοκάρισμα θέλει native εφαρμογή iPhone/Android.",
+     "No, and no website can. A browser has no permission to touch other apps. What GrowthLock does: it times you, notices when you leave, and puts obstacles in the way of quitting. Real blocking needs a native iPhone/Android app."]},
+{k:["slip","ολισθ","left","έφυγ","count","μετρ"],
+ q:["Πότε μετράει ολίσθηση;","When does a slip count?"],
+ a:["Κάθε φορά που η σελίδα κρύβεται: αλλάζεις εφαρμογή, κλειδώνεις την οθόνη ή πας σε άλλη καρτέλα. Το μπλοκ συνεχίζει να μετράει, αλλά χάνει το «καθαρό».",
+     "Every time this page gets hidden: you switch apps, lock the screen or move to another tab. The block keeps running, but it loses its clean mark."]},
+{k:["unlock","ξεκλειδ","stop","σταματ","quit","exit","βγω"],
+ q:["Πώς σταματάω ένα μπλοκ;","How do I stop a block?"],
+ a:["Κράτα πατημένο το κουμπί ξεκλειδώματος. Στο Χαλαρό βγαίνεις αμέσως. Στο Σκόπιμο περνάς τρία βήματα με 10 δευτερόλεπτα αναμονή. Στο Locked η αναμονή γίνεται 30 δευτερόλεπτα και γράφεις ολόκληρη φράση. Το κόκκινο κουμπί έκτακτης ανάγκης σε βγάζει πάντα, χωρίς ποινή.",
+     "Hold the unlock button. On Flexible you're out at once. On Intentional there are three steps with a 10-second wait. On Locked the wait becomes 30 seconds and you type a whole phrase. The red emergency button always lets you out, with no penalty."]},
+{k:["egg","αυγ","pet","πλάσμα","monster","τέρας","hatch"],
+ q:["Πώς παίρνω πλάσμα;","How do I get a creature?"],
+ a:["Τελείωσε ένα μπλοκ χωρίς καμία ολίσθηση. Όσο μεγαλύτερο το μπλοκ, τόσο σπανιότερο το πλάσμα: κάτω από 20 λεπτά κοινό, 20–44 ασυνήθιστο, 45–89 σπάνιο, 90+ θρυλικό. Κανένα πλάσμα δεν πεθαίνει ποτέ.",
+     "Finish a block with no slips. The longer the block, the rarer the creature: under 20 minutes common, 20–44 uncommon, 45–89 rare, 90+ legendary. No creature ever dies."]},
+{k:["xp","level","επίπεδο","πόντ","point","star"],
+ q:["Πώς υπολογίζονται τα XP;","How is XP calculated?"],
+ a:["XP = τα λεπτά που έκανες, συν 50% αν ήταν καθαρό, ×2 στο Dare, και σπάνια ×2 από power-up. Αν βγεις νωρίς χάνεις XP ίσα με τη διάρκεια που είχες βάλει. Πόντοι για το μαγαζί = λεπτά ÷ 5.",
+     "XP = the minutes you did, plus 50% if it was clean, ×2 in Dare mode, and occasionally ×2 from a power-up. Quitting early costs XP equal to the length you set. Shop points = minutes ÷ 5."]},
+{k:["data","δεδομέν","privacy","ιδιωτ","cookie","save","αποθηκ"],
+ q:["Πού πάνε τα δεδομένα μου;","Where does my data go?"],
+ a:["Πουθενά. Όλα μένουν στον browser αυτής της συσκευής. Δεν υπάρχει λογαριασμός, διακομιστής ή cookie. Αν καθαρίσεις τα δεδομένα του browser, σβήνονται. Στα Έξτρα υπάρχει εξαγωγή και διαγραφή.",
+     "Nowhere. Everything stays in this device's browser. There is no account, no server, no cookie. Clear your browser data and it's gone. Extras has export and delete."]},
+{k:["schedule","πρόγραμμα","reminder","υπενθ","notification","ειδοποι"],
+ q:["Δουλεύει το πρόγραμμα κλειστό;","Do schedules work when it's closed?"],
+ a:["Όχι. Μια ιστοσελίδα δεν τρέχει όταν είναι κλειστή, άρα δεν μπορεί να σου στείλει ειδοποίηση. Το πρόγραμμα εμφανίζεται ως υπενθύμιση μόλις ανοίξεις την εφαρμογή μέσα στα 20 λεπτά της ώρας που έβαλες.",
+     "No. A web page does not run while closed, so it cannot notify you. A scheduled block shows as a reminder when you open the app within 20 minutes of the time you set."]},
+{k:["start","ξεκιν","how","πώς","begin","first"],
+ q:["Τι κάνω πρώτο;","What do I do first?"],
+ a:["Διάλεξε 25 λεπτά, γράψε τι θα κάνεις, πάτα Ξεκίνα και άσε το κινητό οθόνη πάνω. Μία φορά την ημέρα για μια εβδομάδα φτάνει για να δεις διαφορά.",
+     "Pick 25 minutes, write what you're doing, press Start and put the phone down screen-up. Once a day for a week is enough to feel the difference."]},
+{k:["blackout","μαύρ","black","screen","οθόν"],
+ q:["Τι κάνει η μαύρη οθόνη;","What does blackout do?"],
+ a:["Κάνει αυτή τη σελίδα κατάμαυρη και πλήρη οθόνη, ώστε να μην υπάρχει τίποτα να κοιτάς. Δεν σβήνει την οθόνη του κινητού και δεν εμποδίζει τις άλλες εφαρμογές.",
+     "It turns this page dead black and fullscreen so there is nothing to look at. It does not switch your phone's screen off and it does not stop other apps."]}];
+function botSay(who,text){
+  var d=document.createElement("div");
+  d.style.cssText="max-width:86%;padding:10px 12px;border-radius:12px;font-size:14px;"+
+    (who==="bot"?"align-self:flex-start;background:var(--panel-2);color:var(--panel-ink)":"align-self:flex-end;background:var(--teal);color:#06181C");
+  d.textContent=text;$("chat").appendChild(d);$("chat").scrollTop=$("chat").scrollHeight;
+}
+function botAnswer(txt){
+  var s=txt.toLowerCase(),best=null,hits=0;
+  BOTQ.forEach(function(e){var n=0;e.k.forEach(function(k){if(s.indexOf(k)>=0)n++});if(n>hits){hits=n;best=e}});
+  if(best)return best.a[li];
+  var p=P();
+  if(/streak|σερί/.test(s))return (li===0?"Σερί: ":"Clean run: ")+cleanStreak();
+  return li===0?"Δεν το κατάλαβα. Δοκίμασε μία από τις ερωτήσεις από κάτω, ή ρώτα για: μπλοκάρισμα, ολισθήσεις, ξεκλείδωμα, πλάσματα, XP, δεδομένα."
+               :"I didn't follow. Try one of the questions below, or ask about: blocking, slips, unlocking, creatures, XP, data.";
+}
+function openHelp(){
+  var p=P();
+  $("bot-art").innerHTML=monster(p?p.mon:0,56,0);
+  $("bot-name").textContent=li===0?"Ο βοηθός":"The helper";
+  $("bot-role").textContent=li===0?"Απαντάει χωρίς ίντερνετ":"Answers with no internet";
+  $("chat").innerHTML="";
+  botSay("bot",li===0?("Γεια"+(p&&p.nick?" "+p.nick:"")+". Ρώτα με ό,τι θες για την εφαρμογή.")
+                     :("Hi"+(p&&p.nick?" "+p.nick:"")+". Ask me anything about the app."));
+  var q=$("chat-quick");q.innerHTML="";
+  BOTQ.slice(0,5).forEach(function(e){
+    var b=document.createElement("button");b.className="iconbtn";b.style.whiteSpace="normal";b.textContent=e.q[li];
+    b.addEventListener("click",function(){botSay("me",e.q[li]);setTimeout(function(){botSay("bot",e.a[li])},220)});
+    q.appendChild(b)});
+  $("chat-in").setAttribute("placeholder",li===0?"Γράψε την ερώτησή σου":"Type your question");
+  $("helpp").hidden=false;
+}
+$("help-btn").addEventListener("click",openHelp);
+$("help-close").addEventListener("click",function(){$("helpp").hidden=true});
+$("chat-send").addEventListener("click",function(){
+  var v=$("chat-in").value.trim();if(!v)return;
+  botSay("me",v);$("chat-in").value="";
+  setTimeout(function(){botSay("bot",botAnswer(v))},250)});
+$("chat-in").addEventListener("keydown",function(e){if(e.key==="Enter")$("chat-send").click()});
 
 /* ---------- renderers ---------- */
 function petMood(){
