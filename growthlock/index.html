@@ -464,6 +464,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
     <!-- EXTRAS -->
     <section id="v-more" hidden>
       <div><h2 data-t="moreTitle"></h2></div>
+      <button class="btn ghost" id="open-guide" data-t="guideBtn"></button>
       <div class="card">
         <h3 data-t="schedules"></h3>
         <p class="small" data-t="schednote"></p>
@@ -613,6 +614,15 @@ nav button[aria-pressed="true"]{color:var(--accent)}
   <button class="flat" id="mood-skip"></button>
 </div>
 
+<!-- what every button does -->
+<div class="panel" id="guidep" hidden style="justify-content:flex-start">
+  <div style="width:100%;max-width:430px;display:flex;flex-direction:column;gap:14px;text-align:left">
+    <h2 id="guide-title"></h2>
+    <div id="guide-body" style="display:flex;flex-direction:column;gap:16px;max-height:66vh;overflow-y:auto"></div>
+    <button class="flat" id="guide-close" data-t="close"></button>
+  </div>
+</div>
+
 <!-- first-run guide -->
 <div class="panel" id="tour" hidden>
   <div id="tour-art"></div>
@@ -736,7 +746,7 @@ tagT:["Κλειδί σε χαρτί","Paper key"],
 tagLede:["Γράψε μια λέξη σε χαρτί, άσ το σε άλλο δωμάτιο. Το Locked τη ζητάει.","Write a word on paper, leave it in another room. Locked mode asks for it."],
 tagph:["π.χ. ΚΑΡΕΚΛΑ","e.g. CHAIR"],
 tagUse:["Φέρε το χαρτί σου","Fetch your paper"],
-tourGo:["Πάμε","Let us go"],tourSkip:["Προσπέρασε","Skip"],guide:["Οδηγός","Guide"],
+tourGo:["Πάμε","Let us go"],tourSkip:["Προσπέρασε","Skip"],guide:["Οδηγός","Guide"],guideBtn:["Οδηγός: τι κάνει το καθένα","Guide: what everything does"],
 options:["Περισσότερα","More options"],
 getApk:["Κατέβασε την εφαρμογή που μπλοκάρει","Get the app that really blocks"],
 apkNote:["Μόνο για Android. Άνοιξε το αρχείο, πάτα Εγκατάσταση, μετά «Να επιτρέπεται». Από εκεί και πέρα το Instagram δεν ανοίγει όσο τρέχει μπλοκ.","Android only. Open the file, tap Install, then Allow. After that Instagram will not open while a block is running."],
@@ -1552,6 +1562,70 @@ $("wipe-data").addEventListener("click",function(){
   root={lang:null,active:null,cookie:false,profiles:{}};location.reload()});
 function copy(txt){try{navigator.clipboard.writeText(txt).then(function(){banner(t("copied"))}).catch(function(){banner(txt)})}catch(e){banner(txt)}}
 
+/* ---------- what every single thing does ---------- */
+var GUIDE=[
+[["Focus — η αρχική","Focus — the home screen"],[
+ [["Διάρκεια","How long"],["15 ως 180 λεπτά. Στα «Περισσότερα» βάζεις όσα θες.","15 to 180 minutes. Under More options you can type any number."]],
+ [["Τι θα κάνεις","What are you doing"],["Μία γραμμή. Φαίνεται μέσα στο μπλοκ, για να θυμάσαι γιατί το ξεκίνησες.","One line. It shows during the block, to remind you why you started."]],
+ [["Ξεκίνα μπλοκ","Start block"],["Κλειδώνει την οθόνη στον χρόνο. Στο κινητό με την εφαρμογή, μπλοκάρει και τις άλλες εφαρμογές.","Locks the screen onto the clock. In the phone app it also blocks the other apps."]],
+ [["Αποστολές ημέρας","Daily quests"],["Τρεις μικροί στόχοι. Κλείνουν μόνοι τους όταν τους πετύχεις. +40 XP ο καθένας.","Three small goals. They tick themselves when you hit them. +40 XP each."]],
+ [["Λίστα εργασιών","To-do list"],["Γράψε δουλειές. Το ▸ τις βάζει ως στόχο του επόμενου μπλοκ.","Write your jobs. The ▸ makes one the target of the next block."]]]],
+[["Μέσα στο μπλοκ","Inside a block"],[
+ [["Ολίσθηση","Slip"],["Φεύγεις από τη σελίδα = ολίσθηση. Ο χρόνος τρέχει, το «καθαρό» χάνεται.","Leaving the page is a slip. The clock keeps running, the clean mark is lost."]],
+ [["Παρκάρισμα σκέψης","Park a thought"],["Σου ήρθε κάτι επείγον; Γράψ' το αντί να βγεις. Σε περιμένει μετά.","Something urgent hit you? Write it instead of leaving. It waits for you."]],
+ [["Κράτα για ξεκλείδωμα","Hold to unlock"],["Κράτα 1,5 δευτερόλεπτο → βλέπεις τι χάνεις → 10 δευτερόλεπτα αναμονή → γράφεις μία λέξη.","Hold 1.5 seconds, see what you lose, wait 10 seconds, type one word."]],
+ [["Έκτακτη ανάγκη","Emergency"],["Το κόκκινο κουμπί σε βγάζει αμέσως. Χωρίς πρόκληση, χωρίς ποινή, χωρίς καταγραφή ντροπής.","The red button lets you out at once. No challenge, no penalty, no shame entry."]]]],
+[["Οι επιλογές","More options"],[
+ [["Αυστηρότητα","Strictness"],["Χαλαρό: βγαίνεις με ένα πάτημα. Σκόπιμο: τα τρία βήματα. Locked: 30 δευτερόλεπτα και ολόκληρη φράση.","Flexible: one tap out. Intentional: the three steps. Locked: 30 seconds and a whole phrase."]],
+ [["Dare","Dare"],["Χωρίς παρκάρισμα σκέψεων, πιο σκληρό ξεκλείδωμα, διπλά XP.","No parking thoughts, a harder unlock, double XP."]],
+ [["Pomodoro","Pomodoro"],["Μετά το μπλοκ ξεκινάει μόνο του διάλειμμα, μετά νέο μπλοκ.","A break starts by itself after the block, then another block."]],
+ [["Μαύρη οθόνη","Blackout"],["Κατάμαυρη οθόνη, πλήρης οθόνη, μόνο ο χρόνος.","Dead black, fullscreen, only the clock."]],
+ [["Τελετή","Ritual"],["Τρία βήματα πριν ξεκινήσεις: εργασία, ατμόσφαιρα, μία ανάσα.","Three steps before you start: task, atmosphere, one breath."]],
+ [["Ατμόσφαιρα","Atmosphere"],["Βροχή, κύματα, βουητό ή τζάκι, με δική τους ένταση.","Rain, waves, hum or fire, with their own volume."]],
+ [["Ο κανόνας των 5′","The 5-minute rule"],["Δεν έχεις όρεξη; Κάνε πέντε λεπτά. Συνήθως συνεχίζεις.","No appetite for it? Do five minutes. You usually carry on."]],
+ [["Just leave it","Just leave it"],["Μπλοκ χωρίς τέλος. Μετράει προς τα πάνω μέχρι να γυρίσεις.","A block with no end. It counts up until you come back."]],
+ [["Βαριέμαι","I'm bored"],["Σου δίνει κάτι δίλεπτο να κάνεις αντί για scroll.","Hands you a two-minute thing to do instead of scrolling."]]]],
+[["Κόσμος","World"],[
+ [["Ο κόσμος","The island"],["Κάθε μπλοκ φυτεύει δέντρο, βιβλίο ή αστέρι, ανάλογα με την ώρα και το είδος.","Every block plants a tree, a book or a star, depending on the hour and the kind."]],
+ [["Bingo","Bingo"],["Εννιά πράγματα την εβδομάδα. Τα δηλώνεις μόνος σου, +3 πόντοι το καθένα.","Nine things a week. You tick them yourself, +3 points each."]],
+ [["Το μαγαζί","Reward shop"],["Γράφεις δικές σου αμοιβές και την τιμή τους σε πόντους. Κερδίζεις πόντους από τα μπλοκ.","Write your own rewards and their price in points. Blocks pay the points."]]]],
+[["Πλάσμα","Pet"],[
+ [["Εκκόλαψη","Hatching"],["Μόνο τα καθαρά μπλοκ σπάνε αυγό. 90+ λεπτά = θρυλικό πλάσμα.","Only clean blocks crack an egg. 90+ minutes means a legendary one."]],
+ [["Διάθεση","Mood"],["Αλλάζει ανάλογα με το σερί σου και την ώρα. Δεν πεθαίνει ποτέ, ό,τι κι αν κάνεις.","It changes with your run and the hour. It never dies, whatever you do."]],
+ [["Ρούχα","Outfits"],["Καπέλο, γυαλιά, κασκόλ, στέμμα. Ανοίγουν με τα επίπεδα.","Hat, glasses, scarf, crown. They open with your levels."]],
+ [["Πλανήτες","Planets"],["Από το επίπεδο 3, κάθε μπλοκ 25′+ ανακαλύπτει πλανήτη.","From level 3, every block of 25 min or more discovers a planet."]]]],
+[["Στατιστικά","Stats"],[
+ [["Life score","Life score"],["Σερί, ποσοστό καθαρών και λεπτά της εβδομάδας, σε έναν αριθμό.","Your run, your clean percentage and the week's minutes, in one number."]],
+ [["Μονοπάτια","Skill paths"],["Δουλειά, μελέτη, κίνηση, ύπνος: το καθένα ανεβαίνει χωριστά.","Work, study, movement, sleep: each one levels on its own."]],
+ [["Εβδομαδιαίος στόχος","Weekly target"],["Στόχος μπλοκ την εβδομάδα, με μέρες ανάπαυσης. Το σύνολο ζωής δεν μηδενίζει ποτέ.","A blocks-per-week goal with rest days. The lifetime total never resets."]],
+ [["Κάρτα εβδομάδας","Weekly card"],["Έτοιμη εικόνα για screenshot, χωρίς τίποτα προσωπικό.","A ready picture to screenshot, with nothing private on it."]],
+ [["Ημερολόγιο και ώρες","Calendar and hours"],["Πού πήγε ο μήνας σου και ποια ώρα είσαι πιο κοφτερός.","Where your month went, and the hour you are sharpest."]],
+ [["Διάθεση","Mood"],["Αν κάνεις check-in πριν και μετά, βλέπεις αν τα μπλοκ σε ανεβάζουν.","If you check in before and after, you see whether blocks lift you."]]]],
+[["Έξτρα","Extras"],[
+ [["Αυτόματο πρόγραμμα","Automatic schedule"],["Μέρες και ώρα. Σου το θυμίζει όταν ανοίξεις την εφαρμογή.","Days and a time. It reminds you when you open the app."]],
+ [["Κλειδί σε χαρτί","Paper key"],["Μια λέξη γραμμένη σε χαρτί σε άλλο δωμάτιο. Στο Locked τη ζητάει, άρα σηκώνεσαι.","A word on paper in another room. Locked mode asks for it, so you get up."]],
+ [["Μουσείο ντροπής","Shame museum"],["Κάθε φορά που τα παράτησες, με μια αστεία δικαιολογία. Μόνο για σένα.","Every time you bailed, with a funny excuse. For your eyes only."]],
+ [["Μυστικό δωμάτιο","Secret room"],["Ανοίγει στα 10 μπλοκ. Μέσα: dares και ο 24ωρος θρύλος.","Opens at 10 blocks. Inside: dares and the 24-hour legend."]],
+ [["Ζευγάρι / οικογένεια","Couple / family"],["Πολλά προφίλ στο ίδιο κινητό, το καθένα με δικό του σερί.","Several profiles on one phone, each with its own run."]],
+ [["Αποθήκευση","Save and restore"],["Κατέβασε αρχείο με την πρόοδό σου ή φέρ' την σε άλλο κινητό.","Download a file with your progress, or bring it to another phone."]]]]
+];
+function openGuide(){
+  $("guide-title").textContent=t("guide");
+  var b=$("guide-body");b.innerHTML="";
+  GUIDE.forEach(function(sec){
+    var h=document.createElement("h3");h.textContent=sec[0][li];h.style.color="var(--teal)";b.appendChild(h);
+    var ul=document.createElement("div");ul.style.cssText="display:flex;flex-direction:column;gap:9px;margin-top:6px";
+    sec[1].forEach(function(it){
+      var d=document.createElement("div");
+      d.innerHTML='<div style="font-size:14px;color:var(--panel-ink)">'+it[0][li]+'</div>'+
+                  '<div style="font-size:13px;color:var(--panel-muted)">'+it[1][li]+'</div>';
+      ul.appendChild(d)});
+    b.appendChild(ul)});
+  $("guidep").hidden=false;
+}
+$("guide-close").addEventListener("click",function(){$("guidep").hidden=true});
+$("open-guide").addEventListener("click",openGuide);
+
 /* ---------- the guide, shown once ---------- */
 var TOUR=[
  [["Ξεκίνα ένα μπλοκ","Start a block"],
@@ -1580,7 +1654,7 @@ function drawTour(){
 }
 $("tour-next").addEventListener("click",function(){
   if(tourI<TOUR.length-1){tourI++;drawTour()}
-  else endTour()});
+  else{endTour();openGuide()}});
 $("tour-skip").addEventListener("click",endTour);
 function endTour(){$("tour").hidden=true;root.tour=true;save();if(!root.cookie&&!NATIVE)$("cookie").hidden=false}
 
@@ -1727,7 +1801,7 @@ function openHelp(){
 }
 $("help-btn").addEventListener("click",openHelp);
 $("help-close").addEventListener("click",function(){$("helpp").hidden=true});
-(function(){var b=document.createElement("button");b.className="flat go";b.id="help-tour";b.addEventListener("click",function(){$("helpp").hidden=true;openTour()});var c=$("help-close");c.parentNode.insertBefore(b,c);window.__tourBtn=b})();
+(function(){var b=document.createElement("button");b.className="flat go";b.id="help-tour";b.addEventListener("click",function(){$("helpp").hidden=true;openGuide()});var c=$("help-close");c.parentNode.insertBefore(b,c);window.__tourBtn=b})();
 $("chat-send").addEventListener("click",function(){
   var v=$("chat-in").value.trim();if(!v)return;
   botSay("me",v);$("chat-in").value="";
