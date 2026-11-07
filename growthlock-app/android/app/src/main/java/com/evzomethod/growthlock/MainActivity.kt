@@ -26,10 +26,10 @@ import android.widget.TextView
  */
 class MainActivity : Activity() {
 
-    private val teal = Color.parseColor("#3FB8C4")
-    private val card = Color.parseColor("#18212A")
-    private val bg = Color.parseColor("#0F1419")
-    private val ok = Color.parseColor("#6FC08C")
+    private val teal = Color.parseColor("#FFE14D")
+    private val card = Color.parseColor("#141C2C")
+    private val bg = Color.parseColor("#0B1220")
+    private val ok = Color.parseColor("#9FE870")
 
     private var web: WebView? = null
 
@@ -40,14 +40,19 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        if (ready() && web == null) draw()
+        // coming back from a system settings screen: if both switches are on now,
+        // go straight back into the app rather than sitting on the setup screen
+        if (web == null && ready()) draw()
     }
 
     private fun ready() = Watcher.hasUsageAccess(this) && Watcher.hasOverlay(this)
 
-    private fun draw() {
-        if (ready()) showApp() else showSetup()
-    }
+    /**
+     * The chooser opens first, always. Blocking permissions are asked for only
+     * when someone actually starts a block in Renew - the other two experiences
+     * never need them.
+     */
+    private fun draw() = showApp()
 
     /* ---------- the whole app ---------- */
 
@@ -123,7 +128,7 @@ class MainActivity : Activity() {
 
     /* ---------- first run ---------- */
 
-    private fun showSetup() {
+    fun showSetup() {
         web = null
         val scroll = ScrollView(this).apply { setBackgroundColor(bg) }
         val root = LinearLayout(this).apply {
@@ -135,13 +140,13 @@ class MainActivity : Activity() {
         root.addView(TextView(this).apply {
             text = "GrowthLock"
             textSize = 32f
-            setTextColor(Color.parseColor("#E4EDF3"))
+            setTextColor(Color.parseColor("#FFFFFF"))
             setPadding(0, 0, 0, 14)
         })
         root.addView(TextView(this).apply {
             text = "Two switches, once. Then the app blocks for real."
             textSize = 16f
-            setTextColor(Color.parseColor("#8B9BA8"))
+            setTextColor(Color.parseColor("#7A849A"))
         })
 
         root.addView(step(1, "See which app is open", Watcher.hasUsageAccess(this)) {
@@ -154,7 +159,16 @@ class MainActivity : Activity() {
         })
         root.addView(hint(root, "Allow GrowthLock to display over other apps."))
 
-        root.addView(hint(root, "Neither switch can read your screen, your typing or your passwords. The app has no internet permission, so nothing can leave this phone."))
+        root.addView(hint(root, "Neither switch can read your screen, your typing or your passwords. Only Renew uses them, and only while a block runs."))
+        root.addView(Button(this).apply {
+            text = "Back"
+            isAllCaps = false
+            setTextColor(Color.parseColor("#7A849A"))
+            background = GradientDrawable().apply { cornerRadius = 26f; setColor(Color.TRANSPARENT); setStroke(2, Color.parseColor("#26324A")) }
+            setPadding(0, 28, 0, 28)
+            setOnClickListener { web = null; draw() }
+            layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = 26 }
+        })
         setContentView(scroll)
     }
 
@@ -162,7 +176,7 @@ class MainActivity : Activity() {
         text = if (done) "$n. $label  -  on" else "$n. $label"
         textSize = 16f
         isAllCaps = false
-        setTextColor(if (done) ok else Color.parseColor("#05171A"))
+        setTextColor(if (done) ok else Color.parseColor("#06101B"))
         background = GradientDrawable().apply {
             cornerRadius = 26f
             setColor(if (done) card else teal)
@@ -177,7 +191,7 @@ class MainActivity : Activity() {
     private fun hint(parent: LinearLayout, s: String) = TextView(this).apply {
         text = s
         textSize = 13f
-        setTextColor(Color.parseColor("#5C6B7A"))
+        setTextColor(Color.parseColor("#5C6478"))
         setPadding(6, 8, 0, 6)
     }
 
@@ -209,6 +223,17 @@ class MainActivity : Activity() {
 
         @JavascriptInterface
         fun blockEverything(): Boolean = SessionStore.blockEverything(a)
+
+        /** Can we actually block yet? Renew asks this before a block starts. */
+        @JavascriptInterface
+        fun permissionsReady(): Boolean =
+            Watcher.hasUsageAccess(a) && Watcher.hasOverlay(a)
+
+        /** Show the two-switch screen, only once someone wants blocking. */
+        @JavascriptInterface
+        fun requestPermissions() {
+            a.runOnUiThread { (a as MainActivity).showSetup() }
+        }
 
         /** Minutes the phone lay untouched last night. 0 when we cannot tell. */
         @JavascriptInterface

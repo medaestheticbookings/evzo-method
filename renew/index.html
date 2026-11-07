@@ -776,6 +776,9 @@ tourGo:["Πάμε","Let us go"],tourSkip:["Προσπέρασε","Skip"],guide:[
 hubKicker:["Διάλεξε εμπειρία","Choose an experience"],
 hubRemember:["Ξεκίνα πάντα από εδώ","Always start here"],
 switchExp:["Αλλαγή εμπειρίας","Switch experience"],
+needPerm:["Για να μπλοκάρει στ αλήθεια, το Renew χρειάζεται δύο διακόπτες του κινητού. Μία φορά, μόνο για το Renew.","To block for real, Renew needs two switches on the phone. Once, and only for Renew."],
+needPermGo:["Άνοιξε τους διακόπτες","Turn them on"],
+needPermSkip:["Όχι τώρα, μόνο χρονόμετρο","Not now, just time me"],
 options:["Περισσότερα","More options"],
 nameTaken:["Αυτό το όνομα υπάρχει ήδη σε αυτό το κινητό. Διάλεξε άλλο.","That name is already on this phone. Pick another one."],
 nameShort:["Γράψε ένα όνομα πρώτα.","Write a name first."],
@@ -1233,7 +1236,23 @@ $("clear-parked").addEventListener("click",function(){P().parked=[];save();rende
 $("five").addEventListener("click",function(){askMood("before",function(){runRitual(function(){begin(5,$("intent-input").value.trim()||t("focus"),"five")})})});
 $("leaveit").addEventListener("click",function(){begin(0,$("intent-input").value.trim()||t("leaveit"),"open")});
 $("bored").addEventListener("click",function(){banner(pick(BORED)[li])});
-$("start").addEventListener("click",function(){askMood("before",function(){runRitual(function(){begin(chosen,$("intent-input").value.trim(),dare?"dare":"normal")})})});
+$("start").addEventListener("click",function(){
+  withBlocking(function(){askMood("before",function(){runRitual(function(){begin(chosen,$("intent-input").value.trim(),dare?"dare":"normal")})})})
+});
+/* Renew is the only experience that needs these, so it is the only one that asks */
+function withBlocking(then){
+  if(!NATIVE){then();return}
+  var ok=true;try{ok=window.GrowthLockNative.permissionsReady()}catch(e){}
+  if(ok){then();return}
+  var b=document.createElement("div");b.className="banner";
+  b.innerHTML="<div>"+t("needPerm")+"</div>";
+  var go=document.createElement("button");go.className="btn sm";go.style.marginTop="9px";go.textContent=t("needPermGo");
+  go.addEventListener("click",function(){try{window.GrowthLockNative.requestPermissions()}catch(e){}});
+  var no=document.createElement("button");no.className="btn sm ghost";no.style.marginTop="7px";no.textContent=t("needPermSkip");
+  no.addEventListener("click",function(){b.remove();then()});
+  b.appendChild(go);b.appendChild(no);
+  $("banners").innerHTML="";$("banners").appendChild(b);window.scrollTo(0,0);
+}
 function banner(msg,warn){var b=document.createElement("div");b.className="banner"+(warn?" warn":"");b.textContent=msg;
   $("banners").appendChild(b);setTimeout(function(){if(b.parentNode)b.parentNode.removeChild(b)},10000)}
 

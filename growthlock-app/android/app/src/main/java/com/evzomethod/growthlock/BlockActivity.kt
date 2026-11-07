@@ -53,7 +53,7 @@ class BlockActivity : Activity() {
 
         clock = TextView(this).apply {
             textSize = 52f
-            setTextColor(Color.parseColor("#3FB8C4"))
+            setTextColor(Color.parseColor("#FFE14D"))
             typeface = Typeface.MONOSPACE
             gravity = Gravity.CENTER
         }
@@ -61,14 +61,14 @@ class BlockActivity : Activity() {
             val l = SessionStore.label(this@BlockActivity)
             text = if (l.isEmpty()) "Focus block" else l
             textSize = 18f
-            setTextColor(Color.parseColor("#DCE6EC"))
+            setTextColor(Color.parseColor("#FFFFFF"))
             gravity = Gravity.CENTER
             setPadding(0, 26, 0, 8)
         }
         val line = TextView(this).apply {
             text = lines.random()
             textSize = 15f
-            setTextColor(Color.parseColor("#6B7C8A"))
+            setTextColor(Color.parseColor("#7A849A"))
             gravity = Gravity.CENTER
             setPadding(0, 0, 0, 30)
         }
@@ -81,7 +81,7 @@ class BlockActivity : Activity() {
         root.addView(TextView(this).apply {
             text = "To end the block early, open GrowthLock and hold the unlock button there."
             textSize = 13f
-            setTextColor(Color.parseColor("#4E5E6B"))
+            setTextColor(Color.parseColor("#5C6478"))
             gravity = Gravity.CENTER
             setPadding(0, 22, 0, 0)
         })
@@ -111,11 +111,11 @@ class BlockActivity : Activity() {
         text = s
         textSize = 16f
         isAllCaps = false
-        setTextColor(if (filled) Color.parseColor("#05171A") else Color.parseColor("#8B9BA8"))
+        setTextColor(if (filled) Color.parseColor("#06101B") else Color.parseColor("#7A849A"))
         background = GradientDrawable().apply {
             cornerRadius = 28f
-            if (filled) setColor(Color.parseColor("#3FB8C4"))
-            else { setColor(Color.TRANSPARENT); setStroke(2, Color.parseColor("#243039")) }
+            if (filled) setColor(Color.parseColor("#FFE14D"))
+            else { setColor(Color.TRANSPARENT); setStroke(2, Color.parseColor("#26324A")) }
         }
         setPadding(0, 32, 0, 32)
         setOnClickListener { f() }
