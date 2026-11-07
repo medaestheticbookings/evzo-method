@@ -252,7 +252,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
     <!-- FOCUS -->
     <section id="v-focus">
       <div id="banners" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div><h2 id="hello"></h2></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><h2 id="hello"></h2><button class="iconbtn" id="guide-top">?</button></div>
       <a class="btn" id="get-apk" href="/growthlock.apk" download="growthlock.apk" style="display:none;text-decoration:none;text-align:center"></a>
       <p class="small" id="apk-note" style="display:none;margin-top:-8px"></p>
       <div class="card">
@@ -1625,6 +1625,7 @@ function openGuide(){
 }
 $("guide-close").addEventListener("click",function(){$("guidep").hidden=true});
 $("open-guide").addEventListener("click",openGuide);
+$("guide-top").addEventListener("click",openTour);
 
 /* ---------- the guide, shown once ---------- */
 var TOUR=[
@@ -2053,7 +2054,7 @@ function renderAll(){
 if(root.lang==="el"||root.lang==="en")li=root.lang==="en"?1:0;
 if(!root.lang){$("choose").hidden=false}
 else if(!root.active||!root.profiles[root.active]){startNick()}
-else{$("app").hidden=false;applySkin();if(!root.cookie&&!NATIVE)$("cookie").hidden=false}
+else{$("app").hidden=false;applySkin();if(!root.tour)setTimeout(openTour,250);else if(!root.cookie&&!NATIVE)$("cookie").hidden=false}
 applyLang();
 })();
 </script>
