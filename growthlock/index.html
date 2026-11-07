@@ -31,150 +31,186 @@ img{max-width:100%}
 [hidden]{display:none!important}
 button{font:inherit}
 
-/* Layout: one screen, three states — setup, session (dim lock panel), debrief. Vertical flex, stats low. */
+/* Tabbed one-screen app (Focus / World / Pet / Stats / Extras) with full-bleed dark overlays for the funeral, the session, the unlock gate and the debrief. Monsters are drawn in code, not imported. */
 :root{
-  --bg:#EDF1F4;
-  --surface:#FFFFFF;
-  --line:#D3DBE2;
-  --ink:#141D26;
-  --muted:#5C6B7A;
-  --accent:#0E7C86;
-  --accent-soft:#D6EAEC;
-  --slip:#B4522F;
-  --panel:#0C1116;
-  --panel-ink:#DCE6EC;
-  --panel-muted:#6B7C8A;
-  --on-accent:#FFFFFF;
+  --bg:#EDF1F4;--surface:#FFFFFF;--line:#D3DBE2;--ink:#141D26;--muted:#5C6B7A;
+  --accent:#0E7C86;--accent-soft:#D6EAEC;--slip:#B4522F;--gold:#B8862B;
+  --panel:#0C1116;--panel-2:#121920;--panel-line:#243039;--panel-ink:#DCE6EC;--panel-muted:#6B7C8A;
+  --teal:#3FB8C4;--flame:#D9774F;--on-accent:#FFFFFF;
   --font-display:"Instrument Serif",Georgia,"Times New Roman",serif;
   --font-body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0F1419;--surface:#18212A;--line:#2A3540;--ink:#E4EDF3;--muted:#8B9BA8;
-    --accent:#3FB8C4;--accent-soft:#1B3338;--slip:#D9774F;--on-accent:#05171A;
-    color-scheme:dark;
-  }
-}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1419;--surface:#18212A;--line:#2A3540;--ink:#E4EDF3;--muted:#8B9BA8;
+  --accent:#3FB8C4;--accent-soft:#1B3338;--slip:#D9774F;--gold:#D9AE57;--on-accent:#05171A;color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0F1419;--surface:#18212A;--line:#2A3540;--ink:#E4EDF3;--muted:#8B9BA8;
-  --accent:#3FB8C4;--accent-soft:#1B3338;--slip:#D9774F;--on-accent:#05171A;
-  color-scheme:dark;
-}
+  --accent:#3FB8C4;--accent-soft:#1B3338;--slip:#D9774F;--gold:#D9AE57;--on-accent:#05171A;color-scheme:dark}
+:root[data-skin="sunset"]{--accent:#C2553B;--accent-soft:#F6E0D8}
+:root[data-skin="sunset"][data-theme="dark"],:root[data-skin="sunset"] {--teal:#E08A6B}
+:root[data-skin="forest"]{--accent:#2F6B47;--accent-soft:#D8EADF;--teal:#6FC08C}
+:root[data-skin="violet"]{--accent:#5B4BA8;--accent-soft:#E2DEF5;--teal:#9A8BE8}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{
-  margin:0;background:var(--bg);color:var(--ink);
-  font-family:var(--font-body);font-size:16px;line-height:1.45;
-  -webkit-font-smoothing:antialiased;
-}
-.app{
-  min-height:100%;display:flex;flex-direction:column;gap:20px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));
-  padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-block:20px 24px;max-width:460px;margin:0 auto;
-}
-.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand .mark-wrap{display:flex;align-items:center;gap:10px;min-width:0}
-.brand h1{font-family:var(--font-display);font-size:30px;font-weight:400;letter-spacing:.01em;margin:0;line-height:1}
-.logo{width:34px;height:34px;flex:none;display:block}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:480px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.app{min-height:100%;display:flex;flex-direction:column;padding-bottom:82px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:11;background:var(--bg)}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:11px}
+.mark-wrap{display:flex;align-items:center;gap:9px;min-width:0}
+.mark-wrap h1{font-family:var(--font-display);font-size:22px;font-weight:400;margin:0;line-height:1;white-space:nowrap}
+.logo{width:26px;height:26px;flex:none;display:block}
 .logo .shackle{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round}
 .logo .body{fill:var(--accent-soft);stroke:var(--accent);stroke-width:5}
 .logo .bar{fill:var(--accent)}
-.lang{display:flex;gap:0;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex:none}
-.lang button{
-  font-family:var(--font-body);font-size:11px;letter-spacing:.1em;font-weight:500;
-  padding:7px 11px;border:none;background:transparent;color:var(--muted);cursor:pointer;line-height:1;
-}
-.lang button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.hbtns{display:flex;align-items:center;gap:6px;flex:none}
+.lvl{font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.iconbtn{font-family:var(--font-body);font-size:11px;font-weight:500;letter-spacing:.06em;padding:6px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;line-height:1}
+main{padding-block:16px 8px;display:flex;flex-direction:column;gap:16px}
+section{display:flex;flex-direction:column;gap:16px}
 h2{font-family:var(--font-display);font-weight:400;font-size:22px;margin:0;text-wrap:balance}
+h3{font-size:14px;font-weight:600;margin:0}
 p{margin:0}
-.lede{color:var(--muted);font-size:14px}
-.label{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);display:block;margin-bottom:8px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
-.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.chip{
-  font-family:var(--font-mono);font-size:15px;padding:14px 4px;border-radius:11px;
-  border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;text-align:center;line-height:1.1;
-}
-.chip small{display:block;font-family:var(--font-body);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.lede,.small{color:var(--muted);font-size:13px}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);display:block;margin-bottom:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:11px}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.chip{font-family:var(--font-mono);font-size:14px;padding:12px 2px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;text-align:center;line-height:1.1}
+.chip small{display:block;font-family:var(--font-body);font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 .chip[aria-pressed="true"] small{color:var(--accent)}
-input[type="text"],textarea{
-  width:100%;font-family:var(--font-body);font-size:16px;color:var(--ink);background:transparent;
-  border:none;border-bottom:1px solid var(--line);padding:8px 0;border-radius:0;
-}
-input[type="text"]:focus-visible,textarea:focus-visible{outline:none;border-bottom-color:var(--accent)}
-textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:vertical;min-height:76px;line-height:1.4}
-.btn{
-  font-family:var(--font-body);font-size:16px;font-weight:500;width:100%;padding:16px;border-radius:12px;
-  border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer;
-}
+input,textarea,select{width:100%;font-family:var(--font-body);font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none;border-color:var(--accent)}
+.btn{font-family:var(--font-body);font-size:16px;font-weight:500;width:100%;padding:15px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer}
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.sm{font-size:13px;padding:10px}
 .btn:disabled{opacity:.45;cursor:default}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:7px;flex-wrap:wrap}
+.row>*{flex:1 1 130px;min-width:0}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.stat{background:var(--surface);padding:12px 10px;min-width:0}
-.stat b{display:block;font-family:var(--font-mono);font-size:21px;font-weight:400;font-variant-numeric:tabular-nums;line-height:1.2}
-.stat span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.log{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
-.log li{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13px;min-width:0}
-.log li:first-child{border-top:none}
-.log .mins{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted);flex:none}
-.log .what{flex:1;min-width:0;overflow-wrap:anywhere;color:var(--ink)}
-.log .mark{flex:none;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
-.mark.clean{color:var(--accent)}
-.mark.broke{color:var(--slip)}
-.spacer{flex:1}
-.foot{font-size:12px;color:var(--muted);text-wrap:balance}
-
-/* session panel — deliberately dark in both themes, so the screen itself is boring */
-.session{
-  position:fixed;inset:0;background:var(--panel);color:var(--panel-ink);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;z-index:20;
-  padding-top:max(24px,env(safe-area-inset-top,0px));
-  padding-bottom:max(24px,env(safe-area-inset-bottom,0px));
-  padding-left:max(16px,env(safe-area-inset-left,0px));
-  padding-right:max(16px,env(safe-area-inset-right,0px));
-  text-align:center;overflow-y:auto;
-}
-.dial{position:relative;width:min(70vw,250px);aspect-ratio:1;max-width:100%;flex:none}
+.stat{background:var(--surface);padding:11px 9px;min-width:0}
+.stat b{display:block;font-family:var(--font-mono);font-size:19px;font-weight:400;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat span{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.list{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
+.list li{display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid var(--line);font-size:13px;min-width:0}
+.list li:first-child{border-top:none}
+.list .k{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted);flex:none}
+.list .v{flex:1;min-width:0;overflow-wrap:anywhere}
+.list .m{flex:none;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.m.ok{color:var(--accent)}.m.bad{color:var(--slip)}
+.tile{border:1px solid var(--line);border-radius:12px;padding:9px 6px;background:var(--surface);text-align:center;min-width:0}
+.tile svg{width:100%;height:auto;max-width:62px;display:block;margin:0 auto}
+.tile .nm{font-size:11px;margin-top:5px;overflow-wrap:anywhere}
+.tile .rr{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tile .em{font-size:24px;line-height:1.2}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.locked{opacity:.3}
+.heat{display:grid;grid-template-columns:repeat(15,1fr);gap:4px}
+.heat i{display:block;aspect-ratio:1;border-radius:3px;background:var(--line)}
+.hours{display:flex;align-items:flex-end;gap:3px;height:58px}
+.hours i{flex:1;background:var(--accent-soft);border-radius:2px 2px 0 0;min-height:2px}
+.hours i.on{background:var(--accent)}
+.banner{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:12px;padding:10px 12px;font-size:13px;text-wrap:balance}
+.banner.warn{border-color:var(--slip);background:transparent;color:var(--slip)}
+.pill{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;padding:4px 9px;border-radius:999px;border:1px solid currentColor}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{flex:1;padding:9px 4px;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);font-size:12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.days button{padding:8px 0;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:11px;cursor:pointer}
+.days button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.bingo{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.bingo button{aspect-ratio:1;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:10px;padding:6px;cursor:pointer;line-height:1.25;overflow:hidden}
+.bingo button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:12;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav .tabs{display:grid;grid-template-columns:repeat(5,1fr);max-width:480px;margin:0 auto}
+nav button{background:transparent;border:none;cursor:pointer;padding:8px 2px 9px;color:var(--muted);font-family:var(--font-body);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button .ic{font-size:16px;line-height:1}
+nav button[aria-pressed="true"]{color:var(--accent)}
+.cookie{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:14px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cookie .in{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+/* dark overlays */
+.panel{position:fixed;inset:0;background:var(--panel);color:var(--panel-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:30;text-align:center;overflow-y:auto;
+  padding:max(22px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(22px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.panel h2,.panel h3{color:var(--panel-ink)}
+.panel .sub{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--panel-muted)}
+.panel .muted{color:var(--panel-muted);font-size:13px;max-width:34ch;text-wrap:balance}
+.panel input,.panel textarea{background:var(--panel-2);border:1px solid var(--panel-line);color:var(--panel-ink)}
+.panel input.code{font-family:var(--font-mono);letter-spacing:.14em;text-align:center}
+.tools{display:flex;flex-direction:column;gap:9px;width:100%;max-width:330px}
+.flat{font-family:var(--font-body);font-size:14px;padding:12px;border-radius:11px;border:1px solid var(--panel-line);background:transparent;color:var(--panel-muted);cursor:pointer;width:100%}
+.flat.go{border-color:var(--teal);color:var(--teal)}
+.flat.danger{border-color:var(--flame);color:var(--flame)}
+.flat:disabled{opacity:.4;cursor:default}
+.flat .hint{display:block;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--panel-muted);margin-top:4px}
+.dial{position:relative;width:min(62vw,218px);aspect-ratio:1;flex:none;max-width:100%}
 .dial svg{width:100%;height:100%;display:block;transform:rotate(-90deg)}
 .dial .track{fill:none;stroke:#1E2731;stroke-width:5}
-.dial .prog{fill:none;stroke:#3FB8C4;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
-.dial .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.clock{font-family:var(--font-mono);font-weight:300;font-size:clamp(42px,14vw,58px);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
-.sub{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--panel-muted)}
-.intent{font-family:var(--font-display);font-size:20px;max-width:22ch;overflow-wrap:anywhere;color:var(--panel-ink)}
-.slips{font-size:12px;color:var(--panel-muted);min-height:1.2em}
-.slips.bad{color:#D9774F}
-.tools{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px}
-.flat{
-  font-family:var(--font-body);font-size:13px;padding:12px;border-radius:11px;
-  border:1px solid #243039;background:transparent;color:var(--panel-muted);cursor:pointer;width:100%;
-}
-.flat:disabled{opacity:.4;cursor:default}
-.flat.go{border-color:#3FB8C4;color:#3FB8C4}
+.dial .prog{fill:none;stroke:var(--teal);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
+.dial .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transform:none}
+.clock{font-family:var(--font-mono);font-weight:300;font-size:clamp(38px,12vw,52px);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+.intent{font-family:var(--font-display);font-size:19px;max-width:22ch;overflow-wrap:anywhere}
+.slips{font-size:12px;color:var(--panel-muted);min-height:1.2em;max-width:32ch;text-wrap:balance}
+.slips.bad{color:var(--flame)}
 .hold{position:relative;overflow:hidden}
-.hold .fill{position:absolute;inset:0 auto 0 0;width:0;background:#243039;pointer-events:none}
+.hold .fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--panel-line);pointer-events:none}
 .hold .txt{position:relative}
-.panel-box{width:100%;max-width:320px;display:flex;flex-direction:column;gap:9px}
-.panel-box textarea,.panel-box input[type="text"]{
-  background:#121920;border:1px solid #243039;border-radius:10px;padding:12px;color:var(--panel-ink);font-size:15px;
-}
-.panel-box input[type="text"]{font-family:var(--font-mono);letter-spacing:.2em;text-align:center}
-.panel-box input[type="text"]:focus-visible,.panel-box textarea:focus-visible{outline:none;border-color:#3FB8C4}
-.cost{font-size:13px;color:var(--panel-muted);text-wrap:balance}
-.cost b{color:#D9774F;font-weight:500}
-.done-big{font-family:var(--font-mono);font-size:38px;font-weight:300;font-variant-numeric:tabular-nums;line-height:1}
-.pill{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:5px 10px;border-radius:999px;border:1px solid currentColor}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.mon{width:112px;height:112px;display:block}
+.mon.big{width:150px;height:150px}
+.fune{font-family:var(--font-display);font-size:25px;max-width:18ch;text-wrap:balance;min-height:3em;display:flex;align-items:center;justify-content:center}
+.jail{position:relative;width:120px;height:186px;border:2px solid var(--panel-line);border-radius:12px;background:var(--panel-2);display:flex;align-items:center;justify-content:center;font-size:34px}
+.jail::after{content:"";position:absolute;inset:0;border-radius:10px;background:repeating-linear-gradient(90deg,transparent 0 15px,var(--panel-line) 15px 19px)}
+.sr{display:flex;flex-direction:column;gap:0;width:100%;max-width:330px;text-align:left}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:7px 0;border-top:1px solid var(--panel-line)}
+.kv:first-child{border-top:none}
+.kv b{font-family:var(--font-mono);font-weight:400;color:var(--panel-ink)}
+.kv span{color:var(--panel-muted);min-width:0}
+.wheel-wrap{position:relative;width:min(70vw,240px);aspect-ratio:1}
+.wheel{width:100%;height:100%;border-radius:50%;border:3px solid var(--panel-line);transition:transform 3.4s cubic-bezier(.17,.67,.21,1)}
+.needle{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:20px;z-index:2}
+.world{width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.world svg{display:block;width:100%;height:auto}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
-<div class="app" id="setup">
-  <div class="brand">
+<!-- 1. language -->
+<div class="panel" id="choose" hidden>
+  <svg class="logo" style="width:60px;height:60px" viewBox="0 0 64 64" role="img" aria-label="GrowthLock">
+    <path d="M20 32 V23 a12 12 0 0 1 24 0 V32" fill="none" stroke="#3FB8C4" stroke-width="7" stroke-linecap="round"></path>
+    <rect x="12" y="29" width="40" height="26" rx="7" fill="#12343A" stroke="#3FB8C4" stroke-width="5"></rect>
+    <rect x="20.75" y="42" width="5.5" height="7" rx="1.5" fill="#3FB8C4"></rect>
+    <rect x="29.25" y="38" width="5.5" height="11" rx="1.5" fill="#3FB8C4"></rect>
+    <rect x="37.75" y="34" width="5.5" height="15" rx="1.5" fill="#3FB8C4"></rect>
+  </svg>
+  <h2 style="font-size:30px">GrowthLock</h2>
+  <div class="tools">
+    <button class="flat" data-pick="el">Ελληνικά<span class="hint">Συνέχισε στα ελληνικά</span></button>
+    <button class="flat" data-pick="en">English<span class="hint">Continue in English</span></button>
+  </div>
+</div>
+
+<!-- 2. nickname + companion -->
+<div class="panel" id="nick" hidden>
+  <p class="sub" id="nick-sub"></p>
+  <h2 id="nick-title"></h2>
+  <div class="tools">
+    <input type="text" id="nick-input" maxlength="18" autocomplete="off">
+    <p class="muted" id="nick-pickline"></p>
+    <div class="row" id="nick-monsters" style="gap:8px"></div>
+    <button class="flat go" id="nick-go"></button>
+  </div>
+</div>
+
+<div class="app" id="app" hidden>
+  <header><div class="wrap hrow">
     <div class="mark-wrap">
-      <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="GrowthLock">
+      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
         <path class="shackle" d="M20 32 V23 a12 12 0 0 1 24 0 V32"></path>
         <rect class="body" x="12" y="29" width="40" height="26" rx="7"></rect>
         <rect class="bar" x="20.75" y="42" width="5.5" height="7" rx="1.5"></rect>
@@ -183,422 +219,1226 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
       </svg>
       <h1>GrowthLock</h1>
     </div>
-    <div class="lang" role="group" aria-label="Γλώσσα / Language">
-      <button type="button" data-lang="el" aria-pressed="true">ΕΛ</button>
-      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    <div class="hbtns">
+      <span class="lvl" id="lvl-pill">Lv 1</span>
+      <button class="iconbtn" id="lang-btn">EN</button>
     </div>
-  </div>
+  </div></header>
 
-  <div>
-    <h2 data-t="h2"></h2>
-    <p class="lede" data-t="lede"></p>
-  </div>
+  <main class="wrap">
+    <!-- FOCUS -->
+    <section id="v-focus">
+      <div id="banners" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div><h2 id="hello"></h2><p class="lede" data-t="lede"></p></div>
+      <div class="card">
+        <div>
+          <span class="label" data-t="howlong"></span>
+          <div class="chips" id="chips">
+            <button class="chip" data-min="15" aria-pressed="false">15<small data-t="min"></small></button>
+            <button class="chip" data-min="25" aria-pressed="true">25<small data-t="min"></small></button>
+            <button class="chip" data-min="45" aria-pressed="false">45<small data-t="min"></small></button>
+            <button class="chip" data-min="90" aria-pressed="false">90<small data-t="min"></small></button>
+            <button class="chip" data-min="180" aria-pressed="false">180<small data-t="min"></small></button>
+          </div>
+        </div>
+        <div class="row">
+          <input type="text" id="custom-min" inputmode="numeric" maxlength="4" data-tp="customph">
+          <button class="btn sm ghost" id="custom-go" data-t="usecustom"></button>
+        </div>
+        <div>
+          <span class="label" data-t="doing"></span>
+          <input type="text" id="intent-input" data-tp="doingph" maxlength="70" autocomplete="off">
+        </div>
+        <div>
+          <span class="label" data-t="strictness"></span>
+          <div class="seg" id="strict-seg">
+            <button data-s="flex" aria-pressed="false" data-t="sFlex"></button>
+            <button data-s="int" aria-pressed="true" data-t="sInt"></button>
+            <button data-s="strict" aria-pressed="false" data-t="sStrict"></button>
+          </div>
+          <p class="small" id="strict-note" style="margin-top:7px"></p>
+        </div>
+        <div class="row">
+          <button class="btn sm ghost" id="pick-task" data-t="fromtasks"></button>
+          <button class="btn sm ghost" id="toggle-dare" data-t="daremode"></button>
+          <button class="btn sm ghost" id="toggle-pomo" data-t="pomo"></button>
+        </div>
+      </div>
+      <button class="btn" id="start" data-t="start"></button>
+      <div class="row">
+        <button class="btn sm ghost" id="five" data-t="fivemin"></button>
+        <button class="btn sm ghost" id="leaveit" data-t="leaveit"></button>
+        <button class="btn sm ghost" id="bored" data-t="boredbtn"></button>
+      </div>
+      <div>
+        <span class="label" data-t="today"></span>
+        <div class="stats">
+          <div class="stat"><b id="s-mins">0</b><span data-t="minutes"></span></div>
+          <div class="stat"><b id="s-blocks">0</b><span data-t="blocks"></span></div>
+          <div class="stat"><b id="s-streak">0</b><span data-t="streak"></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 data-t="quests"></h3>
+        <ul class="list" id="quest-list"></ul>
+      </div>
+      <div class="card">
+        <h3 data-t="tasks"></h3>
+        <div class="row" style="gap:6px">
+          <input type="text" id="task-input" data-tp="taskph" maxlength="60" style="flex:3 1 170px">
+          <button class="btn sm" id="task-add" style="flex:1 1 68px" data-t="add"></button>
+        </div>
+        <ul class="list" id="task-list"></ul>
+      </div>
+      <div class="card" id="parked-card" hidden>
+        <h3 data-t="parked"></h3>
+        <ul class="list" id="parked"></ul>
+        <button class="btn sm ghost" id="clear-parked" data-t="clearparked"></button>
+      </div>
+    </section>
 
-  <div class="card">
-    <span class="label" data-t="howlong"></span>
-    <div class="chips" role="group" data-ta="howlong">
-      <button class="chip" data-min="15" aria-pressed="false">15<small data-t="min"></small></button>
-      <button class="chip" data-min="25" aria-pressed="true">25<small data-t="min"></small></button>
-      <button class="chip" data-min="45" aria-pressed="false">45<small data-t="min"></small></button>
-      <button class="chip" data-min="90" aria-pressed="false">90<small data-t="min"></small></button>
-    </div>
-    <div style="margin-top:16px">
-      <label class="label" for="intent-input" data-t="doing"></label>
-      <input type="text" id="intent-input" data-tp="doingph" maxlength="70" autocomplete="off">
-    </div>
-  </div>
+    <!-- WORLD -->
+    <section id="v-world" hidden>
+      <div><h2 data-t="worldTitle"></h2><p class="lede" data-t="worldLede"></p></div>
+      <div class="world" id="world"></div>
+      <div class="stats">
+        <div class="stat"><b id="w-trees">0</b><span data-t="trees"></span></div>
+        <div class="stat"><b id="w-stars">0</b><span data-t="nightstars"></span></div>
+        <div class="stat"><b id="w-books">0</b><span data-t="books"></span></div>
+      </div>
+      <div class="card">
+        <h3 data-t="bingo"></h3>
+        <p class="small" data-t="bingoLede"></p>
+        <div class="bingo" id="bingo"></div>
+      </div>
+      <div class="card">
+        <h3 data-t="shop"></h3>
+        <p class="small" id="shop-stars"></p>
+        <ul class="list" id="shop-list"></ul>
+        <div class="row" style="gap:6px">
+          <input type="text" id="shop-name" data-tp="shopph" maxlength="40" style="flex:3 1 150px">
+          <input type="text" id="shop-cost" inputmode="numeric" maxlength="4" data-tp="costph" style="flex:1 1 70px">
+          <button class="btn sm" id="shop-add" style="flex:1 1 68px" data-t="add"></button>
+        </div>
+      </div>
+    </section>
 
-  <button class="btn" id="start" data-t="start"></button>
+    <!-- PET -->
+    <section id="v-pets" hidden>
+      <div><h2 data-t="petsTitle"></h2><p class="lede" data-t="petsLede"></p></div>
+      <div class="card" style="align-items:center;text-align:center">
+        <div id="pet-art"></div>
+        <h3 id="pet-name"></h3>
+        <p class="small" id="pet-mood"></p>
+        <p class="small" id="pet-line" style="text-wrap:balance"></p>
+      </div>
+      <div class="card">
+        <h3 data-t="eggStatus"></h3>
+        <p class="small" data-t="eggLine"></p>
+      </div>
+      <div><span class="label" data-t="collection"></span><div class="grid3" id="pet-grid"></div></div>
+      <div><span class="label" data-t="discovered"></span><div class="grid3" id="planet-grid"></div></div>
+    </section>
 
-  <div>
-    <span class="label" data-t="today"></span>
-    <div class="stats">
-      <div class="stat"><b id="s-mins">0</b><span data-t="minutes"></span></div>
-      <div class="stat"><b id="s-blocks">0</b><span data-t="blocks"></span></div>
-      <div class="stat"><b id="s-streak">0</b><span data-t="streak"></span></div>
-    </div>
-  </div>
+    <!-- STATS -->
+    <section id="v-stats" hidden>
+      <div><h2 data-t="statsTitle"></h2><p class="lede" id="life-line"></p></div>
+      <div class="card">
+        <h3 data-t="lifescore"></h3>
+        <div class="bar"><i id="life-bar" style="width:0%"></i></div>
+        <p class="small" id="life-break"></p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="r-week">0</b><span data-t="thisweek"></span></div>
+        <div class="stat"><b id="r-month">0</b><span data-t="thismonth"></span></div>
+        <div class="stat"><b id="r-total">0</b><span data-t="totalh"></span></div>
+      </div>
+      <div class="card">
+        <h3 data-t="calendar"></h3>
+        <div class="heat" id="heat"></div>
+        <p class="small" data-t="heatnote"></p>
+      </div>
+      <div class="card">
+        <h3 data-t="distribution"></h3>
+        <div class="hours" id="hours"></div>
+        <p class="small" id="best-hour"></p>
+      </div>
+      <div class="card">
+        <h3 data-t="moodTitle"></h3>
+        <p class="small" id="mood-summary"></p>
+      </div>
+      <div class="card">
+        <h3 data-t="coach"></h3>
+        <ul class="list" id="coach-list"></ul>
+      </div>
+      <div class="card">
+        <h3 data-t="report"></h3>
+        <p class="small" id="report-text" style="white-space:pre-line"></p>
+        <button class="btn sm ghost" id="copy-report" data-t="copyreport"></button>
+      </div>
+      <div><span class="label" data-t="recent"></span><ul class="list" id="log"></ul></div>
+    </section>
 
-  <div id="log-wrap" hidden>
-    <span class="label" data-t="recent"></span>
-    <ul class="log" id="log"></ul>
-  </div>
+    <!-- EXTRAS -->
+    <section id="v-more" hidden>
+      <div><h2 data-t="moreTitle"></h2></div>
+      <div class="card">
+        <h3 data-t="schedules"></h3>
+        <p class="small" data-t="schednote"></p>
+        <div class="days" id="sched-days"></div>
+        <div class="row">
+          <input type="time" id="sched-time" value="09:00">
+          <input type="text" id="sched-len" inputmode="numeric" maxlength="4" value="25">
+        </div>
+        <button class="btn sm" id="sched-add" data-t="addsched"></button>
+        <ul class="list" id="sched-list"></ul>
+      </div>
+      <div class="card">
+        <h3 data-t="bedtimeT"></h3>
+        <div class="row">
+          <label class="small" style="display:flex;flex-direction:column;gap:5px"><span data-t="bedtime"></span><input type="time" id="set-bed"></label>
+          <label class="small" style="display:flex;flex-direction:column;gap:5px"><span data-t="morning"></span><input type="time" id="set-morn"></label>
+        </div>
+        <label class="small" style="display:flex;flex-direction:column;gap:5px"><span data-t="breaklen"></span><input type="text" id="set-break" inputmode="numeric" maxlength="3"></label>
+      </div>
+      <div><span class="label" data-t="achievements"></span><div class="grid4" id="ach-grid"></div></div>
+      <div class="card">
+        <h3 data-t="wheelTitle"></h3>
+        <p class="small" data-t="wheelLede"></p>
+        <button class="btn sm ghost" id="open-wheel" data-t="spin"></button>
+      </div>
+      <div class="card">
+        <h3 data-t="excuseTitle"></h3>
+        <p class="small" id="excuse-out" style="text-wrap:balance"></p>
+        <button class="btn sm ghost" id="gen-excuse" data-t="excuseBtn"></button>
+      </div>
+      <div class="card">
+        <h3 data-t="museum"></h3>
+        <p class="small" data-t="museumLede"></p>
+        <ul class="list" id="museum-list"></ul>
+      </div>
+      <div class="card">
+        <h3 data-t="secret"></h3>
+        <p class="small" id="secret-line"></p>
+        <div id="secret-body" hidden style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn sm ghost" id="secret-dare" data-t="takedare"></button>
+          <button class="btn sm ghost" id="secret-legend" data-t="legendrun"></button>
+        </div>
+      </div>
+      <div class="card">
+        <h3 data-t="theme"></h3>
+        <div class="seg" id="mode-seg">
+          <button data-mode="system" aria-pressed="true" data-t="mSys"></button>
+          <button data-mode="light" aria-pressed="false" data-t="mLight"></button>
+          <button data-mode="dark" aria-pressed="false" data-t="mDark"></button>
+        </div>
+        <div class="seg" id="skin-seg">
+          <button data-skin="" aria-pressed="true">1</button>
+          <button data-skin="sunset" aria-pressed="false">2</button>
+          <button data-skin="forest" aria-pressed="false">3</button>
+          <button data-skin="violet" aria-pressed="false">4</button>
+        </div>
+        <label class="small" style="display:flex;flex-direction:column;gap:5px"><span data-t="sound"></span>
+          <select id="set-sound"><option value="chord">1</option><option value="bell">2</option><option value="blip">3</option><option value="gong">4</option></select></label>
+        <button class="btn sm ghost" id="test-sound" data-t="testsound"></button>
+        <label class="small" style="display:flex;align-items:center;gap:9px"><input type="checkbox" id="set-quiet" style="width:auto"><span data-t="quietmode"></span></label>
+      </div>
+      <div class="card">
+        <h3 data-t="people"></h3>
+        <p class="small" data-t="peopleLede"></p>
+        <ul class="list" id="profile-list"></ul>
+        <div class="row" style="gap:6px">
+          <input type="text" id="profile-input" data-tp="nameph" maxlength="24" style="flex:3 1 160px">
+          <button class="btn sm" id="profile-add" style="flex:1 1 68px" data-t="add"></button>
+        </div>
+        <button class="btn sm ghost" id="copy-pact" data-t="pact"></button>
+      </div>
+      <div class="card">
+        <h3 data-t="emergency"></h3>
+        <p class="small" data-t="emergencyLede"></p>
+        <input type="text" id="set-emg" data-tp="emgph" maxlength="60">
+      </div>
+      <div class="card">
+        <h3 data-t="dataTitle"></h3>
+        <p class="small" data-t="dataLede"></p>
+        <div class="row">
+          <button class="btn sm ghost" id="export-data" data-t="exportd"></button>
+          <button class="btn sm ghost" id="wipe-data" data-t="wiped"></button>
+        </div>
+      </div>
+      <div class="card">
+        <h3 data-t="honestT"></h3>
+        <ul class="list" id="honest-list"></ul>
+      </div>
+    </section>
+  </main>
 
-  <div id="parked-wrap" hidden>
-    <span class="label" data-t="parked"></span>
-    <ul class="log" id="parked"></ul>
-    <button class="btn ghost" id="clear-parked" style="margin-top:10px;font-size:13px;padding:10px" data-t="clearparked"></button>
-  </div>
-
-  <div class="spacer"></div>
-  <p class="foot" data-t="foot"></p>
+  <nav><div class="tabs">
+    <button data-view="focus" aria-pressed="true"><span class="ic">🔒</span><span data-t="tabFocus"></span></button>
+    <button data-view="world" aria-pressed="false"><span class="ic">🌱</span><span data-t="tabWorld"></span></button>
+    <button data-view="pets" aria-pressed="false"><span class="ic">👾</span><span data-t="tabPets"></span></button>
+    <button data-view="stats" aria-pressed="false"><span class="ic">📊</span><span data-t="tabStats"></span></button>
+    <button data-view="more" aria-pressed="false"><span class="ic">✦</span><span data-t="tabMore"></span></button>
+  </div></nav>
 </div>
 
-<div class="session" id="session" hidden>
+<!-- funny cookie notice -->
+<div class="cookie" id="cookie" hidden><div class="in">
+  <h3 id="ck-title"></h3>
+  <p class="small" id="ck-body"></p>
+  <div class="row">
+    <button class="btn sm" id="ck-ok"></button>
+    <button class="btn sm ghost" id="ck-no"></button>
+  </div>
+</div></div>
+
+<!-- mood check -->
+<div class="panel" id="mood" hidden>
+  <p class="sub" id="mood-when"></p>
+  <h2 id="mood-q"></h2>
+  <div class="tools" id="mood-opts"></div>
+  <button class="flat" id="mood-skip"></button>
+</div>
+
+<!-- funeral -->
+<div class="panel" id="funeral" hidden>
+  <p class="sub" data-t="funeralSub"></p>
+  <div class="fune" id="fune-line"></div>
+  <div class="jail">📱</div>
+  <button class="flat" id="fune-skip" data-t="skip"></button>
+</div>
+
+<!-- session -->
+<div class="panel" id="session" hidden>
   <p class="intent" id="s-intent"></p>
   <div class="dial">
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <circle class="track" cx="50" cy="50" r="45"></circle>
       <circle class="prog" id="prog" cx="50" cy="50" r="45" stroke-dasharray="282.74" stroke-dashoffset="0"></circle>
     </svg>
-    <div class="inner">
-      <div class="clock" id="clock" role="timer" aria-live="off">25:00</div>
-      <div class="sub" id="sub" data-t="remaining"></div>
-    </div>
+    <div class="inner"><div class="clock" id="clock">25:00</div><div class="sub" id="sub"></div></div>
   </div>
+  <div id="s-pet"></div>
+  <p class="sub" id="jail-line"></p>
   <p class="slips" id="slips"></p>
-
   <div class="tools" id="tools">
     <button class="flat" id="park-open" data-t="parkopen"></button>
     <button class="flat hold" id="quit"><span class="fill" id="quit-fill"></span><span class="txt" data-t="holdunlock"></span></button>
   </div>
-
-  <div class="panel-box" id="parkbox" hidden>
+  <div class="tools" id="parkbox" hidden>
     <textarea id="park-text" data-tp="parkph" maxlength="200"></textarea>
     <button class="flat go" id="park-save" data-t="parksave"></button>
     <button class="flat" id="park-cancel" data-t="parkcancel"></button>
   </div>
-
-  <div class="panel-box" id="gate" hidden>
-    <p class="sub" data-t="gatetitle"></p>
-    <p class="cost" id="gate-cost"></p>
-    <input type="text" id="gate-word" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
-    <button class="flat go" id="gate-go" disabled></button>
-    <button class="flat" id="gate-cancel" data-t="gatekeep"></button>
+  <div class="tools" id="gate" hidden>
+    <p class="sub" id="gate-step"></p>
+    <h3 id="gate-title"></h3>
+    <p class="muted" id="gate-body" style="margin:0 auto"></p>
+    <div class="sr" id="gate-cost"></div>
+    <input type="text" class="code" id="gate-word" autocomplete="off" autocapitalize="characters" spellcheck="false" hidden>
+    <button class="flat go" id="gate-next"></button>
+    <button class="flat" id="gate-keep" data-t="gatekeep"></button>
+    <button class="flat danger" id="gate-emg" data-t="emgbtn"></button>
   </div>
 </div>
 
-<div class="session" id="done" hidden>
+<!-- debrief -->
+<div class="panel" id="done" hidden>
   <p class="sub" id="d-kicker"></p>
-  <div class="done-big" id="d-mins"></div>
-  <p class="intent" id="d-intent"></p>
+  <div id="d-art"></div>
+  <h2 id="d-title"></h2>
   <p><span class="pill" id="d-pill"></span></p>
-  <p class="slips" id="d-note"></p>
+  <p class="muted" id="d-note"></p>
+  <div class="sr" id="d-rewards"></div>
+  <p class="muted" id="d-fortune" style="font-family:var(--font-display);font-size:18px"></p>
   <div class="tools">
     <button class="flat go" id="again" data-t="again"></button>
     <button class="flat" id="back" data-t="backhome"></button>
   </div>
 </div>
 
+<!-- wheel -->
+<div class="panel" id="wheelp" hidden>
+  <p class="sub" data-t="wheelTitle"></p>
+  <div class="wheel-wrap"><div class="needle">▼</div><div class="wheel" id="wheel"></div></div>
+  <p class="muted" id="wheel-out"></p>
+  <div class="tools">
+    <button class="flat go" id="wheel-spin" data-t="spin"></button>
+    <button class="flat" id="wheel-close" data-t="close"></button>
+  </div>
+</div>
+
 <script>
 (function(){
-  "use strict";
+"use strict";
+var D={
+lede:["Ξεκίνα ένα μπλοκ και άσε το κινητό. Αλλαγή εφαρμογής ή άναμμα οθόνης μετράει ως ολίσθηση.","Start a block and put the phone down. Switching apps or waking the screen counts as a slip."],
+howlong:["Διάρκεια","How long"],min:["λεπτά","min"],customph:["Δικά σου λεπτά","Your own minutes"],usecustom:["Χρήση","Use"],
+doing:["Τι θα κάνεις","What are you doing"],doingph:["Τα follow-up των πελατών","Client follow-ups"],
+strictness:["Αυστηρότητα","Strictness"],sFlex:["Χαλαρό","Flexible"],sInt:["Σκόπιμο","Intentional"],sStrict:["Locked","Locked"],
+nFlex:["Βγαίνεις με ένα πάτημα.","One tap and you are out."],
+nInt:["Κράτημα, λόγος, 10″ αναμονή και μια λέξη.","Hold, a reason, a 10-second wait and one word."],
+nStrict:["30″ αναμονή, μεγάλη φράση, χωρίς παρκάρισμα σκέψεων. Η έξοδος έκτακτης ανάγκης μένει πάντα.","30-second wait, a long phrase, no parking thoughts. The emergency exit always stays."],
+fromtasks:["Από τις εργασίες","From tasks"],daremode:["Dare: off","Dare: off"],daremodeOn:["Dare: ON","Dare: ON"],
+pomo:["Pomodoro: off","Pomodoro: off"],pomoOn:["Pomodoro: ON","Pomodoro: ON"],
+start:["Ξεκίνα μπλοκ","Start block"],fivemin:["Ο κανόνας των 5′","The 5-minute rule"],leaveit:["Just leave it","Just leave it"],boredbtn:["Βαριέμαι","I'm bored"],
+today:["Σήμερα","Today"],minutes:["λεπτά","minutes"],blocks:["μπλοκ","blocks"],streak:["σερί","clean run"],
+quests:["Αποστολές ημέρας","Daily quests"],
+tasks:["Λίστα εργασιών","To-do list"],taskph:["Νέα εργασία","New task"],add:["Πρόσθεσε","Add"],
+parked:["Σκέψεις σε αναμονή","Parked thoughts"],clearparked:["Καθάρισε τη λίστα","Clear the list"],
+recent:["Πρόσφατα μπλοκ","Recent blocks"],
+tabFocus:["Focus","Focus"],tabWorld:["Κόσμος","World"],tabPets:["Πλάσμα","Pet"],tabStats:["Στατιστικά","Stats"],tabMore:["Έξτρα","Extras"],
+worldTitle:["Ο κόσμος σου","Your world"],
+worldLede:["Κάθε ολοκληρωμένο μπλοκ φυτεύει κάτι. Τα διακοπτόμενα μπλοκ δεν καταστρέφουν τίποτα — απλώς δεν φυτεύουν.","Every finished block plants something. Interrupted blocks destroy nothing — they just plant nothing."],
+trees:["δέντρα","trees"],nightstars:["αστέρια","stars"],books:["βιβλία","books"],
+bingo:["Bingo της εβδομάδας","Weekly bingo"],bingoLede:["Δηλώνεις μόνος σου τι έκανες. Δεν το μετράει η εφαρμογή.","You tick these yourself. The app does not measure them."],
+shop:["Το μαγαζί σου","Your reward shop"],shopph:["Καφές στο αγαπημένο","Coffee at your spot"],costph:["Πόντοι","Cost"],
+petsTitle:["Το πλάσμα σου","Your creature"],
+petsLede:["Κάθε καθαρό μπλοκ εκκολάπτει ένα. Μεγαλύτερο μπλοκ, σπανιότερο πλάσμα. Κανένα δεν πεθαίνει εδώ.","Every clean block hatches one. Longer block, rarer creature. None of them ever dies."],
+eggStatus:["Το αυγό","The egg"],
+eggLine:["Το αυγό σπάει μόνο αν τελειώσεις το μπλοκ χωρίς ολίσθηση.","The egg only cracks if you finish the block with no slips."],
+collection:["Η συλλογή","Collection"],discovered:["Πλανήτες","Planets"],
+statsTitle:["Η εικόνα σου","Your picture"],lifescore:["Life score","Life score"],
+thisweek:["λεπτά/εβδ.","min this week"],thismonth:["λεπτά/μήνα","min this month"],totalh:["ώρες focus","focus hours"],
+calendar:["Ημερολόγιο focus","Focus calendar"],heatnote:["Οι τελευταίες 30 μέρες.","The last 30 days."],
+distribution:["Κατανομή μέσα στη μέρα","Distribution across the day"],
+moodTitle:["Διάθεση πριν και μετά","Mood before and after"],
+coach:["Ο προπονητής","Your coach"],report:["Αναφορά","Report"],copyreport:["Αντίγραψε","Copy"],
+moreTitle:["Έξτρα","Extras"],achievements:["Επιτεύγματα","Achievements"],
+schedules:["Αυτόματο πρόγραμμα","Automatic schedule"],
+schednote:["Διάλεξε μέρες και ώρα. Όταν έρθει η ώρα και η εφαρμογή είναι ανοιχτή, σε ειδοποιεί και ξεκινάει με ένα πάτημα.","Pick days and a time. When it comes round and the app is open, it tells you and starts with one tap."],
+addsched:["Πρόσθεσε στο πρόγραμμα","Add to the schedule"],
+bedtimeT:["Ύπνος και πρωί","Bedtime and morning"],bedtime:["Ώρα ύπνου","Bedtime"],morning:["Πρωινή πρόκληση","Morning challenge"],breaklen:["Διάλειμμα (λεπτά)","Break (minutes)"],
+wheelTitle:["Μυστική αποστολή","Secret mission"],wheelLede:["Γύρνα τον τροχό και κάν' το χωρίς κινητό.","Spin it and do it phone-free."],spin:["Γύρνα τον","Spin"],close:["Κλείσε","Close"],
+excuseTitle:["Γεννήτρια δικαιολογιών","Excuse generator"],excuseBtn:["Δώσε μου μια δικαιολογία","Give me an excuse"],
+museum:["Μουσείο ντροπής","Shame museum"],museumLede:["Η ιδιωτική συλλογή των αποτυχιών σου.","Your private collection of failed attempts."],
+secret:["Μυστικό δωμάτιο","Secret room"],takedare:["Πάρε ένα dare","Take a dare"],legendrun:["24ωρος θρύλος: οι κανόνες","24-hour legend: the rules"],
+theme:["Εμφάνιση","Appearance"],mSys:["Αυτόματο","Auto"],mLight:["Φωτεινό","Light"],mDark:["Σκοτεινό","Dark"],sound:["Ήχος λήξης","Finish sound"],testsound:["Άκου τον","Hear it"],
+quietmode:["Ήσυχη λειτουργία: χωρίς παιχνίδι, μόνο ο χρόνος","Quiet mode: no game, just the timer"],
+people:["Ζευγάρι / οικογένεια","Couple / family"],peopleLede:["Πολλά προφίλ στην ίδια συσκευή, το καθένα με δικό του σερί.","Several profiles on this device, each with its own run."],
+nameph:["Όνομα","Name"],pact:["Αντίγραψε το συμφωνητικό","Copy the pact"],
+emergency:["Έκτακτη ανάγκη","Emergency"],
+emergencyLede:["Ποιον περιμένεις σε έκτακτη ανάγκη. Στο ξεκλείδωμα υπάρχει κουμπί που σε βγάζει αμέσως, χωρίς πρόκληση και χωρίς ποινή.","Who you're waiting on in a real emergency. The unlock screen has a button that lets you out instantly, no challenge, no penalty."],
+emgph:["π.χ. η μητέρα μου","e.g. my mother"],
+dataTitle:["Τα δεδομένα σου","Your data"],
+dataLede:["Όλα μένουν σε αυτή τη συσκευή. Τίποτα δεν φεύγει, τίποτα δεν πουλιέται.","Everything stays on this device. Nothing leaves, nothing is sold."],
+exportd:["Εξαγωγή","Export"],wiped:["Διαγραφή όλων","Delete everything"],
+honestT:["Τι δεν κάνει","What it does not do"],
+remaining:["απομένουν","remaining"],elapsed:["πέρασαν","elapsed"],focus:["Συγκέντρωση","Focus"],
+clean:["Καθαρό μέχρι τώρα","Clean so far"],
+parkopen:["Γράψε τη σκέψη αντί να ξεκλειδώσεις","Park a thought instead of unlocking"],
+parkagain:["Γράφτηκε. Κι άλλη;","Parked. Another?"],parkph:["Αυτό που μόλις θυμήθηκες…","The thing you just remembered…"],
+parksave:["Αποθήκευσε και συνέχισε","Save and keep going"],parkcancel:["Άφησέ το","Never mind"],
+holdunlock:["Κράτα πατημένο για ξεκλείδωμα","Hold to unlock"],
+gatekeep:["Συνέχισε το μπλοκ","Keep going"],emgbtn:["Έκτακτη ανάγκη — βγες τώρα","Emergency — let me out"],
+sure:["Σίγουρα;","Are you sure?"],sureBody:["Να τι χάνεις αν βγεις τώρα.","Here is what you lose if you walk out now."],
+lose1:["Λεπτά που απομένουν","Minutes left"],lose2:["Το αυγό","The egg"],lose3:["Το σερί","The clean run"],lose4:["XP","XP"],
+cont:["Συνέχισε","Continue"],roastStep:["Μία κουβέντα πρώτα","A word first"],
+waitn:["Περίμενε {n}″","Wait {n}s"],typeword:["Γράψε: {w}","Type: {w}"],unlock:["Ξεκλείδωσε","Unlock"],
+funeralSub:["Η κηδεία του κινητού","The phone funeral"],skip:["Παράλειψη","Skip"],
+jailLine:["Το κινητό εκτίει ποινή {m}′","The phone is serving {m} min"],
+finished:["Το μπλοκ τελείωσε","Block finished"],endedearly:["Σταμάτησε νωρίς","Ended early"],
+pillclean:["Καθαρό","Clean"],pillcut:["Κόπηκε","Cut short"],
+noteclean:["Δεν άγγιξες το κινητό καθόλου.","Phone untouched the whole way."],
+again:["Άλλο ένα","Start another"],backhome:["Τέλος για τώρα","Done for now"],
+markclean:["καθαρό","clean"],
+xpGain:["XP","XP"],starsGain:["Πόντοι","Points"],hatched:["Εκκολάφθηκε","Hatched"],planetFound:["Νέος πλανήτης","New planet"],
+newLevel:["Νέο επίπεδο","Level up"],doubleXp:["Power-up: διπλά XP","Power-up: double XP"],trophy:["Τρόπαιο","Trophy"],
+planted:["Φυτεύτηκε","Planted"],
+legendRules:["Έξι μπλοκ και 240 λεπτά μέσα στην ίδια μέρα.","Six blocks and 240 minutes inside one day."],
+locked10:["Ανοίγει στα 10 ολοκληρωμένα μπλοκ. Έχεις {n}.","Opens at 10 finished blocks. You have {n}."],
+unlocked:["Ανοιχτό.","Open."],copied:["Αντιγράφηκε","Copied"],
+bedSoon:["Ύπνος σε {n}′. Κλείσ' το.","Bedtime in {n} min. Put it down."],
+nightCh:["Νυχτερινή πρόκληση: κανένα scroll μέχρι το πρωί.","Night challenge: no scrolling until morning."],
+morningCh:["Πρωινή πρόκληση: μία ώρα χωρίς οθόνη.","Morning challenge: one screen-free hour."],
+schedDue:["Προγραμματισμένο μπλοκ {m}′ τώρα. Ξεκίνα.","A scheduled {m}-minute block is due. Start it."],
+dareOn:["Dare: χωρίς παρκάρισμα, 30″ στο ξεκλείδωμα, διπλά XP.","Dare: no parking, 30s at the unlock, double XP."],
+pomoOnMsg:["Μετά το μπλοκ ξεκινάει αυτόματα διάλειμμα, μετά νέο μπλοκ.","After the block a break starts automatically, then another block."],
+breakTime:["Διάλειμμα","Break"],
+pickTask:["Βάλε πρώτα μια εργασία στη λίστα.","Put a task in the list first."],
+noPets:["Κανένα πλάσμα ακόμα","No creatures yet"],
+nickSub:["Πριν ξεκινήσουμε","Before we start"],nickTitle:["Πώς σε λένε;","What should we call you?"],
+nickPh:["Το ψευδώνυμό σου","Your nickname"],nickPick:["Διάλεξε τον σύντροφό σου.","Pick your companion."],
+nickGo:["Ξεκίνα","Begin"],
+hello:["Γεια σου {n}.","Hello {n}."],
+ckTitle:["Μπισκότα; Όχι σήμερα.","Cookies? Not today."],
+ckBody:["Δεν βάζουμε cookies, δεν έχουμε διακομιστή, δεν σε παρακολουθεί κανείς. Ό,τι γράψεις μένει σε αυτό το κινητό — αν καθαρίσεις τον browser, χάθηκε κι αυτό. Το μόνο που σε παρακολουθεί εδώ είναι ένα τέρας που σε κρίνει σιωπηλά.","We set no cookies, we have no server, nobody is watching. What you write stays on this phone — clear your browser and it's gone too. The only thing tracking you here is a monster that judges you quietly."],
+ckOk:["Εντάξει, καλό","Fine by me"],ckNo:["Δώσ' μου τα μπισκότα","I wanted cookies"],
+ckNoMsg:["Δεν έχουμε. Πάρε ένα τέρας.","We have none. Have a monster instead."],
+moodBefore:["Πριν","Before"],moodAfter:["Μετά","After"],
+moodQ:["Πώς νιώθεις;","How do you feel?"],moodSkip:["Προσπέρασε","Skip"],
+moodNone:["Κάνε μερικά check-in για να δεις μοτίβο.","Do a few check-ins and a pattern will show."],
+moodLine:["Πριν {a} → μετά {b} κατά μέσο όρο, σε {n} μπλοκ.","Before {a} → after {b} on average, across {n} blocks."],
+bestHour:["Η καλύτερή σου ώρα: {h}:00","Your best hour: {h}:00"],
+nodata:["Δεν υπάρχουν αρκετά δεδομένα ακόμα.","Not enough data yet."],
+lifeBreak:["Σερί {a} · Καθαρά {b}% · Εβδομάδα {c}′","Run {a} · Clean {b}% · Week {c} min"],
+emgLogged:["Καταγράφηκε ως έκτακτη ανάγκη. Χωρίς ποινή.","Logged as an emergency. No penalty."],
+why:["Τελευταίο βήμα","Last step"],
+redeem:["Εξαργύρωσε","Redeem"],notenough:["Δεν φτάνουν οι πόντοι.","Not enough points."],
+wipeSure:["Πάτησε ξανά για οριστική διαγραφή.","Press again to delete for good."]
+};
+var LANG=["el","en"],li=0;
+function t(k){var v=D[k];return v?v[li]:k}
+function fmt(k,o){var s=t(k);for(var p in o)s=s.split("{"+p+"}").join(o[p]);return s}
+var ROASTS=[
+["Τρία λεπτά focus και ήδη ψάχνεις έξοδο.","Three minutes in and you're already looking for the exit."],
+["Κανείς δεν σου έστειλε τίποτα. Σοβαρά. Κανείς.","Nobody messaged you. Seriously. Nobody."],
+["Το αυγό σε κοιτάει. Το αυγό ξέρει.","The egg is watching. The egg knows."],
+["Αν η θέληση ήταν μπαταρία, θα ήσουν στο 4%.","If willpower were a battery you'd be at 4%."],
+["Το Instagram θα υπάρχει και σε 20 λεπτά. Δυστυχώς.","Instagram will still be there in 20 minutes. Unfortunately."],
+["Μπορείς να βγεις. Απλώς θα το γράψω στο μουσείο.","You can leave. I'll just write it up in the museum."],
+["Κάθε φορά που βγαίνεις κερδίζει ο αλγόριθμος. Του αρέσεις.","Every time you bail the algorithm wins. It likes you."],
+["Το μέλλον σου μόλις αναστέναξε.","Your future self just sighed."],
+["Δύο λεπτά ακόμα και θα ξεχάσεις ότι ήθελες να φύγεις.","Two more minutes and you'll forget you wanted to leave."],
+["Το τέρας σου σταμάτησε να τρώει. Σε κοιτάει.","Your monster stopped eating. It's looking at you."]];
+var FORTUNES=[
+["Ό,τι κάνεις δύο φορές, το κάνεις για πάντα.","What you do twice, you do forever."],
+["Η συγκέντρωση δεν είναι ταλέντο. Είναι συνήθεια με κακή δημοσιότητα.","Focus isn't talent. It's a habit with bad PR."],
+["Το βαρετό κομμάτι είναι το κομμάτι που πληρώνει.","The boring part is the part that pays."],
+["Ένα μπλοκ τη μέρα κάνει 250 ώρες τον χρόνο.","One block a day is 250 hours a year."],
+["Σταθερότητα πάνω από ένταση.","Consistency beats intensity."],
+["Το τηλέφωνο είναι εργαλείο. Μόλις του το θύμισες.","The phone is a tool. You just reminded it."],
+["Η επόμενη ώρα σου ανήκει.","The next hour belongs to you."],
+["Κανείς δεν έγινε καλύτερος κάνοντας scroll.","Nobody ever got better at anything by scrolling."]];
+var EXA=[["Νόμιζα ότι","I thought"],["Έπρεπε να ελέγξω αν","I had to check whether"],["Ένιωσα ότι","I sensed that"],["Ξαφνικά θυμήθηκα ότι","I suddenly remembered that"]];
+var EXB=[["δόνησε το κινητό","the phone buzzed"],["κάποιος με χρειαζόταν","someone needed me"],["είχα επείγουσα ιδέα","I had an urgent idea"],["έπρεπε να δω την ώρα","I had to check the time"]];
+var EXC=[["και χάθηκαν 40 λεπτά.","and 40 minutes vanished."],["και κατέληξα σε βίντεο με γάτες.","and I ended up watching cat videos."],["και δεν θυμάμαι τι έψαχνα.","and I don't remember what I was looking for."]];
+var DARES=[["45 λεπτά με το κινητό σε άλλο δωμάτιο.","45 minutes with the phone in another room."],["25 λεπτά γράψιμο στο χαρτί.","25 minutes writing on paper."],["90 λεπτά, μία εργασία, καμία διακοπή.","90 minutes, one task, zero interruptions."],["Πρωινό μπλοκ πριν ανοίξεις οποιαδήποτε εφαρμογή.","A morning block before you open a single app."]];
+var WHEEL=[["Περπάτα 10 λεπτά έξω","Walk outside for 10 minutes"],["Νερό και διατάσεις","Water and stretching"],["Πάρε τηλέφωνο κάποιον","Call someone"],["Διάβασε 5 σελίδες","Read 5 pages"],["Τακτοποίησε ένα συρτάρι","Tidy one drawer"],["Κάτσε 5 λεπτά χωρίς τίποτα","Sit 5 minutes with nothing"],["Γράψε 3 καλά πράγματα","Write 3 good things"],["20 push-ups","20 push-ups"]];
+var BORED=[["Κίνηση: 20 καθίσματα","Move: 20 squats"],["Δημιουργία: σκίτσο 2 λεπτών","Create: a 2-minute sketch"],["Μάθε: μία σελίδα","Learn: one page"],["Χαλάρωσε: 10 αργές ανάσες","Relax: 10 slow breaths"],["Επικοινώνησε: στείλε ένα ευχαριστώ","Connect: send one thank-you"],["Τακτοποίησε: ένα ράφι","Tidy: one shelf"]];
+var BINGO=[["Γεύμα χωρίς κινητό","A phone-free meal"],["10 σελίδες βιβλίο","10 pages of a book"],["Ένα μπλοκ 45′","One 45-minute block"],["Περπάτημα χωρίς scroll","A walk without scrolling"],["Βράδυ χωρίς οθόνη","A screen-free evening"],["Πρωί χωρίς κινητό","A phone-free morning"],["Ύπνος πριν τις 12","Asleep before midnight"],["Μία κλήση αντί μήνυμα","One call instead of a text"],["Μία ώρα έξω","One hour outside"]];
+var MOODS5=[["Χάλια","Rough","😮‍💨"],["Έτσι κι έτσι","Meh","😐"],["Καλά","Fine","🙂"],["Δυνατά","Strong","💪"],["Άριστα","Great","🤩"]];
+var PETMOOD=[
+["Χαρούμενο","Happy","Σε είδε να μένεις μακριά. Καμαρώνει.","It watched you stay away. It's proud."],
+["Ήρεμο","Calm","Όλα καλά εδώ.","All good here."],
+["Βαριέται","Bored","Έχει μέρες να δει μπλοκ.","Hasn't seen a block in days."],
+["Μουτρωμένο","Sulking","Είδε το χέρι σου στο κινητό.","It saw your hand reach for the phone."],
+["Ενθουσιασμένο","Hyped","Σερί. Του αρέσει το σερί.","A streak. It loves a streak."],
+["Νυσταγμένο","Sleepy","Αργά είναι. Και για τους δυο σας.","It's late. For both of you."]];
+var MONNAMES=[["Μπλομπ","Blob"],["Γκρούμπι","Grub"],["Φλίμπο","Flibo"],["Ζούζου","Zuzu"],["Κόρνι","Hornet"],["Σλάιμι","Slimy"],
+["Γκούφο","Goofo"],["Νίμπλ","Nibble"],["Σπάικι","Spike"],["Μούμπο","Moobo"],["Ντράκο","Drako"],["Βόρτεξ","Vortex"],
+["Κρίμσον","Crimson"],["Νέβουλα","Nebula"],["Τάιταν","Titan"],["Φάντομ","Phantom"]];
+var RARITY=[["Κοινό","Common"],["Ασυνήθιστο","Uncommon"],["Σπάνιο","Rare"],["Θρυλικό","Legendary"]];
+var PLANETS=[["Κρόνος Β","Saturn B"],["Ήσυχη Σελήνη","Quiet Moon"],["Ερυθρά Άμμος","Red Sands"],["Σκοτεινός","The Dark One"],
+["Δίνη","The Swirl"],["Ιώδης","Violet"],["Παγετός","Frostfall"],["Φλόγα","Emberine"],["Άκρη","The Edge"],["Σιωπή","Silence"]];
+var ACH=[
+{id:"first",e:"🔒",n:["Πρώτο μπλοκ","First block"]},{id:"ten",e:"🔟",n:["Δέκα μπλοκ","Ten blocks"]},
+{id:"streak5",e:"🔥",n:["Σερί 5","Run of 5"]},{id:"deep",e:"🧠",n:["90 λεπτά","90 minutes"]},
+{id:"legend",e:"🏆",n:["24ωρος θρύλος","24-hour legend"]},{id:"tenh",e:"⏳",n:["10 ώρες","10 hours"]},
+{id:"hatch5",e:"🥚",n:["5 πλάσματα","5 creatures"]},{id:"legendary",e:"🐉",n:["Θρυλικό","Legendary"]},
+{id:"planets5",e:"🚀",n:["5 πλανήτες","5 planets"]},{id:"earlybird",e:"🌅",n:["Πριν τις 9","Before 9am"]},
+{id:"nightowl",e:"🌙",n:["Μετά τις 22","After 10pm"]},{id:"museum",e:"🖼️",n:["Πρώτο έκθεμα","First exhibit"]},
+{id:"dare",e:"😈",n:["Dare","Dare done"]},{id:"leaveit",e:"🚪",n:["Just leave it","Just leave it"]},
+{id:"secret",e:"🗝️",n:["Μυστικό δωμάτιο","Secret room"]},{id:"comeback",e:"🫶",n:["Επιστροφή","Came back"]}];
+var HONEST=[
+["Δεν μπλοκάρει άλλες εφαρμογές — καμία ιστοσελίδα δεν μπορεί.","It does not block other apps — no web page can."],
+["Δεν ανοίγει «Μην ενοχλείτε» και δεν κλειδώνει την οθόνη.","It does not turn on Do Not Disturb and does not lock the screen."],
+["Δεν διαβάζει τον χρόνο οθόνης σου. Μετράει μόνο τα δικά του μπλοκ.","It cannot read your screen time. It only measures its own blocks."],
+["Δεν στέλνει ειδοποιήσεις όταν είναι κλειστό.","It cannot notify you while it is closed."],
+["Ό,τι δηλώνεις μόνος σου (bingo, αποστολές) είναι δήλωση, όχι μέτρηση.","Anything you tick yourself (bingo, missions) is self-reported, not measured."]];
 
-  /* ---------- language (Greek first) ---------- */
-  var STR={
-    el:{
-      h2:"Ένα μπλοκ. Κινητό κάτω.",
-      lede:"Ξεκίνα ένα μπλοκ και άσε το κινητό. Αν αλλάξεις εφαρμογή ή ανάψεις την οθόνη, μετράει ως ολίσθηση και το μπλοκ χαλάει.",
-      howlong:"Διάρκεια", min:"λεπτά",
-      doing:"Τι θα κάνεις", doingph:"Τα follow-up των πελατών",
-      start:"Ξεκίνα μπλοκ",
-      today:"Σήμερα", minutes:"λεπτά", blocks:"μπλοκ", streak:"σερί",
-      recent:"Πρόσφατα μπλοκ", parked:"Σκέψεις σε αναμονή", clearparked:"Καθάρισε τη λίστα",
-      foot:"Πρόσθεσε τη σελίδα στην αρχική οθόνη για να ανοίγει σαν εφαρμογή. Ο χρόνος μετράει μόνο όσο η σελίδα είναι ανοιχτή.",
-      remaining:"απομένουν", focus:"Συγκέντρωση",
-      clean:"Καθαρό μέχρι τώρα",
-      parkopen:"Γράψε τη σκέψη αντί να ξεκλειδώσεις",
-      parkagain:"Γράφτηκε. Κι άλλη;",
-      parkph:"Αυτό που μόλις θυμήθηκες…",
-      parksave:"Αποθήκευσε και συνέχισε", parkcancel:"Άφησέ το",
-      holdunlock:"Κράτα πατημένο για ξεκλείδωμα",
-      gatetitle:"Να ξεκλειδώσει;",
-      word:"ΤΕΛΟΣ",
-      gateunlock:"Ξεκλείδωσε", gatekeep:"Συνέχισε",
-      finished:"Το μπλοκ τελείωσε", endedearly:"Σταμάτησε νωρίς",
-      pillclean:"Καθαρό", pillcut:"Κόπηκε",
-      noteclean:"Δεν άγγιξες το κινητό καθόλου.",
-      again:"Άλλο ένα", backhome:"Τέλος για τώρα",
-      markclean:"καθαρό",
-      mins:function(n){return n+" λεπτά"},
-      left:function(n){return "Έφυγες "+n+(n===1?" φορά":" φορές")},
-      waitn:function(n){return "Περίμενε "+n+"″"},
-      type:function(w){return "Γράψε "+w},
-      cost:function(m,s){return "Απομένουν <b>"+m+"</b>. "+(s>0?("Χάνεις σερί "+s+(s===1?" μπλοκ":" μπλοκ")+"."):"")},
-      pillbroke:function(n){return "Χαλασμένο · "+n+(n===1?" ολίσθηση":" ολισθήσεις")},
-      marks:function(n){return n+" ολ."},
-      notebroke:function(n){return "Τελείωσες, αλλά η οθόνη άναψε "+n+(n===1?" φορά":" φορές")+"."},
-      notecut:function(f,m){return f+" από "+m+" λεπτά πριν σταματήσεις."}
-    },
-    en:{
-      h2:"One block. Phone face down.",
-      lede:"Start a block and put the phone down. If you switch apps or wake the screen, it counts as a slip and the block is marked broken.",
-      howlong:"How long", min:"min",
-      doing:"What are you doing", doingph:"Client follow-ups",
-      start:"Start block",
-      today:"Today", minutes:"minutes", blocks:"blocks", streak:"clean run",
-      recent:"Recent blocks", parked:"Parked thoughts", clearparked:"Clear parked list",
-      foot:"Add this page to your home screen so it opens like an app. The timer only runs while this page is open.",
-      remaining:"remaining", focus:"Focus",
-      clean:"Clean so far",
-      parkopen:"Park a thought instead of unlocking",
-      parkagain:"Parked. Add another",
-      parkph:"The thing you just remembered…",
-      parksave:"Save and keep going", parkcancel:"Never mind",
-      holdunlock:"Hold to unlock",
-      gatetitle:"Unlock the block?",
-      word:"UNLOCK",
-      gateunlock:"Unlock", gatekeep:"Keep going",
-      finished:"Block finished", endedearly:"Ended early",
-      pillclean:"Clean", pillcut:"Cut short",
-      noteclean:"Phone untouched the whole way.",
-      again:"Start another", backhome:"Done for now",
-      markclean:"clean",
-      mins:function(n){return n+" min"},
-      left:function(n){return "You left "+n+" time"+(n===1?"":"s")},
-      waitn:function(n){return "Wait "+n+"s"},
-      type:function(w){return "Type "+w},
-      cost:function(m,s){return "<b>"+m+"</b> left. "+(s>0?("You lose a clean run of "+s+"."):"")},
-      pillbroke:function(n){return "Broken · "+n+" slip"+(n===1?"":"s")},
-      marks:function(n){return n+(n===1?" slip":" slips")},
-      notebroke:function(n){return "You finished, but the screen came back on "+n+" time"+(n===1?"":"s")+"."},
-      notecut:function(f,m){return f+" of "+m+" minutes before you stopped."}
-    }
-  };
-  var lang="el";
-  try{ var saved=localStorage.getItem("growthlock.lang"); if(saved==="en"||saved==="el") lang=saved; }catch(e){}
-  function T(k){ return STR[lang][k]; }
-
-  var KEY="growthlock.v1";
-  var state={sessions:[],parked:[]};
-  try{
-    var raw=localStorage.getItem(KEY);
-    if(raw){var p=JSON.parse(raw); if(p&&typeof p==="object"){state.sessions=Array.isArray(p.sessions)?p.sessions:[]; state.parked=Array.isArray(p.parked)?p.parked:[];}}
-  }catch(e){}
-  function save(){ try{ localStorage.setItem(KEY,JSON.stringify({sessions:state.sessions.slice(-60),parked:state.parked.slice(-40)})); }catch(e){} }
-
-  var $=function(id){return document.getElementById(id)};
-  var setup=$("setup"), sessionEl=$("session"), doneEl=$("done");
-  var chips=Array.prototype.slice.call(document.querySelectorAll(".chip"));
-  var chosen=25;
-
-  function applyLang(){
-    document.documentElement.lang=lang;
-    Array.prototype.forEach.call(document.querySelectorAll("[data-t]"),function(el){
-      el.textContent=T(el.getAttribute("data-t"));
-    });
-    Array.prototype.forEach.call(document.querySelectorAll("[data-tp]"),function(el){
-      el.setAttribute("placeholder",T(el.getAttribute("data-tp")));
-    });
-    Array.prototype.forEach.call(document.querySelectorAll("[data-ta]"),function(el){
-      el.setAttribute("aria-label",T(el.getAttribute("data-ta")));
-    });
-    Array.prototype.forEach.call(document.querySelectorAll(".lang button"),function(b){
-      b.setAttribute("aria-pressed",String(b.getAttribute("data-lang")===lang));
-    });
-    $("gate-word").setAttribute("placeholder",T("type")(T("word")));
-    if(run){ $("s-intent").textContent=run.intention||T("focus"); updateSlips(); }
-    renderStats();
-  }
-  Array.prototype.forEach.call(document.querySelectorAll(".lang button"),function(b){
-    b.addEventListener("click",function(){
-      lang=b.getAttribute("data-lang");
-      try{ localStorage.setItem("growthlock.lang",lang); }catch(e){}
-      applyLang();
-    });
+/* ---------- monsters, drawn in code ---------- */
+var MC=[["#E0574F","#A8332C"],["#49A6E0","#2B6F9E"],["#6FBF5C","#3E8A33"],["#B06BD6","#7A42A0"],["#E8A13C","#B06F17"],
+["#3FB8C4","#227F8C"],["#E86FA6","#AD3C72"],["#8C8CF0","#5B5BC0"],["#D6C23F","#9C8A16"],["#5CC2A0","#2E8A6E"],
+["#F0763C","#B04A17"],["#7E8FA6","#4C5B70"],["#C4452F","#8A2A1C"],["#4A63C4","#2C3F8A"],["#9ED13F","#6A9418"],["#C13FB0","#8A1E7C"]];
+function rnd(seed){var x=Math.sin(seed*9301+49297)*233280;return x-Math.floor(x)}
+function monster(idx,size,mood){
+  var c=MC[idx%MC.length],r=function(n){return rnd(idx*13+n)};
+  var eyes=1+Math.floor(r(1)*3),horns=r(2)>0.55,ant=r(3)>0.6,arms=r(4)>0.4,spots=r(5)>0.5;
+  var wob=8+Math.round(r(6)*10),s=size||112;
+  var g='<svg class="mon" viewBox="0 0 100 100" width="'+s+'" height="'+s+'" role="img" aria-label="monster">';
+  if(horns)g+='<path d="M30 34 L26 16 L40 28 Z" fill="'+c[1]+'"/><path d="M70 34 L74 16 L60 28 Z" fill="'+c[1]+'"/>';
+  if(ant)g+='<path d="M38 28 Q34 10 26 8" stroke="'+c[1]+'" stroke-width="3" fill="none"/><circle cx="25" cy="7" r="4" fill="'+c[0]+'"/>'+
+            '<path d="M62 28 Q66 10 74 8" stroke="'+c[1]+'" stroke-width="3" fill="none"/><circle cx="75" cy="7" r="4" fill="'+c[0]+'"/>';
+  if(arms)g+='<path d="M18 60 Q6 56 8 44" stroke="'+c[1]+'" stroke-width="7" fill="none" stroke-linecap="round"/>'+
+             '<path d="M82 60 Q94 56 92 44" stroke="'+c[1]+'" stroke-width="7" fill="none" stroke-linecap="round"/>';
+  g+='<path d="M50 24 C'+(78+wob)+' 24 84 46 84 60 C84 80 70 90 50 90 C30 90 16 80 16 60 C16 46 '+(22-wob/2)+' 24 50 24 Z" fill="'+c[0]+'" stroke="'+c[1]+'" stroke-width="3"/>';
+  if(spots){g+='<circle cx="30" cy="70" r="5" fill="'+c[1]+'" opacity=".5"/><circle cx="68" cy="74" r="4" fill="'+c[1]+'" opacity=".5"/>';}
+  var ex=eyes===1?[50]:eyes===2?[38,62]:[32,50,68],ey=eyes===3?46:48,er=eyes===1?15:11;
+  ex.forEach(function(x){
+    g+='<circle cx="'+x+'" cy="'+ey+'" r="'+er+'" fill="#fff" stroke="'+c[1]+'" stroke-width="2"/>';
+    var py=mood===3?ey+3:mood===5?ey+4:ey;
+    g+='<circle cx="'+x+'" cy="'+py+'" r="'+(er*0.42)+'" fill="#17202A"/>';
+    if(mood===5)g+='<path d="M'+(x-er)+' '+(ey-2)+' h'+(er*2)+'" stroke="'+c[1]+'" stroke-width="3"/>';
   });
+  if(mood===3)g+='<path d="M36 76 Q50 68 64 76" stroke="#17202A" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  else if(mood===2)g+='<path d="M36 74 h28" stroke="#17202A" stroke-width="3" stroke-linecap="round"/>';
+  else{
+    g+='<path d="M34 70 Q50 86 66 70 Z" fill="#17202A"/>';
+    g+='<path d="M39 72 l3 6 l3 -6 Z" fill="#fff"/><path d="M55 72 l3 6 l3 -6 Z" fill="#fff"/>';
+  }
+  return g+'</svg>';
+}
+function rarityOf(i){return i>=14?3:i>=10?2:i>=5?1:0}
 
-  chips.forEach(function(c){
-    c.addEventListener("click",function(){
-      chosen=parseInt(c.getAttribute("data-min"),10);
-      chips.forEach(function(o){o.setAttribute("aria-pressed",String(o===c))});
-    });
+/* ---------- storage ---------- */
+var KEY="growthlock.v3";
+var root={lang:null,active:null,cookie:false,profiles:{}};
+function blank(nick,mon){return{nick:nick||"",mon:mon||0,xp:0,stars:0,sessions:[],parked:[],tasks:[],pets:[],planets:[],
+  ach:{},fails:[],trophies:[],moods:[],bingo:{},quests:{},shop:[],world:{trees:0,stars:0,books:0},
+  settings:{bed:"23:30",morn:"07:30",brk:"5",sound:"chord",emg:"",skin:"",quiet:false},sched:[]}}
+try{var rw=localStorage.getItem(KEY);if(rw){var pj=JSON.parse(rw);if(pj&&pj.profiles)root=pj}}catch(e){}
+function P(){var p=root.profiles[root.active];if(!p)return null;var b=blank();for(var k in b)if(p[k]===undefined)p[k]=b[k];return p}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(root))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
+function two(n){return(n<10?"0":"")+n}
+function mmss(ms){if(ms<0)ms=0;var s=Math.round(ms/1000);return two(Math.floor(s/60))+":"+two(s%60)}
+function dayKey(ts){var d=new Date(ts);return d.getFullYear()+"-"+two(d.getMonth()+1)+"-"+two(d.getDate())}
+function weekKey(){var d=new Date(),o=new Date(d.getFullYear(),0,1);return d.getFullYear()+"W"+Math.ceil(((d-o)/86400000+o.getDay()+1)/7)}
+function startOfToday(){var d=new Date();d.setHours(0,0,0,0);return d.getTime()}
+function levelInfo(xp){var l=1,c=0,n=100;while(xp>=c+n){c+=n;l++;n=Math.round(n*1.3)}return{level:l,into:xp-c,need:n}}
+function cleanStreak(){var s=P().sessions,n=0;for(var i=s.length-1;i>=0;i--){if(s[i].clean)n++;else break}return n}
+function finishedCount(){return P().sessions.filter(function(s){return s.completed}).length}
+function totalMin(){return P().sessions.reduce(function(a,s){return a+s.focused},0)}
+
+/* ---------- language ---------- */
+function applyLang(){
+  document.documentElement.lang=LANG[li];
+  Array.prototype.forEach.call(document.querySelectorAll("[data-t]"),function(e){e.textContent=t(e.getAttribute("data-t"))});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-tp]"),function(e){e.setAttribute("placeholder",t(e.getAttribute("data-tp")))});
+  $("lang-btn").textContent=li===0?"EN":"ΕΛ";
+  $("toggle-dare").textContent=dare?t("daremodeOn"):t("daremode");
+  $("toggle-pomo").textContent=pomo?t("pomoOn"):t("pomo");
+  $("nick-sub").textContent=t("nickSub");$("nick-title").textContent=t("nickTitle");
+  $("nick-input").setAttribute("placeholder",t("nickPh"));$("nick-pickline").textContent=t("nickPick");
+  $("nick-go").textContent=t("nickGo");
+  $("ck-title").textContent=t("ckTitle");$("ck-body").textContent=t("ckBody");
+  $("ck-ok").textContent=t("ckOk");$("ck-no").textContent=t("ckNo");
+  $("mood-skip").textContent=t("moodSkip");$("mood-q").textContent=t("moodQ");
+  strictNote();
+  if(P())renderAll();
+  if(run){$("s-intent").textContent=run.intention||t("focus");updateSlips();setSub()}
+}
+function setLang(x){li=x==="en"?1:0;root.lang=x;save();applyLang()}
+$("lang-btn").addEventListener("click",function(){setLang(li===0?"en":"el")});
+
+/* ---------- onboarding ---------- */
+var nickMon=0;
+Array.prototype.forEach.call(document.querySelectorAll("#choose [data-pick]"),function(b){
+  b.addEventListener("click",function(){setLang(b.getAttribute("data-pick"));$("choose").hidden=true;startNick()})});
+function startNick(){
+  $("nick").hidden=false;
+  var opts=[Math.floor(Math.random()*5),5+Math.floor(Math.random()*5),10+Math.floor(Math.random()*4)];
+  nickMon=opts[0];
+  var box=$("nick-monsters");box.innerHTML="";
+  opts.forEach(function(ix){
+    var b=document.createElement("button");b.className="flat";b.style.flex="1 1 90px";
+    b.innerHTML=monster(ix,74,1)+'<span class="hint">'+MONNAMES[ix][li]+"</span>";
+    b.addEventListener("click",function(){nickMon=ix;
+      Array.prototype.forEach.call(box.children,function(c){c.classList.remove("go")});b.classList.add("go")});
+    box.appendChild(b);
+    if(ix===nickMon)b.classList.add("go");
   });
-
-  function two(n){return (n<10?"0":"")+n}
-  function mmss(ms){ if(ms<0)ms=0; var t=Math.round(ms/1000); return two(Math.floor(t/60))+":"+two(t%60); }
-  function startOfToday(){var d=new Date();d.setHours(0,0,0,0);return d.getTime()}
-  function cleanStreak(){ var n=0; for(var i=state.sessions.length-1;i>=0;i--){ if(state.sessions[i].clean) n++; else break; } return n; }
-
-  function renderStats(){
-    var t0=startOfToday(), mins=0, blocks=0;
-    state.sessions.forEach(function(s){ if(s.ts>=t0){ mins+=s.focused; blocks++; } });
-    $("s-mins").textContent=mins;
-    $("s-blocks").textContent=blocks;
-    $("s-streak").textContent=cleanStreak();
-
-    var log=$("log"); log.innerHTML="";
-    var recent=state.sessions.slice(-6).reverse();
-    $("log-wrap").hidden=recent.length===0;
-    recent.forEach(function(s){
-      var li=document.createElement("li");
-      var a=document.createElement("span"); a.className="mins"; a.textContent=s.focused+"′";
-      var b=document.createElement("span"); b.className="what"; b.textContent=s.intention||T("focus");
-      var c=document.createElement("span");
-      c.className="mark "+(s.clean?"clean":"broke");
-      c.textContent=s.clean?T("markclean"):T("marks")(s.slips);
-      li.appendChild(a); li.appendChild(b); li.appendChild(c);
-      log.appendChild(li);
-    });
-
-    var pw=$("parked-wrap"), pl=$("parked"); pl.innerHTML="";
-    pw.hidden=state.parked.length===0;
-    state.parked.slice().reverse().forEach(function(p){
-      var li=document.createElement("li");
-      var b=document.createElement("span"); b.className="what"; b.textContent=p.text;
-      li.appendChild(b); pl.appendChild(li);
-    });
-  }
-
-  /* chime */
-  var ac=null;
-  function chime(){
-    try{
-      if(!ac) ac=new (window.AudioContext||window.webkitAudioContext)();
-      if(ac.state==="suspended") ac.resume();
-      [0,0.18,0.36].forEach(function(d,i){
-        var o=ac.createOscillator(), g=ac.createGain();
-        o.type="sine"; o.frequency.value=[523.25,659.25,783.99][i];
-        g.gain.setValueAtTime(0.0001,ac.currentTime+d);
-        g.gain.exponentialRampToValueAtTime(0.18,ac.currentTime+d+0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+d+0.9);
-        o.connect(g); g.connect(ac.destination);
-        o.start(ac.currentTime+d); o.stop(ac.currentTime+d+1);
-      });
-    }catch(e){}
-  }
-  function primeAudio(){ try{ if(!ac) ac=new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==="suspended") ac.resume(); }catch(e){} }
-
-  /* wake lock */
-  var lock=null;
-  function askLock(){
-    if(!("wakeLock" in navigator)) return;
-    navigator.wakeLock.request("screen").then(function(l){
-      lock=l; l.addEventListener("release",function(){lock=null});
-    }).catch(function(){});
-  }
-  function dropLock(){ if(lock){ try{lock.release()}catch(e){} lock=null; } }
-
-  /* session */
-  var run=null, tick=null;
-  var CIRC=2*Math.PI*45;
-
-  function paint(){
-    if(!run) return;
-    var left=run.endAt-Date.now();
-    $("clock").textContent=mmss(left);
-    var done=Math.min(1,Math.max(0,(run.total-left)/run.total));
-    $("prog").setAttribute("stroke-dashoffset",String(CIRC*(1-done)));
-    if(!$("gate").hidden) $("gate-cost").innerHTML=T("cost")(mmss(left),run.streakAtStart);
-    if(left<=0) finish(true);
-  }
-
-  function updateSlips(){
-    var el=$("slips");
-    if(!run) return;
-    if(run.slips===0){ el.textContent=T("clean"); el.className="slips"; }
-    else { el.textContent=T("left")(run.slips); el.className="slips bad"; }
-  }
-
-  function begin(minutes,intention){
-    primeAudio();
-    run={total:minutes*60000,endAt:Date.now()+minutes*60000,minutes:minutes,intention:intention,slips:0,startedAt:Date.now(),streakAtStart:cleanStreak()};
-    $("s-intent").textContent=intention||T("focus");
-    $("prog").setAttribute("stroke-dasharray",String(CIRC));
-    $("prog").setAttribute("stroke-dashoffset","0");
-    updateSlips();
-    closeGate(); $("parkbox").hidden=true; $("tools").hidden=false;
-    $("park-open").textContent=T("parkopen");
-    setup.hidden=true; doneEl.hidden=true; sessionEl.hidden=false;
-    paint();
-    tick=setInterval(paint,250);
-    askLock();
-  }
-
-  function finish(completed){
-    if(!run) return;
-    if(tick){clearInterval(tick); tick=null;}
-    closeGate();
-    var elapsedMin=Math.max(0,Math.round((Date.now()-run.startedAt)/60000));
-    var focused=completed?run.minutes:elapsedMin;
-    var clean=completed&&run.slips===0;
-    var rec={ts:Date.now(),minutes:run.minutes,focused:focused,slips:run.slips,clean:clean,intention:run.intention,completed:completed};
-    state.sessions.push(rec); save();
-    dropLock();
-    if(completed) chime();
-
-    $("d-kicker").textContent=completed?T("finished"):T("endedearly");
-    $("d-mins").textContent=T("mins")(focused);
-    $("d-intent").textContent=rec.intention||"";
-    var pill=$("d-pill");
-    if(clean){ pill.textContent=T("pillclean"); pill.style.color="#3FB8C4"; }
-    else { pill.textContent=completed?T("pillbroke")(rec.slips):T("pillcut"); pill.style.color="#D9774F"; }
-    var note=$("d-note");
-    if(clean) note.textContent=T("noteclean");
-    else if(completed) note.textContent=T("notebroke")(rec.slips);
-    else note.textContent=T("notecut")(focused,rec.minutes);
-
-    run=null;
-    renderStats();
-    sessionEl.hidden=true; doneEl.hidden=false;
-  }
-
-  document.addEventListener("visibilitychange",function(){
-    if(!run) return;
-    if(document.hidden){ run.slips++; }
-    else { updateSlips(); askLock(); paint(); }
-  });
-
-  $("start").addEventListener("click",function(){ begin(chosen,$("intent-input").value.trim()); });
-
-  /* park a thought */
-  $("park-open").addEventListener("click",function(){ closeGate(); $("tools").hidden=true; $("parkbox").hidden=false; $("park-text").focus(); });
-  $("park-cancel").addEventListener("click",function(){ $("parkbox").hidden=true; $("tools").hidden=false; $("park-text").value=""; });
-  $("park-save").addEventListener("click",function(){
-    var v=$("park-text").value.trim();
-    if(v){ state.parked.push({ts:Date.now(),text:v}); save(); }
-    $("park-text").value=""; $("parkbox").hidden=true; $("tools").hidden=false;
-    $("park-open").textContent=v?T("parkagain"):T("parkopen");
-  });
-  $("clear-parked").addEventListener("click",function(){ state.parked=[]; save(); renderStats(); });
-
-  /* ---------- the unlock gate: hold, then wait, then type the word ---------- */
-  var WAIT=10, gateLeft=0, gateTimer=null;
-  function openGate(){
-    if(!run) return;
-    $("tools").hidden=true; $("parkbox").hidden=true; $("gate").hidden=false;
-    $("gate-word").value=""; $("gate-word").setAttribute("placeholder",T("type")(T("word")));
-    $("gate-cost").innerHTML=T("cost")(mmss(run.endAt-Date.now()),run.streakAtStart);
-    gateLeft=WAIT;
-    $("gate-go").disabled=true; $("gate-go").textContent=T("waitn")(gateLeft);
-    if(gateTimer) clearInterval(gateTimer);
-    gateTimer=setInterval(function(){
-      gateLeft--;
-      if(gateLeft>0){ $("gate-go").textContent=T("waitn")(gateLeft); }
-      else { clearInterval(gateTimer); gateTimer=null; $("gate-go").textContent=T("gateunlock"); checkWord(); }
-    },1000);
-  }
-  function closeGate(){
-    if(gateTimer){ clearInterval(gateTimer); gateTimer=null; }
-    $("gate").hidden=true;
-  }
-  function checkWord(){
-    var ok=gateLeft<=0 && $("gate-word").value.trim().toUpperCase()===T("word");
-    $("gate-go").disabled=!ok;
-  }
-  $("gate-word").addEventListener("input",checkWord);
-  $("gate-go").addEventListener("click",function(){ if(!$("gate-go").disabled) finish(false); });
-  $("gate-cancel").addEventListener("click",function(){ closeGate(); $("tools").hidden=false; });
-
-  /* hold to open the gate */
-  var quit=$("quit"), fill=$("quit-fill"), holdStart=0, holdRaf=null;
-  function holdFrame(){
-    var pct=Math.min(1,(Date.now()-holdStart)/1600);
-    fill.style.width=(pct*100)+"%";
-    if(pct>=1){ endHold(); openGate(); return; }
-    holdRaf=requestAnimationFrame(holdFrame);
-  }
-  function startHold(e){ e.preventDefault(); holdStart=Date.now(); if(holdRaf)cancelAnimationFrame(holdRaf); holdFrame(); }
-  function endHold(){ if(holdRaf){cancelAnimationFrame(holdRaf); holdRaf=null;} fill.style.width="0"; }
-  quit.addEventListener("pointerdown",startHold);
-  quit.addEventListener("pointerup",endHold);
-  quit.addEventListener("pointercancel",endHold);
-  quit.addEventListener("pointerleave",endHold);
-
-  $("again").addEventListener("click",function(){ begin(chosen,$("intent-input").value.trim()); });
-  $("back").addEventListener("click",function(){ doneEl.hidden=true; setup.hidden=false; window.scrollTo(0,0); });
-
+}
+$("nick-go").addEventListener("click",function(){
+  var n=$("nick-input").value.trim()||(li===0?"Φίλε":"Friend");
+  root.profiles[n]=root.profiles[n]||blank(n,nickMon);
+  root.active=n;save();
+  $("nick").hidden=true;$("app").hidden=false;
+  if(!root.cookie)$("cookie").hidden=false;
   applyLang();
+});
+$("ck-ok").addEventListener("click",function(){root.cookie=true;save();$("cookie").hidden=true});
+$("ck-no").addEventListener("click",function(){root.cookie=true;save();$("cookie").hidden=true;banner(t("ckNoMsg"))});
+
+/* ---------- nav ---------- */
+var VIEWS=["focus","world","pets","stats","more"];
+function nav(v){VIEWS.forEach(function(x){$("v-"+x).hidden=x!==v});
+  Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-view")===v))});
+  window.scrollTo(0,0)}
+Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.addEventListener("click",function(){nav(b.getAttribute("data-view"))})});
+
+/* ---------- sound ---------- */
+var ac=null,SOUNDS={chord:[[523.25,659.25,783.99],"sine"],bell:[[880,1318.5],"triangle"],blip:[[440,660,440],"square"],gong:[[130.8,196,261.6],"sine"]};
+function tone(f,ty){try{if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume();
+  f.forEach(function(fr,i){var o=ac.createOscillator(),g=ac.createGain(),d=i*0.17;o.type=ty||"sine";o.frequency.value=fr;
+  g.gain.setValueAtTime(0.0001,ac.currentTime+d);g.gain.exponentialRampToValueAtTime(0.2,ac.currentTime+d+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+d+1);o.connect(g);g.connect(ac.destination);
+  o.start(ac.currentTime+d);o.stop(ac.currentTime+d+1.1)})}catch(e){}}
+function chime(){var s=SOUNDS[P().settings.sound]||SOUNDS.chord;tone(s[0],s[1])}
+function prime(){try{if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume()}catch(e){}}
+var lock=null;
+function askLock(){if(!("wakeLock"in navigator))return;navigator.wakeLock.request("screen").then(function(l){lock=l;l.addEventListener("release",function(){lock=null})}).catch(function(){})}
+function dropLock(){if(lock){try{lock.release()}catch(e){}lock=null}}
+
+/* ---------- focus controls ---------- */
+var chosen=25,dare=false,pomo=false,strict="int";
+Array.prototype.forEach.call(document.querySelectorAll("#chips .chip"),function(c){
+  c.addEventListener("click",function(){chosen=parseInt(c.getAttribute("data-min"),10);
+    Array.prototype.forEach.call(document.querySelectorAll("#chips .chip"),function(o){o.setAttribute("aria-pressed",String(o===c))})})});
+$("custom-go").addEventListener("click",function(){
+  var v=parseInt($("custom-min").value.replace(/\D/g,""),10);
+  if(!v||v<1)return;chosen=Math.min(600,v);
+  Array.prototype.forEach.call(document.querySelectorAll("#chips .chip"),function(o){o.setAttribute("aria-pressed","false")});
+  banner(chosen+"′");
+});
+Array.prototype.forEach.call(document.querySelectorAll("#strict-seg button"),function(b){
+  b.addEventListener("click",function(){strict=b.getAttribute("data-s");
+    Array.prototype.forEach.call(document.querySelectorAll("#strict-seg button"),function(o){o.setAttribute("aria-pressed",String(o===b))});
+    strictNote()})});
+function strictNote(){$("strict-note").textContent=strict==="flex"?t("nFlex"):strict==="int"?t("nInt"):t("nStrict")}
+$("toggle-dare").addEventListener("click",function(){dare=!dare;$("toggle-dare").textContent=dare?t("daremodeOn"):t("daremode");if(dare)banner(t("dareOn"))});
+$("toggle-pomo").addEventListener("click",function(){pomo=!pomo;$("toggle-pomo").textContent=pomo?t("pomoOn"):t("pomo");if(pomo)banner(t("pomoOnMsg"))});
+$("pick-task").addEventListener("click",function(){
+  var o=P().tasks.filter(function(x){return !x.done});if(!o.length){banner(t("pickTask"));return}$("intent-input").value=o[0].text});
+$("task-add").addEventListener("click",function(){var v=$("task-input").value.trim();if(!v)return;
+  P().tasks.push({text:v,done:false});$("task-input").value="";save();renderTasks()});
+$("clear-parked").addEventListener("click",function(){P().parked=[];save();renderParked()});
+$("five").addEventListener("click",function(){askMood("before",function(){begin(5,$("intent-input").value.trim()||t("focus"),"five")})});
+$("leaveit").addEventListener("click",function(){begin(0,$("intent-input").value.trim()||t("leaveit"),"open")});
+$("bored").addEventListener("click",function(){banner(pick(BORED)[li])});
+$("start").addEventListener("click",function(){askMood("before",function(){begin(chosen,$("intent-input").value.trim(),dare?"dare":"normal")})});
+function banner(msg,warn){var b=document.createElement("div");b.className="banner"+(warn?" warn":"");b.textContent=msg;
+  $("banners").appendChild(b);setTimeout(function(){if(b.parentNode)b.parentNode.removeChild(b)},10000)}
+
+/* ---------- mood check-in ---------- */
+var moodPending=null;
+function askMood(when,then){
+  if(P().settings.quiet){then();return}
+  moodPending={when:when,then:then,val:null};
+  $("mood-when").textContent=when==="before"?t("moodBefore"):t("moodAfter");
+  var box=$("mood-opts");box.innerHTML="";
+  MOODS5.forEach(function(m,i){
+    var b=document.createElement("button");b.className="flat";b.textContent=m[2]+"  "+m[li===0?0:1];
+    b.addEventListener("click",function(){closeMood(i+1)});box.appendChild(b);
+  });
+  $("mood").hidden=false;
+}
+function closeMood(v){
+  var mp=moodPending;$("mood").hidden=true;moodPending=null;
+  if(!mp)return;
+  if(v){var p=P();if(mp.when==="before")p.moods.push({ts:Date.now(),b:v,a:null});
+    else{for(var i=p.moods.length-1;i>=0;i--){if(p.moods[i].a===null){p.moods[i].a=v;break}}}
+    save()}
+  if(mp.then)mp.then();
+}
+$("mood-skip").addEventListener("click",function(){closeMood(null)});
+
+/* ---------- session ---------- */
+var run=null,tick=null,CIRC=2*Math.PI*45;
+function setSub(){$("sub").textContent=run&&run.open?t("elapsed"):t("remaining")}
+function begin(minutes,intention,mode){
+  prime();var open=mode==="open";
+  run={mode:mode||"normal",open:open,minutes:minutes,total:minutes*60000,strict:dare?"strict":strict,
+    endAt:open?0:Date.now()+minutes*60000,startedAt:Date.now(),intention:intention,slips:0,
+    streakAtStart:cleanStreak(),isBreak:mode==="break"};
+  $("s-intent").textContent=intention||t("focus");
+  $("prog").setAttribute("stroke-dasharray",String(CIRC));$("prog").setAttribute("stroke-dashoffset","0");
+  setSub();updateSlips();closeGate();
+  $("parkbox").hidden=true;$("tools").hidden=false;
+  $("park-open").hidden=(run.strict==="strict");
+  $("park-open").textContent=t("parkopen");
+  $("jail-line").textContent=open?"":fmt("jailLine",{m:minutes});
+  $("s-pet").innerHTML=P().settings.quiet?"":monster(P().mon,86,petMood());
+  $("app").hidden=true;$("done").hidden=true;$("cookie").hidden=true;
+  if((minutes>=45||mode==="dare")&&!P().settings.quiet)funeral(startRun);else startRun();
+}
+function startRun(){$("funeral").hidden=true;$("session").hidden=false;paint();
+  if(tick)clearInterval(tick);tick=setInterval(paint,250);askLock()}
+function paint(){
+  if(!run)return;
+  if(run.open){var el=Date.now()-run.startedAt;$("clock").textContent=mmss(el);
+    $("prog").setAttribute("stroke-dashoffset",String(CIRC*(1-Math.min(1,el/3600000))))}
+  else{var left=run.endAt-Date.now();$("clock").textContent=mmss(left);
+    var d=Math.min(1,Math.max(0,(run.total-left)/run.total));
+    $("prog").setAttribute("stroke-dashoffset",String(CIRC*(1-d)));
+    if(gateStep===1)renderCost();
+    if(left<=0){finish(true);return}}
+}
+function updateSlips(){
+  if(!run)return;var e=$("slips");
+  if(run.slips===0){e.textContent=t("clean");e.className="slips"}
+  else{e.textContent=(li===0?("Έφυγες "+run.slips+(run.slips===1?" φορά":" φορές")):("You left "+run.slips+" time"+(run.slips===1?"":"s")))+" · "+pick(ROASTS)[li];e.className="slips bad"}
+}
+document.addEventListener("visibilitychange",function(){
+  if(!run)return;if(document.hidden)run.slips++;else{updateSlips();askLock();paint()}});
+function funeral(then){
+  var L=li===0?["Αγαπητό κινητό.","Υπήρξες πιστό. Και πολύ θορυβώδες.","Θα λείψεις για "+(run.minutes||"λίγα")+" λεπτά.","Αναπαύσου. Οθόνη κάτω."]
+               :["Dear phone.","You were loyal. And very loud.","You will be missed for "+(run.minutes||"a few")+" minutes.","Rest now. Screen down."];
+  var i=0;$("funeral").hidden=false;$("session").hidden=true;$("fune-line").textContent=L[0];
+  var iv=setInterval(function(){i++;if(i>=L.length){clearInterval(iv);$("funeral").hidden=true;then()}else $("fune-line").textContent=L[i]},1500);
+  $("fune-skip").onclick=function(){clearInterval(iv);$("funeral").hidden=true;then()};
+}
+$("park-open").addEventListener("click",function(){closeGate();$("tools").hidden=true;$("parkbox").hidden=false;$("park-text").focus()});
+$("park-cancel").addEventListener("click",function(){$("parkbox").hidden=true;$("tools").hidden=false;$("park-text").value=""});
+$("park-save").addEventListener("click",function(){var v=$("park-text").value.trim();
+  if(v){P().parked.push({ts:Date.now(),text:v});save();renderParked()}
+  $("park-text").value="";$("parkbox").hidden=true;$("tools").hidden=false;
+  $("park-open").textContent=v?t("parkagain"):t("parkopen")});
+
+/* ---------- unlock gate ---------- */
+var gateStep=0,gateWait=0,gateTimer=null,gateRoast="";
+function phrase(){return run&&run.strict==="strict"?(li===0?"ΤΟ ΕΠΙΛΕΓΩ ΝΑ ΣΤΑΜΑΤΗΣΩ":"I CHOOSE TO STOP"):(li===0?"ΤΕΛΟΣ":"UNLOCK")}
+function renderCost(){
+  if(!run)return;var left=run.open?"—":mmss(run.endAt-Date.now());
+  var xpl=Math.round((run.minutes||10)*(run.mode==="dare"?2:1));
+  $("gate-cost").innerHTML='<div class="kv"><span>'+t("lose1")+'</span><b>'+left+'</b></div>'+
+    '<div class="kv"><span>'+t("lose2")+'</span><b>🥚 ✗</b></div>'+
+    '<div class="kv"><span>'+t("lose3")+'</span><b>'+run.streakAtStart+' → 0</b></div>'+
+    '<div class="kv"><span>'+t("lose4")+'</span><b>−'+xpl+'</b></div>';
+}
+function openGate(){
+  if(!run)return;
+  if(run.strict==="flex"){finish(false,"quit");return}
+  gateStep=1;gateRoast=pick(ROASTS)[li];
+  $("tools").hidden=true;$("parkbox").hidden=true;$("gate").hidden=false;drawGate();
+}
+function drawGate(){
+  var w=$("gate-word"),n=$("gate-next");
+  if(gateStep===1){
+    $("gate-step").textContent="1 / 3";$("gate-title").textContent=t("sure");$("gate-body").textContent=t("sureBody");
+    $("gate-cost").hidden=false;renderCost();w.hidden=true;n.disabled=false;n.textContent=t("cont");
+  }else if(gateStep===2){
+    $("gate-step").textContent="2 / 3";$("gate-title").textContent=t("roastStep");$("gate-body").textContent=gateRoast;
+    $("gate-cost").hidden=true;w.hidden=true;
+    gateWait=run.strict==="strict"?30:10;n.disabled=true;n.textContent=fmt("waitn",{n:gateWait});
+    if(gateTimer)clearInterval(gateTimer);
+    gateTimer=setInterval(function(){gateWait--;
+      if(gateWait>0)n.textContent=fmt("waitn",{n:gateWait});
+      else{clearInterval(gateTimer);gateTimer=null;n.disabled=false;n.textContent=t("cont")}},1000);
+  }else{
+    $("gate-step").textContent="3 / 3";$("gate-title").textContent=t("why");
+    $("gate-body").textContent=fmt("typeword",{w:phrase()});$("gate-cost").hidden=true;
+    w.hidden=false;w.value="";w.setAttribute("placeholder",phrase());n.disabled=true;n.textContent=t("unlock");
+  }
+}
+$("gate-word").addEventListener("input",function(){
+  $("gate-next").disabled=$("gate-word").value.trim().toUpperCase()!==phrase()});
+$("gate-next").addEventListener("click",function(){
+  if($("gate-next").disabled)return;
+  if(gateStep<3){gateStep++;drawGate()}else finish(false,"quit")});
+$("gate-keep").addEventListener("click",function(){closeGate();$("tools").hidden=false});
+$("gate-emg").addEventListener("click",function(){finish(false,"emergency")});
+function closeGate(){if(gateTimer){clearInterval(gateTimer);gateTimer=null}gateStep=0;$("gate").hidden=true}
+var quit=$("quit"),fill=$("quit-fill"),hs=0,hr=null;
+function hf(){var p=Math.min(1,(Date.now()-hs)/1600);fill.style.width=(p*100)+"%";
+  if(p>=1){eh();openGate();return}hr=requestAnimationFrame(hf)}
+function sh(e){e.preventDefault();hs=Date.now();if(hr)cancelAnimationFrame(hr);hf()}
+function eh(){if(hr){cancelAnimationFrame(hr);hr=null}fill.style.width="0"}
+quit.addEventListener("pointerdown",sh);quit.addEventListener("pointerup",eh);
+quit.addEventListener("pointercancel",eh);quit.addEventListener("pointerleave",eh);
+
+/* ---------- finish ---------- */
+function finish(completed,reason){
+  if(!run)return;if(tick){clearInterval(tick);tick=null}
+  closeGate();dropLock();
+  var p=P(),wasBreak=run.isBreak;
+  var elapsed=Math.max(0,Math.round((Date.now()-run.startedAt)/60000));
+  var focused=completed?(run.open?elapsed:run.minutes):elapsed;
+  var clean=completed&&run.slips===0;
+  var rec={ts:Date.now(),minutes:run.open?focused:run.minutes,focused:focused,slips:run.slips,clean:clean,
+    intention:run.intention,completed:completed,mode:run.mode,reason:reason||"",brk:!!wasBreak};
+  if(!wasBreak)p.sessions.push(rec);
+  var xp=0,stars=0,hatched=null,planet=null,dbl=false,before=levelInfo(p.xp).level,plant="";
+  if(completed&&!wasBreak){
+    xp=focused+(clean?Math.round(focused*0.5):0);
+    if(run.mode==="dare")xp*=2;
+    dbl=Math.random()<0.18;if(dbl)xp*=2;
+    stars=Math.max(1,Math.round(focused/5));
+    p.xp+=xp;p.stars+=stars;
+    var h=new Date().getHours();
+    if(h>=22||h<6){p.world.stars++;plant="⭐"}
+    else if(/μελέτ|διάβασ|study|read|learn|μάθ/i.test(run.intention||"")){p.world.books++;plant="📚"}
+    else{p.world.trees++;plant="🌳"}
+    if(clean){var idx=Math.floor(Math.random()*(focused>=90?6:focused>=45?10:focused>=20?10:5));
+      if(focused>=90)idx=10+Math.floor(Math.random()*6);
+      else if(focused>=45)idx=10+Math.floor(Math.random()*4);
+      else if(focused>=20)idx=5+Math.floor(Math.random()*5);
+      else idx=Math.floor(Math.random()*5);
+      hatched={i:idx,ts:Date.now()};p.pets.push(hatched)}
+    if(focused>=25&&levelInfo(p.xp).level>=3){
+      var have=p.planets.map(function(x){return x.i});
+      var free=PLANETS.map(function(_,i){return i}).filter(function(i){return have.indexOf(i)<0});
+      if(free.length){planet={i:pick(free),ts:Date.now()};p.planets.push(planet)}}
+    chime();
+  }else if(!completed&&!wasBreak){
+    xp=-Math.round((run.minutes||10)*(run.mode==="dare"?2:1));
+    if(reason==="emergency")xp=0;
+    p.xp=Math.max(0,p.xp+xp);
+    if(reason!=="emergency")p.fails.push({ts:Date.now(),minutes:elapsed,of:run.minutes,
+      excuse:pick(EXA)[li]+" "+pick(EXB)[li]+" "+pick(EXC)[li]});
+  }
+  var after=levelInfo(p.xp).level,trophy=checkLegend(),got=checkAch();
+  bumpQuests(rec);save();
+  var wasPomo=pomo&&completed&&!wasBreak;
+  run=null;$("session").hidden=true;
+
+  if(wasBreak){$("app").hidden=false;renderAll();if(pomo)begin(chosen,$("intent-input").value.trim(),"normal");return}
+
+  $("d-kicker").textContent=completed?t("finished"):t("endedearly");
+  $("d-art").innerHTML=hatched?monster(hatched.i,130,3):monster(p.mon,110,completed?3:2);
+  $("d-title").textContent=focused+(li===0?" λεπτά":" minutes");
+  var pill=$("d-pill");
+  if(clean){pill.textContent=t("pillclean");pill.style.color="#3FB8C4"}
+  else{pill.textContent=completed?(li===0?("Χαλασμένο · "+rec.slips):("Broken · "+rec.slips)):t("pillcut");pill.style.color="#D9774F"}
+  $("d-note").textContent=reason==="emergency"?t("emgLogged"):(clean?t("noteclean"):
+    (completed?(li===0?("Η οθόνη άναψε "+rec.slips+" φορές."):("The screen came on "+rec.slips+" times.")):(focused+" / "+rec.minutes)));
+  var rows='<div class="kv"><span>'+t("xpGain")+'</span><b>'+(xp>=0?"+":"")+xp+'</b></div>';
+  if(stars)rows+='<div class="kv"><span>'+t("starsGain")+'</span><b>+'+stars+'</b></div>';
+  if(dbl)rows+='<div class="kv"><span>'+t("doubleXp")+'</span><b>×2</b></div>';
+  if(plant)rows+='<div class="kv"><span>'+t("planted")+'</span><b>'+plant+'</b></div>';
+  if(hatched)rows+='<div class="kv"><span>'+t("hatched")+'</span><b>'+MONNAMES[hatched.i][li]+' · '+RARITY[rarityOf(hatched.i)][li]+'</b></div>';
+  if(planet)rows+='<div class="kv"><span>'+t("planetFound")+'</span><b>'+PLANETS[planet.i][li]+'</b></div>';
+  if(after>before)rows+='<div class="kv"><span>'+t("newLevel")+'</span><b>Lv '+after+'</b></div>';
+  if(trophy)rows+='<div class="kv"><span>'+t("trophy")+'</span><b>🏆</b></div>';
+  got.forEach(function(a){rows+='<div class="kv"><span>'+t("achievements")+'</span><b>'+a.e+' '+a.n[li]+'</b></div>'});
+  $("d-rewards").innerHTML=rows;
+  $("d-fortune").textContent=completed?pick(FORTUNES)[li]:pick(ROASTS)[li];
+  $("done").hidden=false;renderAll();
+  if(completed)askMoodAfter(wasPomo);
+}
+function askMoodAfter(wasPomo){
+  askMood("after",function(){
+    if(wasPomo){var b=parseInt(P().settings.brk,10)||5;$("done").hidden=true;banner(t("breakTime"));begin(b,t("breakTime"),"break")}
+  });
+}
+function checkLegend(){var p=P(),t0=startOfToday(),m=0,n=0;
+  p.sessions.forEach(function(s){if(s.ts>=t0&&s.completed){m+=s.focused;n++}});
+  if(n>=6&&m>=240&&p.trophies.indexOf(dayKey(Date.now()))<0){p.trophies.push(dayKey(Date.now()));return true}return false}
+function checkAch(){
+  var p=P(),got=[];
+  function give(id){if(!p.ach[id]){p.ach[id]=Date.now();var a=ACH.filter(function(x){return x.id===id})[0];if(a)got.push(a)}}
+  var fin=finishedCount();
+  if(fin>=1)give("first");
+  if(fin>=10){give("ten");give("secret")}
+  if(cleanStreak()>=5)give("streak5");
+  if(p.sessions.some(function(s){return s.completed&&s.focused>=90}))give("deep");
+  if(p.trophies.length)give("legend");
+  if(totalMin()>=600)give("tenh");
+  if(p.pets.length>=5)give("hatch5");
+  if(p.pets.some(function(x){return rarityOf(x.i)===3}))give("legendary");
+  if(p.planets.length>=5)give("planets5");
+  if(p.sessions.some(function(s){return s.completed&&new Date(s.ts).getHours()<9}))give("earlybird");
+  if(p.sessions.some(function(s){return s.completed&&new Date(s.ts).getHours()>=22}))give("nightowl");
+  if(p.fails.length)give("museum");
+  if(p.sessions.some(function(s){return s.completed&&s.mode==="dare"}))give("dare");
+  if(p.sessions.some(function(s){return s.completed&&s.mode==="open"}))give("leaveit");
+  if(p.sessions.length>=2){var a=p.sessions[p.sessions.length-2],b=p.sessions[p.sessions.length-1];
+    if(b.ts-a.ts>3*86400000&&b.completed)give("comeback")}
+  return got;
+}
+$("again").addEventListener("click",function(){$("done").hidden=true;begin(chosen,$("intent-input").value.trim(),dare?"dare":"normal")});
+$("back").addEventListener("click",function(){$("done").hidden=true;$("app").hidden=false;window.scrollTo(0,0)});
+
+/* ---------- quests ---------- */
+function questDefs(){return[
+ {id:"one25",n:["Ένα μπλοκ 25′","One 25-minute block"],test:function(p,t0){return p.sessions.some(function(s){return s.ts>=t0&&s.completed&&s.focused>=25})}},
+ {id:"clean2",n:["Δύο καθαρά μπλοκ","Two clean blocks"],test:function(p,t0){return p.sessions.filter(function(s){return s.ts>=t0&&s.clean}).length>=2}},
+ {id:"sixty",n:["60 λεπτά συνολικά","60 minutes in total"],test:function(p,t0){return p.sessions.filter(function(s){return s.ts>=t0}).reduce(function(a,s){return a+s.focused},0)>=60}}]}
+function bumpQuests(){
+  var p=P(),t0=startOfToday(),k=dayKey(Date.now());
+  p.quests[k]=p.quests[k]||{};
+  questDefs().forEach(function(q){
+    if(!p.quests[k][q.id]&&q.test(p,t0)){p.quests[k][q.id]=true;p.xp+=40;p.stars+=5}
+  });
+}
+function renderQuests(){
+  var p=P(),k=dayKey(Date.now()),done=p.quests[k]||{},ul=$("quest-list");ul.innerHTML="";
+  questDefs().forEach(function(q){
+    var li2=document.createElement("li");
+    var b=document.createElement("span");b.className="k";b.textContent=done[q.id]?"✓":"○";
+    var s=document.createElement("span");s.className="v";s.textContent=q.n[li];if(done[q.id])s.style.opacity=".5";
+    var m=document.createElement("span");m.className="m ok";m.textContent="+40 XP";
+    li2.appendChild(b);li2.appendChild(s);li2.appendChild(m);ul.appendChild(li2);
+  });
+}
+
+/* ---------- schedules ---------- */
+var schedDays=[false,false,false,false,false,false,false];
+function renderDayPicker(){
+  var names=li===0?["Δε","Τρ","Τε","Πε","Πα","Σα","Κυ"]:["Mo","Tu","We","Th","Fr","Sa","Su"];
+  var box=$("sched-days");box.innerHTML="";
+  names.forEach(function(nm,i){
+    var b=document.createElement("button");b.textContent=nm;b.setAttribute("aria-pressed",String(schedDays[i]));
+    b.addEventListener("click",function(){schedDays[i]=!schedDays[i];b.setAttribute("aria-pressed",String(schedDays[i]))});
+    box.appendChild(b);
+  });
+}
+$("sched-add").addEventListener("click",function(){
+  var days=[];schedDays.forEach(function(v,i){if(v)days.push(i)});
+  if(!days.length)return;
+  var len=parseInt($("sched-len").value.replace(/\D/g,""),10)||25;
+  P().sched.push({days:days,time:$("sched-time").value||"09:00",len:len});
+  schedDays=[false,false,false,false,false,false,false];renderDayPicker();save();renderSched();
+});
+function renderSched(){
+  var p=P(),ul=$("sched-list");ul.innerHTML="";
+  var names=li===0?["Δε","Τρ","Τε","Πε","Πα","Σα","Κυ"]:["Mo","Tu","We","Th","Fr","Sa","Su"];
+  p.sched.forEach(function(s,i){
+    var li2=document.createElement("li");
+    var a=document.createElement("span");a.className="k";a.textContent=s.time;
+    var b=document.createElement("span");b.className="v";b.textContent=s.days.map(function(d){return names[d]}).join(" ")+" · "+s.len+"′";
+    var x=document.createElement("button");x.className="iconbtn";x.textContent="✕";
+    x.addEventListener("click",function(){p.sched.splice(i,1);save();renderSched()});
+    li2.appendChild(a);li2.appendChild(b);li2.appendChild(x);ul.appendChild(li2);
+  });
+}
+function checkSched(){
+  var p=P(),now=new Date(),dow=(now.getDay()+6)%7,mins=now.getHours()*60+now.getMinutes();
+  p.sched.forEach(function(s){
+    var hm=s.time.split(":"),sm=(+hm[0])*60+(+hm[1]);
+    if(s.days.indexOf(dow)>=0&&mins>=sm&&mins<sm+20){
+      var b=document.createElement("div");b.className="banner";b.textContent=fmt("schedDue",{m:s.len});
+      var go=document.createElement("button");go.className="btn sm";go.style.marginTop="8px";go.textContent=t("start");
+      go.addEventListener("click",function(){chosen=s.len;begin(s.len,$("intent-input").value.trim(),"normal")});
+      b.appendChild(go);$("banners").appendChild(b);
+    }
+  });
+}
+
+/* ---------- wheel, excuses, secret ---------- */
+var wa=0;
+$("open-wheel").addEventListener("click",function(){
+  var n=WHEEL.length,c=["#12343A","#1B3338","#14262B","#1E3B42"],st=[];
+  for(var i=0;i<n;i++)st.push(c[i%4]+" "+(i*360/n)+"deg "+((i+1)*360/n)+"deg");
+  $("wheel").style.background="conic-gradient("+st.join(",")+")";
+  $("wheel-out").textContent="";$("wheelp").hidden=false});
+$("wheel-close").addEventListener("click",function(){$("wheelp").hidden=true});
+$("wheel-spin").addEventListener("click",function(){
+  var i=Math.floor(Math.random()*WHEEL.length);
+  wa+=1440+(360-(i*360/WHEEL.length)-180/WHEEL.length);
+  $("wheel").style.transform="rotate("+wa+"deg)";
+  setTimeout(function(){$("wheel-out").textContent=WHEEL[i][li]},3500)});
+$("gen-excuse").addEventListener("click",function(){$("excuse-out").textContent=pick(EXA)[li]+" "+pick(EXB)[li]+" "+pick(EXC)[li]});
+$("secret-dare").addEventListener("click",function(){banner(pick(DARES)[li]);nav("focus")});
+$("secret-legend").addEventListener("click",function(){banner(t("legendRules"));nav("focus")});
+
+/* ---------- settings, shop, data ---------- */
+["set-bed","set-morn","set-break","set-emg"].forEach(function(id){
+  $(id).addEventListener("change",function(){var s=P().settings;
+    if(id==="set-bed")s.bed=$(id).value;if(id==="set-morn")s.morn=$(id).value;
+    if(id==="set-break")s.brk=$(id).value.replace(/\D/g,"")||"5";if(id==="set-emg")s.emg=$(id).value;save()})});
+$("set-sound").addEventListener("change",function(){P().settings.sound=$("set-sound").value;save();chime()});
+$("test-sound").addEventListener("click",chime);
+$("set-quiet").addEventListener("change",function(){P().settings.quiet=$("set-quiet").checked;save()});
+Array.prototype.forEach.call(document.querySelectorAll("#skin-seg button"),function(b){
+  b.addEventListener("click",function(){var s=b.getAttribute("data-skin");P().settings.skin=s;save();applySkin();
+    Array.prototype.forEach.call(document.querySelectorAll("#skin-seg button"),function(o){o.setAttribute("aria-pressed",String(o===b))})})});
+Array.prototype.forEach.call(document.querySelectorAll("#mode-seg button"),function(b){
+  b.addEventListener("click",function(){P().settings.mode=b.getAttribute("data-mode");save();applySkin();
+    Array.prototype.forEach.call(document.querySelectorAll("#mode-seg button"),function(o){o.setAttribute("aria-pressed",String(o===b))})})});
+function applySkin(){
+  var p=P();if(!p)return;
+  var s=p.settings.skin;
+  if(s)document.documentElement.setAttribute("data-skin",s);else document.documentElement.removeAttribute("data-skin");
+  var m=p.settings.mode||"system";
+  if(m==="light"||m==="dark")document.documentElement.setAttribute("data-theme",m);
+  else document.documentElement.removeAttribute("data-theme");
+  Array.prototype.forEach.call(document.querySelectorAll("#mode-seg button"),function(o){o.setAttribute("aria-pressed",String(o.getAttribute("data-mode")===m))});
+}
+$("shop-add").addEventListener("click",function(){
+  var n=$("shop-name").value.trim(),c=parseInt($("shop-cost").value.replace(/\D/g,""),10)||50;
+  if(!n)return;P().shop.push({n:n,c:c,got:0});$("shop-name").value="";$("shop-cost").value="";save();renderShop()});
+$("profile-add").addEventListener("click",function(){
+  var v=$("profile-input").value.trim();if(!v)return;
+  if(!root.profiles[v])root.profiles[v]=blank(v,Math.floor(Math.random()*10));
+  root.active=v;$("profile-input").value="";save();applySkin();applyLang()});
+$("copy-pact").addEventListener("click",function(){
+  var p=P();copy(li===0?("Συμφωνητικό GrowthLock\n"+root.active+"\nΣερί: "+cleanStreak()+"\nΛεπτά: "+totalMin()+"\nΥπόσχομαι ένα μπλοκ την ημέρα.")
+    :("GrowthLock pact\n"+root.active+"\nClean run: "+cleanStreak()+"\nMinutes: "+totalMin()+"\nI commit to one block a day."))});
+$("copy-report").addEventListener("click",function(){copy($("report-text").textContent)});
+$("export-data").addEventListener("click",function(){copy(JSON.stringify(root))});
+var wipeArmed=false;
+$("wipe-data").addEventListener("click",function(){
+  if(!wipeArmed){wipeArmed=true;banner(t("wipeSure"),true);setTimeout(function(){wipeArmed=false},6000);return}
+  try{localStorage.removeItem(KEY)}catch(e){}
+  root={lang:null,active:null,cookie:false,profiles:{}};location.reload()});
+function copy(txt){try{navigator.clipboard.writeText(txt).then(function(){banner(t("copied"))}).catch(function(){banner(txt)})}catch(e){banner(txt)}}
+
+/* ---------- renderers ---------- */
+function petMood(){
+  var p=P(),t0=startOfToday(),last=p.sessions[p.sessions.length-1],h=new Date().getHours();
+  if(!p.sessions.length)return 1;
+  if(cleanStreak()>=3)return 4;
+  if(last&&!last.clean&&Date.now()-last.ts<6*3600000)return 3;
+  if(p.sessions.some(function(s){return s.ts>=t0}))return 0;
+  if(h>=23||h<5)return 5;
+  if(last&&Date.now()-last.ts>2*86400000)return 2;
+  return 1;
+}
+function renderTasks(){
+  var ul=$("task-list");ul.innerHTML="";
+  P().tasks.slice().reverse().forEach(function(x){
+    var l=document.createElement("li");
+    var b=document.createElement("button");b.className="iconbtn";b.textContent=x.done?"✓":"○";
+    b.addEventListener("click",function(){x.done=!x.done;save();renderTasks()});
+    var s=document.createElement("span");s.className="v";s.textContent=x.text;
+    if(x.done){s.style.opacity=".45";s.style.textDecoration="line-through"}
+    var u=document.createElement("button");u.className="iconbtn";u.textContent="▸";
+    u.addEventListener("click",function(){$("intent-input").value=x.text});
+    l.appendChild(b);l.appendChild(s);l.appendChild(u);ul.appendChild(l)});
+}
+function renderParked(){
+  var p=P(),ul=$("parked");ul.innerHTML="";$("parked-card").hidden=!p.parked.length;
+  p.parked.slice().reverse().forEach(function(x){var l=document.createElement("li");
+    var s=document.createElement("span");s.className="v";s.textContent=x.text;l.appendChild(s);ul.appendChild(l)})}
+function renderToday(){
+  var p=P(),t0=startOfToday(),m=0,b=0;
+  p.sessions.forEach(function(s){if(s.ts>=t0){m+=s.focused;b++}});
+  $("s-mins").textContent=m;$("s-blocks").textContent=b;$("s-streak").textContent=cleanStreak();
+  var inf=levelInfo(p.xp);$("lvl-pill").textContent="Lv "+inf.level+" · "+inf.into+"/"+inf.need;
+  $("hello").textContent=fmt("hello",{n:p.nick||root.active});
+}
+function renderWorld(){
+  var p=P(),w=p.world,W=360,H=190,g='<svg viewBox="0 0 360 190" width="100%">';
+  g+='<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14212E"/><stop offset="1" stop-color="#20384A"/></linearGradient></defs>';
+  g+='<rect width="360" height="190" fill="url(#sky)"/>';
+  for(var i=0;i<Math.min(w.stars,40);i++){var sx=(i*37)%350+5,sy=(i*23)%70+8;
+    g+='<circle cx="'+sx+'" cy="'+sy+'" r="1.8" fill="#FFE9A8"/>'}
+  g+='<ellipse cx="180" cy="178" rx="168" ry="44" fill="#2C5E45"/><ellipse cx="180" cy="186" rx="150" ry="32" fill="#3A7A58"/>';
+  for(var j=0;j<Math.min(w.trees,22);j++){
+    var x=22+((j*41)%316),y=150+((j*17)%26);
+    g+='<rect x="'+(x-2)+'" y="'+y+'" width="4" height="14" fill="#5A3A22"/>';
+    g+='<circle cx="'+x+'" cy="'+(y-4)+'" r="'+(8+(j%3)*2)+'" fill="'+(j%2?"#4FA06A":"#3E8A5A")+'"/>'}
+  for(var b2=0;b2<Math.min(w.books,10);b2++){
+    var bx=30+b2*30,by=168;
+    g+='<rect x="'+bx+'" y="'+by+'" width="16" height="11" rx="2" fill="#C8773F"/><rect x="'+(bx+7)+'" y="'+by+'" width="2" height="11" fill="#F2E3C8"/>'}
+  g+='</svg>';
+  $("world").innerHTML=g;
+  $("w-trees").textContent=w.trees;$("w-stars").textContent=w.stars;$("w-books").textContent=w.books;
+}
+function renderBingo(){
+  var p=P(),wk=weekKey();p.bingo[wk]=p.bingo[wk]||{};
+  var box=$("bingo");box.innerHTML="";
+  BINGO.forEach(function(b,i){
+    var btn=document.createElement("button");btn.textContent=b[li];
+    btn.setAttribute("aria-pressed",String(!!p.bingo[wk][i]));
+    btn.addEventListener("click",function(){
+      if(p.bingo[wk][i]){delete p.bingo[wk][i]}else{p.bingo[wk][i]=1;P().stars+=3}
+      save();renderBingo();renderShop();renderToday()});
+    box.appendChild(btn)});
+}
+function renderShop(){
+  var p=P(),ul=$("shop-list");ul.innerHTML="";
+  $("shop-stars").textContent=(li===0?"Πόντοι: ":"Points: ")+p.stars;
+  p.shop.forEach(function(it,i){
+    var l=document.createElement("li");
+    var k=document.createElement("span");k.className="k";k.textContent=it.c;
+    var v=document.createElement("span");v.className="v";v.textContent=it.n+(it.got?" ×"+it.got:"");
+    var b=document.createElement("button");b.className="iconbtn";b.textContent=t("redeem");
+    b.addEventListener("click",function(){
+      if(p.stars<it.c){banner(t("notenough"),true);return}
+      p.stars-=it.c;it.got=(it.got||0)+1;save();renderShop();renderToday()});
+    var x=document.createElement("button");x.className="iconbtn";x.textContent="✕";
+    x.addEventListener("click",function(){p.shop.splice(i,1);save();renderShop()});
+    l.appendChild(k);l.appendChild(v);l.appendChild(b);l.appendChild(x);ul.appendChild(l)});
+}
+function renderPets(){
+  var p=P(),last=p.pets[p.pets.length-1],m=PETMOOD[petMood()];
+  $("pet-art").innerHTML=monster(last?last.i:p.mon,140,petMood());
+  $("pet-name").textContent=last?(MONNAMES[last.i][li]+" · "+RARITY[rarityOf(last.i)][li]):t("noPets");
+  $("pet-mood").textContent=m[li===0?0:1];
+  $("pet-line").textContent=m[li===0?2:3];
+  var g=$("pet-grid");g.innerHTML="";
+  MONNAMES.forEach(function(nm,i){
+    var owned=p.pets.some(function(x){return x.i===i});
+    var d=document.createElement("div");d.className="tile"+(owned?"":" locked");
+    d.innerHTML=(owned?monster(i,62,1):'<div class="em">❓</div>')+'<div class="nm">'+(owned?nm[li]:"—")+'</div><div class="rr">'+RARITY[rarityOf(i)][li]+'</div>';
+    g.appendChild(d)});
+  var pg=$("planet-grid");pg.innerHTML="";
+  PLANETS.forEach(function(pl,i){
+    var owned=p.planets.some(function(x){return x.i===i});
+    var d=document.createElement("div");d.className="tile"+(owned?"":" locked");
+    d.innerHTML='<div class="em">'+(owned?"🪐":"·")+'</div><div class="nm">'+(owned?pl[li]:"???")+'</div>';
+    pg.appendChild(d)});
+}
+function renderStats(){
+  var p=P(),now=Date.now(),week=0,month=0,total=0;
+  p.sessions.forEach(function(s){total+=s.focused;
+    if(now-s.ts<7*86400000)week+=s.focused;if(now-s.ts<30*86400000)month+=s.focused});
+  $("r-week").textContent=week;$("r-month").textContent=month;$("r-total").textContent=Math.round(total/60);
+  var cp=p.sessions.length?Math.round(100*p.sessions.filter(function(s){return s.clean}).length/p.sessions.length):0;
+  var score=Math.min(100,Math.round(cleanStreak()*6+cp*0.4+Math.min(40,week/10)));
+  $("life-bar").style.width=score+"%";$("life-line").textContent=score+" / 100";
+  $("life-break").textContent=fmt("lifeBreak",{a:cleanStreak(),b:cp,c:week});
+  var byDay={};p.sessions.forEach(function(s){var k=dayKey(s.ts);byDay[k]=(byDay[k]||0)+s.focused});
+  var hm=$("heat");hm.innerHTML="";
+  for(var i=29;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);
+    var v=byDay[dayKey(d.getTime())]||0,el=document.createElement("i");
+    var a=v===0?0:v<25?30:v<60?55:v<120?80:100;
+    if(a)el.style.background="color-mix(in srgb, var(--accent) "+a+"%, var(--line))";
+    el.title=dayKey(d.getTime())+": "+v;hm.appendChild(el)}
+  var hrs=new Array(24).fill(0);
+  p.sessions.forEach(function(s){hrs[new Date(s.ts).getHours()]+=s.focused});
+  var mx=Math.max.apply(null,hrs)||0,hd=$("hours");hd.innerHTML="";
+  hrs.forEach(function(v){var el=document.createElement("i");el.style.height=(mx?Math.round(100*v/mx):2)+"%";
+    if(mx&&v===mx)el.className="on";hd.appendChild(el)});
+  $("best-hour").textContent=mx>0?fmt("bestHour",{h:two(hrs.indexOf(mx))}):t("nodata");
+  var done=p.moods.filter(function(m){return m.a});
+  if(done.length){var ab=0,aa=0;done.forEach(function(m){ab+=m.b;aa+=m.a});
+    $("mood-summary").textContent=fmt("moodLine",{a:(ab/done.length).toFixed(1),b:(aa/done.length).toFixed(1),n:done.length})}
+  else $("mood-summary").textContent=t("moodNone");
+  var tips=[],ul=$("coach-list");ul.innerHTML="";
+  if(!p.sessions.length)tips.push(li===0?"Ξεκίνα με 15 λεπτά. Μικρό και σίγουρο.":"Start with 15 minutes. Small and certain.");
+  if(cp<60&&p.sessions.length>2)tips.push(li===0?"Τα μισά μπλοκ σπάνε. Βάλε το κινητό σε άλλο δωμάτιο.":"Half your blocks break. Put the phone in another room.");
+  if(week<60)tips.push(li===0?"Λιγότερο από μία ώρα αυτή την εβδομάδα. Στόχος: τρία μπλοκ.":"Under an hour this week. Target: three blocks.");
+  if(mx>0)tips.push((li===0?"Είσαι πιο κοφτερός στις ":"You are sharpest at ")+two(hrs.indexOf(mx))+":00.");
+  if(cleanStreak()>=3)tips.push((li===0?"Σερί ":"Run of ")+cleanStreak()+(li===0?". Μην το σπάσεις σήμερα.":". Don't break it today."));
+  tips.slice(0,4).forEach(function(x){var l=document.createElement("li");var s=document.createElement("span");s.className="v";s.textContent=x;l.appendChild(s);ul.appendChild(l)});
+  $("report-text").textContent=li===0
+    ?"GrowthLock — "+root.active+"\nΕβδομάδα: "+week+"′\nΜήνας: "+month+"′\nΣύνολο: "+Math.round(total/60)+" ώρες\nΜπλοκ: "+finishedCount()+" · Καθαρά: "+cp+"%\nΣερί: "+cleanStreak()+"\nLife score: "+score+"/100\n(Μετρημένα μόνο τα μπλοκ της εφαρμογής.)"
+    :"GrowthLock — "+root.active+"\nWeek: "+week+" min\nMonth: "+month+" min\nTotal: "+Math.round(total/60)+" hours\nBlocks: "+finishedCount()+" · Clean: "+cp+"%\nRun: "+cleanStreak()+"\nLife score: "+score+"/100\n(Measured from this app's blocks only.)";
+  var lg=$("log");lg.innerHTML="";
+  p.sessions.slice(-8).reverse().forEach(function(s){
+    var l=document.createElement("li");
+    var a=document.createElement("span");a.className="k";a.textContent=s.focused+"′";
+    var b=document.createElement("span");b.className="v";b.textContent=s.intention||t("focus");
+    var c=document.createElement("span");c.className="m "+(s.clean?"ok":"bad");
+    c.textContent=s.clean?t("markclean"):(s.completed?String(s.slips):t("pillcut"));
+    l.appendChild(a);l.appendChild(b);l.appendChild(c);lg.appendChild(l)});
+}
+function renderMore(){
+  var p=P(),g=$("ach-grid");g.innerHTML="";
+  ACH.forEach(function(a){var has=!!p.ach[a.id];var d=document.createElement("div");
+    d.className="tile"+(has?"":" locked");
+    d.innerHTML='<div class="em">'+a.e+'</div><div class="nm">'+a.n[li]+'</div>';g.appendChild(d)});
+  var ul=$("museum-list");ul.innerHTML="";
+  p.fails.slice(-8).reverse().forEach(function(f){var l=document.createElement("li");
+    var a=document.createElement("span");a.className="k";a.textContent=f.minutes+"/"+f.of+"′";
+    var b=document.createElement("span");b.className="v";b.textContent=f.excuse;
+    l.appendChild(a);l.appendChild(b);ul.appendChild(l)});
+  var fin=finishedCount();
+  $("secret-line").textContent=fin>=10?t("unlocked"):fmt("locked10",{n:fin});
+  $("secret-body").hidden=fin<10;
+  var pl=$("profile-list");pl.innerHTML="";
+  Object.keys(root.profiles).forEach(function(nm){
+    var l=document.createElement("li");
+    var b=document.createElement("button");b.className="iconbtn";b.textContent=nm===root.active?"●":"○";
+    b.addEventListener("click",function(){root.active=nm;save();applySkin();applyLang()});
+    var s=document.createElement("span");s.className="v";s.textContent=nm;
+    var m=document.createElement("span");m.className="m ok";m.textContent="Lv "+levelInfo(root.profiles[nm].xp||0).level;
+    l.appendChild(b);l.appendChild(s);l.appendChild(m);pl.appendChild(l)});
+  $("set-bed").value=p.settings.bed;$("set-morn").value=p.settings.morn;
+  $("set-break").value=p.settings.brk;$("set-emg").value=p.settings.emg;
+  $("set-sound").value=p.settings.sound;$("set-quiet").checked=!!p.settings.quiet;
+  var hl=$("honest-list");hl.innerHTML="";
+  HONEST.forEach(function(h){var l=document.createElement("li");var s=document.createElement("span");
+    s.className="v";s.textContent=h[li];l.appendChild(s);hl.appendChild(l)});
+  renderSched();renderDayPicker();applySkin();
+}
+function renderBanners(){
+  var p=P(),now=new Date(),mins=now.getHours()*60+now.getMinutes();
+  $("banners").innerHTML="";
+  var bd=(p.settings.bed||"23:30").split(":"),bm=(+bd[0])*60+(+bd[1]),diff=bm-mins;
+  if(diff>0&&diff<=60)banner(fmt("bedSoon",{n:diff}));
+  if(mins>=bm||mins<5*60)banner(t("nightCh"));
+  var mo=(p.settings.morn||"07:30").split(":"),mm=(+mo[0])*60+(+mo[1]);
+  if(mins>=mm&&mins<mm+90)banner(t("morningCh"));
+  checkSched();
+}
+function renderAll(){
+  if(!P())return;
+  renderToday();renderQuests();renderTasks();renderParked();renderWorld();renderBingo();renderShop();
+  renderPets();renderStats();renderMore();renderBanners();
+}
+
+/* ---------- boot ---------- */
+if(root.lang==="el"||root.lang==="en")li=root.lang==="en"?1:0;
+if(!root.lang){$("choose").hidden=false}
+else if(!root.active||!root.profiles[root.active]){startNick()}
+else{$("app").hidden=false;applySkin();if(!root.cookie)$("cookie").hidden=false}
+applyLang();
 })();
 </script>
 
