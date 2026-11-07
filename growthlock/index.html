@@ -31,7 +31,7 @@ img{max-width:100%}
 [hidden]{display:none!important}
 button{font:inherit}
 
-/* Layout: one screen, three states — setup, session (dimmed lock panel), debrief. Vertical flex, content centered, stats pinned low. */
+/* Layout: one screen, three states — setup, session (dim lock panel), debrief. Vertical flex, stats low. */
 :root{
   --bg:#EDF1F4;
   --surface:#FFFFFF;
@@ -44,157 +44,85 @@ button{font:inherit}
   --panel:#0C1116;
   --panel-ink:#DCE6EC;
   --panel-muted:#6B7C8A;
+  --on-accent:#FFFFFF;
   --font-display:"Instrument Serif",Georgia,"Times New Roman",serif;
   --font-body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0F1419;
-    --surface:#18212A;
-    --line:#2A3540;
-    --ink:#E4EDF3;
-    --muted:#8B9BA8;
-    --accent:#3FB8C4;
-    --accent-soft:#1B3338;
-    --slip:#D9774F;
+    --bg:#0F1419;--surface:#18212A;--line:#2A3540;--ink:#E4EDF3;--muted:#8B9BA8;
+    --accent:#3FB8C4;--accent-soft:#1B3338;--slip:#D9774F;--on-accent:#05171A;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0F1419;
-  --surface:#18212A;
-  --line:#2A3540;
-  --ink:#E4EDF3;
-  --muted:#8B9BA8;
-  --accent:#3FB8C4;
-  --accent-soft:#1B3338;
-  --slip:#D9774F;
+  --bg:#0F1419;--surface:#18212A;--line:#2A3540;--ink:#E4EDF3;--muted:#8B9BA8;
+  --accent:#3FB8C4;--accent-soft:#1B3338;--slip:#D9774F;--on-accent:#05171A;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--font-body);
-  font-size:16px;
-  line-height:1.45;
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);font-size:16px;line-height:1.45;
   -webkit-font-smoothing:antialiased;
 }
 .app{
-  min-height:100%;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
+  min-height:100%;display:flex;flex-direction:column;gap:20px;
   padding-left:max(16px,env(safe-area-inset-left,0px));
   padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-block:20px 24px;
-  max-width:460px;
-  margin:0 auto;
+  padding-block:20px 24px;max-width:460px;margin:0 auto;
 }
 .brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand .mark-wrap{display:flex;align-items:center;gap:10px;min-width:0}
-.brand h1{
-  font-family:var(--font-display);
-  font-size:30px;
-  font-weight:400;
-  letter-spacing:.01em;
-  margin:0;
-  line-height:1;
-}
+.brand h1{font-family:var(--font-display);font-size:30px;font-weight:400;letter-spacing:.01em;margin:0;line-height:1}
 .logo{width:34px;height:34px;flex:none;display:block}
 .logo .shackle{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round}
 .logo .body{fill:var(--accent-soft);stroke:var(--accent);stroke-width:5}
 .logo .bar{fill:var(--accent)}
-.session .logo{width:22px;height:22px;opacity:.5}
-.brand .tag{
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  color:var(--muted);
+.lang{display:flex;gap:0;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex:none}
+.lang button{
+  font-family:var(--font-body);font-size:11px;letter-spacing:.1em;font-weight:500;
+  padding:7px 11px;border:none;background:transparent;color:var(--muted);cursor:pointer;line-height:1;
 }
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
 h2{font-family:var(--font-display);font-weight:400;font-size:22px;margin:0;text-wrap:balance}
 p{margin:0}
 .lede{color:var(--muted);font-size:14px}
-.label{
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.13em;
-  color:var(--muted);
-  display:block;
-  margin-bottom:8px;
-}
-.card{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:16px;
-}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);display:block;margin-bottom:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
 .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .chip{
-  font-family:var(--font-mono);
-  font-size:15px;
-  font-weight:400;
-  padding:14px 4px;
-  border-radius:11px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--ink);
-  cursor:pointer;
-  text-align:center;
-  line-height:1.1;
+  font-family:var(--font-mono);font-size:15px;padding:14px 4px;border-radius:11px;
+  border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;text-align:center;line-height:1.1;
 }
-.chip small{display:block;font-family:var(--font-body);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
-.chip[aria-pressed="true"]{
-  border-color:var(--accent);
-  background:var(--accent-soft);
-  color:var(--accent);
-}
+.chip small{display:block;font-family:var(--font-body);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 .chip[aria-pressed="true"] small{color:var(--accent)}
 input[type="text"],textarea{
-  width:100%;
-  font-family:var(--font-body);
-  font-size:16px;
-  color:var(--ink);
-  background:transparent;
-  border:none;
-  border-bottom:1px solid var(--line);
-  padding:8px 0;
-  border-radius:0;
+  width:100%;font-family:var(--font-body);font-size:16px;color:var(--ink);background:transparent;
+  border:none;border-bottom:1px solid var(--line);padding:8px 0;border-radius:0;
 }
 input[type="text"]:focus-visible,textarea:focus-visible{outline:none;border-bottom-color:var(--accent)}
 textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:vertical;min-height:76px;line-height:1.4}
 .btn{
-  font-family:var(--font-body);
-  font-size:16px;
-  font-weight:500;
-  width:100%;
-  padding:16px;
-  border-radius:12px;
-  border:1px solid var(--accent);
-  background:var(--accent);
-  color:#fff;
-  cursor:pointer;
+  font-family:var(--font-body);font-size:16px;font-weight:500;width:100%;padding:16px;border-radius:12px;
+  border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer;
 }
-:root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#05171A}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn{color:#fff}}
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn:disabled{opacity:.45;cursor:default}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-/* stats */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .stat{background:var(--surface);padding:12px 10px;min-width:0}
 .stat b{display:block;font-family:var(--font-mono);font-size:21px;font-weight:400;font-variant-numeric:tabular-nums;line-height:1.2}
-.stat span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.log{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.stat span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.log{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
 .log li{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13px;min-width:0}
 .log li:first-child{border-top:none}
 .log .mins{font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted);flex:none}
 .log .what{flex:1;min-width:0;overflow-wrap:anywhere;color:var(--ink)}
-.log .mark{flex:none;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.log .mark{flex:none;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
 .mark.clean{color:var(--accent)}
 .mark.broke{color:var(--slip)}
 .spacer{flex:1}
@@ -202,54 +130,44 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
 
 /* session panel — deliberately dark in both themes, so the screen itself is boring */
 .session{
-  position:fixed;
-  inset:0;
-  background:var(--panel);
-  color:var(--panel-ink);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:22px;
-  z-index:20;
+  position:fixed;inset:0;background:var(--panel);color:var(--panel-ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;z-index:20;
   padding-top:max(24px,env(safe-area-inset-top,0px));
   padding-bottom:max(24px,env(safe-area-inset-bottom,0px));
   padding-left:max(16px,env(safe-area-inset-left,0px));
   padding-right:max(16px,env(safe-area-inset-right,0px));
-  text-align:center;
+  text-align:center;overflow-y:auto;
 }
-.dial{position:relative;width:min(74vw,268px);aspect-ratio:1;max-width:100%}
+.dial{position:relative;width:min(70vw,250px);aspect-ratio:1;max-width:100%;flex:none}
 .dial svg{width:100%;height:100%;display:block;transform:rotate(-90deg)}
 .dial .track{fill:none;stroke:#1E2731;stroke-width:5}
-.dial .prog{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
-.dial .inner{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-}
-.clock{
-  font-family:var(--font-mono);
-  font-weight:300;
-  font-size:clamp(44px,15vw,60px);
-  font-variant-numeric:tabular-nums;
-  letter-spacing:-.02em;
-  line-height:1;
-}
+.dial .prog{fill:none;stroke:#3FB8C4;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
+.dial .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.clock{font-family:var(--font-mono);font-weight:300;font-size:clamp(42px,14vw,58px);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
 .sub{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--panel-muted)}
 .intent{font-family:var(--font-display);font-size:20px;max-width:22ch;overflow-wrap:anywhere;color:var(--panel-ink)}
 .slips{font-size:12px;color:var(--panel-muted);min-height:1.2em}
-.slips.bad{color:var(--slip)}
-.session .tools{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px}
+.slips.bad{color:#D9774F}
+.tools{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px}
 .flat{
   font-family:var(--font-body);font-size:13px;padding:12px;border-radius:11px;
   border:1px solid #243039;background:transparent;color:var(--panel-muted);cursor:pointer;width:100%;
 }
+.flat:disabled{opacity:.4;cursor:default}
+.flat.go{border-color:#3FB8C4;color:#3FB8C4}
 .hold{position:relative;overflow:hidden}
 .hold .fill{position:absolute;inset:0 auto 0 0;width:0;background:#243039;pointer-events:none}
 .hold .txt{position:relative}
-.parkbox{width:100%;max-width:320px;display:flex;flex-direction:column;gap:8px}
-.parkbox textarea{background:#121920;border-color:#243039;color:var(--panel-ink);font-size:15px}
-.parkbox .flat{border-color:var(--accent);color:var(--accent)}
-.done-big{font-family:var(--font-mono);font-size:40px;font-weight:300;font-variant-numeric:tabular-nums;line-height:1}
-.pill{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding:5px 10px;border-radius:999px;border:1px solid currentColor}
+.panel-box{width:100%;max-width:320px;display:flex;flex-direction:column;gap:9px}
+.panel-box textarea,.panel-box input[type="text"]{
+  background:#121920;border:1px solid #243039;border-radius:10px;padding:12px;color:var(--panel-ink);font-size:15px;
+}
+.panel-box input[type="text"]{font-family:var(--font-mono);letter-spacing:.2em;text-align:center}
+.panel-box input[type="text"]:focus-visible,.panel-box textarea:focus-visible{outline:none;border-color:#3FB8C4}
+.cost{font-size:13px;color:var(--panel-muted);text-wrap:balance}
+.cost b{color:#D9774F;font-weight:500}
+.done-big{font-family:var(--font-mono);font-size:38px;font-weight:300;font-variant-numeric:tabular-nums;line-height:1}
+.pill{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:5px 10px;border-radius:999px;border:1px solid currentColor}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -265,56 +183,59 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
       </svg>
       <h1>GrowthLock</h1>
     </div>
-    <span class="tag">Phone down</span>
+    <div class="lang" role="group" aria-label="Γλώσσα / Language">
+      <button type="button" data-lang="el" aria-pressed="true">ΕΛ</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
   </div>
 
   <div>
-    <h2>One block. Phone face down.</h2>
-    <p class="lede">Start a block, put the phone down screen-up. If you switch apps or lock the screen, it counts as a slip and the block is marked broken.</p>
+    <h2 data-t="h2"></h2>
+    <p class="lede" data-t="lede"></p>
   </div>
 
   <div class="card">
-    <span class="label">How long</span>
-    <div class="chips" role="group" aria-label="Block length">
-      <button class="chip" data-min="15" aria-pressed="false">15<small>min</small></button>
-      <button class="chip" data-min="25" aria-pressed="true">25<small>min</small></button>
-      <button class="chip" data-min="45" aria-pressed="false">45<small>min</small></button>
-      <button class="chip" data-min="90" aria-pressed="false">90<small>min</small></button>
+    <span class="label" data-t="howlong"></span>
+    <div class="chips" role="group" data-ta="howlong">
+      <button class="chip" data-min="15" aria-pressed="false">15<small data-t="min"></small></button>
+      <button class="chip" data-min="25" aria-pressed="true">25<small data-t="min"></small></button>
+      <button class="chip" data-min="45" aria-pressed="false">45<small data-t="min"></small></button>
+      <button class="chip" data-min="90" aria-pressed="false">90<small data-t="min"></small></button>
     </div>
     <div style="margin-top:16px">
-      <label class="label" for="intent-input">What are you doing</label>
-      <input type="text" id="intent-input" placeholder="Write the Seven Dreams follow-ups" maxlength="70" autocomplete="off">
+      <label class="label" for="intent-input" data-t="doing"></label>
+      <input type="text" id="intent-input" data-tp="doingph" maxlength="70" autocomplete="off">
     </div>
   </div>
 
-  <button class="btn" id="start">Start block</button>
+  <button class="btn" id="start" data-t="start"></button>
 
   <div>
-    <span class="label">Today</span>
+    <span class="label" data-t="today"></span>
     <div class="stats">
-      <div class="stat"><b id="s-mins">0</b><span>minutes</span></div>
-      <div class="stat"><b id="s-blocks">0</b><span>blocks</span></div>
-      <div class="stat"><b id="s-streak">0</b><span>clean run</span></div>
+      <div class="stat"><b id="s-mins">0</b><span data-t="minutes"></span></div>
+      <div class="stat"><b id="s-blocks">0</b><span data-t="blocks"></span></div>
+      <div class="stat"><b id="s-streak">0</b><span data-t="streak"></span></div>
     </div>
   </div>
 
   <div id="log-wrap" hidden>
-    <span class="label">Recent blocks</span>
+    <span class="label" data-t="recent"></span>
     <ul class="log" id="log"></ul>
   </div>
 
   <div id="parked-wrap" hidden>
-    <span class="label">Parked thoughts</span>
+    <span class="label" data-t="parked"></span>
     <ul class="log" id="parked"></ul>
-    <button class="btn ghost" id="clear-parked" style="margin-top:10px;font-size:13px;padding:10px">Clear parked list</button>
+    <button class="btn ghost" id="clear-parked" style="margin-top:10px;font-size:13px;padding:10px" data-t="clearparked"></button>
   </div>
 
   <div class="spacer"></div>
-  <p class="foot">Add this page to your home screen so it opens like an app. Keep the screen on and the phone out of reach — the timer only runs while this page is open.</p>
+  <p class="foot" data-t="foot"></p>
 </div>
 
 <div class="session" id="session" hidden>
-  <p class="intent" id="s-intent">Focus</p>
+  <p class="intent" id="s-intent"></p>
   <div class="dial">
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <circle class="track" cx="50" cy="50" r="45"></circle>
@@ -322,36 +243,122 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
     </svg>
     <div class="inner">
       <div class="clock" id="clock" role="timer" aria-live="off">25:00</div>
-      <div class="sub" id="sub">remaining</div>
+      <div class="sub" id="sub" data-t="remaining"></div>
     </div>
   </div>
-  <p class="slips" id="slips">Clean so far</p>
+  <p class="slips" id="slips"></p>
+
   <div class="tools" id="tools">
-    <button class="flat" id="park-open">Park a thought instead of unlocking</button>
-    <button class="flat hold" id="quit"><span class="fill" id="quit-fill"></span><span class="txt">Hold to end early</span></button>
+    <button class="flat" id="park-open" data-t="parkopen"></button>
+    <button class="flat hold" id="quit"><span class="fill" id="quit-fill"></span><span class="txt" data-t="holdunlock"></span></button>
   </div>
-  <div class="parkbox" id="parkbox" hidden>
-    <textarea id="park-text" placeholder="The thing you just remembered…" maxlength="200"></textarea>
-    <button class="flat" id="park-save">Save and keep going</button>
-    <button class="flat" id="park-cancel">Never mind</button>
+
+  <div class="panel-box" id="parkbox" hidden>
+    <textarea id="park-text" data-tp="parkph" maxlength="200"></textarea>
+    <button class="flat go" id="park-save" data-t="parksave"></button>
+    <button class="flat" id="park-cancel" data-t="parkcancel"></button>
+  </div>
+
+  <div class="panel-box" id="gate" hidden>
+    <p class="sub" data-t="gatetitle"></p>
+    <p class="cost" id="gate-cost"></p>
+    <input type="text" id="gate-word" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+    <button class="flat go" id="gate-go" disabled></button>
+    <button class="flat" id="gate-cancel" data-t="gatekeep"></button>
   </div>
 </div>
 
 <div class="session" id="done" hidden>
-  <p class="sub" id="d-kicker">Block finished</p>
-  <div class="done-big" id="d-mins">25:00</div>
+  <p class="sub" id="d-kicker"></p>
+  <div class="done-big" id="d-mins"></div>
   <p class="intent" id="d-intent"></p>
-  <p><span class="pill" id="d-pill">Clean</span></p>
+  <p><span class="pill" id="d-pill"></span></p>
   <p class="slips" id="d-note"></p>
   <div class="tools">
-    <button class="flat" id="again" style="border-color:var(--accent);color:var(--accent)">Start another</button>
-    <button class="flat" id="back">Done for now</button>
+    <button class="flat go" id="again" data-t="again"></button>
+    <button class="flat" id="back" data-t="backhome"></button>
   </div>
 </div>
 
 <script>
 (function(){
   "use strict";
+
+  /* ---------- language (Greek first) ---------- */
+  var STR={
+    el:{
+      h2:"Ένα μπλοκ. Κινητό κάτω.",
+      lede:"Ξεκίνα ένα μπλοκ και άσε το κινητό. Αν αλλάξεις εφαρμογή ή ανάψεις την οθόνη, μετράει ως ολίσθηση και το μπλοκ χαλάει.",
+      howlong:"Διάρκεια", min:"λεπτά",
+      doing:"Τι θα κάνεις", doingph:"Τα follow-up των πελατών",
+      start:"Ξεκίνα μπλοκ",
+      today:"Σήμερα", minutes:"λεπτά", blocks:"μπλοκ", streak:"σερί",
+      recent:"Πρόσφατα μπλοκ", parked:"Σκέψεις σε αναμονή", clearparked:"Καθάρισε τη λίστα",
+      foot:"Πρόσθεσε τη σελίδα στην αρχική οθόνη για να ανοίγει σαν εφαρμογή. Ο χρόνος μετράει μόνο όσο η σελίδα είναι ανοιχτή.",
+      remaining:"απομένουν", focus:"Συγκέντρωση",
+      clean:"Καθαρό μέχρι τώρα",
+      parkopen:"Γράψε τη σκέψη αντί να ξεκλειδώσεις",
+      parkagain:"Γράφτηκε. Κι άλλη;",
+      parkph:"Αυτό που μόλις θυμήθηκες…",
+      parksave:"Αποθήκευσε και συνέχισε", parkcancel:"Άφησέ το",
+      holdunlock:"Κράτα πατημένο για ξεκλείδωμα",
+      gatetitle:"Να ξεκλειδώσει;",
+      word:"ΤΕΛΟΣ",
+      gateunlock:"Ξεκλείδωσε", gatekeep:"Συνέχισε",
+      finished:"Το μπλοκ τελείωσε", endedearly:"Σταμάτησε νωρίς",
+      pillclean:"Καθαρό", pillcut:"Κόπηκε",
+      noteclean:"Δεν άγγιξες το κινητό καθόλου.",
+      again:"Άλλο ένα", backhome:"Τέλος για τώρα",
+      markclean:"καθαρό",
+      mins:function(n){return n+" λεπτά"},
+      left:function(n){return "Έφυγες "+n+(n===1?" φορά":" φορές")},
+      waitn:function(n){return "Περίμενε "+n+"″"},
+      type:function(w){return "Γράψε "+w},
+      cost:function(m,s){return "Απομένουν <b>"+m+"</b>. "+(s>0?("Χάνεις σερί "+s+(s===1?" μπλοκ":" μπλοκ")+"."):"")},
+      pillbroke:function(n){return "Χαλασμένο · "+n+(n===1?" ολίσθηση":" ολισθήσεις")},
+      marks:function(n){return n+" ολ."},
+      notebroke:function(n){return "Τελείωσες, αλλά η οθόνη άναψε "+n+(n===1?" φορά":" φορές")+"."},
+      notecut:function(f,m){return f+" από "+m+" λεπτά πριν σταματήσεις."}
+    },
+    en:{
+      h2:"One block. Phone face down.",
+      lede:"Start a block and put the phone down. If you switch apps or wake the screen, it counts as a slip and the block is marked broken.",
+      howlong:"How long", min:"min",
+      doing:"What are you doing", doingph:"Client follow-ups",
+      start:"Start block",
+      today:"Today", minutes:"minutes", blocks:"blocks", streak:"clean run",
+      recent:"Recent blocks", parked:"Parked thoughts", clearparked:"Clear parked list",
+      foot:"Add this page to your home screen so it opens like an app. The timer only runs while this page is open.",
+      remaining:"remaining", focus:"Focus",
+      clean:"Clean so far",
+      parkopen:"Park a thought instead of unlocking",
+      parkagain:"Parked. Add another",
+      parkph:"The thing you just remembered…",
+      parksave:"Save and keep going", parkcancel:"Never mind",
+      holdunlock:"Hold to unlock",
+      gatetitle:"Unlock the block?",
+      word:"UNLOCK",
+      gateunlock:"Unlock", gatekeep:"Keep going",
+      finished:"Block finished", endedearly:"Ended early",
+      pillclean:"Clean", pillcut:"Cut short",
+      noteclean:"Phone untouched the whole way.",
+      again:"Start another", backhome:"Done for now",
+      markclean:"clean",
+      mins:function(n){return n+" min"},
+      left:function(n){return "You left "+n+" time"+(n===1?"":"s")},
+      waitn:function(n){return "Wait "+n+"s"},
+      type:function(w){return "Type "+w},
+      cost:function(m,s){return "<b>"+m+"</b> left. "+(s>0?("You lose a clean run of "+s+"."):"")},
+      pillbroke:function(n){return "Broken · "+n+" slip"+(n===1?"":"s")},
+      marks:function(n){return n+(n===1?" slip":" slips")},
+      notebroke:function(n){return "You finished, but the screen came back on "+n+" time"+(n===1?"":"s")+"."},
+      notecut:function(f,m){return f+" of "+m+" minutes before you stopped."}
+    }
+  };
+  var lang="el";
+  try{ var saved=localStorage.getItem("growthlock.lang"); if(saved==="en"||saved==="el") lang=saved; }catch(e){}
+  function T(k){ return STR[lang][k]; }
+
   var KEY="growthlock.v1";
   var state={sessions:[],parked:[]};
   try{
@@ -365,6 +372,32 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
   var chips=Array.prototype.slice.call(document.querySelectorAll(".chip"));
   var chosen=25;
 
+  function applyLang(){
+    document.documentElement.lang=lang;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-t]"),function(el){
+      el.textContent=T(el.getAttribute("data-t"));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-tp]"),function(el){
+      el.setAttribute("placeholder",T(el.getAttribute("data-tp")));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-ta]"),function(el){
+      el.setAttribute("aria-label",T(el.getAttribute("data-ta")));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".lang button"),function(b){
+      b.setAttribute("aria-pressed",String(b.getAttribute("data-lang")===lang));
+    });
+    $("gate-word").setAttribute("placeholder",T("type")(T("word")));
+    if(run){ $("s-intent").textContent=run.intention||T("focus"); updateSlips(); }
+    renderStats();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".lang button"),function(b){
+    b.addEventListener("click",function(){
+      lang=b.getAttribute("data-lang");
+      try{ localStorage.setItem("growthlock.lang",lang); }catch(e){}
+      applyLang();
+    });
+  });
+
   chips.forEach(function(c){
     c.addEventListener("click",function(){
       chosen=parseInt(c.getAttribute("data-min"),10);
@@ -373,34 +406,27 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
   });
 
   function two(n){return (n<10?"0":"")+n}
-  function mmss(ms){
-    if(ms<0)ms=0;
-    var t=Math.round(ms/1000);
-    return two(Math.floor(t/60))+":"+two(t%60);
-  }
+  function mmss(ms){ if(ms<0)ms=0; var t=Math.round(ms/1000); return two(Math.floor(t/60))+":"+two(t%60); }
   function startOfToday(){var d=new Date();d.setHours(0,0,0,0);return d.getTime()}
+  function cleanStreak(){ var n=0; for(var i=state.sessions.length-1;i>=0;i--){ if(state.sessions[i].clean) n++; else break; } return n; }
 
   function renderStats(){
     var t0=startOfToday(), mins=0, blocks=0;
-    state.sessions.forEach(function(s){
-      if(s.ts>=t0){ mins+=s.focused; blocks++; }
-    });
-    var streak=0;
-    for(var i=state.sessions.length-1;i>=0;i--){ if(state.sessions[i].clean) streak++; else break; }
+    state.sessions.forEach(function(s){ if(s.ts>=t0){ mins+=s.focused; blocks++; } });
     $("s-mins").textContent=mins;
     $("s-blocks").textContent=blocks;
-    $("s-streak").textContent=streak;
+    $("s-streak").textContent=cleanStreak();
 
     var log=$("log"); log.innerHTML="";
     var recent=state.sessions.slice(-6).reverse();
     $("log-wrap").hidden=recent.length===0;
     recent.forEach(function(s){
       var li=document.createElement("li");
-      var a=document.createElement("span"); a.className="mins"; a.textContent=s.focused+"m";
-      var b=document.createElement("span"); b.className="what"; b.textContent=s.intention||"Focus block";
+      var a=document.createElement("span"); a.className="mins"; a.textContent=s.focused+"′";
+      var b=document.createElement("span"); b.className="what"; b.textContent=s.intention||T("focus");
       var c=document.createElement("span");
       c.className="mark "+(s.clean?"clean":"broke");
-      c.textContent=s.clean?"clean":(s.slips+" slip"+(s.slips===1?"":"s"));
+      c.textContent=s.clean?T("markclean"):T("marks")(s.slips);
       li.appendChild(a); li.appendChild(b); li.appendChild(c);
       log.appendChild(li);
     });
@@ -449,29 +475,30 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
 
   function paint(){
     if(!run) return;
-    var now=Date.now();
-    var left=run.endAt-now;
+    var left=run.endAt-Date.now();
     $("clock").textContent=mmss(left);
     var done=Math.min(1,Math.max(0,(run.total-left)/run.total));
     $("prog").setAttribute("stroke-dashoffset",String(CIRC*(1-done)));
+    if(!$("gate").hidden) $("gate-cost").innerHTML=T("cost")(mmss(left),run.streakAtStart);
     if(left<=0) finish(true);
   }
 
   function updateSlips(){
     var el=$("slips");
-    if(run.slips===0){ el.textContent="Clean so far"; el.className="slips"; }
-    else { el.textContent="You left "+run.slips+" time"+(run.slips===1?"":"s"); el.className="slips bad"; }
+    if(!run) return;
+    if(run.slips===0){ el.textContent=T("clean"); el.className="slips"; }
+    else { el.textContent=T("left")(run.slips); el.className="slips bad"; }
   }
 
   function begin(minutes,intention){
     primeAudio();
-    run={total:minutes*60000,endAt:Date.now()+minutes*60000,minutes:minutes,intention:intention,slips:0,startedAt:Date.now()};
-    $("s-intent").textContent=intention||"Focus";
+    run={total:minutes*60000,endAt:Date.now()+minutes*60000,minutes:minutes,intention:intention,slips:0,startedAt:Date.now(),streakAtStart:cleanStreak()};
+    $("s-intent").textContent=intention||T("focus");
     $("prog").setAttribute("stroke-dasharray",String(CIRC));
     $("prog").setAttribute("stroke-dashoffset","0");
-    $("sub").textContent="remaining";
     updateSlips();
-    $("parkbox").hidden=true; $("tools").hidden=false;
+    closeGate(); $("parkbox").hidden=true; $("tools").hidden=false;
+    $("park-open").textContent=T("parkopen");
     setup.hidden=true; doneEl.hidden=true; sessionEl.hidden=false;
     paint();
     tick=setInterval(paint,250);
@@ -481,6 +508,7 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
   function finish(completed){
     if(!run) return;
     if(tick){clearInterval(tick); tick=null;}
+    closeGate();
     var elapsedMin=Math.max(0,Math.round((Date.now()-run.startedAt)/60000));
     var focused=completed?run.minutes:elapsedMin;
     var clean=completed&&run.slips===0;
@@ -489,16 +517,16 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
     dropLock();
     if(completed) chime();
 
-    $("d-kicker").textContent=completed?"Block finished":"Ended early";
-    $("d-mins").textContent=focused+" min";
+    $("d-kicker").textContent=completed?T("finished"):T("endedearly");
+    $("d-mins").textContent=T("mins")(focused);
     $("d-intent").textContent=rec.intention||"";
     var pill=$("d-pill");
-    if(clean){ pill.textContent="Clean"; pill.style.color="var(--accent)"; }
-    else { pill.textContent=completed?("Broken · "+rec.slips+" slip"+(rec.slips===1?"":"s")):"Cut short"; pill.style.color="var(--slip)"; }
+    if(clean){ pill.textContent=T("pillclean"); pill.style.color="#3FB8C4"; }
+    else { pill.textContent=completed?T("pillbroke")(rec.slips):T("pillcut"); pill.style.color="#D9774F"; }
     var note=$("d-note");
-    if(clean) note.textContent="Phone untouched the whole way.";
-    else if(completed) note.textContent="You finished, but the screen came back on "+rec.slips+" time"+(rec.slips===1?"":"s")+".";
-    else note.textContent=focused+" of "+rec.minutes+" minutes before you stopped.";
+    if(clean) note.textContent=T("noteclean");
+    else if(completed) note.textContent=T("notebroke")(rec.slips);
+    else note.textContent=T("notecut")(focused,rec.minutes);
 
     run=null;
     renderStats();
@@ -511,27 +539,53 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
     else { updateSlips(); askLock(); paint(); }
   });
 
-  $("start").addEventListener("click",function(){
-    begin(chosen,$("intent-input").value.trim());
-  });
+  $("start").addEventListener("click",function(){ begin(chosen,$("intent-input").value.trim()); });
 
   /* park a thought */
-  $("park-open").addEventListener("click",function(){ $("tools").hidden=true; $("parkbox").hidden=false; $("park-text").focus(); });
+  $("park-open").addEventListener("click",function(){ closeGate(); $("tools").hidden=true; $("parkbox").hidden=false; $("park-text").focus(); });
   $("park-cancel").addEventListener("click",function(){ $("parkbox").hidden=true; $("tools").hidden=false; $("park-text").value=""; });
   $("park-save").addEventListener("click",function(){
     var v=$("park-text").value.trim();
     if(v){ state.parked.push({ts:Date.now(),text:v}); save(); }
     $("park-text").value=""; $("parkbox").hidden=true; $("tools").hidden=false;
-    $("park-open").textContent=v?"Parked. Add another":"Park a thought instead of unlocking";
+    $("park-open").textContent=v?T("parkagain"):T("parkopen");
   });
   $("clear-parked").addEventListener("click",function(){ state.parked=[]; save(); renderStats(); });
 
-  /* hold to end */
+  /* ---------- the unlock gate: hold, then wait, then type the word ---------- */
+  var WAIT=10, gateLeft=0, gateTimer=null;
+  function openGate(){
+    if(!run) return;
+    $("tools").hidden=true; $("parkbox").hidden=true; $("gate").hidden=false;
+    $("gate-word").value=""; $("gate-word").setAttribute("placeholder",T("type")(T("word")));
+    $("gate-cost").innerHTML=T("cost")(mmss(run.endAt-Date.now()),run.streakAtStart);
+    gateLeft=WAIT;
+    $("gate-go").disabled=true; $("gate-go").textContent=T("waitn")(gateLeft);
+    if(gateTimer) clearInterval(gateTimer);
+    gateTimer=setInterval(function(){
+      gateLeft--;
+      if(gateLeft>0){ $("gate-go").textContent=T("waitn")(gateLeft); }
+      else { clearInterval(gateTimer); gateTimer=null; $("gate-go").textContent=T("gateunlock"); checkWord(); }
+    },1000);
+  }
+  function closeGate(){
+    if(gateTimer){ clearInterval(gateTimer); gateTimer=null; }
+    $("gate").hidden=true;
+  }
+  function checkWord(){
+    var ok=gateLeft<=0 && $("gate-word").value.trim().toUpperCase()===T("word");
+    $("gate-go").disabled=!ok;
+  }
+  $("gate-word").addEventListener("input",checkWord);
+  $("gate-go").addEventListener("click",function(){ if(!$("gate-go").disabled) finish(false); });
+  $("gate-cancel").addEventListener("click",function(){ closeGate(); $("tools").hidden=false; });
+
+  /* hold to open the gate */
   var quit=$("quit"), fill=$("quit-fill"), holdStart=0, holdRaf=null;
   function holdFrame(){
     var pct=Math.min(1,(Date.now()-holdStart)/1600);
     fill.style.width=(pct*100)+"%";
-    if(pct>=1){ endHold(); finish(false); return; }
+    if(pct>=1){ endHold(); openGate(); return; }
     holdRaf=requestAnimationFrame(holdFrame);
   }
   function startHold(e){ e.preventDefault(); holdStart=Date.now(); if(holdRaf)cancelAnimationFrame(holdRaf); holdFrame(); }
@@ -544,7 +598,7 @@ textarea{border:1px solid var(--line);border-radius:10px;padding:10px;resize:ver
   $("again").addEventListener("click",function(){ begin(chosen,$("intent-input").value.trim()); });
   $("back").addEventListener("click",function(){ doneEl.hidden=true; setup.hidden=false; window.scrollTo(0,0); });
 
-  renderStats();
+  applyLang();
 })();
 </script>
 
