@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GrowthLock</string>
-    <string name="service_label">GrowthLock blocking</string>
+    <string name="app_name">EVZO</string>
+    <string name="service_label">EVZO Renew blocking</string>
     <string name="service_description">Reads only the name of the app that is currently in front, so it can close distracting apps while a focus block is running. It cannot read the screen, your typing or your passwords, and nothing is sent anywhere.</string>
 </resources>

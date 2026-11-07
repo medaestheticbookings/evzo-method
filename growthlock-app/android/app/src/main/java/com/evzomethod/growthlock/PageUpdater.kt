@@ -18,7 +18,7 @@ import java.net.URL
  */
 object PageUpdater {
 
-    private const val URL_LATEST = "https://evzomethod.com/growthlock/index.html"
+    private const val URL_LATEST = "https://evzomethod.com/renew/index.html"
     private const val FILE = "app.html"
 
     /** The newest page we hold: the downloaded one, or the one inside the APK. */

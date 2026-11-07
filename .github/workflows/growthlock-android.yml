@@ -45,7 +45,7 @@ jobs:
       - name: Bundle the app page into the APK
         run: |
           mkdir -p growthlock-app/android/app/src/main/assets
-          cp growthlock/index.html growthlock-app/android/app/src/main/assets/index.html
+          cp renew/index.html growthlock-app/android/app/src/main/assets/index.html
 
       - name: Build the debug APK
         working-directory: growthlock-app/android
