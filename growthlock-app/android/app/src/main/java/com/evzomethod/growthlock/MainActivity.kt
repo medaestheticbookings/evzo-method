@@ -74,7 +74,8 @@ class MainActivity : Activity() {
             Toast.makeText(this, "Find GrowthLock in the list and turn it on", Toast.LENGTH_LONG).show()
             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
         })
-        root.addView(note("Nothing is uploaded. The app reads only the name of the app in front, and only on this phone."))
+        root.addView(note("Android will warn that the permission is powerful, and it is - that is why this app asks for the narrowest form of it: it cannot read the screen, your typing or your passwords, only the name of the app in front. Nothing leaves the phone, there is no account and no internet permission."))
+        root.addView(note("On Android 13 and newer, a sideloaded app is blocked from this list until you allow it: Settings - Apps - GrowthLock - three dots - Allow restricted settings."))
     }
 
     /* ---------- idle ---------- */

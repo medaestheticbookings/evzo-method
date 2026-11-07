@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Deliberately the narrowest configuration that can still block:
+
+  - one event type only (a window came to the front), not clicks, not typing,
+    not text changes
+  - canRetrieveWindowContent="false", so Android refuses this app the ability
+    to read what is on screen at all, even if the code asked for it
+  - no flagRetrieveInteractiveWindows, no flagRequestFilterKeyEvents,
+    no flagReportViewIds
+
+  All the service ever sees is the package name of the app in front.
+-->
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowsChanged"
+    android:accessibilityEventTypes="typeWindowStateChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagDefault|flagRetrieveInteractiveWindows"
-    android:canRetrieveWindowContent="true"
+    android:accessibilityFlags="flagDefault"
+    android:canRetrieveWindowContent="false"
     android:description="@string/service_description"
-    android:notificationTimeout="60" />
+    android:notificationTimeout="100" />
