@@ -46,8 +46,8 @@ button{font:inherit}
   --accent:#0E7C86;--accent-soft:#D6EAEC;--slip:#B4522F;--gold:#B8862B;
   --panel:#0C1116;--panel-2:#121920;--panel-line:#243039;--panel-ink:#DCE6EC;--panel-muted:#6B7C8A;
   --teal:#3FB8C4;--flame:#D9774F;--on-accent:#FFFFFF;
-  --font-display:"Instrument Serif",Georgia,"Times New Roman",serif;
-  --font-body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-display:"Fredoka","Outfit",-apple-system,sans-serif;
+  --font-body:"Outfit",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -69,18 +69,19 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body)
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:11;background:var(--bg)}
 .hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:11px}
-.mark-wrap{display:flex;align-items:center;gap:9px;min-width:0}
-.mark-wrap h1{font-family:var(--font-display);font-size:22px;font-weight:400;margin:0;line-height:1;white-space:nowrap}
+.mark-wrap{display:flex;align-items:center;gap:9px;min-width:0;flex-shrink:0}
+.mark-wrap h1{font-family:var(--font-display);font-size:21px;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1;white-space:nowrap}
 .logo{width:26px;height:26px;flex:none;display:block}
 .logo .shackle{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round}
 .logo .body{fill:var(--accent-soft);stroke:var(--accent);stroke-width:5}
 .logo .bar{fill:var(--accent)}
-.hbtns{display:flex;align-items:center;gap:6px;flex:none}
-.lvl{font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.hbtns{display:flex;align-items:center;gap:6px;min-width:0}
+@media (max-width:359px){.lvl{display:none}}
+.lvl{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
 .iconbtn{font-family:var(--font-body);font-size:11px;font-weight:500;letter-spacing:.06em;padding:6px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;line-height:1}
 main{padding-block:16px 8px;display:flex;flex-direction:column;gap:16px}
 section{display:flex;flex-direction:column;gap:16px}
-h2{font-family:var(--font-display);font-weight:400;font-size:22px;margin:0;text-wrap:balance}
+h2{font-family:var(--font-display);font-weight:500;font-size:22px;letter-spacing:-.01em;margin:0;text-wrap:balance}
 h3{font-size:14px;font-weight:600;margin:0}
 p{margin:0}
 .lede,.small{color:var(--muted);font-size:13px}
@@ -141,7 +142,8 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none;bor
 nav{position:fixed;left:0;right:0;bottom:0;z-index:12;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 nav .tabs{display:grid;grid-template-columns:repeat(5,1fr);max-width:480px;margin:0 auto}
 nav button{background:transparent;border:none;cursor:pointer;padding:8px 2px 9px;color:var(--muted);font-family:var(--font-body);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}
-nav button .ic{font-size:16px;line-height:1}
+nav button .ic{width:22px;height:22px;display:block}
+nav button .ic svg{width:100%;height:100%;display:block}
 nav button[aria-pressed="true"]{color:var(--accent)}
 .cookie{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:14px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .cookie .in{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
@@ -165,7 +167,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
 .dial .prog{fill:none;stroke:var(--teal);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
 .dial .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transform:none}
 .clock{font-family:var(--font-mono);font-weight:300;font-size:clamp(38px,12vw,52px);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
-.intent{font-family:var(--font-display);font-size:19px;max-width:22ch;overflow-wrap:anywhere}
+.intent{font-family:var(--font-display);font-weight:500;font-size:19px;max-width:22ch;overflow-wrap:anywhere}
 .slips{font-size:12px;color:var(--panel-muted);min-height:1.2em;max-width:32ch;text-wrap:balance}
 .slips.bad{color:var(--flame)}
 .hold{position:relative;overflow:hidden}
@@ -571,11 +573,11 @@ nav button[aria-pressed="true"]{color:var(--accent)}
   </main>
 
   <nav><div class="tabs">
-    <button data-view="focus" aria-pressed="true"><span class="ic">🔒</span><span data-t="tabFocus"></span></button>
-    <button data-view="world" aria-pressed="false"><span class="ic">🌱</span><span data-t="tabWorld"></span></button>
-    <button data-view="pets" aria-pressed="false"><span class="ic">👾</span><span data-t="tabPets"></span></button>
-    <button data-view="stats" aria-pressed="false"><span class="ic">📊</span><span data-t="tabStats"></span></button>
-    <button data-view="more" aria-pressed="false"><span class="ic">✦</span><span data-t="tabMore"></span></button>
+    <button data-view="focus" aria-pressed="true"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg></span><span data-t="tabFocus"></span></button>
+    <button data-view="world" aria-pressed="false"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21v-7"/><path d="M12 14c0-4 2.6-7 6-7 0 4-2.6 7-6 7Z"/><path d="M12 16c0-3-2.2-5.5-5-5.5 0 3 2.2 5.5 5 5.5Z"/><path d="M4 21h16"/></svg></span><span data-t="tabWorld"></span></button>
+    <button data-view="pets" aria-pressed="false"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 13a8 8 0 0 1 16 0v4a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3Z"/><circle cx="9.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><path d="M7 6l1.5 2M17 6l-1.5 2"/></svg></span><span data-t="tabPets"></span></button>
+    <button data-view="stats" aria-pressed="false"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20V12"/><path d="M12 20V5"/><path d="M19 20v-6"/></svg></span><span data-t="tabStats"></span></button>
+    <button data-view="more" aria-pressed="false"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4l1.9 4.4 4.8.4-3.6 3.1 1.1 4.7L12 14.2 7.8 16.6l1.1-4.7L5.3 8.8l4.8-.4Z"/></svg></span><span data-t="tabMore"></span></button>
   </div></nav>
 </div>
 
