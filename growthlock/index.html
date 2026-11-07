@@ -1628,6 +1628,22 @@ $("open-guide").addEventListener("click",openGuide);
 
 /* ---------- the guide, shown once ---------- */
 var TOUR=[
+ [["Focus — εδώ ξεκινάς","Focus — you start here"],
+  ["Διάλεξε λεπτά, γράψε τι θα κάνεις, πάτα Ξεκίνα. Από κάτω είναι οι τρεις αποστολές της ημέρας και η λίστα εργασιών σου.","Pick the minutes, write what you're doing, press Start. Below sit your three daily quests and your to-do list."],"focus"],
+ [["Μέσα στο μπλοκ","Inside the block"],
+  ["Η οθόνη σκοτεινιάζει. Αν φύγεις, μετράει ολίσθηση. Για να βγεις: κράτα το κουμπί, δες τι χάνεις, περίμενε 10 δευτερόλεπτα, γράψε μία λέξη. Το κόκκινο κουμπί σε βγάζει αμέσως σε ανάγκη.","The screen goes dark. Leaving counts a slip. To get out: hold the button, see what you lose, wait 10 seconds, type one word. The red button lets you out at once in an emergency."],"focus"],
+ [["Κόσμος — τι χτίζεις","World — what you build"],
+  ["Κάθε μπλοκ φυτεύει δέντρο, βιβλίο ή αστέρι στο νησί σου. Εδώ είναι και το bingo της εβδομάδας και το μαγαζί, όπου εξαργυρώνεις πόντους σε δικές σου αμοιβές.","Every block plants a tree, a book or a star on your island. The weekly bingo lives here too, and the shop where points buy rewards you wrote yourself."],"world"],
+ [["Πλάσμα — ο σύντροφός σου","Pet — your companion"],
+  ["Κάθε μπλοκ χωρίς ολίσθηση εκκολάπτει ένα πλάσμα, και όσο μεγαλύτερο το μπλοκ τόσο πιο σπάνιο. Αλλάζει διάθεση, φοράει ρούχα, και δεν πεθαίνει ποτέ.","Every block without a slip hatches a creature, and the longer the block the rarer it is. It changes mood, wears outfits, and never dies."],"pets"],
+ [["Στατιστικά — τι κερδίζεις","Stats — what you gain"],
+  ["Life score, σερί, ημερολόγιο, η ώρα που είσαι πιο κοφτερός, και η κάρτα της εβδομάδας για screenshot.","Life score, your run, the calendar, the hour you are sharpest, and the weekly card to screenshot."],"stats"],
+ [["Έξτρα — τα εργαλεία","Extras — the tools"],
+  ["Πρόγραμμα, κλειδί σε χαρτί, μουσείο ντροπής, μυστικό δωμάτιο, προφίλ για ζευγάρι ή οικογένεια, και η αποθήκευση της προόδου σου.","Schedules, the paper key, the shame museum, the secret room, profiles for a couple or a family, and the backup of your progress."],"more"],
+ [["Τα δικά σου δεδομένα","Your data"],
+  ["Όλα μένουν στο κινητό σου. Τίποτα δεν φεύγει, τίποτα δεν πουλιέται. Στα Έξτρα κατεβάζεις ένα αρχείο, για να μη χαθεί ποτέ.","Everything stays on your phone. Nothing leaves, nothing is sold. In Extras you download a file so it is never lost."],"more"]
+];
+var TOUR_OLD=[
  [["Ξεκίνα ένα μπλοκ","Start a block"],
   ["Διάλεξε λεπτά, γράψε τι θα κάνεις, πάτα Ξεκίνα. Η οθόνη σκοτεινιάζει και μένει μόνο ο χρόνος.","Pick the minutes, write what you're doing, press Start. The screen goes dark and only the clock is left."]],
  [["Ολίσθηση","A slip"],
@@ -1645,7 +1661,8 @@ var tourI=0;
 function openTour(){tourI=0;$("tour").hidden=false;drawTour()}
 function drawTour(){
   var s=TOUR[tourI],p=P();
-  $("tour-art").innerHTML=monster(p?p.mon:0,86,[0,3,2,4,0,1][tourI]||0);
+  if(s[2])nav(s[2]);
+  $("tour-art").innerHTML=monster(p?p.mon:0,86,[0,3,4,0,1,2,0][tourI]||0);
   $("tour-step").textContent=(tourI+1)+" / "+TOUR.length;
   $("tour-title").textContent=s[0][li];
   $("tour-body").textContent=s[1][li];
@@ -1656,7 +1673,7 @@ $("tour-next").addEventListener("click",function(){
   if(tourI<TOUR.length-1){tourI++;drawTour()}
   else{endTour();openGuide()}});
 $("tour-skip").addEventListener("click",endTour);
-function endTour(){$("tour").hidden=true;root.tour=true;save();if(!root.cookie&&!NATIVE)$("cookie").hidden=false}
+function endTour(){$("tour").hidden=true;root.tour=true;save();nav("focus");if(!root.cookie&&!NATIVE)$("cookie").hidden=false}
 
 /* ---------- ambience (generated, no audio files) ---------- */
 var amb={ctx:null,nodes:[],on:false};
