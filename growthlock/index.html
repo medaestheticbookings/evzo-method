@@ -178,6 +178,16 @@ nav button[aria-pressed="true"]{color:var(--accent)}
 .needle{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:20px;z-index:2}
 .world{width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
 .world svg{display:block;width:100%;height:auto}
+/* blackout: the page goes dead black, only the clock and the hold button survive */
+.panel.blk{background:#000;gap:26px}
+.panel.blk .dial{width:min(46vw,160px)}
+.panel.blk .dial .track{stroke:#090909}
+.panel.blk .dial .prog{stroke:#17323A}
+.panel.blk .clock{color:#1B2A31;font-size:clamp(30px,9vw,38px)}
+.panel.blk .sub,.panel.blk .intent,.panel.blk .slips,.panel.blk #jail-line,.panel.blk #s-pet{display:none}
+.panel.blk .flat{border-color:#141414;color:#2A3A42}
+.panel.blk #gate,.panel.blk #parkbox{color:#7D8E99}
+.panel.blk #gate .flat,.panel.blk #parkbox .flat{border-color:#243039;color:#7D8E99}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -264,6 +274,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
           <button class="btn sm ghost" id="pick-task" data-t="fromtasks"></button>
           <button class="btn sm ghost" id="toggle-dare" data-t="daremode"></button>
           <button class="btn sm ghost" id="toggle-pomo" data-t="pomo"></button>
+          <button class="btn sm ghost" id="toggle-blk" data-t="blk"></button>
         </div>
       </div>
       <button class="btn" id="start" data-t="start"></button>
@@ -583,6 +594,8 @@ nInt:["Κράτημα, λόγος, 10″ αναμονή και μια λέξη."
 nStrict:["30″ αναμονή, μεγάλη φράση, χωρίς παρκάρισμα σκέψεων. Η έξοδος έκτακτης ανάγκης μένει πάντα.","30-second wait, a long phrase, no parking thoughts. The emergency exit always stays."],
 fromtasks:["Από τις εργασίες","From tasks"],daremode:["Dare: off","Dare: off"],daremodeOn:["Dare: ON","Dare: ON"],
 pomo:["Pomodoro: off","Pomodoro: off"],pomoOn:["Pomodoro: ON","Pomodoro: ON"],
+blk:["Μαύρη οθόνη: off","Blackout: off"],blkOn:["Μαύρη οθόνη: ON","Blackout: ON"],
+blkMsg:["Η οθόνη γίνεται κατάμαυρη και πάει σε πλήρη οθόνη. Προσοχή: μαυρίζει μόνο αυτή τη σελίδα — το κινητό δουλεύει κανονικά από κάτω.","The screen goes dead black and fills the display. Note: it only blacks out this page — the phone itself still works underneath."],
 start:["Ξεκίνα μπλοκ","Start block"],fivemin:["Ο κανόνας των 5′","The 5-minute rule"],leaveit:["Just leave it","Just leave it"],boredbtn:["Βαριέμαι","I'm bored"],
 today:["Σήμερα","Today"],minutes:["λεπτά","minutes"],blocks:["μπλοκ","blocks"],streak:["σερί","clean run"],
 quests:["Αποστολές ημέρας","Daily quests"],
@@ -830,6 +843,7 @@ function applyLang(){
   $("lang-btn").textContent=li===0?"EN":"ΕΛ";
   $("toggle-dare").textContent=dare?t("daremodeOn"):t("daremode");
   $("toggle-pomo").textContent=pomo?t("pomoOn"):t("pomo");
+  $("toggle-blk").textContent=blk?t("blkOn"):t("blk");
   $("nick-sub").textContent=t("nickSub");$("nick-title").textContent=t("nickTitle");
   $("nick-input").setAttribute("placeholder",t("nickPh"));$("nick-pickline").textContent=t("nickPick");
   $("nick-go").textContent=t("nickGo");
@@ -893,7 +907,7 @@ function askLock(){if(!("wakeLock"in navigator))return;navigator.wakeLock.reques
 function dropLock(){if(lock){try{lock.release()}catch(e){}lock=null}}
 
 /* ---------- focus controls ---------- */
-var chosen=25,dare=false,pomo=false,strict="int";
+var chosen=25,dare=false,pomo=false,blk=false,strict="int";
 Array.prototype.forEach.call(document.querySelectorAll("#chips .chip"),function(c){
   c.addEventListener("click",function(){chosen=parseInt(c.getAttribute("data-min"),10);
     Array.prototype.forEach.call(document.querySelectorAll("#chips .chip"),function(o){o.setAttribute("aria-pressed",String(o===c))})})});
@@ -910,6 +924,7 @@ Array.prototype.forEach.call(document.querySelectorAll("#strict-seg button"),fun
 function strictNote(){$("strict-note").textContent=strict==="flex"?t("nFlex"):strict==="int"?t("nInt"):t("nStrict")}
 $("toggle-dare").addEventListener("click",function(){dare=!dare;$("toggle-dare").textContent=dare?t("daremodeOn"):t("daremode");if(dare)banner(t("dareOn"))});
 $("toggle-pomo").addEventListener("click",function(){pomo=!pomo;$("toggle-pomo").textContent=pomo?t("pomoOn"):t("pomo");if(pomo)banner(t("pomoOnMsg"))});
+$("toggle-blk").addEventListener("click",function(){blk=!blk;$("toggle-blk").textContent=blk?t("blkOn"):t("blk");if(blk)banner(t("blkMsg"))});
 $("pick-task").addEventListener("click",function(){
   var o=P().tasks.filter(function(x){return !x.done});if(!o.length){banner(t("pickTask"));return}$("intent-input").value=o[0].text});
 $("task-add").addEventListener("click",function(){var v=$("task-input").value.trim();if(!v)return;
@@ -964,8 +979,13 @@ function begin(minutes,intention,mode){
   $("app").hidden=true;$("done").hidden=true;$("cookie").hidden=true;
   if((minutes>=45||mode==="dare")&&!P().settings.quiet)funeral(startRun);else startRun();
 }
-function startRun(){$("funeral").hidden=true;$("session").hidden=false;paint();
-  if(tick)clearInterval(tick);tick=setInterval(paint,250);askLock()}
+function startRun(){
+  $("funeral").hidden=true;$("session").hidden=false;
+  if(blk){$("session").classList.add("blk");
+    try{var el=document.documentElement;if(el.requestFullscreen)el.requestFullscreen().catch(function(){})}catch(e){}}
+  else $("session").classList.remove("blk");
+  paint();if(tick)clearInterval(tick);tick=setInterval(paint,250);askLock();
+}
 function paint(){
   if(!run)return;
   if(run.open){var el=Date.now()-run.startedAt;$("clock").textContent=mmss(el);
@@ -1053,6 +1073,8 @@ quit.addEventListener("pointercancel",eh);quit.addEventListener("pointerleave",e
 function finish(completed,reason){
   if(!run)return;if(tick){clearInterval(tick);tick=null}
   closeGate();dropLock();
+  $("session").classList.remove("blk");
+  try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(function(){})}catch(e){}
   var p=P(),wasBreak=run.isBreak;
   var elapsed=Math.max(0,Math.round((Date.now()-run.startedAt)/60000));
   var focused=completed?(run.open?elapsed:run.minutes):elapsed;
