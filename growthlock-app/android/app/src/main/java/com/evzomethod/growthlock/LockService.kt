@@ -45,18 +45,42 @@ class LockService : Service() {
         return START_STICKY
     }
 
+    private var lastShown = 0L
+    private var ticks = 0
+
+    /**
+     * One second is the whole enforcement loop: ask the system which app is in
+     * front, and if it is not allowed, put the block screen over it.
+     */
     private fun loop() {
         tick.postDelayed({
             if (!SessionStore.isActive(this)) {
                 SessionStore.endSession(this)
                 stopForeground(STOP_FOREGROUND_REMOVE)
                 stopSelf()
-            } else {
+                return@postDelayed
+            }
+            guard()
+            if (++ticks % 30 == 0) {
                 val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 nm.notify(ID, build())
-                loop()
             }
-        }, 30_000)
+            loop()
+        }, 1_000)
+    }
+
+    private fun guard() {
+        if (!Watcher.hasUsageAccess(this)) return
+        val pkg = Watcher.foregroundApp(this) ?: return
+        if (!Watcher.shouldBlock(this, pkg)) return
+        val now = System.currentTimeMillis()
+        if (now - lastShown < 1_200) return
+        lastShown = now
+        startActivity(
+            Intent(this, BlockActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .putExtra(BlockActivity.EXTRA_PKG, pkg)
+        )
     }
 
     private fun channel() {

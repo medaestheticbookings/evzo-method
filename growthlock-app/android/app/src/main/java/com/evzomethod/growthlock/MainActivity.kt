@@ -1,16 +1,12 @@
 package com.evzomethod.growthlock
 
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +14,13 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 
 /**
- * One screen, three taps at most: allow the permission once, pick a length,
- * press start. Everything else is deliberately absent.
+ * One screen. Two switches the first time, then: pick a length, press start.
+ *
+ * The two switches are ordinary special-access toggles that every Android
+ * version allows a sideloaded app to request - unlike the accessibility list,
+ * which recent Android hides from apps installed outside the Play Store.
  */
 class MainActivity : Activity() {
 
@@ -31,6 +29,7 @@ class MainActivity : Activity() {
     private val teal = Color.parseColor("#3FB8C4")
     private val card = Color.parseColor("#18212A")
     private val bg = Color.parseColor("#0F1419")
+    private val ok = Color.parseColor("#6FC08C")
 
     private var minutes = 25
     private val tick = Handler(Looper.getMainLooper())
@@ -54,38 +53,43 @@ class MainActivity : Activity() {
     }
 
     private fun draw() {
+        tick.removeCallbacksAndMessages(null)
         root.removeAllViews()
         root.addView(title("GrowthLock"))
 
-        if (SessionStore.isActive(this)) {
-            drawRunning()
-        } else if (!serviceEnabled()) {
-            drawPermission()
-        } else {
-            drawStart()
+        when {
+            SessionStore.isActive(this) -> drawRunning()
+            !ready() -> drawSetup()
+            else -> drawStart()
         }
     }
 
-    /* ---------- the one permission ---------- */
+    private fun ready() = Watcher.hasUsageAccess(this) && Watcher.hasOverlay(this)
 
-    private fun drawPermission() {
-        root.addView(body("One tap and the blocking works. Android asks you to switch GrowthLock on in its accessibility list - that is the permission that lets it see which app is in front and close it."))
-        root.addView(bigButton("Allow blocking") {
-            Toast.makeText(this, "Find GrowthLock in the list and turn it on", Toast.LENGTH_LONG).show()
-            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-        })
-        root.addView(note("Android will warn that the permission is powerful, and it is - that is why this app asks for the narrowest form of it: it cannot read the screen, your typing or your passwords, only the name of the app in front. Nothing leaves the phone, there is no account and no internet permission."))
-        root.addView(note("On Android 13 and newer, a sideloaded app is blocked from this list until you allow it: Settings - Apps - GrowthLock - three dots - Allow restricted settings."))
+    /* ---------- first run: two switches ---------- */
+
+    private fun drawSetup() {
+        root.addView(body("Two switches, once. Android keeps both of these out of the way, so the app cannot turn them on for you."))
+
+        val usage = Watcher.hasUsageAccess(this)
+        root.addView(step(1, "See which app is open", usage) { Watcher.askUsageAccess(this) })
+        root.addView(hint("Find GrowthLock in the list and turn it on."))
+
+        val overlay = Watcher.hasOverlay(this)
+        root.addView(step(2, "Show the block screen", overlay) { Watcher.askOverlay(this) })
+        root.addView(hint("Allow GrowthLock to display over other apps."))
+
+        root.addView(note("Neither switch can read your screen, your typing or your passwords. The app has no internet permission at all, so nothing can leave this phone."))
     }
 
     /* ---------- idle ---------- */
 
     private fun drawStart() {
-        root.addView(body("Pick how long. Everything distracting closes itself until the time is up."))
+        root.addView(body("Pick how long. Distracting apps close themselves until the time is up."))
 
         val row = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
-            setPadding(0, 18, 0, 18)
+            setPadding(0, 18, 0, 10)
         }
         listOf(15, 25, 45, 90).forEach { m ->
             row.addView(chip(m), LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
@@ -93,9 +97,7 @@ class MainActivity : Activity() {
         root.addView(row)
 
         val everything = SessionStore.blockEverything(this)
-        root.addView(toggle(
-            if (everything) "Blocking: everything except calls" else "Blocking: the usual suspects only"
-        ) {
+        root.addView(flat(if (everything) "Blocking: everything except calls" else "Blocking: the usual suspects only") {
             SessionStore.setBlockEverything(this, !everything)
             draw()
         })
@@ -132,11 +134,10 @@ class MainActivity : Activity() {
             clock.text = String.format("%02d:%02d", s / 60, s % 60)
             tick.postDelayed({ paint() }, 500)
         }
-        tick.removeCallbacksAndMessages(null)
         paint()
     }
 
-    /* ---------- small view helpers ---------- */
+    /* ---------- views ---------- */
 
     private fun title(s: String) = TextView(this).apply {
         text = s
@@ -152,12 +153,36 @@ class MainActivity : Activity() {
         setPadding(0, 0, 0, 10)
     }
 
+    private fun hint(s: String) = TextView(this).apply {
+        text = s
+        textSize = 13f
+        setTextColor(Color.parseColor("#5C6B7A"))
+        setPadding(6, 6, 0, 18)
+    }
+
     private fun note(s: String) = TextView(this).apply {
         text = s
         textSize = 13f
         setTextColor(Color.parseColor("#5C6B7A"))
         setPadding(0, 22, 0, 0)
     }
+
+    private fun step(n: Int, label: String, done: Boolean, f: () -> Unit): View =
+        Button(this).apply {
+            text = if (done) "$n. $label  -  on" else "$n. $label"
+            textSize = 16f
+            isAllCaps = false
+            setTextColor(if (done) ok else Color.parseColor("#05171A"))
+            background = GradientDrawable().apply {
+                cornerRadius = 26f
+                setColor(if (done) card else teal)
+            }
+            setPadding(0, 34, 0, 34)
+            setOnClickListener { if (!done) f() }
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = 14 }
+        }
 
     private fun chip(m: Int): View = Button(this).apply {
         text = m.toString()
@@ -169,9 +194,10 @@ class MainActivity : Activity() {
         setOnClickListener { minutes = m; draw() }
     }
 
-    private fun toggle(s: String, f: () -> Unit) = Button(this).apply {
+    private fun flat(s: String, f: () -> Unit) = Button(this).apply {
         text = s
         textSize = 14f
+        isAllCaps = false
         setTextColor(ink)
         background = GradientDrawable().apply { cornerRadius = 26f; setColor(card) }
         setOnClickListener { f() }
@@ -180,6 +206,7 @@ class MainActivity : Activity() {
     private fun bigButton(s: String, f: () -> Unit) = Button(this).apply {
         text = s
         textSize = 18f
+        isAllCaps = false
         setTextColor(Color.parseColor("#05171A"))
         background = GradientDrawable().apply { cornerRadius = 30f; setColor(teal) }
         setPadding(0, 40, 0, 40)
@@ -187,15 +214,6 @@ class MainActivity : Activity() {
         layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = 26 }
-    }
-
-    /** Is our accessibility service switched on? */
-    private fun serviceEnabled(): Boolean {
-        val flat = Settings.Secure.getString(
-            contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-        ) ?: return false
-        return flat.contains(packageName + "/" + BlockerService::class.java.name) ||
-            flat.contains(packageName + "/.BlockerService")
     }
 
     override fun onDestroy() {
