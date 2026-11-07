@@ -1930,6 +1930,7 @@ function openHelp(){
 $("help-btn").addEventListener("click",openHelp);
 /* switching never ends a block: a running session keeps the dark panel up */
 $("hub-btn").addEventListener("click",function(){openHub()});
+addEventListener("hashchange",function(){if(location.hash==="#hub")openHub()});
 $("help-close").addEventListener("click",function(){$("helpp").hidden=true});
 (function(){var b=document.createElement("button");b.className="flat go";b.id="help-tour";b.addEventListener("click",function(){$("helpp").hidden=true;openGuide()});var c=$("help-close");c.parentNode.insertBefore(b,c);window.__tourBtn=b})();
 $("chat-send").addEventListener("click",function(){
@@ -2231,7 +2232,8 @@ function boot(){
   else if(!root.cookie&&!NATIVE)$("cookie").hidden=false;
 }
 /* the chooser comes first, unless this person set a starting experience */
-if(root.startAt==="renew"||location.hash==="#renew")boot();
+if(location.hash==="#hub"){openHub()}
+else if(root.startAt==="renew"||location.hash==="#renew")boot();
 else if(root.lang&&!root.startAt)openHub();
 else if(!root.lang)openHub();
 else boot();

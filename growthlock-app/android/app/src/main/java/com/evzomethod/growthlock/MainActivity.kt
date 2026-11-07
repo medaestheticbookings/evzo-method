@@ -51,6 +51,20 @@ class MainActivity : Activity() {
 
     /* ---------- the whole app ---------- */
 
+    private var hubBtn: Button? = null
+
+    /** Visible only once the person has walked off into one of the websites. */
+    private fun buildHubButton(): Button = Button(this).apply {
+        text = "EVZO"
+        textSize = 13f
+        isAllCaps = false
+        setTextColor(Color.parseColor("#06101B"))
+        background = GradientDrawable().apply { cornerRadius = 40f; setColor(Color.parseColor("#FFE14D")) }
+        setPadding(34, 18, 34, 18)
+        visibility = android.view.View.GONE
+        setOnClickListener { web?.loadUrl(PageUpdater.pageUrl(this@MainActivity) + "#hub") }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun showApp() {
         val w = WebView(this)
@@ -59,19 +73,52 @@ class MainActivity : Activity() {
         w.settings.domStorageEnabled = true
         w.settings.mediaPlaybackRequiresUserGesture = false
         w.webChromeClient = WebChromeClient()
-        w.webViewClient = WebViewClient()
+        w.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                // away from our own page means the person is inside one of the
+                // websites, where the app's own switcher is not on screen
+                val away = url != null && !url.startsWith("file://")
+                hubBtn?.visibility = if (away) android.view.View.VISIBLE else android.view.View.GONE
+            }
+        }
         w.settings.allowFileAccess = true
         w.addJavascriptInterface(Bridge(this), "GrowthLockNative")
         w.loadUrl(PageUpdater.pageUrl(this))
         // pick up anything new for next launch, quietly
         PageUpdater.refresh(this)
         web = w
-        setContentView(w)
+
+        val frame = android.widget.FrameLayout(this)
+        frame.addView(
+            w,
+            android.widget.FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
+        val btn = buildHubButton()
+        hubBtn = btn
+        frame.addView(
+            btn,
+            android.widget.FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                gravity = android.view.Gravity.BOTTOM or android.view.Gravity.END
+                rightMargin = 40; bottomMargin = 60
+            }
+        )
+        setContentView(frame)
     }
 
     override fun onBackPressed() {
-        val w = web
-        if (w != null && w.canGoBack()) w.goBack() else super.onBackPressed()
+        val w = web ?: return super.onBackPressed()
+        val url = w.url ?: ""
+        when {
+            // out in one of the websites: back returns to the chooser, not out of the app
+            !url.startsWith("file://") && !w.canGoBack() ->
+                w.loadUrl(PageUpdater.pageUrl(this) + "#hub")
+            w.canGoBack() -> w.goBack()
+            else -> super.onBackPressed()
+        }
     }
 
     /* ---------- first run ---------- */
