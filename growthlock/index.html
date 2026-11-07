@@ -253,6 +253,8 @@ nav button[aria-pressed="true"]{color:var(--accent)}
     <section id="v-focus">
       <div id="banners" style="display:flex;flex-direction:column;gap:8px"></div>
       <div><h2 id="hello"></h2></div>
+      <a class="btn" id="get-apk" href="growthlock.apk" download style="display:none;text-decoration:none;text-align:center"></a>
+      <p class="small" id="apk-note" style="display:none;margin-top:-8px"></p>
       <div class="card">
         <div>
           <span class="label" data-t="howlong"></span>
@@ -723,6 +725,8 @@ tagLede:["Γράψε μια λέξη σε χαρτί, άσ το σε άλλο δ
 tagph:["π.χ. ΚΑΡΕΚΛΑ","e.g. CHAIR"],
 tagUse:["Φέρε το χαρτί σου","Fetch your paper"],
 options:["Περισσότερα","More options"],
+getApk:["Κατέβασε την εφαρμογή που μπλοκάρει","Get the app that really blocks"],
+apkNote:["Μόνο για Android. Άνοιξε το αρχείο, πάτα Εγκατάσταση, μετά «Να επιτρέπεται». Από εκεί και πέρα το Instagram δεν ανοίγει όσο τρέχει μπλοκ.","Android only. Open the file, tap Install, then Allow. After that Instagram will not open while a block is running."],
 realT:["Κάν' το πραγματικό κλείδωμα","Make the lock real"],
 realLede2:["Το κινητό μπορεί να κλειδώσει τον εαυτό του. Μία φορά ρύθμιση.","The phone can lock itself. Set it up once."],
 realWarn:["Μετά από αυτό, καμία άλλη εφαρμογή δεν ανοίγει.","After that, no other app opens."],
@@ -1007,6 +1011,12 @@ function applyLang(){
   Array.prototype.forEach.call(document.querySelectorAll("[data-t]"),function(e){e.textContent=t(e.getAttribute("data-t"))});
   Array.prototype.forEach.call(document.querySelectorAll("[data-tp]"),function(e){e.setAttribute("placeholder",t(e.getAttribute("data-tp")))});
   $("lang-btn").textContent=li===0?"EN":"ΕΛ";
+  var apk=$("get-apk"),isAndroid=/Android/i.test(navigator.userAgent),onSite=location.protocol.indexOf("http")===0;
+  if(apk){
+    apk.textContent=t("getApk");$("apk-note").textContent=t("apkNote");
+    apk.style.display=(isAndroid&&onSite)?"block":"none";
+    $("apk-note").style.display=(isAndroid&&onSite)?"block":"none";
+  }
   $("toggle-dare").textContent=dare?t("daremodeOn"):t("daremode");
   $("toggle-pomo").textContent=pomo?t("pomoOn"):t("pomo");
   $("toggle-blk").textContent=blk?t("blkOn"):t("blk");
