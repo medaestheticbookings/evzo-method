@@ -210,9 +210,6 @@ nav button[aria-pressed="true"]{color:var(--accent)}
   <p class="sub" id="hub-kicker"></p>
   <h2 id="hub-title" style="font-size:30px">EVZO</h2>
   <div class="tools" id="hub-cards" style="max-width:440px"></div>
-  <label class="muted" style="display:flex;align-items:center;gap:9px;max-width:440px">
-    <input type="checkbox" id="hub-remember" style="width:auto"><span id="hub-remember-l"></span>
-  </label>
 </div>
 
 <!-- 1. language -->
@@ -1126,8 +1123,6 @@ var HUB=[
 ];
 function openHub(){
   $("hub-kicker").textContent=t("hubKicker");
-  $("hub-remember-l").textContent=t("hubRemember");
-  $("hub-remember").checked=!!root.startAt;
   var box=$("hub-cards");box.innerHTML="";
   HUB.forEach(function(x){
     var b=document.createElement("button");b.className="flat";
@@ -1135,8 +1130,6 @@ function openHub(){
     b.innerHTML=x.logo+'<span style="min-width:0"><span style="display:block;font-size:17px;color:var(--panel-ink)">'+
       x.n[li]+'</span><span style="display:block;font-size:13px;color:var(--panel-muted)">'+x.d[li]+'</span></span>';
     b.addEventListener("click",function(){
-      if($("hub-remember").checked){root.startAt=x.id;save()}
-      else if(root.startAt){root.startAt=null;save()}
       if(x.url){location.href=x.url;return}
       $("hub").hidden=true;boot();
     });
@@ -2232,11 +2225,7 @@ function boot(){
   else if(!root.cookie&&!NATIVE)$("cookie").hidden=false;
 }
 /* the chooser comes first, unless this person set a starting experience */
-if(location.hash==="#hub"){openHub()}
-else if(root.startAt==="renew"||location.hash==="#renew")boot();
-else if(root.lang&&!root.startAt)openHub();
-else if(!root.lang)openHub();
-else boot();
+if(location.hash==="#renew")boot();else openHub();
 applyLang();
 })();
 </script>
