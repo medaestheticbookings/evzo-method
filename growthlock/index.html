@@ -1859,7 +1859,7 @@ function renderToday(){
   var p=P(),t0=startOfToday(),m=0,b=0;
   p.sessions.forEach(function(s){if(s.ts>=t0){m+=s.focused;b++}});
   $("s-mins").textContent=m;$("s-blocks").textContent=b;$("s-streak").textContent=cleanStreak();
-  var inf=levelInfo(p.xp);$("lvl-pill").textContent="Lv "+inf.level+" · "+inf.into+"/"+inf.need;
+  var inf=levelInfo(p.xp);$("lvl-pill").textContent="Lv "+inf.level;
   $("hello").textContent=fmt("hello",{n:p.nick||root.active});
 }
 function renderWorld(){
@@ -1944,7 +1944,7 @@ function renderStats(){
   var cp=p.sessions.length?Math.round(100*p.sessions.filter(function(s){return s.clean}).length/p.sessions.length):0;
   var score=Math.min(100,Math.round(cleanStreak()*6+cp*0.4+Math.min(40,week/10)));
   $("life-bar").style.width=score+"%";$("life-line").textContent=score+" / 100";
-  $("life-break").textContent=fmt("lifeBreak",{a:cleanStreak(),b:cp,c:week});
+  $("life-break").textContent=fmt("lifeBreak",{a:cleanStreak(),b:cp,c:week})+" · XP "+levelInfo(p.xp).into+"/"+levelInfo(p.xp).need;
   /* skill paths */
   var pk=["work","study","move","sleep"],pn={work:"cWork",study:"cStudy",move:"cMove",sleep:"cSleep"};
   var pmax=Math.max(1,Math.max.apply(null,pk.map(function(k){return p.paths[k]||0})));
