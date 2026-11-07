@@ -833,6 +833,8 @@ why:["Τελευταίο βήμα","Last step"],
 redeem:["Εξαργύρωσε","Redeem"],notenough:["Δεν φτάνουν οι πόντοι.","Not enough points."],
 wipeSure:["Πάτησε ξανά για οριστική διαγραφή.","Press again to delete for good."]
 };
+/* true when the page is running inside the Android app, where blocking is real */
+var NATIVE=(function(){try{return !!(window.GrowthLockNative&&window.GrowthLockNative.isNative())}catch(e){return false}})();
 var LANG=["el","en"],li=0;
 function t(k){var v=D[k];return v?v[li]:k}
 function fmt(k,o){var s=t(k);for(var p in o)s=s.split("{"+p+"}").join(o[p]);return s}
@@ -1014,9 +1016,12 @@ function applyLang(){
   var apk=$("get-apk"),isAndroid=/Android/i.test(navigator.userAgent),onSite=location.protocol.indexOf("http")===0;
   if(apk){
     apk.textContent=t("getApk");$("apk-note").textContent=t("apkNote");
-    apk.style.display=(isAndroid&&onSite)?"block":"none";
-    $("apk-note").style.display=(isAndroid&&onSite)?"block":"none";
+    var show=isAndroid&&onSite&&!NATIVE;
+    apk.style.display=show?"block":"none";
+    $("apk-note").style.display=show?"block":"none";
   }
+  /* inside the app the blocking is real, so the "make the lock real" guide is pointless */
+  var osb=$("os-steps");if(osb&&NATIVE&&osb.parentNode)osb.parentNode.style.display="none";
   $("toggle-dare").textContent=dare?t("daremodeOn"):t("daremode");
   $("toggle-pomo").textContent=pomo?t("pomoOn"):t("pomo");
   $("toggle-blk").textContent=blk?t("blkOn"):t("blk");
@@ -1147,6 +1152,8 @@ function begin(minutes,intention,mode){
     endAt:open?0:Date.now()+minutes*60000,startedAt:Date.now(),intention:intention,slips:0,
     streakAtStart:cleanStreak(),isBreak:mode==="break",cat:cat};
   ambStart(P().settings.amb,P().settings.vol||45);
+  /* inside the Android app, hand the block to the native blocker */
+  if(NATIVE&&!open&&minutes>0){try{window.GrowthLockNative.startBlock(minutes,intention||t("focus"))}catch(e){}}
   $("s-intent").textContent=intention||t("focus");
   $("prog").setAttribute("stroke-dasharray",String(CIRC));$("prog").setAttribute("stroke-dashoffset","0");
   setSub();updateSlips();closeGate();
@@ -1256,6 +1263,7 @@ quit.addEventListener("pointercancel",eh);quit.addEventListener("pointerleave",e
 function finish(completed,reason){
   if(!run)return;if(tick){clearInterval(tick);tick=null}
   closeGate();dropLock();ambStop();
+  if(NATIVE){try{window.GrowthLockNative.endBlock()}catch(e){}}
   $("session").classList.remove("blk");
   try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(function(){})}catch(e){}
   var p=P(),wasBreak=run.isBreak;
