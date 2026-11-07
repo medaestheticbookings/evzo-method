@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EVZO — Android app</title>
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=/evzo.apk">
+
 <style>
 :root{color-scheme:dark}
 body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0B1220;color:#fff;
@@ -14,10 +14,22 @@ p{color:#7A849A;margin:0;line-height:1.5}
 a.btn{display:block;width:100%;padding:18px;border-radius:14px;background:#FFE14D;color:#06101B;
   text-decoration:none;font-size:18px;font-weight:600}
 a.alt{color:#FFE14D}
-</style></head><body><div class="w">
+</style><script>
+(function(){
+  var ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  addEventListener("DOMContentLoaded",function(){
+    document.body.setAttribute("data-os",ios?"ios":"other");
+    if(!ios)location.href="/evzo.apk";
+  });
+})();
+</script>
+<style>body[data-os="ios"] .android{display:none}body[data-os="other"] .ios{display:none}</style>
+</head><body><div class="w">
 <img src="evzo-logo.svg" alt="EVZO" width="96" height="96" style="display:block;border-radius:16px">
 <h1 style="font-size:22px;font-weight:600;letter-spacing:.02em">ευ ζω <span style="color:#7A849A;font-weight:400">· live well</span></h1>
 <p>Renew, EVZO Method και Uncover σε μία εφαρμογή. Η λήψη ξεκινάει μόνη της.<br><span style="opacity:.7">Renew, EVZO Method and Uncover in one app. The download starts by itself.</span></p>
-<a class="btn" href="/evzo.apk" download>Κατέβασε για Android · Download</a>
-<p>Άνοιξε το αρχείο, πάτα Εγκατάσταση, μετά άνοιξε το EVZO.<br><span style="opacity:.7">Open the file, tap Install, then open EVZO.</span><br><br>Σε iPhone δεν εγκαθίσταται — άνοιξε <a class="alt" href="/renew/">evzomethod.com/renew</a>.</p>
+<a class="btn android" href="/evzo.apk" download>Κατέβασε για Android · Download</a>
+<a class="btn ios" href="/renew/">Άνοιξέ το εδώ · Open it here</a>
+<p class="android">Άνοιξε το αρχείο, πάτα Εγκατάσταση, μετά άνοιξε το EVZO.<br><span style="opacity:.7">Open the file, tap Install, then open EVZO.</span></p>
+<p class="ios">Για iPhone δεν υπάρχει ακόμη εφαρμογή: η Apple ζητάει δική της έγκριση για το μπλοκάρισμα. Άνοιξε το EVZO στο Safari και πρόσθεσέ το στην αρχική οθόνη.<br><span style="opacity:.7">There is no iPhone app yet: Apple requires its own approval for blocking. Open EVZO in Safari and add it to your home screen.</span></p>
 </div></body></html>
