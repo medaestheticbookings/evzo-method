@@ -1063,7 +1063,8 @@ $("nick-go").addEventListener("click",function(){
   root.profiles[n]=root.profiles[n]||blank(n,nickMon);
   root.active=n;save();
   $("nick").hidden=true;$("app").hidden=false;
-  if(!root.cookie)$("cookie").hidden=false;
+  /* no cookies, no server: the notice is a joke for the website and pointless in the app */
+  if(!root.cookie&&!NATIVE)$("cookie").hidden=false;
   applyLang();
 });
 $("ck-ok").addEventListener("click",function(){root.cookie=true;save();$("cookie").hidden=true});
@@ -1914,7 +1915,7 @@ function renderAll(){
 if(root.lang==="el"||root.lang==="en")li=root.lang==="en"?1:0;
 if(!root.lang){$("choose").hidden=false}
 else if(!root.active||!root.profiles[root.active]){startNick()}
-else{$("app").hidden=false;applySkin();if(!root.cookie)$("cookie").hidden=false}
+else{$("app").hidden=false;applySkin();if(!root.cookie&&!NATIVE)$("cookie").hidden=false}
 applyLang();
 })();
 </script>
