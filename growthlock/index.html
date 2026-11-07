@@ -252,17 +252,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
     <!-- FOCUS -->
     <section id="v-focus">
       <div id="banners" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div><h2 id="hello"></h2><p class="lede" data-t="lede"></p></div>
-      <div class="card" style="border-color:var(--accent)">
-        <h3 data-t="realT"></h3>
-        <p class="small" data-t="realLede2"></p>
-        <div class="seg" id="os-seg">
-          <button data-os="ios" aria-pressed="true">iPhone</button>
-          <button data-os="and" aria-pressed="false">Android</button>
-        </div>
-        <ol class="list" id="os-steps" style="padding-left:18px;list-style:decimal"></ol>
-        <p class="small" data-t="realWarn"></p>
-      </div>
+      <div><h2 id="hello"></h2></div>
       <div class="card">
         <div>
           <span class="label" data-t="howlong"></span>
@@ -274,13 +264,18 @@ nav button[aria-pressed="true"]{color:var(--accent)}
             <button class="chip" data-min="180" aria-pressed="false">180<small data-t="min"></small></button>
           </div>
         </div>
-        <div class="row">
-          <input type="text" id="custom-min" inputmode="numeric" maxlength="4" data-tp="customph">
-          <button class="btn sm ghost" id="custom-go" data-t="usecustom"></button>
-        </div>
         <div>
           <span class="label" data-t="doing"></span>
           <input type="text" id="intent-input" data-tp="doingph" maxlength="70" autocomplete="off">
+        </div>
+      </div>
+      <button class="btn" id="start" data-t="start"></button>
+
+      <details class="card" id="opts">
+        <summary style="cursor:pointer;font-size:14px;font-weight:600;list-style:none" data-t="options"></summary>
+        <div class="row">
+          <input type="text" id="custom-min" inputmode="numeric" maxlength="4" data-tp="customph">
+          <button class="btn sm ghost" id="custom-go" data-t="usecustom"></button>
         </div>
         <div>
           <span class="label" data-t="category"></span>
@@ -318,14 +313,19 @@ nav button[aria-pressed="true"]{color:var(--accent)}
           <button class="btn sm ghost" id="toggle-pomo" data-t="pomo"></button>
           <button class="btn sm ghost" id="toggle-blk" data-t="blk"></button>
           <button class="btn sm ghost" id="toggle-ritual" data-t="ritual"></button>
+          <button class="btn sm ghost" id="five" data-t="fivemin"></button>
+          <button class="btn sm ghost" id="leaveit" data-t="leaveit"></button>
+          <button class="btn sm ghost" id="bored" data-t="boredbtn"></button>
         </div>
-      </div>
-      <button class="btn" id="start" data-t="start"></button>
-      <div class="row">
-        <button class="btn sm ghost" id="five" data-t="fivemin"></button>
-        <button class="btn sm ghost" id="leaveit" data-t="leaveit"></button>
-        <button class="btn sm ghost" id="bored" data-t="boredbtn"></button>
-      </div>
+        <div>
+          <span class="label" data-t="realT"></span>
+          <div class="seg" id="os-seg">
+            <button data-os="ios" aria-pressed="true">iPhone</button>
+            <button data-os="and" aria-pressed="false">Android</button>
+          </div>
+          <ol class="list" id="os-steps" style="padding-left:18px;list-style:decimal;margin-top:8px"></ol>
+        </div>
+      </details>
       <div>
         <span class="label" data-t="today"></span>
         <div class="stats">
@@ -692,7 +692,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
 (function(){
 "use strict";
 var D={
-lede:["Ξεκίνα ένα μπλοκ και άσε το κινητό. Αλλαγή εφαρμογής ή άναμμα οθόνης μετράει ως ολίσθηση.","Start a block and put the phone down. Switching apps or waking the screen counts as a slip."],
+lede:["",""],
 howlong:["Διάρκεια","How long"],min:["λεπτά","min"],customph:["Δικά σου λεπτά","Your own minutes"],usecustom:["Χρήση","Use"],
 doing:["Τι θα κάνεις","What are you doing"],doingph:["Τα follow-up των πελατών","Client follow-ups"],
 strictness:["Αυστηρότητα","Strictness"],sFlex:["Χαλαρό","Flexible"],sInt:["Σκόπιμο","Intentional"],sStrict:["Locked","Locked"],
@@ -712,21 +712,22 @@ paths:["Μονοπάτια","Skill paths"],
 outfits:["Ρούχα","Outfits"],outNone:["Κανένα","None"],outHat:["Καπέλο","Hat"],outCrown:["Στέμμα","Crown"],outGlass:["Γυαλιά","Glasses"],outScarf:["Κασκόλ","Scarf"],
 outLock:["Ανοίγει στο επίπεδο {n}","Unlocks at level {n}"],
 weeklyT:["Εβδομαδιαίος στόχος","Weekly target"],
-weeklyLede:["Δεν χρειάζεται τέλειο σερί. Βάλε πόσα μπλοκ θέλεις την εβδομάδα και κράτα μέρες ανάπαυσης.","No perfect daily streak needed. Set how many blocks you want per week and keep rest days."],
+weeklyLede:["Στόχος εβδομάδας, με μέρες ανάπαυσης.","A weekly goal, rest days allowed."],
 restday:["Σήμερα είναι μέρα ανάπαυσης","Today is a rest day"],
 weekProg:["{a} από {b} αυτή την εβδομάδα","{a} of {b} this week"],
 lifetime:["Σύνολο ζωής: {n} μπλοκ, {m} λεπτά. Δεν χάνεται ποτέ.","Lifetime: {n} blocks, {m} minutes. This never resets."],
 recap:["Κάρτα εβδομάδας","Weekly card"],
-recapLede:["Βγάλε screenshot και στείλ' το. Δεν έχει τίποτα προσωπικό μέσα.","Screenshot it and send it. Nothing private inside."],
+recapLede:["Βγάλε screenshot και στείλ το.","Screenshot it and send it."],
 tagT:["Κλειδί σε χαρτί","Paper key"],
-tagLede:["Γράψε μια λέξη σε χαρτί και άσ' το μακριά — άλλο δωμάτιο, τσέπη μπουφάν. Στο Locked θα τη ζητήσει για να ξεκλειδώσει, οπότε πρέπει να σηκωθείς.","Write a word on paper and leave it far away — another room, a coat pocket. In Locked mode it asks for that word to unlock, so you have to get up."],
+tagLede:["Γράψε μια λέξη σε χαρτί, άσ το σε άλλο δωμάτιο. Το Locked τη ζητάει.","Write a word on paper, leave it in another room. Locked mode asks for it."],
 tagph:["π.χ. ΚΑΡΕΚΛΑ","e.g. CHAIR"],
 tagUse:["Φέρε το χαρτί σου","Fetch your paper"],
+options:["Περισσότερα","More options"],
 realT:["Κάν' το πραγματικό κλείδωμα","Make the lock real"],
-realLede2:["Αυτή η σελίδα δεν μπορεί να κλειδώσει το κινητό. Το ίδιο το κινητό μπορεί. Τρία λεπτά ρύθμιση, μία φορά.","This page cannot lock the phone. The phone itself can. Three minutes of setup, once."],
-realWarn:["Με το Guided Access / καρφίτσωμα, το κινητό κολλάει πάνω στο GrowthLock: η αρχική οθόνη και οι άλλες εφαρμογές δεν ανοίγουν μέχρι να βάλεις τον κωδικό. Αυτό είναι το μόνο πράγμα που «τα κλείνει όλα».","With Guided Access or app pinning the phone sticks to GrowthLock: the home screen and other apps will not open until you enter the passcode. That is the only thing that truly turns everything off."],
+realLede2:["Το κινητό μπορεί να κλειδώσει τον εαυτό του. Μία φορά ρύθμιση.","The phone can lock itself. Set it up once."],
+realWarn:["Μετά από αυτό, καμία άλλη εφαρμογή δεν ανοίγει.","After that, no other app opens."],
 saveT:["Αποθήκευση και επαναφορά","Save and restore"],
-saveLede:["Κατέβασε ένα αρχείο με όλη την πρόοδό σου, ή φέρ' την πίσω σε άλλο κινητό.","Download a file with all your progress, or bring it back on another phone."],
+saveLede:["Κράτα αντίγραφο ή φέρ το σε άλλο κινητό.","Keep a copy, or move it to another phone."],
 saveFile:["Κατέβασε αρχείο","Download file"],saveCopy:["Αντίγραψε κείμενο","Copy as text"],
 loadFile:["Φόρτωσε αρχείο","Load a file"],loadPaste:["Επικόλλησε εδώ και πάτα Επαναφορά","Paste here and press Restore"],
 restore:["Επαναφορά","Restore"],restored:["Έγινε επαναφορά.","Restored."],badfile:["Το αρχείο δεν είναι σωστό.","That file isn't right."],
@@ -740,14 +741,14 @@ parked:["Σκέψεις σε αναμονή","Parked thoughts"],clearparked:["Κ
 recent:["Πρόσφατα μπλοκ","Recent blocks"],
 tabFocus:["Focus","Focus"],tabWorld:["Κόσμος","World"],tabPets:["Πλάσμα","Pet"],tabStats:["Στατιστικά","Stats"],tabMore:["Έξτρα","Extras"],
 worldTitle:["Ο κόσμος σου","Your world"],
-worldLede:["Κάθε ολοκληρωμένο μπλοκ φυτεύει κάτι. Τα διακοπτόμενα μπλοκ δεν καταστρέφουν τίποτα — απλώς δεν φυτεύουν.","Every finished block plants something. Interrupted blocks destroy nothing — they just plant nothing."],
+worldLede:["Κάθε μπλοκ φυτεύει κάτι.","Every block plants something."],
 trees:["δέντρα","trees"],nightstars:["αστέρια","stars"],books:["βιβλία","books"],
-bingo:["Bingo της εβδομάδας","Weekly bingo"],bingoLede:["Δηλώνεις μόνος σου τι έκανες. Δεν το μετράει η εφαρμογή.","You tick these yourself. The app does not measure them."],
+bingo:["Bingo της εβδομάδας","Weekly bingo"],bingoLede:["Τσεκάρεις μόνος σου.","You tick these yourself."],
 shop:["Το μαγαζί σου","Your reward shop"],shopph:["Καφές στο αγαπημένο","Coffee at your spot"],costph:["Πόντοι","Cost"],
 petsTitle:["Το πλάσμα σου","Your creature"],
-petsLede:["Κάθε καθαρό μπλοκ εκκολάπτει ένα. Μεγαλύτερο μπλοκ, σπανιότερο πλάσμα. Κανένα δεν πεθαίνει εδώ.","Every clean block hatches one. Longer block, rarer creature. None of them ever dies."],
+petsLede:["Κάθε καθαρό μπλοκ εκκολάπτει ένα.","Every clean block hatches one."],
 eggStatus:["Το αυγό","The egg"],
-eggLine:["Το αυγό σπάει μόνο αν τελειώσεις το μπλοκ χωρίς ολίσθηση.","The egg only cracks if you finish the block with no slips."],
+eggLine:["Σπάει μόνο αν τελειώσεις χωρίς ολίσθηση.","It cracks only if you finish with no slips."],
 collection:["Η συλλογή","Collection"],discovered:["Πλανήτες","Planets"],
 statsTitle:["Η εικόνα σου","Your picture"],lifescore:["Life score","Life score"],
 thisweek:["λεπτά/εβδ.","min this week"],thismonth:["λεπτά/μήνα","min this month"],totalh:["ώρες focus","focus hours"],
@@ -757,22 +758,22 @@ moodTitle:["Διάθεση πριν και μετά","Mood before and after"],
 coach:["Ο προπονητής","Your coach"],report:["Αναφορά","Report"],copyreport:["Αντίγραψε","Copy"],
 moreTitle:["Έξτρα","Extras"],achievements:["Επιτεύγματα","Achievements"],
 schedules:["Αυτόματο πρόγραμμα","Automatic schedule"],
-schednote:["Διάλεξε μέρες και ώρα. Όταν έρθει η ώρα και η εφαρμογή είναι ανοιχτή, σε ειδοποιεί και ξεκινάει με ένα πάτημα.","Pick days and a time. When it comes round and the app is open, it tells you and starts with one tap."],
+schednote:["Σου το θυμίζει όταν ανοίξεις την εφαρμογή.","It reminds you when you open the app."],
 addsched:["Πρόσθεσε στο πρόγραμμα","Add to the schedule"],
 bedtimeT:["Ύπνος και πρωί","Bedtime and morning"],bedtime:["Ώρα ύπνου","Bedtime"],morning:["Πρωινή πρόκληση","Morning challenge"],breaklen:["Διάλειμμα (λεπτά)","Break (minutes)"],
-wheelTitle:["Μυστική αποστολή","Secret mission"],wheelLede:["Γύρνα τον τροχό και κάν' το χωρίς κινητό.","Spin it and do it phone-free."],spin:["Γύρνα τον","Spin"],close:["Κλείσε","Close"],
+wheelTitle:["Μυστική αποστολή","Secret mission"],wheelLede:["Κάν το χωρίς κινητό.","Do it phone-free."],
 excuseTitle:["Γεννήτρια δικαιολογιών","Excuse generator"],excuseBtn:["Δώσε μου μια δικαιολογία","Give me an excuse"],
-museum:["Μουσείο ντροπής","Shame museum"],museumLede:["Η ιδιωτική συλλογή των αποτυχιών σου.","Your private collection of failed attempts."],
+museum:["Μουσείο ντροπής","Shame museum"],museumLede:["Μόνο εσύ τη βλέπεις.","Only you see this."],
 secret:["Μυστικό δωμάτιο","Secret room"],takedare:["Πάρε ένα dare","Take a dare"],legendrun:["24ωρος θρύλος: οι κανόνες","24-hour legend: the rules"],
 theme:["Εμφάνιση","Appearance"],mSys:["Αυτόματο","Auto"],mLight:["Φωτεινό","Light"],mDark:["Σκοτεινό","Dark"],sound:["Ήχος λήξης","Finish sound"],testsound:["Άκου τον","Hear it"],
 quietmode:["Ήσυχη λειτουργία: χωρίς παιχνίδι, μόνο ο χρόνος","Quiet mode: no game, just the timer"],
-people:["Ζευγάρι / οικογένεια","Couple / family"],peopleLede:["Πολλά προφίλ στην ίδια συσκευή, το καθένα με δικό του σερί.","Several profiles on this device, each with its own run."],
+people:["Ζευγάρι / οικογένεια","Couple / family"],peopleLede:["Πολλά προφίλ στο ίδιο κινητό.","Several profiles on one phone."],
 nameph:["Όνομα","Name"],pact:["Αντίγραψε το συμφωνητικό","Copy the pact"],
 emergency:["Έκτακτη ανάγκη","Emergency"],
-emergencyLede:["Ποιον περιμένεις σε έκτακτη ανάγκη. Στο ξεκλείδωμα υπάρχει κουμπί που σε βγάζει αμέσως, χωρίς πρόκληση και χωρίς ποινή.","Who you're waiting on in a real emergency. The unlock screen has a button that lets you out instantly, no challenge, no penalty."],
+emergencyLede:["Το κόκκινο κουμπί σε βγάζει πάντα, χωρίς ποινή.","The red button always lets you out, no penalty."],
 emgph:["π.χ. η μητέρα μου","e.g. my mother"],
 dataTitle:["Τα δεδομένα σου","Your data"],
-dataLede:["Όλα μένουν σε αυτή τη συσκευή. Τίποτα δεν φεύγει, τίποτα δεν πουλιέται.","Everything stays on this device. Nothing leaves, nothing is sold."],
+dataLede:["Όλα μένουν σε αυτό το κινητό.","Everything stays on this phone."],
 exportd:["Εξαγωγή","Export"],wiped:["Διαγραφή όλων","Delete everything"],
 honestT:["Τι δεν κάνει","What it does not do"],
 remaining:["απομένουν","remaining"],elapsed:["πέρασαν","elapsed"],focus:["Συγκέντρωση","Focus"],
