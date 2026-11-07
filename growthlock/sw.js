@@ -1,7 +1,7 @@
 /* GrowthLock offline shell.
  * Network-first for the page so a new deploy always wins, cache as the
  * fallback so a block still runs with no signal. */
-var CACHE = "growthlock-v1";
+var CACHE = "growthlock-v2";
 var SHELL = ["./", "./index.html", "./icon.svg", "./manifest.json"];
 
 self.addEventListener("install", function (e) {
