@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -19,6 +21,26 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+
+      # Android's own debug keystore, with the documented public defaults that
+      # every Android SDK uses. It is committed once so that every build is
+      # signed the same way: without that, each run would sign differently and
+      # Android would refuse to install a new version over the old one, which
+      # would mean losing the player's progress on every update.
+      - name: Keep one signing key
+        working-directory: growthlock-app/android
+        run: |
+          if [ ! -f debug.keystore ]; then
+            keytool -genkeypair -v -keystore debug.keystore \
+              -storepass android -keypass android -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug, O=Android, C=US"
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add debug.keystore
+            git commit -m "GrowthLock: one signing key, so updates keep the player's progress"
+            git push
+          fi
 
       - name: Bundle the app page into the APK
         run: |
