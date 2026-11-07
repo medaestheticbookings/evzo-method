@@ -75,6 +75,42 @@ object Watcher {
         return last
     }
 
+    /**
+     * The longest stretch last night in which no app was opened, in minutes.
+     *
+     * This is not sleep: it is the phone lying untouched, which is the only
+     * thing the system can honestly tell us. Measured from 20:00 yesterday to
+     * noon today, so a late night and a lie-in both still land inside it.
+     */
+    fun lastNightPhoneFree(c: Context): Int {
+        if (!hasUsageAccess(c)) return 0
+        val usm = c.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val cal = java.util.Calendar.getInstance()
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 12)
+        cal.set(java.util.Calendar.MINUTE, 0)
+        cal.set(java.util.Calendar.SECOND, 0)
+        val noonToday = cal.timeInMillis
+        val end = minOf(noonToday, System.currentTimeMillis())
+        val start = end - 16 * 60 * 60 * 1000L
+
+        val events = usm.queryEvents(start, end)
+        val e = UsageEvents.Event()
+        var prev = start
+        var longest = 0L
+        while (events.hasNextEvent()) {
+            events.getNextEvent(e)
+            if (e.eventType != UsageEvents.Event.MOVE_TO_FOREGROUND &&
+                e.eventType != UsageEvents.Event.ACTIVITY_RESUMED
+            ) continue
+            val gap = e.timeStamp - prev
+            if (gap > longest) longest = gap
+            prev = e.timeStamp
+        }
+        val tail = end - prev
+        if (tail > longest) longest = tail
+        return (longest / 60000L).toInt()
+    }
+
     fun shouldBlock(c: Context, pkg: String): Boolean {
         if (pkg == c.packageName) return false
         if (pkg in SessionStore.ALWAYS_ALLOWED) return false

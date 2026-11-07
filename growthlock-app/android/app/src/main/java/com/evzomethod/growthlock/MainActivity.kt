@@ -162,5 +162,9 @@ class MainActivity : Activity() {
 
         @JavascriptInterface
         fun blockEverything(): Boolean = SessionStore.blockEverything(a)
+
+        /** Minutes the phone lay untouched last night. 0 when we cannot tell. */
+        @JavascriptInterface
+        fun lastNightPhoneFree(): Int = try { Watcher.lastNightPhoneFree(a) } catch (e: Exception) { 0 }
     }
 }

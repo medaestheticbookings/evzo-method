@@ -440,6 +440,20 @@ nav button[aria-pressed="true"]{color:var(--accent)}
         <div id="recap-card"></div>
       </div>
       <div class="card">
+        <h3 data-t="dayByDay"></h3>
+        <ul class="list" id="days-list"></ul>
+      </div>
+      <div class="card">
+        <h3 data-t="sleepT"></h3>
+        <p class="small" id="sleep-note"></p>
+        <div class="hours" id="sleep-bars" style="height:86px"></div>
+        <div id="sleep-labels" style="display:flex;gap:3px;margin-top:4px"></div>
+        <div class="row" id="sleep-ask" style="margin-top:6px">
+          <input type="text" id="sleep-h" inputmode="decimal" maxlength="4" data-tp="sleepPh">
+          <button class="btn sm ghost" id="sleep-save" data-t="sleepSave"></button>
+        </div>
+      </div>
+      <div class="card">
         <h3 data-t="calendar"></h3>
         <div class="heat" id="heat"></div>
         <p class="small" data-t="heatnote"></p>
@@ -752,6 +766,17 @@ tagph:["π.χ. ΚΑΡΕΚΛΑ","e.g. CHAIR"],
 tagUse:["Φέρε το χαρτί σου","Fetch your paper"],
 tourGo:["Πάμε","Let us go"],tourSkip:["Προσπέρασε","Skip"],guide:["Οδηγός","Guide"],guideBtn:["Οδηγός: τι κάνει το καθένα","Guide: what everything does"],
 options:["Περισσότερα","More options"],
+nameTaken:["Αυτό το όνομα υπάρχει ήδη σε αυτό το κινητό. Διάλεξε άλλο.","That name is already on this phone. Pick another one."],
+nameShort:["Γράψε ένα όνομα πρώτα.","Write a name first."],
+dayByDay:["Μέρα με τη μέρα","Day by day"],
+yesterday:["Χθες","Yesterday"],
+nothingDay:["τίποτα","nothing"],
+sleepT:["Ύπνος","Sleep"],
+sleepMeasured:["Μετρημένο: πόσες ώρες δεν άγγιξες το κινητό μέσα στη νύχτα.","Measured: hours you did not touch the phone during the night."],
+sleepSelf:["Δικά σου στοιχεία. Γράψε πόσο κοιμήθηκες χθες.","Your own entry. Write how long you slept last night."],
+sleepPh:["π.χ. 7.5","e.g. 7.5"],
+sleepSave:["Κατέγραψε","Log it"],
+sleepAvg:["Μέσος όρος {n} ώρες τις τελευταίες {d} νύχτες.","{n} hours on average over the last {d} nights."],
 getApk:["Κατέβασε την εφαρμογή που μπλοκάρει","Get the app that really blocks"],
 apkNote:["Μόνο για Android. Άνοιξε το αρχείο, πάτα Εγκατάσταση, μετά «Να επιτρέπεται». Από εκεί και πέρα το Instagram δεν ανοίγει όσο τρέχει μπλοκ.","Android only. Open the file, tap Install, then Allow. After that Instagram will not open while a block is running."],
 realT:["Κάν' το πραγματικό κλείδωμα","Make the lock real"],
@@ -1069,6 +1094,21 @@ function setLang(x){li=x==="en"?1:0;root.lang=x;save();applyLang()}
 $("lang-btn").addEventListener("click",function(){setLang(li===0?"en":"el")});
 
 /* ---------- onboarding ---------- */
+/* A name is the key a profile is stored under, so two people on one phone must
+   not share one: the second would inherit the first one's streak and monsters. */
+function nameTaken(n){
+  var k=n.trim().toLowerCase();
+  return Object.keys(root.profiles).some(function(x){return x.trim().toLowerCase()===k});
+}
+function nickError(msg){
+  var el=$("nick-err");
+  if(!el){
+    el=document.createElement("p");el.id="nick-err";el.className="muted";
+    el.style.color="#D9774F";
+    $("nick-go").parentNode.insertBefore(el,$("nick-go"));
+  }
+  el.textContent=msg;
+}
 var nickMon=0;
 Array.prototype.forEach.call(document.querySelectorAll("#choose [data-pick]"),function(b){
   b.addEventListener("click",function(){setLang(b.getAttribute("data-pick"));$("choose").hidden=true;startNick()})});
@@ -1087,8 +1127,11 @@ function startNick(){
   });
 }
 $("nick-go").addEventListener("click",function(){
-  var n=$("nick-input").value.trim()||(li===0?"Φίλε":"Friend");
-  root.profiles[n]=root.profiles[n]||blank(n,nickMon);
+  var n=$("nick-input").value.trim();
+  if(!n){nickError(t("nameShort"));$("nick-input").focus();return}
+  if(nameTaken(n)){nickError(t("nameTaken"));$("nick-input").focus();return}
+  nickError("");
+  root.profiles[n]=blank(n,nickMon);
   root.active=n;save();
   $("nick").hidden=true;$("app").hidden=false;
   openTour();
@@ -1508,8 +1551,10 @@ $("shop-add").addEventListener("click",function(){
   var n=$("shop-name").value.trim(),c=parseInt($("shop-cost").value.replace(/\D/g,""),10)||50;
   if(!n)return;P().shop.push({n:n,c:c,got:0});$("shop-name").value="";$("shop-cost").value="";save();renderShop()});
 $("profile-add").addEventListener("click",function(){
-  var v=$("profile-input").value.trim();if(!v)return;
-  if(!root.profiles[v])root.profiles[v]=blank(v,Math.floor(Math.random()*10));
+  var v=$("profile-input").value.trim();
+  if(!v){banner(t("nameShort"),true);return}
+  if(nameTaken(v)){banner(t("nameTaken"),true);return}
+  root.profiles[v]=blank(v,Math.floor(Math.random()*10));
   root.active=v;$("profile-input").value="";save();applySkin();applyLang()});
 $("copy-pact").addEventListener("click",function(){
   var p=P();copy(li===0?("Συμφωνητικό GrowthLock\n"+root.active+"\nΣερί: "+cleanStreak()+"\nΛεπτά: "+totalMin()+"\nΥπόσχομαι ένα μπλοκ την ημέρα.")
@@ -1754,6 +1799,12 @@ $("rest-today").addEventListener("click",function(){
   var p=P(),k=dayKey(Date.now());p.rest=p.rest||{};
   if(p.rest[k])delete p.rest[k];else p.rest[k]=1;save();renderStats()});
 $("set-tag").addEventListener("change",function(){P().settings.tag=$("set-tag").value.trim().toUpperCase();save()});
+$("sleep-save").addEventListener("click",function(){
+  var h=parseFloat(($("sleep-h").value||"").replace(",","."));
+  if(!h||h<=0||h>16)return;
+  var p=P();p.sleep=p.sleep||{};p.sleep[dayKey(Date.now())]={h:Math.round(h*10)/10,m:false};
+  $("sleep-h").value="";save();renderStats();
+});
 
 /* ---------- help bot (answers from the app's own data, no network) ---------- */
 var BOTQ=[
@@ -1941,6 +1992,47 @@ function renderPets(){
     d.innerHTML='<div class="em">'+(owned?"🪐":"·")+'</div><div class="nm">'+(owned?pl[li]:"???")+'</div>';
     pg.appendChild(d)});
 }
+/* Sleep, the way the phone can honestly know it: inside the Android app we ask
+   the system for the longest stretch last night in which no app was opened.
+   On the website there is no such thing, so the person types it in. */
+function renderSleep(p){
+  p.sleep=p.sleep||{};
+  var measured=false;
+  if(NATIVE){
+    try{
+      var mins=window.GrowthLockNative.lastNightPhoneFree();
+      if(mins&&mins>60){p.sleep[dayKey(Date.now())]={h:Math.round(mins/6)/10,m:true};save();measured=true}
+    }catch(e){}
+  }
+  var anyMeasured=Object.keys(p.sleep).some(function(k){return p.sleep[k].m});
+  $("sleep-note").textContent=(measured||anyMeasured)?t("sleepMeasured"):t("sleepSelf");
+  $("sleep-ask").style.display=measured?"none":"flex";
+
+  var bars=$("sleep-bars"),labs=$("sleep-labels");bars.innerHTML="";labs.innerHTML="";
+  var vals=[],names=li===0?["Κυ","Δε","Τρ","Τε","Πε","Πα","Σα"]:["Su","Mo","Tu","We","Th","Fr","Sa"];
+  for(var i=6;i>=0;i--){
+    var dt=new Date();dt.setDate(dt.getDate()-i);
+    var rec=p.sleep[dayKey(dt.getTime())];
+    vals.push({h:rec?rec.h:0,d:names[dt.getDay()]});
+  }
+  var top=Math.max(9,Math.max.apply(null,vals.map(function(v){return v.h})));
+  vals.forEach(function(v){
+    var b=document.createElement("i");
+    b.style.height=Math.round(100*v.h/top)+"%";
+    b.title=v.h?(v.h+"h"):"";
+    if(v.h>=7)b.className="on";
+    bars.appendChild(b);
+    var l=document.createElement("span");
+    l.style.cssText="flex:1;text-align:center;font-size:10px;color:var(--muted)";
+    l.textContent=v.h?v.h:"·";
+    labs.appendChild(l);
+  });
+  var got=vals.filter(function(v){return v.h>0});
+  if(got.length){
+    var avg=got.reduce(function(a,v){return a+v.h},0)/got.length;
+    $("sleep-note").textContent+=" "+fmt("sleepAvg",{n:(Math.round(avg*10)/10),d:got.length});
+  }
+}
 function renderStats(){
   var p=P(),now=Date.now(),week=0,month=0,total=0;
   p.sessions.forEach(function(s){total+=s.focused;
@@ -1975,6 +2067,24 @@ function renderStats(){
     '<div><div style="font-family:var(--font-mono);font-size:24px">'+cleanStreak()+'</div><div class="small">'+t("streak")+'</div></div>'+
     '<div><div style="font-family:var(--font-mono);font-size:24px">'+(p.world.trees+p.world.stars+p.world.books)+'</div><div class="small">'+t("worldTitle")+'</div></div></div>'+
     '<div style="display:flex;align-items:center;gap:10px">'+monster(p.mon,44,0,p.settings.outfit)+'<span class="small">'+(p.nick||root.active)+'</span></div></div>';
+  /* day by day: today, yesterday, the five before */
+  var perDay={},perBlocks={};
+  p.sessions.forEach(function(x){var k=dayKey(x.ts);perDay[k]=(perDay[k]||0)+x.focused;perBlocks[k]=(perBlocks[k]||0)+1});
+  var dl=$("days-list");dl.innerHTML="";
+  var wd=li===0?["Κυριακή","Δευτέρα","Τρίτη","Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο"]
+               :["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  for(var d2=0;d2<7;d2++){
+    var dt=new Date();dt.setDate(dt.getDate()-d2);
+    var k2=dayKey(dt.getTime()),mins=perDay[k2]||0,bl=perBlocks[k2]||0;
+    var name=d2===0?t("today"):d2===1?t("yesterday"):wd[dt.getDay()];
+    var l2=document.createElement("li");
+    var a2=document.createElement("span");a2.className="v";a2.textContent=name;
+    var b2=document.createElement("span");b2.className="k";
+    b2.textContent=mins?(mins+"′ · "+bl):t("nothingDay");
+    if(!mins)b2.style.opacity=".5";
+    l2.appendChild(a2);l2.appendChild(b2);dl.appendChild(l2);
+  }
+  renderSleep(p);
   var byDay={};p.sessions.forEach(function(s){var k=dayKey(s.ts);byDay[k]=(byDay[k]||0)+s.focused});
   var hm=$("heat");hm.innerHTML="";
   for(var i=29;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);
