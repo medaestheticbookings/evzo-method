@@ -613,6 +613,18 @@ nav button[aria-pressed="true"]{color:var(--accent)}
   <button class="flat" id="mood-skip"></button>
 </div>
 
+<!-- first-run guide -->
+<div class="panel" id="tour" hidden>
+  <div id="tour-art"></div>
+  <p class="sub" id="tour-step"></p>
+  <h2 id="tour-title"></h2>
+  <p class="muted" id="tour-body"></p>
+  <div class="tools">
+    <button class="flat go" id="tour-next"></button>
+    <button class="flat" id="tour-skip"></button>
+  </div>
+</div>
+
 <!-- ritual -->
 <div class="panel" id="ritual" hidden>
   <p class="sub" id="rt-step"></p>
@@ -724,6 +736,7 @@ tagT:["Κλειδί σε χαρτί","Paper key"],
 tagLede:["Γράψε μια λέξη σε χαρτί, άσ το σε άλλο δωμάτιο. Το Locked τη ζητάει.","Write a word on paper, leave it in another room. Locked mode asks for it."],
 tagph:["π.χ. ΚΑΡΕΚΛΑ","e.g. CHAIR"],
 tagUse:["Φέρε το χαρτί σου","Fetch your paper"],
+tourGo:["Πάμε","Let us go"],tourSkip:["Προσπέρασε","Skip"],guide:["Οδηγός","Guide"],
 options:["Περισσότερα","More options"],
 getApk:["Κατέβασε την εφαρμογή που μπλοκάρει","Get the app that really blocks"],
 apkNote:["Μόνο για Android. Άνοιξε το αρχείο, πάτα Εγκατάσταση, μετά «Να επιτρέπεται». Από εκεί και πέρα το Instagram δεν ανοίγει όσο τρέχει μπλοκ.","Android only. Open the file, tap Install, then Allow. After that Instagram will not open while a block is running."],
@@ -1032,7 +1045,8 @@ function applyLang(){
   $("nick-go").textContent=t("nickGo");
   $("ck-title").textContent=t("ckTitle");$("ck-body").textContent=t("ckBody");
   $("ck-ok").textContent=t("ckOk");$("ck-no").textContent=t("ckNo");
-  $("mood-skip").textContent=t("moodSkip");$("mood-q").textContent=t("moodQ");
+  $("mood-skip").textContent=t("moodSkip");
+  if(window.__tourBtn)window.__tourBtn.textContent=t("guide");$("mood-q").textContent=t("moodQ");
   strictNote();
   if(P())renderAll();
   if(run){$("s-intent").textContent=run.intention||t("focus");updateSlips();setSub()}
@@ -1063,8 +1077,8 @@ $("nick-go").addEventListener("click",function(){
   root.profiles[n]=root.profiles[n]||blank(n,nickMon);
   root.active=n;save();
   $("nick").hidden=true;$("app").hidden=false;
+  openTour();
   /* no cookies, no server: the notice is a joke for the website and pointless in the app */
-  if(!root.cookie&&!NATIVE)$("cookie").hidden=false;
   applyLang();
 });
 $("ck-ok").addEventListener("click",function(){root.cookie=true;save();$("cookie").hidden=true});
@@ -1538,6 +1552,38 @@ $("wipe-data").addEventListener("click",function(){
   root={lang:null,active:null,cookie:false,profiles:{}};location.reload()});
 function copy(txt){try{navigator.clipboard.writeText(txt).then(function(){banner(t("copied"))}).catch(function(){banner(txt)})}catch(e){banner(txt)}}
 
+/* ---------- the guide, shown once ---------- */
+var TOUR=[
+ [["Ξεκίνα ένα μπλοκ","Start a block"],
+  ["Διάλεξε λεπτά, γράψε τι θα κάνεις, πάτα Ξεκίνα. Η οθόνη σκοτεινιάζει και μένει μόνο ο χρόνος.","Pick the minutes, write what you're doing, press Start. The screen goes dark and only the clock is left."]],
+ [["Ολίσθηση","A slip"],
+  ["Κάθε φορά που φεύγεις από εδώ — άλλη εφαρμογή, άναμμα οθόνης — μετράει ως ολίσθηση. Ο χρόνος συνεχίζει, αλλά το μπλοκ χάνει το «καθαρό».","Every time you leave — another app, waking the screen — counts as a slip. The clock keeps going, but the block loses its clean mark."]],
+ [["Πώς βγαίνεις","How you get out"],
+  ["Κράτα πατημένο το κουμπί ξεκλειδώματος. Μετά: βλέπεις τι χάνεις, περιμένεις 10 δευτερόλεπτα και γράφεις μία λέξη. Το κόκκινο κουμπί έκτακτης ανάγκης σε βγάζει αμέσως, χωρίς ποινή.","Hold the unlock button. Then: you see what you lose, you wait 10 seconds, you type one word. The red emergency button lets you out at once, with no penalty."]],
+ [["Πλάσματα","Creatures"],
+  ["Κάθε μπλοκ που τελειώνει χωρίς ολίσθηση εκκολάπτει ένα πλάσμα. Μεγαλύτερο μπλοκ, σπανιότερο πλάσμα. Κανένα δεν πεθαίνει ποτέ.","Every block you finish with no slips hatches a creature. Longer block, rarer creature. None of them ever dies."]],
+ [["Κόσμος, αποστολές, πόντοι","World, quests, points"],
+  ["Κάθε μπλοκ φυτεύει κάτι στον κόσμο σου και δίνει XP και πόντους. Τους πόντους τους εξαργυρώνεις σε δικές σου αμοιβές — καφές, ταινία, ό,τι βάλεις.","Every block plants something in your world and pays XP and points. Points buy rewards you wrote yourself — coffee, a film, whatever you put there."]],
+ [["Τα δικά σου δεδομένα","Your data"],
+  ["Όλα μένουν στο κινητό σου. Στα Έξτρα κατεβάζεις ένα αρχείο με την πρόοδό σου, για να μη χαθεί ποτέ.","Everything stays on your phone. In Extras you can download a file with your progress, so it is never lost."]]
+];
+var tourI=0;
+function openTour(){tourI=0;$("tour").hidden=false;drawTour()}
+function drawTour(){
+  var s=TOUR[tourI],p=P();
+  $("tour-art").innerHTML=monster(p?p.mon:0,86,[0,3,2,4,0,1][tourI]||0);
+  $("tour-step").textContent=(tourI+1)+" / "+TOUR.length;
+  $("tour-title").textContent=s[0][li];
+  $("tour-body").textContent=s[1][li];
+  $("tour-next").textContent=tourI===TOUR.length-1?t("tourGo"):t("cont");
+  $("tour-skip").textContent=t("tourSkip");
+}
+$("tour-next").addEventListener("click",function(){
+  if(tourI<TOUR.length-1){tourI++;drawTour()}
+  else endTour()});
+$("tour-skip").addEventListener("click",endTour);
+function endTour(){$("tour").hidden=true;root.tour=true;save();if(!root.cookie&&!NATIVE)$("cookie").hidden=false}
+
 /* ---------- ambience (generated, no audio files) ---------- */
 var amb={ctx:null,nodes:[],on:false};
 function ambStop(){try{amb.nodes.forEach(function(n){try{n.stop?n.stop():n.disconnect()}catch(e){}});}catch(e){}amb.nodes=[];amb.on=false}
@@ -1681,6 +1727,7 @@ function openHelp(){
 }
 $("help-btn").addEventListener("click",openHelp);
 $("help-close").addEventListener("click",function(){$("helpp").hidden=true});
+(function(){var b=document.createElement("button");b.className="flat go";b.id="help-tour";b.addEventListener("click",function(){$("helpp").hidden=true;openTour()});var c=$("help-close");c.parentNode.insertBefore(b,c);window.__tourBtn=b})();
 $("chat-send").addEventListener("click",function(){
   var v=$("chat-in").value.trim();if(!v)return;
   botSay("me",v);$("chat-in").value="";
