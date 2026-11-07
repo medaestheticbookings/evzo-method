@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  What Android's own backup saves, so that reinstalling the app brings a
+  person's progress back: the session file and the WebView storage, which is
+  where the monsters, XP, world, quests and settings actually live.
+-->
+<full-backup-content>
+    <include domain="sharedpref" path="growthlock.xml" />
+    <include domain="database" path="." />
+    <include domain="file" path="app_webview" />
+    <include domain="file" path="app.html" />
+</full-backup-content>
