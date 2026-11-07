@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GrowthLock</string>
+    <string name="service_label">GrowthLock blocking</string>
+    <string name="service_description">Lets GrowthLock see which app is in front, so it can close distracting apps while a focus block is running. Nothing is sent anywhere; it stays on this phone.</string>
+</resources>
