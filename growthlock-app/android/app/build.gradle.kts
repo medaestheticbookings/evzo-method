@@ -11,8 +11,10 @@ android {
         applicationId = "com.evzomethod.growthlock"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.1"
+        // every CI build gets a higher number, which is what lets Android
+        // install it over the previous one
+        versionCode = (System.getenv("BUILD_NUMBER") ?: "3").toInt()
+        versionName = "1." + (System.getenv("BUILD_NUMBER") ?: "3")
     }
 
     // Android's standard debug key, checked in so that every build is signed

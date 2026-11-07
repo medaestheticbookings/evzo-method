@@ -49,6 +49,8 @@ jobs:
 
       - name: Build the debug APK
         working-directory: growthlock-app/android
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
         run: gradle assembleDebug --no-daemon
 
       - name: Upload the APK

@@ -60,8 +60,11 @@ class MainActivity : Activity() {
         w.settings.mediaPlaybackRequiresUserGesture = false
         w.webChromeClient = WebChromeClient()
         w.webViewClient = WebViewClient()
+        w.settings.allowFileAccess = true
         w.addJavascriptInterface(Bridge(this), "GrowthLockNative")
-        w.loadUrl("file:///android_asset/index.html")
+        w.loadUrl(PageUpdater.pageUrl(this))
+        // pick up anything new for next launch, quietly
+        PageUpdater.refresh(this)
         web = w
         setContentView(w)
     }
