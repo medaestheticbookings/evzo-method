@@ -253,6 +253,16 @@ nav button[aria-pressed="true"]{color:var(--accent)}
     <section id="v-focus">
       <div id="banners" style="display:flex;flex-direction:column;gap:8px"></div>
       <div><h2 id="hello"></h2><p class="lede" data-t="lede"></p></div>
+      <div class="card" style="border-color:var(--accent)">
+        <h3 data-t="realT"></h3>
+        <p class="small" data-t="realLede2"></p>
+        <div class="seg" id="os-seg">
+          <button data-os="ios" aria-pressed="true">iPhone</button>
+          <button data-os="and" aria-pressed="false">Android</button>
+        </div>
+        <ol class="list" id="os-steps" style="padding-left:18px;list-style:decimal"></ol>
+        <p class="small" data-t="realWarn"></p>
+      </div>
       <div class="card">
         <div>
           <span class="label" data-t="howlong"></span>
@@ -534,12 +544,21 @@ nav button[aria-pressed="true"]{color:var(--accent)}
         <input type="text" id="set-emg" data-tp="emgph" maxlength="60">
       </div>
       <div class="card">
+        <h3 data-t="saveT"></h3>
+        <p class="small" data-t="saveLede"></p>
+        <div class="row">
+          <button class="btn sm" id="save-file" data-t="saveFile"></button>
+          <button class="btn sm ghost" id="export-data" data-t="saveCopy"></button>
+        </div>
+        <label class="btn sm ghost" style="text-align:center;cursor:pointer" for="load-file"><span data-t="loadFile"></span></label>
+        <input type="file" id="load-file" accept="application/json,.json,.txt" style="display:none">
+        <textarea id="load-paste" data-tp="loadPaste" style="min-height:60px"></textarea>
+        <button class="btn sm ghost" id="load-go" data-t="restore"></button>
+      </div>
+      <div class="card">
         <h3 data-t="dataTitle"></h3>
         <p class="small" data-t="dataLede"></p>
-        <div class="row">
-          <button class="btn sm ghost" id="export-data" data-t="exportd"></button>
-          <button class="btn sm ghost" id="wipe-data" data-t="wiped"></button>
-        </div>
+        <button class="btn sm ghost" id="wipe-data" data-t="wiped"></button>
       </div>
       <div class="card">
         <h3 data-t="honestT"></h3>
@@ -703,6 +722,15 @@ tagT:["Κλειδί σε χαρτί","Paper key"],
 tagLede:["Γράψε μια λέξη σε χαρτί και άσ' το μακριά — άλλο δωμάτιο, τσέπη μπουφάν. Στο Locked θα τη ζητήσει για να ξεκλειδώσει, οπότε πρέπει να σηκωθείς.","Write a word on paper and leave it far away — another room, a coat pocket. In Locked mode it asks for that word to unlock, so you have to get up."],
 tagph:["π.χ. ΚΑΡΕΚΛΑ","e.g. CHAIR"],
 tagUse:["Φέρε το χαρτί σου","Fetch your paper"],
+realT:["Κάν' το πραγματικό κλείδωμα","Make the lock real"],
+realLede2:["Αυτή η σελίδα δεν μπορεί να κλειδώσει το κινητό. Το ίδιο το κινητό μπορεί. Τρία λεπτά ρύθμιση, μία φορά.","This page cannot lock the phone. The phone itself can. Three minutes of setup, once."],
+realWarn:["Με το Guided Access / καρφίτσωμα, το κινητό κολλάει πάνω στο GrowthLock: η αρχική οθόνη και οι άλλες εφαρμογές δεν ανοίγουν μέχρι να βάλεις τον κωδικό. Αυτό είναι το μόνο πράγμα που «τα κλείνει όλα».","With Guided Access or app pinning the phone sticks to GrowthLock: the home screen and other apps will not open until you enter the passcode. That is the only thing that truly turns everything off."],
+saveT:["Αποθήκευση και επαναφορά","Save and restore"],
+saveLede:["Κατέβασε ένα αρχείο με όλη την πρόοδό σου, ή φέρ' την πίσω σε άλλο κινητό.","Download a file with all your progress, or bring it back on another phone."],
+saveFile:["Κατέβασε αρχείο","Download file"],saveCopy:["Αντίγραψε κείμενο","Copy as text"],
+loadFile:["Φόρτωσε αρχείο","Load a file"],loadPaste:["Επικόλλησε εδώ και πάτα Επαναφορά","Paste here and press Restore"],
+restore:["Επαναφορά","Restore"],restored:["Έγινε επαναφορά.","Restored."],badfile:["Το αρχείο δεν είναι σωστό.","That file isn't right."],
+saved:["Αποθηκεύτηκε","Saved"],
 blkMsg:["Η οθόνη γίνεται κατάμαυρη και πάει σε πλήρη οθόνη. Προσοχή: μαυρίζει μόνο αυτή τη σελίδα — το κινητό δουλεύει κανονικά από κάτω.","The screen goes dead black and fills the display. Note: it only blacks out this page — the phone itself still works underneath."],
 start:["Ξεκίνα μπλοκ","Start block"],fivemin:["Ο κανόνας των 5′","The 5-minute rule"],leaveit:["Just leave it","Just leave it"],boredbtn:["Βαριέμαι","I'm bored"],
 today:["Σήμερα","Today"],minutes:["λεπτά","minutes"],blocks:["μπλοκ","blocks"],streak:["σερί","clean run"],
@@ -949,9 +977,17 @@ function blank(nick,mon){return{nick:nick||"",mon:mon||0,xp:0,stars:0,sessions:[
   paths:{work:0,study:0,move:0,sleep:0},rest:{},
   settings:{bed:"23:30",morn:"07:30",brk:"5",sound:"chord",emg:"",skin:"",mode:"system",quiet:false,
     amb:"none",vol:45,wk:5,tag:"",outfit:""},sched:[]}}
-try{var rw=localStorage.getItem(KEY);if(rw){var pj=JSON.parse(rw);if(pj&&pj.profiles)root=pj}}catch(e){}
+try{
+  var rw=localStorage.getItem(KEY);
+  if(!rw)rw=localStorage.getItem(KEY+".bak");
+  if(rw){var pj=JSON.parse(rw);if(pj&&pj.profiles)root=pj}
+}catch(e){}
 function P(){var p=root.profiles[root.active];if(!p)return null;var b=blank();for(var k in b)if(p[k]===undefined)p[k]=b[k];return p}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(root))}catch(e){}}
+function save(){
+  var s;try{s=JSON.stringify(root)}catch(e){return}
+  try{localStorage.setItem(KEY,s)}catch(e){}
+  try{localStorage.setItem(KEY+".bak",s)}catch(e){}
+}
 var $=function(i){return document.getElementById(i)};
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 function two(n){return(n<10?"0":"")+n}
@@ -1429,10 +1465,56 @@ $("copy-pact").addEventListener("click",function(){
     :("GrowthLock pact\n"+root.active+"\nClean run: "+cleanStreak()+"\nMinutes: "+totalMin()+"\nI commit to one block a day."))});
 $("copy-report").addEventListener("click",function(){copy($("report-text").textContent)});
 $("export-data").addEventListener("click",function(){copy(JSON.stringify(root))});
+$("save-file").addEventListener("click",function(){
+  try{
+    var blob=new Blob([JSON.stringify(root,null,1)],{type:"application/json"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download="growthlock-"+dayKey(Date.now())+".json";
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);
+    banner(t("saved"));
+  }catch(e){copy(JSON.stringify(root))}
+});
+function restoreFrom(txt){
+  try{
+    var o=JSON.parse(txt);
+    if(!o||!o.profiles)throw 0;
+    root=o;save();location.reload();
+  }catch(e){banner(t("badfile"),true)}
+}
+$("load-go").addEventListener("click",function(){
+  var v=$("load-paste").value.trim();if(v)restoreFrom(v)});
+$("load-file").addEventListener("change",function(){
+  var f=$("load-file").files&&$("load-file").files[0];if(!f)return;
+  var r=new FileReader();r.onload=function(){restoreFrom(String(r.result))};r.readAsText(f)});
+
+/* which OS, and how to make the lock real */
+var OSSTEPS={
+ ios:[["Ρυθμίσεις → Προσβασιμότητα → Καθοδηγούμενη πρόσβαση → ενεργό","Settings → Accessibility → Guided Access → on"],
+      ["Μέσα εκεί: Ρυθμίσεις κωδικού → βάλε κωδικό που δεν θα θυμάσαι εύκολα","Inside: Passcode Settings → set a passcode you won't recall easily"],
+      ["Άνοιξε το GrowthLock και πάτα τρεις φορές γρήγορα το πλαϊνό κουμπί → Έναρξη","Open GrowthLock and triple-click the side button → Start"],
+      ["Το κινητό κολλάει εδώ. Τέλος με τριπλό κλικ και κωδικό.","The phone is stuck here. Triple-click and the passcode ends it."],
+      ["Για όλη τη μέρα: Ρυθμίσεις → Χρόνος επί οθόνης → Χρόνος αδράνειας, με «Αποκλεισμός σε χρόνο αδράνειας» και κωδικό από άλλον.","All day: Settings → Screen Time → Downtime, with Block at Downtime on and the passcode held by someone else."]],
+ and:[["Ρυθμίσεις → Ασφάλεια → Καρφίτσωμα εφαρμογής → ενεργό","Settings → Security → App pinning → on"],
+      ["Ενεργοποίησε «Ζήτα PIN πριν το ξεκαρφίτσωμα»","Turn on \"Ask for PIN before unpinning\""],
+      ["Άνοιξε το GrowthLock → κουμπί πρόσφατων → εικονίδιο καρφίτσας","Open GrowthLock → recents button → pin icon"],
+      ["Η αρχική οθόνη και οι άλλες εφαρμογές δεν ανοίγουν μέχρι το PIN.","The home screen and other apps will not open until the PIN."],
+      ["Για όλη τη μέρα: Ψηφιακή ευεξία → Λειτουργία εστίασης ή Ώρα ύπνου.","All day: Digital Wellbeing → Focus mode or Bedtime mode."]]};
+var osPick="ios";
+Array.prototype.forEach.call(document.querySelectorAll("#os-seg button"),function(b){
+  b.addEventListener("click",function(){osPick=b.getAttribute("data-os");
+    Array.prototype.forEach.call(document.querySelectorAll("#os-seg button"),function(o){o.setAttribute("aria-pressed",String(o===b))});
+    renderOS()})});
+function renderOS(){
+  var ol=$("os-steps");ol.innerHTML="";
+  OSSTEPS[osPick].forEach(function(s){
+    var l=document.createElement("li");l.style.cssText="display:list-item;border:none;padding:5px 0;font-size:13px";
+    l.textContent=s[li];ol.appendChild(l)});
+}
 var wipeArmed=false;
 $("wipe-data").addEventListener("click",function(){
   if(!wipeArmed){wipeArmed=true;banner(t("wipeSure"),true);setTimeout(function(){wipeArmed=false},6000);return}
-  try{localStorage.removeItem(KEY)}catch(e){}
+  try{localStorage.removeItem(KEY);localStorage.removeItem(KEY+".bak")}catch(e){}
   root={lang:null,active:null,cookie:false,profiles:{}};location.reload()});
 function copy(txt){try{navigator.clipboard.writeText(txt).then(function(){banner(t("copied"))}).catch(function(){banner(txt)})}catch(e){banner(txt)}}
 
@@ -1791,7 +1873,7 @@ function renderMore(){
   var hl=$("honest-list");hl.innerHTML="";
   HONEST.forEach(function(h){var l=document.createElement("li");var s=document.createElement("span");
     s.className="v";s.textContent=h[li];l.appendChild(s);hl.appendChild(l)});
-  renderSched();renderDayPicker();applySkin();
+  renderSched();renderDayPicker();applySkin();renderOS();
 }
 function renderBanners(){
   var p=P(),now=new Date(),mins=now.getHours()*60+now.getMinutes();
