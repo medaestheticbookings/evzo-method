@@ -5,6 +5,9 @@
     <!-- only ever used to fetch the app's own page from evzomethod.com, so new
          features arrive without reinstalling. No analytics, no accounts. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- asked for only when Uncover needs to know where you walked -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />

@@ -209,7 +209,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
 
 <!-- 0. which EVZO experience -->
 <div class="panel" id="hub" hidden style="justify-content:center">
-  <img src="evzo-logo.svg" alt="EVZO" width="78" height="78" style="display:block;border-radius:16px">
+  <svg width="86" height="86" style="display:block;border-radius:18px" aria-label="EVZO" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B1220"/><g transform="translate(15.50,16.42) scale(0.4437)"><g transform="translate(2.75,68.80)" fill="#FFE14D"><g transform="scale(0.100000,-0.100000)"><path d="M74 688H669V523H295V428H615V270H295V165H676V0H74Z" transform="translate(0.00,0)"/><path d="M261 0 17 688H253L391 228H395L534 688H760L517 0Z" transform="translate(722.00,0)"/></g></g><g transform="translate(0.00,151.36)" fill="#FFFFFF"><g transform="scale(0.100000,-0.100000)"><path d="M364 165H691V0H24V71L343 523H48V688H683V617Z" transform="translate(0.00,0)"/><path d="M788 344Q788 170 691.0 79.0Q594 -12 416 -12Q238 -12 141.5 78.5Q45 169 45 344Q45 519 141.5 609.5Q238 700 416 700Q594 700 691.0 609.0Q788 518 788 344ZM271 376V312Q271 239 308.0 196.0Q345 153 416 153Q487 153 524.5 196.0Q562 239 562 312V376Q562 449 524.5 492.0Q487 535 416 535Q345 535 308.0 492.0Q271 449 271 376Z" transform="translate(722.00,0)"/></g></g></g></svg>
   <div class="seg" id="hub-lang" role="group" aria-label="Γλώσσα / Language" style="width:100%;max-width:300px;align-self:center;border-color:var(--panel-line)">
     <button type="button" data-hublang="el">ΕΛΛΗΝΙΚΑ</button>
     <button type="button" data-hublang="en">ENGLISH</button>
@@ -261,7 +261,7 @@ nav button[aria-pressed="true"]{color:var(--accent)}
     </div>
     <div class="hbtns">
       <span class="lvl" id="lvl-pill">Lv 1</span>
-      <button class="iconbtn" id="hub-btn" aria-label="switch">▦</button>
+      <button class="iconbtn" id="hub-btn"></button>
       <button class="iconbtn" id="help-btn" aria-label="help">?</button>
       <button class="iconbtn" id="lang-btn">EN</button>
     </div>
@@ -782,6 +782,7 @@ tagUse:["Φέρε το χαρτί σου","Fetch your paper"],
 tourGo:["Πάμε","Let us go"],tourSkip:["Προσπέρασε","Skip"],guide:["Οδηγός","Guide"],guideBtn:["Οδηγός: τι κάνει το καθένα","Guide: what everything does"],
 hubKicker:["ευ ζω · διάλεξε εμπειρία","ευ ζω · choose an experience"],
 hubRemember:["Ξεκίνα πάντα από εδώ","Always start here"],
+homeBtn:["⌂ EVZO","⌂ EVZO"],
 switchExp:["Αλλαγή εμπειρίας","Switch experience"],
 needPerm:["Για να μπλοκάρει στ αλήθεια, το Renew χρειάζεται δύο διακόπτες του κινητού. Μία φορά, μόνο για το Renew.","To block for real, Renew needs two switches on the phone. Once, and only for Renew."],
 needPermGo:["Άνοιξε τους διακόπτες","Turn them on"],
@@ -1086,6 +1087,7 @@ function applyLang(){
   Array.prototype.forEach.call(document.querySelectorAll("[data-t]"),function(e){e.textContent=t(e.getAttribute("data-t"))});
   Array.prototype.forEach.call(document.querySelectorAll("[data-tp]"),function(e){e.setAttribute("placeholder",t(e.getAttribute("data-tp")))});
   $("lang-btn").textContent=li===0?"EN":"ΕΛ";
+  $("hub-btn").textContent=t("homeBtn");
   var apk=$("get-apk"),isAndroid=/Android/i.test(navigator.userAgent),onSite=location.protocol.indexOf("http")===0;
   if(apk){
     apk.textContent=t("getApk");$("apk-note").textContent=t("apkNote");
@@ -1125,10 +1127,11 @@ var HUB=[
   n:["Renew","Renew"],
   d:["Άσε το κινητό κάτω, κέρδισε πίσω τις ώρες σου, μάζεψε πλάσματα.","Put the phone down, win your hours back, collect creatures."],
   logo:'<svg viewBox="0 0 64 64" width="42" height="42" aria-hidden="true"><path d="M21 31 V24 a11 11 0 0 1 22 0 V31" fill="none" stroke="#FFE14D" stroke-width="6.5" stroke-linecap="round"/><rect x="13" y="29" width="38" height="24" rx="6" fill="#FFE14D"/><rect x="20.5" y="41" width="5" height="6" rx="1.4" fill="#0B1220"/><rect x="29.5" y="37" width="5" height="10" rx="1.4" fill="#0B1220"/><rect x="38.5" y="33" width="5" height="14" rx="1.4" fill="#0B1220"/></svg>'},
+ /* parked for now
  {id:"evzo",url:"https://evzomethod.com/",
   n:["EVZO Method","EVZO Method"],
   d:["Το προσωπικό 28ήμερο πρόγραμμα γευμάτων, από τα δικά σου νούμερα.","The personalised 28-day meal plan, built from your own numbers."],
-  logo:'<svg viewBox="0 0 100 100" width="40" height="40" aria-hidden="true"><rect x="13" y="11.5" width="74" height="17" rx="3.5" fill="#FFE14D"/><rect x="24" y="41.5" width="52" height="17" rx="3.5" fill="#FFE14D"/><rect x="35" y="71.5" width="30" height="17" rx="3.5" fill="#FFE14D"/></svg>'},
+  logo:''}, */
  {id:"uncover",url:"https://evzomethod.com/uncover/",
   n:["Uncover","Uncover"],
   d:["Ο κόσμος ξεκινάει σκεπασμένος. Κάθε βήμα που περπατάς τον ξεσκεπάζει.","The world starts covered. Every step you walk clears it."],

@@ -26,6 +26,8 @@ import android.widget.TextView
  */
 class MainActivity : Activity() {
 
+    private val REQ_LOCATION = 71
+
     private val teal = Color.parseColor("#FFE14D")
     private val card = Color.parseColor("#141C2C")
     private val bg = Color.parseColor("#0B1220")
@@ -56,20 +58,6 @@ class MainActivity : Activity() {
 
     /* ---------- the whole app ---------- */
 
-    private var hubBtn: Button? = null
-
-    /** Visible only once the person has walked off into one of the websites. */
-    private fun buildHubButton(): Button = Button(this).apply {
-        text = "EVZO"
-        textSize = 13f
-        isAllCaps = false
-        setTextColor(Color.parseColor("#06101B"))
-        background = GradientDrawable().apply { cornerRadius = 40f; setColor(Color.parseColor("#FFE14D")) }
-        setPadding(34, 18, 34, 18)
-        visibility = android.view.View.GONE
-        setOnClickListener { web?.loadUrl(PageUpdater.pageUrl(this@MainActivity) + "#hub") }
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     private fun showApp() {
         val w = WebView(this)
@@ -77,41 +65,59 @@ class MainActivity : Activity() {
         w.settings.javaScriptEnabled = true
         w.settings.domStorageEnabled = true
         w.settings.mediaPlaybackRequiresUserGesture = false
-        w.webChromeClient = WebChromeClient()
-        w.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                // away from our own page means the person is inside one of the
-                // websites, where the app's own switcher is not on screen
-                val away = url != null && !url.startsWith("file://")
-                hubBtn?.visibility = if (away) android.view.View.VISIBLE else android.view.View.GONE
+        w.settings.allowFileAccess = true
+        // Uncover is a walking game: it is nothing without the map and the
+        // person's position, so the WebView has to pass that request on rather
+        // than silently refusing it, which is why the map came up empty.
+        w.settings.setGeolocationEnabled(true)
+        w.settings.setSupportZoom(false)
+        w.settings.cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
+        w.webChromeClient = object : WebChromeClient() {
+            override fun onGeolocationPermissionsShowPrompt(
+                origin: String?,
+                callback: android.webkit.GeolocationPermissions.Callback?
+            ) {
+                if (origin == null || callback == null) return
+                if (hasLocation()) {
+                    callback.invoke(origin, true, true)
+                } else {
+                    pendingGeo = Pair(origin, callback)
+                    requestPermissions(
+                        arrayOf(
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION
+                        ),
+                        REQ_LOCATION
+                    )
+                }
             }
         }
-        w.settings.allowFileAccess = true
+        w.webViewClient = WebViewClient()
         w.addJavascriptInterface(Bridge(this), "GrowthLockNative")
         w.loadUrl(PageUpdater.pageUrl(this))
         // pick up anything new for next launch, quietly
         PageUpdater.refresh(this)
         web = w
+        setContentView(w)
+    }
 
-        val frame = android.widget.FrameLayout(this)
-        frame.addView(
-            w,
-            android.widget.FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        )
-        val btn = buildHubButton()
-        hubBtn = btn
-        frame.addView(
-            btn,
-            android.widget.FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = android.view.Gravity.BOTTOM or android.view.Gravity.END
-                rightMargin = 40; bottomMargin = 60
-            }
-        )
-        setContentView(frame)
+    private var pendingGeo: Pair<String, android.webkit.GeolocationPermissions.Callback>? = null
+
+    private fun hasLocation() = checkSelfPermission(
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode != REQ_LOCATION) return
+        val granted = grantResults.isNotEmpty() &&
+            grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+        pendingGeo?.let { (origin, cb) -> cb.invoke(origin, granted, true) }
+        pendingGeo = null
     }
 
     override fun onBackPressed() {
