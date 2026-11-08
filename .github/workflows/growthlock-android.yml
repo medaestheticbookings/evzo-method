@@ -47,15 +47,15 @@ jobs:
           mkdir -p growthlock-app/android/app/src/main/assets
           cp renew/index.html growthlock-app/android/app/src/main/assets/index.html
 
-      - name: Build the debug APK
+      - name: Build the APK
         working-directory: growthlock-app/android
         env:
           BUILD_NUMBER: ${{ github.run_number }}
-        run: gradle assembleDebug --no-daemon
+        run: gradle assembleRelease --no-daemon
 
       - name: Upload the APK
         uses: actions/upload-artifact@v4
         with:
           name: GrowthLock-apk
-          path: growthlock-app/android/app/build/outputs/apk/debug/app-debug.apk
+          path: growthlock-app/android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error

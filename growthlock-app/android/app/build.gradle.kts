@@ -31,12 +31,24 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // R8 strips the code and resources nothing reaches, which is most
+            // of what a Kotlin app drags in by default
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+    packaging {
+        resources.excludes += setOf(
+            "META-INF/*.version",
+            "META-INF/**.kotlin_module",
+            "kotlin/**",
+            "DebugProbesKt.bin"
+        )
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -45,7 +57,6 @@ android {
     kotlinOptions { jvmTarget = "17" }
 }
 
-dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-}
+// No AppCompat and no KTX: this app is four plain Activities and a service, and
+// those libraries were the bulk of the download.
+dependencies { }
