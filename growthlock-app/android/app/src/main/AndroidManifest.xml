@@ -5,6 +5,9 @@
     <!-- only ever used to fetch the app's own page from evzomethod.com, so new
          features arrive without reinstalling. No analytics, no accounts. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- so a new version can be offered inside the app instead of sending
+         people back to the website; Android still asks before installing -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- asked for only when Uncover needs to know where you walked -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -60,5 +63,14 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 </manifest>

@@ -783,6 +783,8 @@ tourGo:["Πάμε","Let us go"],tourSkip:["Προσπέρασε","Skip"],guide:[
 hubKicker:["ευ ζω · διάλεξε εμπειρία","ευ ζω · choose an experience"],
 hubRemember:["Ξεκίνα πάντα από εδώ","Always start here"],
 homeBtn:["⌂ EVZO","⌂ EVZO"],
+updateT:["Νέα έκδοση της εφαρμογής","A new version of the app"],
+updateGo:["Ενημέρωσε τώρα","Update now"],
 switchExp:["Αλλαγή εμπειρίας","Switch experience"],
 needPerm:["Για να μπλοκάρει στ αλήθεια, το Renew χρειάζεται δύο διακόπτες του κινητού. Μία φορά, μόνο για το Renew.","To block for real, Renew needs two switches on the phone. Once, and only for Renew."],
 needPermGo:["Άνοιξε τους διακόπτες","Turn them on"],
@@ -1968,6 +1970,18 @@ $("chat-send").addEventListener("click",function(){
 $("chat-in").addEventListener("keydown",function(e){if(e.key==="Enter")$("chat-send").click()});
 
 /* ---------- renderers ---------- */
+/* Inside the app a new build is offered here, rather than sending anyone back
+   to the website. Android still asks before it installs anything. */
+function offerUpdate(){
+  if(!NATIVE)return;
+  var has=false;try{has=window.GrowthLockNative.updateAvailable()}catch(e){}
+  if(!has)return;
+  var b=document.createElement("div");b.className="banner";b.textContent=t("updateT");
+  var go=document.createElement("button");go.className="btn sm";go.style.marginTop="9px";
+  go.textContent=t("updateGo");
+  go.addEventListener("click",function(){try{window.GrowthLockNative.installUpdate()}catch(e){}});
+  b.appendChild(go);$("banners").appendChild(b);
+}
 function petMood(){
   var p=P(),t0=startOfToday(),last=p.sessions[p.sessions.length-1],h=new Date().getHours();
   if(!p.sessions.length)return 1;
@@ -2235,6 +2249,7 @@ function renderMore(){
   renderSched();renderDayPicker();applySkin();renderOS();
 }
 function renderBanners(){
+  offerUpdate();
   var p=P(),now=new Date(),mins=now.getHours()*60+now.getMinutes();
   $("banners").innerHTML="";
   var bd=(p.settings.bed||"23:30").split(":"),bm=(+bd[0])*60+(+bd[1]),diff=bm-mins;

@@ -59,4 +59,7 @@ android {
 
 // No AppCompat and no KTX: this app is four plain Activities and a service, and
 // those libraries were the bulk of the download.
-dependencies { }
+dependencies {
+    // the only library left: FileProvider, for handing an update to the installer
+    implementation("androidx.core:core:1.13.1")
+}

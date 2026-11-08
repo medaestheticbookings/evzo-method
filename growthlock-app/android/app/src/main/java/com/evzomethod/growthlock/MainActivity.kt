@@ -241,6 +241,14 @@ class MainActivity : Activity() {
             a.runOnUiThread { (a as MainActivity).showSetup() }
         }
 
+        /** Is there a newer build of the app itself? */
+        @JavascriptInterface
+        fun updateAvailable(): Boolean = Updater.available
+
+        /** Fetch it and hand it to Android's installer, which asks first. */
+        @JavascriptInterface
+        fun installUpdate() = Updater.download(a) { }
+
         /** Minutes the phone lay untouched last night. 0 when we cannot tell. */
         @JavascriptInterface
         fun lastNightPhoneFree(): Int = try { Watcher.lastNightPhoneFree(a) } catch (e: Exception) { 0 }
