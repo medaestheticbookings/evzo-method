@@ -59,7 +59,9 @@ object Updater {
                     connectTimeout = 10000; readTimeout = 60000
                 }
                 if (conn.responseCode != 200) throw IllegalStateException("http ${conn.responseCode}")
-                conn.inputStream.use { input -> out.outputStream.use { input.copyTo(it) } }
+                conn.inputStream.use { input ->
+                    java.io.FileOutputStream(out).use { file -> input.copyTo(file) }
+                }
                 conn.disconnect()
                 if (out.length() < 20000) throw IllegalStateException("too small")
 
