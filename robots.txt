@@ -3,5 +3,6 @@ Allow: /
 Disallow: /_preview-reviews.html
 Disallow: /ebooks/
 Disallow: /content/
+Disallow: /mentor/
 
 Sitemap: https://evzomethod.com/sitemap.xml

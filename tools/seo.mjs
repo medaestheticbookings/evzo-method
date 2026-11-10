@@ -247,7 +247,8 @@ if (BASE) {
     "Allow: /\n" +
     "Disallow: /_preview-reviews.html\n" +
     "Disallow: /ebooks/\n" +
-    "Disallow: /content/\n\n" +
+    "Disallow: /content/\n" +
+    "Disallow: /mentor/\n\n" +
     "Sitemap: " + abs("sitemap.xml") + "\n");
   console.log("wrote robots.txt");
 } else {
@@ -258,7 +259,8 @@ if (BASE) {
     "Allow: /\n" +
     "Disallow: /_preview-reviews.html\n" +
     "Disallow: /ebooks/\n" +
-    "Disallow: /content/\n\n" +
+    "Disallow: /content/\n" +
+    "Disallow: /mentor/\n\n" +
     "# Sitemap line is added by tools/seo.mjs once config.site.baseUrl is set.\n");
   console.log("wrote robots.txt (no sitemap line, config.site.baseUrl is not set)");
   console.log("\nSet config.site.baseUrl to your domain and run this again to get");
