@@ -18,6 +18,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write          # to commit the built mentor.apk back to the site
     steps:
       - uses: actions/checkout@v4
 
@@ -34,14 +36,22 @@ jobs:
       # for ../site/fonts.css - so the fonts have to sit beside it in the same
       # shape they have on the website, or the Greek text falls back to a
       # system font and the layout shifts.
-      - name: Bundle the page and its fonts into the APK
+      # The lock screen AND the ciphertext go in, never the plaintext page.
+      # That is what makes a public mentor.apk harmless: pull it apart and all
+      # you find is app.enc. The passphrase is typed once on the phone and the
+      # derived key is cached in the WebView, so it opens straight after.
+      - name: Bundle the sealed page and its fonts into the APK
         run: |
           A=mentor-app/android/app/src/main/assets
           mkdir -p "$A/mentor" "$A/site/fonts" "$A/brand"
           cp mentor/index.html "$A/mentor/index.html"
+          cp mentor/app.enc   "$A/mentor/app.enc"
           cp site/fonts.css "$A/site/fonts.css"
           cp -r site/fonts/. "$A/site/fonts/"
           cp brand/evzo-profile-navy-zowhite.png "$A/brand/" || true
+          if grep -q "Offer Builder" "$A/mentor/index.html"; then
+            echo "REFUSING: plaintext page reached the assets"; exit 1
+          fi
           echo "bundled:"; find "$A" -type f | wc -l; du -sh "$A"
 
       - name: Build the APK
@@ -56,3 +66,22 @@ jobs:
           name: Mentor-apk
           path: mentor-app/android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
+
+      # An Actions artifact can only be downloaded by someone signed in to
+      # GitHub, which is useless on a phone. Committing the APK to the site
+      # root puts it one tap away at evzomethod.com/mentor.apk instead. The
+      # push triggers nothing: this workflow only watches mentor/, mentor-app/
+      # and site/fonts, so a commit of the apk cannot loop back into a build.
+      - name: Publish the APK on the site
+        run: |
+          cp mentor-app/android/app/build/outputs/apk/release/app-release.apk mentor.apk
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add mentor.apk
+          if git diff --cached --quiet; then
+            echo "identical build, nothing to publish"
+          else
+            git commit -m "Mentor: publish build ${{ github.run_number }} at /mentor.apk"
+            git pull --rebase --autostash origin main
+            git push origin HEAD:main
+          fi

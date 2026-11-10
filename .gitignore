@@ -42,3 +42,9 @@ site/INTEGRATION.md
 site/calc.test.js
 GO-LIVE.md
 brand/_preview/
+
+# The real mentor page is kept outside this public repo, at
+# C:\Users\marco\mentor-src\mentor.html, and only its ciphertext
+# (mentor/app.enc) is committed. Never commit the plaintext here.
+mentor/mentor.html
+mentor/*.plain.html

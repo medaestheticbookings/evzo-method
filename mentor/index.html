@@ -1,1047 +1,207 @@
 <!doctype html>
 <html lang="en">
 <meta charset="utf-8">
-<title>The Mentor</title>
+<title>Locked</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="theme-color" content="#0B1220">
-<meta name="description" content="Private workspace.">
 <link rel="icon" href="../brand/evzo-profile-navy-zowhite.png">
+<link rel="apple-touch-icon" href="../brand/evzo-profile-navy-zowhite.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="stylesheet" href="../site/fonts.css?v=2210dab642">
 
-<!-- PRIVATE. Not linked from anywhere on evzomethod.com, noindexed, and
-     Disallowed in robots.txt. No network calls: every value typed here is kept
-     in this browser's localStorage and goes nowhere else.
+<!-- This repository is PUBLIC and GitHub Pages serves every file in it, so a
+     plaintext page here would be a plaintext page on the open internet. The
+     real page is therefore never in the repository: app.enc beside this file
+     is AES-256-GCM ciphertext, and only the passphrase turns it back into a
+     page. Anyone who fetches this URL without it gets this screen and a blob
+     of random bytes.
 
-     Structure: Offer Builder / Client Acquisition / Money Model, built on the
-     three Hormozi frameworks, applied to the Greek dentist + med-spa agency.
-     Each recommendation carries framework, application, next action, metric,
-     review date - and the log at the bottom is where results change the advice. -->
+     The passphrase is never sent anywhere - there is nowhere to send it. It
+     is turned into a key in the browser (PBKDF2-SHA256, 310k iterations) and
+     only ever used locally. After the first unlock the derived key is kept in
+     this browser's localStorage, so it opens in one tap afterwards, and
+     "Forget this device" clears it.
+
+     Edit the real page at C:\Users\marco\mentor-src\mentor.html, then:
+         MENTOR_PASS="..." node tools/mentor-seal.mjs
+     The KDF parameters here and in that script must change together. -->
 
 <style>
-:root{
-  --ink:#0B1220; --ink-2:#121B2D; --ink-3:#1A2540;
-  --paper:#F7F8FA; --mute:#8E9BB3; --line:#24304A;
-  --yellow:#FFE14D;
-  --good:#5BE0A6; --warn:#FFC24D; --bad:#FF6B6B;
-  --gut:16px; --max:760px;
-}
+:root{ --ink:#0B1220; --ink-2:#121B2D; --ink-3:#1A2540; --paper:#F7F8FA;
+  --mute:#8E9BB3; --line:#24304A; --yellow:#FFE14D; --bad:#FF6B6B; --good:#5BE0A6 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html,body{height:100%}
 body{
   margin:0; background:var(--ink); color:var(--paper);
   font-family:'Commissioner',system-ui,-apple-system,Segoe UI,sans-serif;
-  font-size:17px; line-height:1.6;
-  -webkit-font-smoothing:antialiased;
+  font-size:17px; line-height:1.6; -webkit-text-size-adjust:100%;
+  display:flex; align-items:center; justify-content:center; padding:24px 16px;
 }
-.wrap{max-width:var(--max); margin:0 auto; padding:0 var(--gut)}
-h1,h2,h3,.dsp{font-family:'Anton','Commissioner',sans-serif; font-weight:400; letter-spacing:.015em; line-height:1.05; text-transform:uppercase}
-h1{font-size:clamp(36px,10.5vw,60px); margin:0}
-h2{font-size:clamp(23px,6.2vw,33px); margin:0 0 8px}
-h3{font-size:clamp(16px,4.2vw,19px); margin:0 0 6px; letter-spacing:.03em}
-p{margin:0 0 14px}
-a{color:var(--yellow)}
-strong{color:#fff; font-weight:700}
-em{color:var(--yellow); font-style:normal; font-weight:600}
-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.88em; background:var(--ink-3); padding:2px 5px; border-radius:4px}
-.label{display:inline-block; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--yellow); font-weight:700; margin-bottom:10px}
-.mute{color:var(--mute)}
-.sm{font-size:14.5px; line-height:1.55}
+.box{width:100%; max-width:420px}
+h1{font-family:'Anton','Commissioner',sans-serif; font-weight:400; text-transform:uppercase;
+  font-size:clamp(34px,10vw,48px); line-height:1.02; margin:0 0 10px; letter-spacing:.015em}
+.pill{display:inline-block; background:var(--yellow); color:var(--ink); font-size:11px;
+  font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding:5px 10px;
+  border-radius:99px; margin-bottom:14px}
+p{margin:0 0 16px}
+.sm{font-size:14.5px}
 .xs{font-size:13px; line-height:1.5; color:var(--mute)}
-hr{border:0; border-top:1px solid var(--line); margin:26px 0}
-
-header.top{padding:46px 0 28px; border-bottom:1px solid var(--line)}
-.pill{display:inline-block; background:var(--yellow); color:var(--ink); font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding:5px 10px; border-radius:99px}
-header.top .sub{color:var(--mute); margin:14px 0 0; max-width:36em}
-
-section{padding:40px 0; border-bottom:1px solid var(--line)}
-.ws{border-top:3px solid var(--yellow)}
-.ws .no{font-family:'Anton',sans-serif; font-size:13px; letter-spacing:.14em; color:var(--yellow); text-transform:uppercase; margin-bottom:6px}
-.card{background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:20px; margin:14px 0}
-.card.hot{border-color:var(--yellow)}
-.card.danger{border-color:var(--bad)}
-.k{display:block; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); font-weight:700; margin-bottom:8px}
-
-/* framework attribution block */
-.fw{border-left:2px solid var(--yellow); padding:0 0 0 13px; margin:0 0 14px}
-.fw b{display:block; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--yellow)}
-.fw span{font-size:14.5px; color:var(--paper)}
-
-/* inputs */
-label.f{display:block; margin:0 0 12px}
-label.f > span{display:block; font-size:13px; color:var(--mute); margin-bottom:5px}
-input[type=text],input[type=number],input[type=date],textarea,select{
-  width:100%; background:var(--ink); color:#fff; border:1px solid var(--line);
-  border-radius:10px; padding:12px; font-size:16px; font-family:inherit;
+.mute{color:var(--mute)}
+strong{color:#fff; font-weight:700}
+input[type=password],input[type=text]{
+  width:100%; background:var(--ink-2); color:#fff; border:1px solid var(--line);
+  border-radius:12px; padding:16px; font-size:17px; font-family:inherit; margin:0 0 10px;
 }
-textarea{min-height:76px; resize:vertical; line-height:1.5}
-input:focus,textarea:focus,select:focus{outline:2px solid var(--yellow); outline-offset:1px}
-.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-@media (max-width:520px){ .grid2{grid-template-columns:1fr} }
-button{font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; background:var(--yellow); color:var(--ink); border:0; border-radius:10px; padding:12px 17px}
-button.ghost{background:transparent; color:var(--mute); border:1px solid var(--line); font-weight:600}
-button.sml{font-size:13px; padding:8px 12px}
-button:focus-visible{outline:2px solid #fff; outline-offset:2px}
-.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-
-/* hero numbers / stat tiles - single values, so no chart */
-.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:10px; margin:16px 0}
-.tile{background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:14px}
-.tile b{display:block; font-family:'Anton',sans-serif; font-size:clamp(24px,7vw,32px); line-height:1; color:#fff; font-weight:400}
-.tile b.y{color:var(--yellow)}
-.tile span{display:block; font-size:11.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--mute); margin-top:8px; line-height:1.3}
-.tile i{display:block; font-style:normal; font-size:12.5px; color:var(--mute); margin-top:5px}
-
-/* single-value meter */
-.meter{margin:14px 0}
-.meter .mh{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:7px}
-.meter .mh span{font-size:13px; color:var(--mute)}
-.meter .mh b{font-family:'Anton',sans-serif; font-size:19px; color:#fff; font-weight:400}
-.track{height:10px; background:var(--ink-3); border-radius:99px; overflow:hidden}
-.fill{height:100%; border-radius:99px; background:var(--yellow); transition:width .25s ease}
-.fill.good{background:var(--good)} .fill.warn{background:var(--warn)} .fill.bad{background:var(--bad)}
-
-/* status line - never colour alone, always icon + word */
-.st{display:inline-flex; gap:7px; align-items:center; font-size:13.5px; font-weight:700}
-.st .dot{width:9px;height:9px;border-radius:99px;flex:0 0 auto}
-.st.good{color:var(--good)} .st.good .dot{background:var(--good)}
-.st.warn{color:var(--warn)} .st.warn .dot{background:var(--warn)}
-.st.bad{color:var(--bad)}  .st.bad .dot{background:var(--bad)}
-
-/* sliders */
-.sld{margin:0 0 16px}
-.sld .lh{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px}
-.sld .lh span{font-size:13.5px; color:#fff; font-weight:600}
-.sld .lh b{font-family:'Anton',sans-serif; color:var(--yellow); font-size:17px; font-weight:400}
-.sld .hint{font-size:12.5px; color:var(--mute); margin-bottom:7px}
-input[type=range]{width:100%; accent-color:var(--yellow)}
-
-/* segment toggle */
-.seg{display:inline-flex; background:var(--ink-3); border:1px solid var(--line); border-radius:99px; padding:3px; gap:3px; margin-bottom:6px}
-.seg button{background:transparent; color:var(--mute); border-radius:99px; padding:9px 15px; font-size:14px}
-.seg button[aria-pressed=true]{background:var(--yellow); color:var(--ink)}
-
-/* tables */
-table{width:100%; border-collapse:collapse; font-size:14px; margin:12px 0}
-th,td{text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top}
-th{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--mute); font-weight:700}
-td b{color:#fff}
-.scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
-.scroll table{min-width:560px}
-
-/* lists */
-ul.q{list-style:none; margin:10px 0 0; padding:0}
-ul.q li{border-top:1px solid var(--line)}
-ul.q li:first-child{border-top:0}
-ul.q label{display:flex; gap:12px; align-items:flex-start; padding:13px 0; cursor:pointer}
-ul.q input{margin:3px 0 0; width:20px; height:20px; flex:0 0 auto; accent-color:var(--yellow)}
-ul.q .t{flex:1}
-ul.q .t b{display:block; color:#fff; font-weight:700}
-ul.q .t i{display:block; font-style:normal; font-size:14px; color:var(--mute); margin-top:2px}
-ul.q input:checked ~ .t b{text-decoration:line-through; color:var(--mute)}
-ul.bul{margin:0 0 14px; padding-left:20px}
-ul.bul li{margin:0 0 7px}
-
-/* copy blocks (Greek scripts) */
-.cp{background:var(--ink); border:1px solid var(--line); border-radius:10px; padding:14px; margin:0 0 10px}
-.cp p{margin:0 0 9px; font-size:15px; line-height:1.55}
-.cp p:last-of-type{margin-bottom:0}
-details.ac{background:var(--ink-2); border:1px solid var(--line); border-radius:12px; margin:8px 0; overflow:hidden}
-details.ac > summary{padding:15px 18px; cursor:pointer; list-style:none; font-weight:700; color:#fff; display:flex; gap:10px; align-items:baseline}
-details.ac > summary::-webkit-details-marker{display:none}
-details.ac > summary::after{content:'+'; margin-left:auto; color:var(--yellow); font-family:'Anton',sans-serif; font-size:19px}
-details.ac[open] > summary::after{content:'\2212'}
-details.ac[open] > summary{border-bottom:1px solid var(--line); background:var(--ink-3)}
-details.ac .body{padding:16px 18px 18px}
-
-/* pipeline rows */
-.pr{background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:13px 14px; margin:8px 0}
-.pr .top{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
-.pr .nm{font-weight:700; color:#fff; flex:1; min-width:140px}
-.pr select{width:auto; padding:7px 9px; font-size:13.5px}
-.pr .dt{font-size:13px; color:var(--mute)}
-.pr .acts{margin-top:9px}
-.due{color:var(--bad); font-weight:700}
-
-/* verdict */
-.verdict{margin-top:16px; padding:16px; border-radius:12px; background:var(--ink-3); border:1px solid var(--line)}
-.verdict b.hd{display:block; font-family:'Anton',sans-serif; font-size:21px; text-transform:uppercase; margin-bottom:6px; color:#fff; font-weight:400}
-
-ol.laws{counter-reset:l; list-style:none; margin:0; padding:0}
-ol.laws li{counter-increment:l; position:relative; padding:13px 0 13px 44px; border-top:1px solid var(--line)}
-ol.laws li:first-child{border-top:0}
-ol.laws li::before{content:counter(l); position:absolute; left:0; top:11px; font-family:'Anton',sans-serif; font-size:19px; color:var(--yellow); width:30px; text-align:center}
-
-footer{padding:34px 0 64px; color:var(--mute); font-size:13.5px}
-.nav{position:sticky; top:0; z-index:5; background:rgba(11,18,32,.93); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
-.nav .in{max-width:var(--max); margin:0 auto; padding:10px var(--gut); display:flex; gap:14px; overflow-x:auto; font-size:13px; letter-spacing:.06em; text-transform:uppercase; font-weight:700}
-.nav a{color:var(--mute); text-decoration:none; white-space:nowrap}
-.nav a:hover{color:var(--yellow)}
+input:focus{outline:2px solid var(--yellow); outline-offset:1px}
+button{
+  width:100%; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer;
+  background:var(--yellow); color:var(--ink); border:0; border-radius:12px; padding:16px;
+}
+button[disabled]{opacity:.55; cursor:default}
+button.ghost{background:transparent; color:var(--mute); border:1px solid var(--line);
+  font-weight:600; font-size:14px; padding:11px; width:auto}
+.msg{min-height:22px; font-size:14px; font-weight:700; margin:12px 0 0}
+.msg.bad{color:var(--bad)} .msg.ok{color:var(--good)} .msg.work{color:var(--yellow)}
+.foot{margin-top:28px; border-top:1px solid var(--line); padding-top:18px}
+.row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+a{color:var(--yellow)}
 </style>
 
-<header class="top">
-  <div class="wrap">
-    <span class="pill">Private · only you</span>
-    <h1>The Mentor</h1>
-    <p class="sub">An implementation desk, not a book summary. Three workspaces
-    built on the <em>$100M Offers</em>, <em>$100M Leads</em> and <em>$100M Money
-    Models</em> frameworks, applied to one business: <strong>your agency, serving
-    dentists and med spas in Greece.</strong></p>
+<div class="box">
+  <span class="pill">Private</span>
+  <h1>The Mentor</h1>
+  <p class="sm mute">Encrypted. Your username and PIN unlock it here in the
+  browser and are never sent anywhere — there is no server to send them to.</p>
+
+  <form id="f" autocomplete="off">
+    <input type="text" id="user" placeholder="Username" autocomplete="username"
+           autocapitalize="off" autocorrect="off" spellcheck="false">
+    <input type="password" id="pw" placeholder="PIN" autocomplete="current-password"
+           autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="numeric">
+    <button type="submit" id="go">Unlock</button>
+  </form>
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+
+  <div class="foot">
+    <p class="xs" id="remembered" hidden>This device is remembered, so it opens
+    without typing. <button class="ghost" id="forget" type="button">Forget this device</button></p>
+    <p class="xs">Add it to your home screen and it behaves like an app — and
+    everything you type into it stays in this browser.</p>
   </div>
-</header>
-
-<nav class="nav"><div class="in">
-  <a href="#state">Where you are</a>
-  <a href="#offer">1 · Offer</a>
-  <a href="#leads">2 · Acquisition</a>
-  <a href="#money">3 · Money model</a>
-  <a href="#kc">Knowledge</a>
-  <a href="#log">Log</a>
-</div></nav>
-
-<!-- ====================== WHERE YOU ARE ============================== -->
-<section id="state">
-  <div class="wrap">
-    <span class="label">Before any framework</span>
-    <h2>Where you actually are</h2>
-    <p>Frameworks are worthless against a wrong starting position, so this is the
-    position, from your own files and ad accounts:</p>
-
-    <div class="tiles">
-      <div class="tile"><b class="y">58</b><span>clinic leads listed</span><i>Athens, Thessaloniki, Patra</i></div>
-      <div class="tile"><b class="y">0</b><span>paying agency clients</span><i>the only number that matters</i></div>
-      <div class="tile"><b>11</b><span>things built</span><i>~6 blocked on a human task</i></div>
-      <div class="tile"><b>€450<span style="font-size:.5em">–1.5k</span></b><span>price tiers set</span><i>never yet quoted to a stranger</i></div>
-    </div>
-
-    <div class="card hot">
-      <h3>The binding constraint is not the offer</h3>
-      <p>You have a priced offer, a guarantee, a landing page, a CRM, a lead list
-      and live ad accounts. <strong>What you have never done is put the offer in
-      front of twenty clinic owners.</strong> Until that happens, every answer on this
-      page is a hypothesis — including mine.</p>
-      <p class="sm mute">So the Offer Builder below is not where you should spend
-      today. Fill it once, then live in workspace 2.</p>
-    </div>
-
-    <div class="card lock" id="lock">
-      <div id="lockEmpty">
-        <span class="k">The one objective — everything else is on hold</span>
-        <label class="f"><input type="text" id="lockName" placeholder="e.g. 3 paying clinic clients by 24 Nov" autocomplete="off"></label>
-        <div class="row">
-          <button id="lockGo">Lock for 14 days</button>
-          <span class="xs">14 days: long enough to reach cash, short enough to survive.</span>
-        </div>
-      </div>
-      <div id="lockOn" hidden>
-        <span class="k">Locked</span>
-        <div class="dsp" id="lockShow" style="font-size:clamp(24px,7vw,36px); color:#fff; margin:2px 0 10px"></div>
-        <p class="sm"><span id="lockDays" style="color:var(--yellow); font-weight:700"></span></p>
-        <div class="row"><button class="ghost sml" id="lockClear">Done / change</button></div>
-      </div>
-    </div>
-
-    <h3 style="margin-top:26px">The human-only queue</h3>
-    <p class="sm">Nobody can do these for you and none of them are fun, which is
-    exactly why they have been blocking revenue for weeks. <strong>One of these
-    before the editor opens.</strong></p>
-    <ul class="q" id="hq">
-      <li><label><input type="checkbox" data-hq="apppw"><span class="t"><b>Create the Gmail App Password</b><i>The outreach mailer is finished and cannot send a single email. 58 clinics sit in a CSV behind one 16-character string.</i></span></label></li>
-      <li><label><input type="checkbox" data-hq="dms"><span class="t"><b>Ten Instagram DMs to Tier A clinics</b><i>DM → phone → email is your own documented order. Ten is twenty minutes.</i></span></label></li>
-      <li><label><input type="checkbox" data-hq="sheets"><span class="t"><b>Rebuild the Google Sheets lead connection</b><i>Broken since 24 Oct. Needs your Google sign-in. You are paying for leads and dropping them on the floor.</i></span></label></li>
-      <li><label><input type="checkbox" data-hq="stripe"><span class="t"><b>Connect Stripe on the EVZO shop</b><i>Delivery is automatic and waiting. Nobody can pay.</i></span></label></li>
-      <li><label><input type="checkbox" data-hq="domain"><span class="t"><b>Buy cyprushomesolutions.com</b><i>~€10. Every canonical and sitemap entry already points at a domain you don't own.</i></span></label></li>
-      <li><label><input type="checkbox" data-hq="partner"><span class="t"><b>Settle the 40/60 ad-spend split in writing</b><i>Unresolved partner money gets worse with revenue, never better.</i></span></label></li>
-    </ul>
-  </div>
-</section>
-
-<!-- ====================== 1. OFFER BUILDER =========================== -->
-<section id="offer" class="ws">
-  <div class="wrap">
-    <div class="no">Workspace 1</div>
-    <h2>Offer Builder</h2>
-    <div class="fw"><b>Framework · $100M Offers</b><span>The value equation —
-    a buyer's perceived value rises with the <em>dream outcome</em> and their
-    <em>perceived likelihood of achieving it</em>, and falls with the <em>time
-    delay</em> and the <em>effort and sacrifice</em> required of them. So an offer
-    is improved on four levers, not by lowering price.</span></div>
-
-    <div class="seg" role="group" aria-label="Segment" id="segOffer">
-      <button type="button" data-seg="dentist" aria-pressed="true">Dentists</button>
-      <button type="button" data-seg="medspa" aria-pressed="false">Med spas</button>
-    </div>
-    <p class="xs" id="segNote"></p>
-
-    <h3 style="margin-top:22px">Score the offer you have now</h3>
-    <p class="sm">Answer as the clinic owner would, not as you would. Each lever
-    1–10.</p>
-
-    <div class="card">
-      <div class="sld">
-        <div class="lh"><span>Dream outcome — how badly do they want it?</span><b id="v1">7</b></div>
-        <div class="hint">"A full appointment book" scores high. "Better social media" scores low, because it is not an outcome.</div>
-        <input type="range" min="1" max="10" value="7" id="s1">
-      </div>
-      <div class="sld">
-        <div class="lh"><span>Perceived likelihood — do they believe <em>you</em> can do it?</span><b id="v2">4</b></div>
-        <div class="hint">Zero case studies, no clinic logos, a personal Instagram. This is your weakest lever and the honest number is low.</div>
-        <input type="range" min="1" max="10" value="4" id="s2">
-      </div>
-      <div class="sld">
-        <div class="lh"><span>Speed — how fast do they see the first result? (10 = fastest)</span><b id="v3">6</b></div>
-        <div class="hint">Your 14-day "first booking or first month free" is genuinely good here. Say it earlier.</div>
-        <input type="range" min="1" max="10" value="6" id="s3">
-      </div>
-      <div class="sld">
-        <div class="lh"><span>Ease — how little work is it for them? (10 = easiest)</span><b id="v4">5</b></div>
-        <div class="hint">Anything needing their photos, their captions, their approval loop or their logins scores low.</div>
-        <input type="range" min="1" max="10" value="5" id="s4">
-      </div>
-
-      <div class="meter">
-        <div class="mh"><span>Offer strength</span><b id="veScore">—</b></div>
-        <div class="track"><div class="fill" id="veFill" style="width:0%"></div></div>
-      </div>
-      <p class="sm" id="veSay" style="margin-bottom:0"></p>
-    </div>
-
-    <h3 style="margin-top:26px">Define it in writing</h3>
-    <p class="sm">Saved in this browser. Short sentences — if you cannot say it in
-    one line, you cannot sell it on a phone call.</p>
-    <div class="card">
-      <label class="f"><span>Ideal clinic — be narrow enough to exclude</span>
-        <textarea data-sv="icp" placeholder="e.g. Private dental clinic, 2–4 chairs, Γλυφάδα/Κηφισιά/Μαρούσι, owner-dentist answers the phone, 50–150 Google reviews, rating under 4.6, no booking system."></textarea></label>
-      <label class="f"><span>The outcome they buy (in their words, in euros or appointments)</span>
-        <textarea data-sv="outcome" placeholder="e.g. 8–12 extra first-visit appointments a month, without the owner touching Instagram."></textarea></label>
-      <label class="f"><span>Scope — exactly what you do, and what you do not</span>
-        <textarea data-sv="scope" placeholder="Do: … · Do NOT: …"></textarea></label>
-      <label class="f"><span>Why you and not the other guy who called them last week</span>
-        <textarea data-sv="diff" placeholder="e.g. Only agency in Greece that builds the clinic its own booking + recall system, not just posts. Compliance-safe for ΠΦΥ."></textarea></label>
-      <label class="f"><span>Proof you can show today — and the proof you must manufacture this month</span>
-        <textarea data-sv="proof" placeholder="Have: … · Need: first clinic's before/after numbers, screenshot of their calendar."></textarea></label>
-    </div>
-
-    <h3 style="margin-top:26px">Risk reversal — only what you can fund</h3>
-    <div class="fw"><b>Framework · $100M Offers</b><span>A guarantee shifts the
-    buyer's risk onto you, which only works if you can pay out without going
-    broke. So price the guarantee before you promise it.</span></div>
-    <div class="card">
-      <div class="grid2">
-        <label class="f"><span>Monthly price (€)</span><input type="number" data-sv="gPrice" value="450" min="0" step="50"></label>
-        <label class="f"><span>Your cost to deliver one month (€: ads + tools + your hours)</span><input type="number" data-sv="gCost" value="200" min="0" step="25"></label>
-        <label class="f"><span>Clients you expect to sign in the test</span><input type="number" data-sv="gN" value="5" min="1" step="1"></label>
-        <label class="f"><span>Honest % that will claim the guarantee</span><input type="number" data-sv="gClaim" value="30" min="0" max="100" step="5"></label>
-      </div>
-      <div class="tiles" style="margin-bottom:6px">
-        <div class="tile"><b class="y" id="gExp">—</b><span>worst-case payout</span><i>cash you must be able to lose</i></div>
-        <div class="tile"><b id="gNet">—</b><span>net after claims</span><i>across the whole test</i></div>
-      </div>
-      <p class="sm" id="gSay" style="margin-bottom:0"></p>
-    </div>
-
-    <div class="card danger">
-      <h3 style="color:var(--bad)">Promises you cannot support — read before you quote anything</h3>
-      <p class="sm"><strong>1 · "We'll run your Meta/Google ads" is not deliverable
-      for a dentist or any doctor-run clinic.</strong> Checked 10 Nov 2026:
-      Π.Δ. 39/2009 arts. 21–22 bans «κάθε άμεση ή έμμεση ενέργεια διαφήμισης ή
-      δημοσιότητας» by dentists and expressly covers the internet; Π.Δ. 84/2001
-      art. 15 bans advertising by private ΠΦΥ providers «με οποιοδήποτε τρόπο»,
-      <em>including prices</em>; Ν. 3418/2005 art. 17 does the same for doctors and
-      §5 extends the sanctions to ads run by third parties <em>with the doctor's
-      knowledge</em> — an agency does not shield the client. ΙΣΘ states the fine as
-      €14.000 rising to €42.000 with loss of the operating licence on repeat, and
-      the Ministry announced AI-based sweeps of private practices in Sept 2026.
-      <strong>Selling paid ads to that segment sells them a fine.</strong></p>
-      <p class="sm"><strong>2 · No before/after photos, patient testimonials,
-      prices, offers, πακέτα or «ο καλύτερος» for a ΠΦΥ client.</strong> Art. 17 §6
-      covers thank-you letters and success stories; the ΟΣ Πειραιά circular names
-      offers, discounts, packages, contests, comparisons and «προβολή περιστατικών»
-      explicitly. Half the med-spa creative playbook is unusable here.</p>
-      <p class="sm"><strong>3 · A non-medical κέντρο αισθητικής is a different
-      animal</strong> — no medical code applies, so ads, prices, offers and
-      consented before/afters are all fine. <em>Ask which licence they hold on the
-      first call.</em> It changes the product you can sell them.</p>
-      <p class="sm"><strong>4 · Don't promise a number you've never produced.</strong>
-      You have no clinic result yet. "8–12 appointments" is a forecast, not a
-      promise — sell the <em>process plus the guarantee</em> until one clinic's real
-      numbers exist. And €1 patient leads is not reachable; your own data says €3–4.</p>
-      <p class="sm"><strong>5 · Before/after is personal data even cropped.</strong>
-      Written, specific, pre-publication consent or no photo — a Lithuanian clinic
-      was fined €6.000 and its surgeon €840 where hair and a tattoo identified the
-      patient and consent was only "almost" given.</p>
-      <p class="xs" style="margin-bottom:0">Not legal advice. The full brief with
-      sources is in <code>clinic-clients/compliance-greece.md</code>. There is case
-      law reading the dental code as not an absolute ban — the Σύλλογοι enforce it
-      as one, so do not build a business on that.</p>
-    </div>
-
-    <div class="card">
-      <h3>So the offer that is actually legal and sellable</h3>
-      <p class="sm"><strong>For dentists and doctor-run med spas (ΠΦΥ):</strong>
-      Google Business Profile and review growth · a compliant site that converts ·
-      booking, recall and no-show recovery to their <em>existing</em> patient list ·
-      educational content with no case photos and no prices. All of it organic or
-      relationship-based, none of it advertising. That is a narrower product than
-      you planned and a <em>far</em> easier sale: nobody else in Greece is pitching
-      compliance as the feature.</p>
-      <p class="sm" style="margin-bottom:0"><strong>For non-medical aesthetic
-      centres:</strong> the full paid-ads playbook you already own. Price it higher —
-      it costs you ad management — and keep the two segments' numbers apart, as
-      the scope requires.</p>
-    </div>
-
-    <div class="card" style="border-color:var(--yellow)">
-      <span class="k">Next action · metric · review</span>
-      <p class="sm"><strong>Action:</strong> rewrite the one-line offer for the ΠΦΥ
-      segment with no advertising in it, and the DM that carries it. Today, 40
-      minutes.<br>
-      <strong>Metric:</strong> 20 Tier-A clinics contacted with the new line.<br>
-      <strong>Review:</strong> <span id="rev14" class="mute"></span> — if fewer
-      than 3 replies, the line is wrong, not the market.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ====================== 2. CLIENT ACQUISITION ====================== -->
-<section id="leads" class="ws">
-  <div class="wrap">
-    <div class="no">Workspace 2</div>
-    <h2>Client Acquisition</h2>
-    <div class="fw"><b>Framework · $100M Leads</b><span>There are four ways to get
-    anyone's attention — warm outreach, cold outreach, posting free content, paid
-    ads — and each can be done by you or by someone else on your behalf. Volume
-    inside <em>one</em> of them beats dabbling in all four.</span></div>
-
-    <div class="card danger">
-      <h3 style="color:var(--bad)">Two funnels. Never one number.</h3>
-      <p class="sm" style="margin-bottom:0"><strong>Funnel A — clinics buying from
-      you.</strong> A €450–1.500/month client. Worth spending €100–300 to acquire.
-      <br><strong>Funnel B — patients buying from your clinics.</strong> €3–4 a lead,
-      delivered as the service. <br>You already made this mistake once in Cyprus,
-      comparing gardener-recruitment CPL with homeowner CPL and chasing a number
-      that didn't exist. <em>Never put A and B in the same report.</em></p>
-    </div>
-
-    <h3 style="margin-top:24px">Which channel, given you are one person</h3>
-    <div class="scroll"><table>
-      <thead><tr><th>Channel</th><th>Fit for you now</th><th>Verdict</th></tr></thead>
-      <tbody>
-        <tr><td><b>Cold outreach · IG DM then phone</b></td><td>58 named clinics, owner answers the phone, costs €0, your documented order is DM → phone → email. Feedback within hours.</td><td><span class="st good"><span class="dot"></span>Primary — all of it</span></td></tr>
-        <tr><td><b>Warm outreach</b></td><td>Thin: no clinic network yet. But every supplier, rep and dentist you already know is one introduction.</td><td><span class="st warn"><span class="dot"></span>Secondary — 10 asks</span></td></tr>
-        <tr><td><b>Free content</b></td><td>You can produce it fast, but it compounds over months and you need cash in weeks. The Aesthetics Pipeline page is the proof asset, not the channel.</td><td><span class="st warn"><span class="dot"></span>Later — 1 post/week max</span></td></tr>
-        <tr><td><b>Paid ads to clinic owners</b></td><td>Already running at tiny spend. At €20 payment thresholds you cannot buy enough data to learn anything, and B2B clinic-owner targeting in Greece is a small pool.</td><td><span class="st bad"><span class="dot"></span>Not yet — stop fiddling</span></td></tr>
-      </tbody>
-    </table></div>
-    <p class="sm"><strong>Decision:</strong> one channel — cold outreach — at a
-    volume you have never attempted. <em>Ten DMs a day for fourteen days = 140
-    touches.</em> That is the whole plan, and it is enough to produce a signed
-    client or a clear reason why not.</p>
-
-    <h3 style="margin-top:26px">The Greek outreach, written to be compliant</h3>
-    <p class="sm">Nothing here promises advertising to a ΠΦΥ clinic, quotes a
-    patient result you don't have, or names a price in public.</p>
-
-    <details class="ac"><summary>IG DM · first touch · dentist</summary><div class="body">
-      <div class="cp">
-        <p>Καλησπέρα! Είμαι ο Μάρκο, δουλεύω με ιδιωτικά οδοντιατρεία στην Αθήνα.</p>
-        <p>Κοίταξα το προφίλ σας — έχετε πολύ καλές κριτικές, αλλά το Google προφίλ σας εμφανίζεται κάτω από 3–4 οδοντιατρεία της περιοχής όταν κάποιος ψάχνει «οδοντίατρος [περιοχή]». Αυτό είναι χαμένα πρώτα ραντεβού κάθε μήνα.</p>
-        <p>Σας έφτιαξα μια σελίδα με τα 3 σημεία που το προκαλούν. Θέλετε να σας τη στείλω; Χωρίς κόστος και χωρίς δέσμευση — ούτε θα σας πουλήσω διαφημίσεις, ξέρω ότι δεν επιτρέπονται στα ιατρεία.</p>
-      </div>
-      <p class="xs" style="margin-bottom:0">Why it works: specific observation about
-      <em>their</em> listing (not a template), the gift precedes the ask, and the last
-      line proves you know their rules — which is the single fastest way to separate
-      yourself from everyone else who DMs them.</p>
-    </div></details>
-
-    <details class="ac"><summary>IG DM · first touch · med spa / κέντρο αισθητικής</summary><div class="body">
-      <div class="cp">
-        <p>Καλησπέρα! Ο Μάρκο εδώ — δουλεύω με κέντρα αισθητικής και ιατρικής αισθητικής στην Ελλάδα.</p>
-        <p>Είδα ότι τρέχετε laser αποτρίχωση. Έκανα έναν γρήγορο έλεγχο: στη σελίδα σας δεν υπάρχει pixel, άρα ό,τι ξοδεύετε σε διαφήμιση δεν μετριέται, και τα μηνύματα στο Direct δεν καταλήγουν σε ραντεβού πουθενά καταγεγραμμένα.</p>
-        <p>Έχω ετοιμάσει ένα 1-σελιδο με το τι χάνεται και πού. Να σας το στείλω; Δωρεάν, 2 λεπτά διάβασμα.</p>
-      </div>
-      <p class="xs" style="margin-bottom:0">Check the pixel before you send it, so
-      the claim is true for that clinic. If they do have one, lead with whatever is
-      actually missing — the specificity is the whole message.</p>
-    </div></details>
-
-    <details class="ac"><summary>Phone · the opener and the first 30 seconds</summary><div class="body">
-      <div class="cp">
-        <p><b>Opener:</b> «Καλησπέρα, ο Μάρκο. Σας έστειλα ένα μήνυμα στο Instagram για το Google προφίλ του ιατρείου — σας βρίσκω σε κακή στιγμή;»</p>
-        <p><b>If "ναι, είμαι με ασθενή":</b> «Φυσικά. Δύο λεπτά αύριο στις 2 ή στις 6;» — then hang up. Get the appointment, not the pitch.</p>
-        <p><b>Label the objection before they raise it:</b> «Φαντάζομαι σας χτυπάνε συνέχεια για marketing, και μάλλον κάποιος σας έχει κάψει ήδη.»</p>
-        <p><b>Then ask, don't tell:</b> «Πόσα πρώτα ραντεβού κλείσατε τον περασμένο μήνα και από πού ήρθαν;» · «Ποιος τα διαχειρίζεται τώρα;» · «Τι πληρώσατε για marketing τους τελευταίους 6 μήνες και τι έγινε;» · «Πόσα ραντεβού ακυρώνονται ή δεν εμφανίζονται;»</p>
-        <p><b>Close to the audit, never to the sale:</b> «Να σας στείλω τον έλεγχο και να τον δούμε 10 λεπτά την Τρίτη;»</p>
-      </div>
-      <p class="xs" style="margin-bottom:0"><em>$100M Leads</em> on the ask, and the
-      questions follow The Mom Test: past behaviour and real numbers only. Never
-      «θα σας ενδιέφερε…» — everyone says yes to that and nobody pays.</p>
-    </div></details>
-
-    <details class="ac"><summary>Follow-ups · the sequence that actually converts</summary><div class="body">
-      <p class="sm">Most of your signings will come from touch 3–5, which is exactly
-      where you will want to stop. Log each one in the pipeline below.</p>
-      <ul class="bul sm">
-        <li><b>Day 0</b> — DM.</li>
-        <li><b>Day 2</b> — the audit, sent whether or not they replied: «Σας το στέλνω όπως είπα, χωρίς δέσμευση.»</li>
-        <li><b>Day 4</b> — phone call.</li>
-        <li><b>Day 7</b> — one specific thing you noticed since: a competitor's new listing, a review they haven't answered.</li>
-        <li><b>Day 12</b> — the close-the-loop message: «Να το κλείσω το θέμα ή να σας ξαναενοχλήσω τον άλλο μήνα;» — this one gets the most replies of the five.</li>
-      </ul>
-      <p class="xs" style="margin-bottom:0">Five touches × 20 clinics = 100 actions.
-      That is two weeks of workspace 2 and it is the entire job right now.</p>
-    </div></details>
-
-    <h3 style="margin-top:26px">Pipeline</h3>
-    <p class="sm">Every conversation, its stage and the next follow-up date.
-    Overdue dates turn red. This replaces nothing in your CRM — it is the
-    fourteen-day sprint, kept where you'll look.</p>
-    <div class="card">
-      <div class="grid2">
-        <label class="f"><span>Clinic</span><input type="text" id="pName" placeholder="e.g. Οδοντιατρείο Παπαδόπουλος, Γλυφάδα" autocomplete="off"></label>
-        <label class="f"><span>Segment</span><select id="pSeg"><option value="dentist">Dentist</option><option value="medspa">Med spa (doctor)</option><option value="beauty">Αισθητικής (no doctor)</option></select></label>
-      </div>
-      <div class="row"><button id="pAdd">Add to pipeline</button></div>
-    </div>
-    <div class="tiles">
-      <div class="tile"><b class="y" id="pTot">0</b><span>in pipeline</span></div>
-      <div class="tile"><b id="pTalk">0</b><span>in conversation</span></div>
-      <div class="tile"><b id="pWon">0</b><span>signed</span></div>
-      <div class="tile"><b id="pNo">0</b><span>nos collected</span><i>target 20</i></div>
-    </div>
-    <div class="meter">
-      <div class="mh"><span>Progress to 20 clinics contacted</span><b id="pcPct">0%</b></div>
-      <div class="track"><div class="fill" id="pcFill" style="width:0%"></div></div>
-    </div>
-    <div id="pList"></div>
-
-    <h3 style="margin-top:26px">What a client costs you</h3>
-    <div class="card">
-      <div class="grid2">
-        <label class="f"><span>Cash spent this sprint (€: ads, tools, data)</span><input type="number" data-sv="cacSpend" value="0" min="0" step="10"></label>
-        <label class="f"><span>Your hours spent selling</span><input type="number" data-sv="cacHours" value="0" min="0" step="1"></label>
-        <label class="f"><span>Value of your hour (€)</span><input type="number" data-sv="cacRate" value="25" min="0" step="5"></label>
-        <label class="f"><span>Clients signed</span><input type="number" data-sv="cacWon" value="0" min="0" step="1"></label>
-      </div>
-      <div class="tiles" style="margin-bottom:6px">
-        <div class="tile"><b class="y" id="cacOut">—</b><span>cost per client</span><i>cash + your time</i></div>
-        <div class="tile"><b id="cacCash">—</b><span>cash-only CAC</span><i>what you actually paid out</i></div>
-      </div>
-      <p class="sm" id="cacSay" style="margin-bottom:0">Fill it in after the sprint,
-      not during.</p>
-    </div>
-
-    <div class="card" style="border-color:var(--yellow)">
-      <span class="k">Next action · metric · review</span>
-      <p class="sm"><strong>Action:</strong> 10 DMs today, then 10 a day. One channel,
-      no new builds.<br>
-      <strong>Metric:</strong> 140 touches / 20 clinics in a real conversation /
-      3 audits delivered.<br>
-      <strong>Review:</strong> <span id="rev14b" class="mute"></span>. Then adjust by
-      what the replies say — if the audit gets opened but no call is booked, the
-      problem is the close; if nobody replies at all, the problem is the first line.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ====================== 3. MONEY MODEL ============================= -->
-<section id="money" class="ws">
-  <div class="wrap">
-    <div class="no">Workspace 3</div>
-    <h2>Money Model</h2>
-    <div class="fw"><b>Framework · $100M Money Models</b><span>Structure the offer
-    so the cash a new client brings in quickly covers what it cost to get them —
-    then acquisition funds itself and growth stops being capped by your savings.
-    The working test: <em>gross profit collected in the first 30 days ≥ 2 × CAC.</em></span></div>
-
-    <div class="card hot">
-      <h3>Why this matters more for you than for most</h3>
-      <p class="sm" style="margin-bottom:0">You are funding ads €20 at a time off a
-      personal card and the payment threshold keeps tripping. That is not a
-      budgeting quirk — it is the symptom of a money model where cash arrives
-      later than it leaves. <strong>Fix the structure and the €20 problem
-      disappears.</strong></p>
-    </div>
-
-    <h3 style="margin-top:24px">Your numbers</h3>
-    <div class="card">
-      <div class="grid2">
-        <label class="f"><span>Setup fee, collected up front (€)</span><input type="number" data-sv="mSetup" value="450" min="0" step="50"></label>
-        <label class="f"><span>Monthly retainer (€)</span><input type="number" data-sv="mMrr" value="450" min="0" step="50"></label>
-        <label class="f"><span>Months a client stays (be pessimistic)</span><input type="number" data-sv="mMonths" value="4" min="1" step="1"></label>
-        <label class="f"><span>Your hours to deliver one client per month</span><input type="number" data-sv="mHours" value="10" min="1" step="1"></label>
-        <label class="f"><span>Value of your hour (€)</span><input type="number" data-sv="mRate" value="25" min="0" step="5"></label>
-        <label class="f"><span>Hard costs per client per month (€: tools, ads you fund)</span><input type="number" data-sv="mCost" value="40" min="0" step="10"></label>
-        <label class="f"><span>CAC — cash to sign one client (€)</span><input type="number" data-sv="mCac" value="120" min="0" step="20"></label>
-        <label class="f"><span>Delivery hours you can give per week</span><input type="number" data-sv="mCap" value="20" min="1" step="1"></label>
-      </div>
-    </div>
-
-    <div class="tiles">
-      <div class="tile"><b class="y" id="oLtv">—</b><span>lifetime gross profit</span><i>per client, after delivery</i></div>
-      <div class="tile"><b id="oD30">—</b><span>collected in 30 days</span><i>gross profit, month one</i></div>
-      <div class="tile"><b id="oCap">—</b><span>clients you can hold</span><i>at your own capacity</i></div>
-      <div class="tile"><b id="oProfit">—</b><span>monthly profit at capacity</span><i>before your own pay</i></div>
-    </div>
-
-    <div class="meter">
-      <div class="mh"><span>Client-financed acquisition — 30-day gross profit vs 2 × CAC</span><b id="cfaVal">—</b></div>
-      <div class="track"><div class="fill" id="cfaFill" style="width:0%"></div></div>
-    </div>
-    <div class="meter">
-      <div class="mh"><span>LTGP : CAC — under 3 is fragile, 3–5 is healthy</span><b id="ltvVal">—</b></div>
-      <div class="track"><div class="fill" id="ltvFill" style="width:0%"></div></div>
-    </div>
-    <div class="verdict" id="mVerdict"><b class="hd">Enter your numbers</b><span class="sm">The verdict updates as you type.</span></div>
-
-    <h3 style="margin-top:26px">The four structures, against your reality</h3>
-    <div class="scroll"><table>
-      <thead><tr><th>Model</th><th>Cash timing</th><th>Risk it puts on you</th><th>Fit</th></tr></thead>
-      <tbody>
-        <tr><td><b>Pure retainer</b><br><span class="xs">€900/mo, no setup</span></td><td>Slow. Month 1 barely covers CAC, so you fund the gap.</td><td>You carry the setup work — the heaviest month — for a single month's fee.</td><td><span class="st warn"><span class="dot"></span>Later</span></td></tr>
-        <tr><td><b>Setup + retainer</b><br><span class="xs">€450 now + €450/mo</span></td><td><b>Best.</b> Front-loaded cash covers CAC in week one and funds the next client.</td><td>Low. Paid before the heavy work. Qualifies out tyre-kickers.</td><td><span class="st good"><span class="dot"></span>Start here</span></td></tr>
-        <tr><td><b>Pay per lead</b><br><span class="xs">€X per patient lead</span></td><td>Worst for you. You pay ad spend first and get paid after.</td><td>You carry ad risk, lead-quality arguments, and <b>it is unsellable to a ΠΦΥ clinic — their leads cannot come from ads at all.</b></td><td><span class="st bad"><span class="dot"></span>No</span></td></tr>
-        <tr><td><b>Hybrid + performance</b><br><span class="xs">setup + base + per appointment</span></td><td>Good, but only once you can measure appointments reliably.</td><td>Needs attribution you don't have yet — and your Sheets integration has been broken since October.</td><td><span class="st warn"><span class="dot"></span>Month 3+</span></td></tr>
-      </tbody>
-    </table></div>
-
-    <div class="card" style="border-color:var(--yellow)">
-      <h3>Recommendation, with its assumptions on the table</h3>
-      <p class="sm"><strong>Sell €450 setup + €450/month, 3-month minimum, first
-      month guaranteed.</strong> Not the €900 Growth tier, and not €1.500, until one
-      clinic has produced a number you can show.</p>
-      <p class="sm"><strong>Why:</strong> it collects €450 on day one against a CAC
-      of roughly €120, which clears the 2× rule immediately, so client two is paid
-      for by client one and you stop funding ads from your own pocket. It also
-      halves the price objection at the exact moment you have zero proof — your
-      weakest lever in workspace 1.</p>
-      <p class="sm"><strong>Assumptions — each one is falsifiable:</strong></p>
-      <ul class="bul sm">
-        <li>A clinic will pay a setup fee to someone with no case study. <em>Untested.</em></li>
-        <li>Delivery is ~10 hours in month one, ~6 after. <em>Guess — time it on client one.</em></li>
-        <li>Clients stay ~4 months. <em>Unknown; you have never had one.</em></li>
-        <li>CAC ≈ €120 of your time at €25/h, cash CAC ≈ €0 on cold outreach.</li>
-        <li>You can hold ~5 clients solo before delivery quality drops.</li>
-      </ul>
-      <p class="sm" style="margin-bottom:0"><strong>The validation test — small,
-      cheap, two weeks:</strong> quote exactly this structure to the first 10 clinics
-      that take a call. Don't negotiate it, don't discount it, don't offer the other
-      tiers. <strong>Metric:</strong> ≥2 of 10 say yes at €450+€450. <strong>Review:</strong>
-      <span id="rev14c" class="mute"></span>.<br>
-      <strong>Then adjust:</strong> 0 of 10 → the setup fee is wrong for a
-      proof-less seller, drop it to €150 and raise the retainer. 1 of 10 → the price
-      is fine, the <em>proof</em> is the blocker, so deliver one clinic at cost to
-      manufacture a case study. 4+ of 10 → you underpriced; take the next ones to
-      €900 and leave the early clients where they are.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ====================== KNOWLEDGE CENTRE =========================== -->
-<section id="kc">
-  <div class="wrap">
-    <span class="label">Private knowledge centre</span>
-    <h2>Your books &amp; notes</h2>
-
-    <div class="card danger">
-      <h3 style="color:var(--bad)">Read this first — what this page can and cannot do</h3>
-      <p class="sm">This is a static page on your own domain. It has no server and
-      no model behind it, so <strong>it cannot read a PDF, search inside it, or
-      quote it.</strong> Anything that claimed otherwise would be lying to you.</p>
-      <p class="sm" style="margin-bottom:0">And to be straight about the frameworks
-      above: <strong>I have not read your copies of the three books.</strong> Everything
-      in workspaces 1–3 applies the frameworks as they are publicly known — the
-      value equation, the four channels, client-financed acquisition — reasoned
-      against <em>your</em> files, ad data and prices. There are no quotes and no page
-      numbers anywhere on this page, because I would be inventing them. Upload your
-      copies here, mention them in a session with me, and I'll work from the actual
-      passages with real references — and I won't reproduce long extracts.</p>
-    </div>
-
-    <h3>The shelf</h3>
-    <p class="sm">List what you own and where the file is, so a session can start
-    from it. Titles and paths only — the files stay on your disk.</p>
-    <div class="card">
-      <div class="grid2">
-        <label class="f"><span>Title</span><input type="text" id="bkT" placeholder="$100M Offers" autocomplete="off"></label>
-        <label class="f"><span>Where it lives</span><input type="text" id="bkP" placeholder="C:\Users\marco\books\100m-offers.pdf" autocomplete="off"></label>
-      </div>
-      <div class="row"><button id="bkAdd">Add to shelf</button></div>
-    </div>
-    <div id="bkList"></div>
-
-    <h3 style="margin-top:24px">Working notes</h3>
-    <p class="sm">What you tried, what the clinic actually said, the line that
-    landed. This is the raw material that makes the next round of advice better
-    than the last.</p>
-    <div class="card">
-      <label class="f"><textarea data-sv="notes" style="min-height:160px" placeholder="10 Nov — called 4 clinics. Two said «δεν επιτρέπεται να διαφημιζόμαστε» before I even pitched — the compliance line lands hard. One asked the price immediately…"></textarea></label>
-      <div class="row">
-        <button class="ghost sml" id="briefCopy">Copy a brief for Claude</button>
-        <span class="xs">Puts your locked objective, pipeline counts, money-model numbers and notes on the clipboard — paste it into a session to pick up exactly here.</span>
-      </div>
-      <p class="sm" id="briefSaid" style="margin:10px 0 0" hidden></p>
-    </div>
-  </div>
-</section>
-
-<!-- ====================== LOG ======================================== -->
-<section id="log">
-  <div class="wrap">
-    <span class="label">The loop that makes this a mentor</span>
-    <h2>Recommendation log</h2>
-    <p class="sm">Advice that is never scored is just opinion. Each row: the
-    framework, what you did, the metric, the review date — then the result, which
-    is what changes the next recommendation.</p>
-    <div class="card">
-      <div class="grid2">
-        <label class="f"><span>Framework</span><select id="lgFw">
-          <option>$100M Offers</option><option>$100M Leads</option><option>$100M Money Models</option><option>Compliance</option><option>Other</option>
-        </select></label>
-        <label class="f"><span>Review date</span><input type="date" id="lgDate"></label>
-      </div>
-      <label class="f"><span>Action taken</span><input type="text" id="lgAct" placeholder="Quoted €450+€450 to 10 clinics, no discount" autocomplete="off"></label>
-      <label class="f"><span>Metric that decides it</span><input type="text" id="lgMet" placeholder="≥2 of 10 say yes" autocomplete="off"></label>
-      <div class="row"><button id="lgAdd">Log it</button></div>
-    </div>
-    <div id="lgList"></div>
-  </div>
-</section>
-
-<!-- ====================== LAWS ======================================= -->
-<section>
-  <div class="wrap">
-    <span class="label">On the wall</span>
-    <h2>The laws</h2>
-    <ol class="laws">
-      <li>One objective. One channel. Fourteen days.</li>
-      <li>Sell before you build, every day, in that order.</li>
-      <li>One human-only task before the editor opens.</li>
-      <li>Ask which licence they hold before you promise anything.</li>
-      <li>Never promise a number you have not produced.</li>
-      <li>Collect cash before the heavy work, not after.</li>
-      <li>Agency CAC and patient CPL never appear in the same report.</li>
-      <li>Nothing is proven until a stranger pays.</li>
-      <li>Twenty nos is the price of the pattern. Pay it fast.</li>
-      <li>When something works, do more of it — don't improve it.</li>
-    </ol>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <p>Private · noindexed · unlinked. Everything you type stays in this browser's
-    local storage and is never sent anywhere. Frameworks are named and applied, not
-    quoted; no endorsement by or association with their author is implied or exists.
-    Legal notes are research, not legal advice.</p>
-  </div>
-</footer>
+</div>
 
 <script>
-/* All state is local. localStorage throws in private windows and returns empty
-   with cleared site data, so every access is guarded and the page must render
-   correctly with nothing stored. */
-var K='evzo_mentor_v2';
-function load(){ try{ return JSON.parse(localStorage.getItem(K)||'{}')||{}; }catch(e){ return {}; } }
-function save(){ try{ localStorage.setItem(K,JSON.stringify(S)); }catch(e){} }
-var S=load();
-var $=function(id){ return document.getElementById(id); };
-function eur(n){ return '\u20AC'+Math.round(n).toLocaleString('en-US'); }
-function dfmt(ts){ try{ return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'}); }catch(e){ return ''; } }
+/* ---------------------------------------------------------------------------
+   Unlock = PBKDF2 the passphrase into an AES-256-GCM key, then decrypt
+   app.enc. GCM authenticates, so a wrong passphrase throws instead of
+   yielding garbage - which is exactly the signal the UI needs.
 
-/* ---- review dates: 14 days out ---- */
+   The derived key, not the passphrase, is what gets remembered, and only
+   because this origin is his own browser. localStorage throws in private
+   windows and comes back empty with cleared site data, so every access is
+   guarded and the page must work with nothing stored.
+--------------------------------------------------------------------------- */
+var KEYSTORE = 'evzo_mentor_key_v1';
+var msg = document.getElementById('msg');
+var go = document.getElementById('go');
+
+function say(text, cls){ msg.textContent = text; msg.className = 'msg' + (cls ? ' ' + cls : ''); }
+function b64bytes(s){ var r = atob(s), a = new Uint8Array(r.length); for (var i=0;i<r.length;i++) a[i]=r.charCodeAt(i); return a; }
+function bytesb64(a){ var s=''; a = new Uint8Array(a); for (var i=0;i<a.length;i++) s+=String.fromCharCode(a[i]); return btoa(s); }
+function store(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function read(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function drop(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
+var sealedPromise = null;
+function sealed(){
+  /* ?v= busts the browser cache when a new build is published */
+  if (!sealedPromise) sealedPromise = fetch('app.enc?v=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ if (!r.ok) throw new Error('app.enc ' + r.status); return r.json(); });
+  return sealedPromise;
+}
+
+function keyFromPass(pass, saltB64, iter){
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey'])
+    .then(function(base){
+      return crypto.subtle.deriveKey(
+        { name:'PBKDF2', salt: b64bytes(saltB64), iterations: iter, hash:'SHA-256' },
+        base, { name:'AES-GCM', length:256 }, true, ['decrypt']);
+    });
+}
+
+function open_(key, s){
+  return crypto.subtle.decrypt({ name:'AES-GCM', iv: b64bytes(s.iv) }, key, b64bytes(s.ct))
+    .then(function(buf){ return new TextDecoder().decode(buf); });
+}
+
+/* Replacing the whole document is the only way to hand the decrypted page the
+   clean document it was written for: its own <style>, its own scripts, and no
+   leftovers from this screen. */
+function show(html){
+  document.open();
+  document.write(html);
+  document.close();
+}
+
+function unlock(pass, remember){
+  say('Unlocking\u2026', 'work');
+  go.disabled = true;
+  return sealed()
+    .then(function(s){
+      return keyFromPass(pass, s.salt, s.iter || 310000).then(function(key){
+        return open_(key, s).then(function(html){
+          if (remember) {
+            return crypto.subtle.exportKey('raw', key).then(function(raw){
+              store(KEYSTORE, JSON.stringify({ k: bytesb64(raw), salt: s.salt }));
+              show(html);
+            });
+          }
+          show(html);
+        });
+      });
+    })
+    .catch(function(err){
+      go.disabled = false;
+      if (String(err && err.message).indexOf('app.enc') === 0) say('Cannot load the page data. Are you online?', 'bad');
+      else say('Wrong username or PIN.', 'bad');
+      var pw = document.getElementById('pw'); pw.value=''; pw.focus();
+    });
+}
+
+/* Remembered device: import the stored key and open without typing. The stored
+   salt must still match the published file, so a re-seal (new salt) correctly
+   forces one fresh unlock rather than failing silently. */
 (function(){
-  var d=dfmt(Date.now()+14*864e5);
-  ['rev14','rev14b','rev14c'].forEach(function(id){ if($(id)) $(id).textContent=d; });
-  if($('lgDate')) $('lgDate').value=new Date(Date.now()+14*864e5).toISOString().slice(0,10);
+  var raw = read(KEYSTORE);
+  if (!raw) return;
+  var saved;
+  try { saved = JSON.parse(raw); } catch(e) { drop(KEYSTORE); return; }
+  document.getElementById('remembered').hidden = false;
+  say('Opening\u2026', 'work');
+  sealed().then(function(s){
+    if (saved.salt !== s.salt) { drop(KEYSTORE); say('Page was updated \u2014 unlock once more.', 'work'); return; }
+    return crypto.subtle.importKey('raw', b64bytes(saved.k), 'AES-GCM', true, ['decrypt'])
+      .then(function(key){ return open_(key, s).then(show); });
+  }).catch(function(){ drop(KEYSTORE); say('', ''); });
 })();
 
-/* ---- generic saved fields ---- */
-S.f=S.f||{};
-Array.prototype.forEach.call(document.querySelectorAll('[data-sv]'),function(el){
-  var k=el.dataset.sv;
-  if(S.f[k]!==undefined && S.f[k]!=='') el.value=S.f[k];
-  el.addEventListener('input',function(){ S.f[k]=el.value; save(); recalcAll(); });
+/* Both fields feed the key. There is no server here to check a username
+   against, so the username is not an identity - it is key material, and
+   that is the point: it widens the guess space well past a 4-digit PIN,
+   which on its own would be 10,000 tries. */
+document.getElementById('f').addEventListener('submit', function(e){
+  e.preventDefault();
+  var user = document.getElementById('user').value.trim().toLowerCase();
+  var pin = document.getElementById('pw').value.trim();
+  if (!user || !pin) { say('Both fields.', 'bad'); return; }
+  unlock(user + ':' + pin, true);
 });
 
-/* ---- objective lock ---- */
-function drawLock(){
-  if(S.lockName && S.lockFrom){
-    $('lockEmpty').hidden=true; $('lockOn').hidden=false;
-    $('lockShow').textContent=S.lockName;
-    var d=Math.floor((Date.now()-S.lockFrom)/864e5), left=14-d;
-    $('lockDays').textContent = left>0
-      ? ('Day '+(d+1)+' of 14 \u00b7 '+left+' left \u00b7 review '+dfmt(S.lockFrom+14*864e5))
-      : ('Day '+(d+1)+' \u2014 the 14 days are up: finish it or kill it');
-  } else { $('lockEmpty').hidden=false; $('lockOn').hidden=true; }
-}
-$('lockGo').addEventListener('click',function(){
-  var v=$('lockName').value.trim(); if(!v) return;
-  S.lockName=v; S.lockFrom=Date.now(); save(); drawLock();
+document.getElementById('forget').addEventListener('click', function(){
+  drop(KEYSTORE);
+  document.getElementById('remembered').hidden = true;
+  say('Forgotten on this device.', 'ok');
 });
-$('lockName').addEventListener('keydown',function(e){ if(e.key==='Enter') $('lockGo').click(); });
-$('lockClear').addEventListener('click',function(){ delete S.lockName; delete S.lockFrom; save(); drawLock(); });
-drawLock();
-
-/* ---- human-only queue ---- */
-S.hq=S.hq||{};
-Array.prototype.forEach.call(document.querySelectorAll('[data-hq]'),function(b){
-  b.checked=!!S.hq[b.dataset.hq];
-  b.addEventListener('change',function(){ S.hq[b.dataset.hq]=b.checked; save(); });
-});
-
-/* ---- segment switch ---- */
-var segNotes={
-  dentist:"Dentists are ΠΦΥ: Π.Δ. 39/2009 arts. 21\u201322 ban direct and indirect advertising, internet included. No ads, no prices, no offers, no before/after, no testimonials. The product is organic, and compliance is your differentiator.",
-  medspa:"Ask on the first call: doctor-run ιατρείο, or a κέντρο αισθητικής with no doctor? The first is ΠΦΥ and bound by Ν. 3418/2005 \u2014 same restrictions as dentists. The second can advertise freely, and only there does your paid-ads playbook apply."
-};
-function drawSeg(){
-  var s=S.seg||'dentist';
-  Array.prototype.forEach.call(document.querySelectorAll('#segOffer button'),function(b){
-    b.setAttribute('aria-pressed', String(b.dataset.seg===s));
-  });
-  $('segNote').textContent=segNotes[s];
-}
-Array.prototype.forEach.call(document.querySelectorAll('#segOffer button'),function(b){
-  b.addEventListener('click',function(){ S.seg=b.dataset.seg; save(); drawSeg(); });
-});
-drawSeg();
-
-/* ---- value equation ---- */
-/* merge rather than replace, so a half-written older state can't show NaN */
-S.ve=S.ve||{};
-[['s1',7],['s2',4],['s3',6],['s4',5]].forEach(function(p){
-  if(typeof S.ve[p[0]]!=='number' || isNaN(S.ve[p[0]])) S.ve[p[0]]=p[1];
-});
-function drawVE(){
-  [1,2,3,4].forEach(function(i){
-    var el=$('s'+i); el.value=S.ve['s'+i]; $('v'+i).textContent=S.ve['s'+i];
-  });
-  /* (dream x likelihood) / (delay x effort), with speed and ease entered so that
-     10 = fast/easy, i.e. already inverted. Normalised to 0-100. */
-  var num=S.ve.s1*S.ve.s2, den=(11-S.ve.s3)*(11-S.ve.s4);
-  var raw=num/den, pct=Math.max(0,Math.min(100, Math.round(100*Math.log(1+raw)/Math.log(1+100))));
-  $('veScore').textContent=pct+' / 100';
-  var f=$('veFill'); f.style.width=pct+'%';
-  f.className='fill '+(pct>=60?'good':pct>=35?'warn':'bad');
-  var say;
-  if(S.ve.s2<=4) say='<span class="st bad"><span class="dot"></span>Believability is the binding lever</span> \u2014 not price, not speed. With no case study you cannot raise it by writing better copy. The only fix is one delivered clinic with real numbers, even at cost. <strong>Manufacture proof before you polish anything else.</strong>';
-  else if(pct<35) say='<span class="st bad"><span class="dot"></span>Weak offer</span> \u2014 pick the lowest slider and fix that one thing. Lowering the price is not on this list for a reason: it moves none of the four.';
-  else if(pct<60) say='<span class="st warn"><span class="dot"></span>Sellable, not compelling</span> \u2014 good enough to test on 20 clinics. Raise ease next: take the logins, the writing and the posting off their desk entirely.';
-  else say='<span class="st good"><span class="dot"></span>Strong</span> \u2014 if these scores are honest, the offer is not your problem. Volume in workspace 2 is.';
-  $('veSay').innerHTML=say;
-}
-[1,2,3,4].forEach(function(i){
-  $('s'+i).addEventListener('input',function(){ S.ve['s'+i]=+this.value; save(); drawVE(); });
-});
-
-/* ---- guarantee cost ---- */
-function num(k,d){ var v=parseFloat(S.f[k]); return isNaN(v)?d:v; }
-function drawG(){
-  var p=num('gPrice',450), c=num('gCost',200), n=num('gN',5), cl=num('gClaim',30)/100;
-  var claims=n*cl, payout=claims*p, net=n*(p-c)-payout;
-  $('gExp').textContent=eur(payout);
-  $('gNet').textContent=eur(net);
-  var say;
-  if(payout>600) say='<span class="st bad"><span class="dot"></span>You cannot fund this</span> \u2014 '+eur(payout)+' is more cash than you are putting into ads in a month. Change the guarantee to one you can actually honour: <em>keep working free until the first booking</em> costs you hours, not refunds, and sounds just as strong on a call.';
-  else if(net<=0) say='<span class="st warn"><span class="dot"></span>The test loses money</span> \u2014 '+eur(net)+' net. Either the price is too low for the delivery cost, or the claim rate tells you the promise is one you can\u2019t keep. A guarantee you expect to pay out 30% of the time is a discount you haven\u2019t admitted to.';
-  else say='<span class="st good"><span class="dot"></span>Fundable</span> \u2014 worst case '+eur(payout)+' out, '+eur(net)+' net across the test. Put the guarantee in the first line of the DM, where it does its work.';
-  $('gSay').innerHTML=say;
-}
-
-/* ---- pipeline ---- */
-var STAGES=['Contacted','Replied','Call booked','Audit sent','Proposal','Signed','No'];
-S.pipe=S.pipe||[];
-function drawPipe(){
-  var host=$('pList'); host.innerHTML='';
-  if(!S.pipe.length){
-    host.innerHTML='<p class="xs">Nothing yet. Add the first clinic above \u2014 then the ninth, the fourteenth and the twentieth.</p>';
-  }
-  S.pipe.forEach(function(r,i){
-    var d=document.createElement('div'); d.className='pr';
-    var overdue = r.next && (new Date(r.next).getTime() < Date.now()-36e5);
-    var opts=STAGES.map(function(s){ return '<option'+(s===r.stage?' selected':'')+'>'+s+'</option>'; }).join('');
-    d.innerHTML=
-      '<div class="top"><span class="nm">'+esc(r.name)+'</span>'+
-      '<select data-i="'+i+'" class="stg">'+opts+'</select></div>'+
-      '<div class="acts row">'+
-        '<span class="dt">'+({dentist:'Dentist',medspa:'Med spa (doctor)',beauty:'Αισθητικής'}[r.seg]||'')+'</span>'+
-        '<label class="dt">next <input type="date" class="nxt" data-i="'+i+'" value="'+(r.next||'')+'" style="width:auto;padding:6px 8px;font-size:13px"></label>'+
-        (overdue?'<span class="due">overdue</span>':'')+
-        '<button class="ghost sml rm" data-i="'+i+'">remove</button>'+
-      '</div>';
-    host.appendChild(d);
-  });
-  Array.prototype.forEach.call(host.querySelectorAll('.stg'),function(s){
-    s.addEventListener('change',function(){ S.pipe[+this.dataset.i].stage=this.value; save(); drawPipe(); });
-  });
-  Array.prototype.forEach.call(host.querySelectorAll('.nxt'),function(s){
-    s.addEventListener('change',function(){ S.pipe[+this.dataset.i].next=this.value; save(); drawPipe(); });
-  });
-  Array.prototype.forEach.call(host.querySelectorAll('.rm'),function(s){
-    s.addEventListener('click',function(){ S.pipe.splice(+this.dataset.i,1); save(); drawPipe(); });
-  });
-  var tot=S.pipe.length,
-      won=S.pipe.filter(function(r){return r.stage==='Signed';}).length,
-      no=S.pipe.filter(function(r){return r.stage==='No';}).length,
-      talk=S.pipe.filter(function(r){return ['Replied','Call booked','Audit sent','Proposal'].indexOf(r.stage)>=0;}).length;
-  $('pTot').textContent=tot; $('pWon').textContent=won; $('pNo').textContent=no; $('pTalk').textContent=talk;
-  var pct=Math.min(100,Math.round(tot/20*100));
-  $('pcPct').textContent=pct+'%'; var f=$('pcFill'); f.style.width=pct+'%';
-  f.className='fill '+(pct>=100?'good':pct>=50?'warn':'bad');
-}
-function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
-$('pAdd').addEventListener('click',function(){
-  var n=$('pName').value.trim(); if(!n) return;
-  S.pipe.unshift({name:n,seg:$('pSeg').value,stage:'Contacted',next:new Date(Date.now()+2*864e5).toISOString().slice(0,10)});
-  $('pName').value=''; save(); drawPipe();
-});
-$('pName').addEventListener('keydown',function(e){ if(e.key==='Enter') $('pAdd').click(); });
-
-/* ---- CAC ---- */
-function drawCac(){
-  var spend=num('cacSpend',0), h=num('cacHours',0), rate=num('cacRate',25), won=num('cacWon',0);
-  var full=spend+h*rate;
-  if(won>0){
-    $('cacOut').textContent=eur(full/won); $('cacCash').textContent=eur(spend/won);
-    var v=full/won;
-    $('cacSay').innerHTML = v<300
-      ? '<span class="st good"><span class="dot"></span>Cheap</span> \u2014 '+eur(v)+' for a client worth multiples of that. Do more of exactly this, don\u2019t add a channel.'
-      : '<span class="st warn"><span class="dot"></span>'+eur(v)+' per client</span> \u2014 check it against lifetime gross profit in workspace 3 before judging it. Most of this is your time, which you can only reduce by raising the reply rate, not by working more hours.';
-  } else {
-    $('cacOut').textContent='\u2014'; $('cacCash').textContent=spend>0?eur(spend):'\u2014';
-    $('cacSay').innerHTML = (spend+h)>0
-      ? '<span class="st warn"><span class="dot"></span>No client yet</span> \u2014 '+eur(full)+' of cash and time spent. Not a failure until 20 clinics have been properly asked; count the nos.'
-      : 'Fill it in after the sprint, not during.';
-  }
-}
-
-/* ---- money model ---- */
-function drawMoney(){
-  var setup=num('mSetup',450), mrr=num('mMrr',450), months=num('mMonths',4),
-      hours=num('mHours',10), rate=num('mRate',25), cost=num('mCost',40),
-      cac=num('mCac',120), cap=num('mCap',20);
-  var deliverCost=hours*rate+cost;
-  var gpMonth=mrr-deliverCost;
-  var ltgp=setup+gpMonth*months;
-  var d30=setup+gpMonth;                    /* gross profit collected in month one */
-  var maxClients=hours>0?Math.floor(cap*4.33/hours):0;
-  var profit=gpMonth*maxClients;
-  $('oLtv').textContent=eur(ltgp);
-  $('oD30').textContent=eur(d30);
-  $('oCap').textContent=maxClients;
-  $('oProfit').textContent=eur(profit);
-
-  var cfa = cac>0 ? d30/(2*cac) : 0;
-  $('cfaVal').textContent = cac>0 ? (cfa.toFixed(1)+'\u00d7 the 2\u00d7CAC bar') : '\u2014';
-  var f1=$('cfaFill'); f1.style.width=Math.max(0,Math.min(100,cfa*50))+'%';
-  f1.className='fill '+(cfa>=1?'good':cfa>=0.5?'warn':'bad');
-
-  var ratio = cac>0 ? ltgp/cac : 0;
-  $('ltvVal').textContent = cac>0 ? (ratio.toFixed(1)+' : 1') : '\u2014';
-  var f2=$('ltvFill'); f2.style.width=Math.max(0,Math.min(100,ratio/6*100))+'%';
-  f2.className='fill '+(ratio>=3?'good':ratio>=2?'warn':'bad');
-
-  var v=$('mVerdict'), hd, body;
-  if(gpMonth<=0){
-    v.className='verdict'; hd='You are paying to work';
-    body='Delivering one client costs '+eur(deliverCost)+' against '+eur(mrr)+' coming in. Nothing downstream can fix this: raise the price, cut the hours per client, or stop funding their ads out of the retainer. <strong>Fix this line before anything else on the page.</strong>';
-  } else if(cfa>=1 && ratio>=3){
-    v.className='verdict'; hd='The model works \u2014 go sell it';
-    body='You collect '+eur(d30)+' of gross profit in month one against a '+eur(cac)+' CAC, so each client funds the next and acquisition is self-financing. Lifetime gross profit is '+ratio.toFixed(1)+'\u00d7 CAC. At '+maxClients+' clients you are at '+eur(profit)+'/month and capacity, not cash, becomes the constraint \u2014 that is the good problem. Nothing here is proven until a stranger pays, so the only next move is the 10 quotes.';
-  } else if(cfa<1){
-    v.className='verdict'; hd='Cash arrives too late';
-    body='Month one brings '+eur(d30)+' of gross profit against '+eur(cac)+' of CAC \u2014 under the 2\u00d7 bar, which is exactly why you are funding ads €20 at a time. <strong>Move money forward, not up:</strong> add or raise the setup fee, bill the first month with it, or take 3 months up front at a small discount. Same annual price, completely different business.';
-  } else {
-    v.className='verdict'; hd='Thin \u2014 one bad month hurts';
-    body='Lifetime gross profit is only '+ratio.toFixed(1)+'\u00d7 CAC. Retention is the cheapest lever you have: an extra two months of a client you already have costs nothing to acquire. Build the recall and reporting that makes month five obvious, rather than hunting a cheaper lead.';
-  }
-  v.innerHTML='<b class="hd">'+hd+'</b><span class="sm">'+body+'</span>';
-}
-
-/* ---- shelf ---- */
-S.books=S.books||[];
-function drawBooks(){
-  var h=$('bkList'); h.innerHTML='';
-  if(!S.books.length){ h.innerHTML='<p class="xs">Shelf empty. Add the three Hormozi books and any workbook or notes you own.</p>'; return; }
-  S.books.forEach(function(b,i){
-    var d=document.createElement('div'); d.className='pr';
-    d.innerHTML='<div class="top"><span class="nm">'+esc(b.t)+'</span><button class="ghost sml rm" data-i="'+i+'">remove</button></div>'+
-      (b.p?'<div class="acts"><code class="xs">'+esc(b.p)+'</code></div>':'');
-    h.appendChild(d);
-  });
-  Array.prototype.forEach.call(h.querySelectorAll('.rm'),function(b){
-    b.addEventListener('click',function(){ S.books.splice(+this.dataset.i,1); save(); drawBooks(); });
-  });
-}
-$('bkAdd').addEventListener('click',function(){
-  var t=$('bkT').value.trim(); if(!t) return;
-  S.books.push({t:t,p:$('bkP').value.trim()}); $('bkT').value=''; $('bkP').value=''; save(); drawBooks();
-});
-
-/* ---- recommendation log ---- */
-S.log=S.log||[];
-function drawLog(){
-  var h=$('lgList'); h.innerHTML='';
-  if(!S.log.length){ h.innerHTML='<p class="xs">Nothing logged. The first row should be the 10 quotes at €450+€450.</p>'; return; }
-  S.log.forEach(function(r,i){
-    var d=document.createElement('div'); d.className='pr';
-    var due = r.date && new Date(r.date).getTime() < Date.now();
-    d.innerHTML='<div class="top"><span class="nm">'+esc(r.act)+'</span><span class="dt">'+esc(r.fw)+'</span></div>'+
-      '<div class="acts"><p class="xs" style="margin:0 0 7px">Metric: '+esc(r.met||'\u2014')+' \u00b7 review '+(r.date?dfmt(r.date):'\u2014')+(due&&!r.res?' <span class="due">due</span>':'')+'</p>'+
-      '<label class="f" style="margin:0"><span>Result \u2014 what actually happened</span><input type="text" class="res" data-i="'+i+'" value="'+esc(r.res||'')+'" placeholder="2 of 10 said yes. One asked for monthly only."></label>'+
-      '<div class="row" style="margin-top:8px"><button class="ghost sml rm" data-i="'+i+'">remove</button></div></div>';
-    h.appendChild(d);
-  });
-  Array.prototype.forEach.call(h.querySelectorAll('.res'),function(b){
-    b.addEventListener('change',function(){ S.log[+this.dataset.i].res=this.value; save(); });
-  });
-  Array.prototype.forEach.call(h.querySelectorAll('.rm'),function(b){
-    b.addEventListener('click',function(){ S.log.splice(+this.dataset.i,1); save(); drawLog(); });
-  });
-}
-$('lgAdd').addEventListener('click',function(){
-  var a=$('lgAct').value.trim(); if(!a) return;
-  S.log.unshift({fw:$('lgFw').value,act:a,met:$('lgMet').value.trim(),date:$('lgDate').value,res:''});
-  $('lgAct').value=''; $('lgMet').value=''; save(); drawLog();
-});
-
-/* ---- brief for a Claude session ---- */
-$('briefCopy').addEventListener('click',function(){
-  var L=[];
-  L.push('MENTOR STATE \u2014 '+new Date().toLocaleDateString('en-GB'));
-  L.push('Objective: '+(S.lockName||'(none locked)')+(S.lockFrom?' \u00b7 day '+(Math.floor((Date.now()-S.lockFrom)/864e5)+1)+' of 14':''));
-  L.push('Segment focus: '+(S.seg||'dentist'));
-  L.push('');
-  L.push('OFFER');
-  ['icp','outcome','scope','diff','proof'].forEach(function(k){ if(S.f[k]) L.push('- '+k+': '+S.f[k]); });
-  L.push('- value equation: dream '+S.ve.s1+', believability '+S.ve.s2+', speed '+S.ve.s3+', ease '+S.ve.s4);
-  L.push('');
-  L.push('PIPELINE ('+S.pipe.length+' clinics)');
-  S.pipe.slice(0,25).forEach(function(r){ L.push('- '+r.name+' \u00b7 '+r.seg+' \u00b7 '+r.stage+(r.next?' \u00b7 next '+r.next:'')); });
-  L.push('');
-  L.push('MONEY MODEL');
-  ['mSetup','mMrr','mMonths','mHours','mRate','mCost','mCac','mCap'].forEach(function(k){ L.push('- '+k+': '+(S.f[k]!==undefined?S.f[k]:'default')); });
-  L.push('');
-  L.push('LOG');
-  S.log.slice(0,15).forEach(function(r){ L.push('- ['+r.fw+'] '+r.act+' | metric: '+r.met+' | review '+r.date+' | result: '+(r.res||'pending')); });
-  L.push('');
-  L.push('NOTES');
-  L.push(S.f.notes||'(none)');
-  L.push('');
-  L.push('Books on the shelf: '+(S.books.length?S.books.map(function(b){return b.t+(b.p?' ['+b.p+']':'');}).join('; '):'none listed'));
-  var txt=L.join('\n'), el=$('briefSaid');
-  function ok(){ el.hidden=false; el.innerHTML='<span class="st good"><span class="dot"></span>Copied</span> \u2014 paste it into a session.'; }
-  function fail(){ el.hidden=false; el.innerHTML='<span class="st bad"><span class="dot"></span>Clipboard blocked</span> \u2014 select the notes box and copy manually.'; }
-  try{
-    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(ok,fail); }
-    else {
-      var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.left='-9999px';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); ok();
-    }
-  }catch(e){ fail(); }
-});
-
-function recalcAll(){ drawG(); drawCac(); drawMoney(); }
-drawVE(); drawPipe(); drawBooks(); drawLog(); recalcAll();
 </script>
