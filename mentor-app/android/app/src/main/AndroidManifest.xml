@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- No permissions at all. Deliberately: there is no INTERNET permission,
+         so this app physically cannot send anything anywhere, and the whole
+         page is bundled inside the APK rather than fetched. Everything typed
+         into it stays on this phone. -->
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:hardwareAccelerated="true"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Mentor">
+
+        <!-- allowBackup is off on purpose: with it on, Google's backup service
+             would carry the offer, pipeline and money-model figures off the
+             device. The cost is that a reinstall starts empty, so the page
+             keeps its "copy a brief" button as the manual way out. -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

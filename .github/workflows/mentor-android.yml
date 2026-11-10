@@ -1,0 +1,58 @@
+name: Build Mentor APK
+
+# Runs on a push that touches the mentor, and on demand from the Actions tab.
+# The page itself lives at mentor/index.html and is also served on the website;
+# this workflow wraps that exact file in an APK so it works on the phone with
+# no network at all.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mentor/**"
+      - "mentor-app/**"
+      - "site/fonts.css"
+      - "site/fonts/**"
+      - ".github/workflows/mentor-android.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # The page is copied in at its own path, mentor/, because its markup asks
+      # for ../site/fonts.css - so the fonts have to sit beside it in the same
+      # shape they have on the website, or the Greek text falls back to a
+      # system font and the layout shifts.
+      - name: Bundle the page and its fonts into the APK
+        run: |
+          A=mentor-app/android/app/src/main/assets
+          mkdir -p "$A/mentor" "$A/site/fonts" "$A/brand"
+          cp mentor/index.html "$A/mentor/index.html"
+          cp site/fonts.css "$A/site/fonts.css"
+          cp -r site/fonts/. "$A/site/fonts/"
+          cp brand/evzo-profile-navy-zowhite.png "$A/brand/" || true
+          echo "bundled:"; find "$A" -type f | wc -l; du -sh "$A"
+
+      - name: Build the APK
+        working-directory: mentor-app/android
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: gradle assembleRelease --no-daemon
+
+      - name: Upload the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mentor-apk
+          path: mentor-app/android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error

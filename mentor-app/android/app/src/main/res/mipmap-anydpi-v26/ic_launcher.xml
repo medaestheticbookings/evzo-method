@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android masks every icon into the launcher's own shape - circle, squircle,
+  rounded square - and keeps only the middle of the foreground. So the logo is
+  drawn small inside its own canvas, on the brand navy, and nothing is cropped
+  whichever phone it lands on.
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_fg" />
+    <monochrome android:drawable="@mipmap/ic_launcher_fg" />
+</adaptive-icon>
