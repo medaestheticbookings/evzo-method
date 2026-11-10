@@ -219,6 +219,55 @@ nav button[aria-pressed="true"]{color:var(--accent)}
   <div class="tools" id="hub-cards" style="max-width:440px"></div>
 </div>
 
+<!-- Tasks: its own experience, its own list, its own storage -->
+<div class="app" id="tasksapp" hidden>
+  <header><div class="wrap hrow">
+    <div class="mark-wrap">
+      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="10" y="12" width="44" height="40" rx="7" fill="none" stroke="currentColor" stroke-width="4" style="color:var(--accent)"></rect>
+        <path d="M20 26l6 6 12-12" fill="none" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M20 42h24" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round"></path>
+      </svg>
+      <h1 id="tk-name"></h1>
+    </div>
+    <div class="hbtns">
+      <span class="lvl" id="tk-count"></span>
+      <button class="iconbtn" id="tk-home"></button>
+    </div>
+  </div></header>
+
+  <main class="wrap">
+    <div class="card">
+      <input type="text" id="tk-input" maxlength="90" autocomplete="off">
+      <div class="row">
+        <input type="date" id="tk-due">
+        <button class="btn sm ghost" id="tk-flag"></button>
+      </div>
+      <button class="btn" id="tk-add"></button>
+    </div>
+
+    <div class="seg" id="tk-filter">
+      <button data-filter="open" aria-pressed="true"></button>
+      <button data-filter="today" aria-pressed="false"></button>
+      <button data-filter="done" aria-pressed="false"></button>
+    </div>
+
+    <div id="tk-groups"></div>
+
+    <div class="card" id="tk-empty" hidden>
+      <p class="small" id="tk-empty-l"></p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="tk-s-open">0</b><span id="tk-s-open-l"></span></div>
+      <div class="stat"><b id="tk-s-today">0</b><span id="tk-s-today-l"></span></div>
+      <div class="stat"><b id="tk-s-done">0</b><span id="tk-s-done-l"></span></div>
+    </div>
+
+    <button class="btn sm ghost" id="tk-clear"></button>
+  </main>
+</div>
+
 <!-- 1. language -->
 <div class="panel" id="choose" hidden>
   <svg class="logo" style="width:60px;height:60px" viewBox="0 0 64 64" role="img" aria-label="Renew">
@@ -1113,6 +1162,7 @@ function applyLang(){
   if(window.__tourBtn)window.__tourBtn.textContent=t("guide");$("mood-q").textContent=t("moodQ");
   strictNote();
   if(P())renderAll();
+  if(!$("tasksapp").hidden)tkApplyLang();
   if(run){$("s-intent").textContent=run.intention||t("focus");updateSlips();setSub()}
 }
 function setLang(x){li=x==="en"?1:0;root.lang=x;save();applyLang()}
@@ -1134,6 +1184,10 @@ var HUB=[
   n:["EVZO Method","EVZO Method"],
   d:["Το προσωπικό 28ήμερο πρόγραμμα γευμάτων, από τα δικά σου νούμερα.","The personalised 28-day meal plan, built from your own numbers."],
   logo:''}, */
+ {id:"tasks",url:null,local:"tasks",
+  n:["Λίστα","Tasks"],
+  d:["Ό,τι πρέπει να γίνει, με ημερομηνίες και προτεραιότητες.","Everything that needs doing, with dates and priorities."],
+  logo:'<svg viewBox="0 0 64 64" width="42" height="42" aria-hidden="true"><rect x="10" y="12" width="44" height="40" rx="7" fill="none" stroke="#FFE14D" stroke-width="4"/><path d="M20 26l6 6 12-12" fill="none" stroke="#FFE14D" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 42h24" stroke="#FFE14D" stroke-width="4.5" stroke-linecap="round"/></svg>'},
  {id:"uncover",url:"https://evzomethod.com/uncover/",
   n:["Uncover","Uncover"],
   d:["Ο κόσμος ξεκινάει σκεπασμένος. Κάθε βήμα που περπατάς τον ξεσκεπάζει.","The world starts covered. Every step you walk clears it."],
@@ -1152,12 +1206,154 @@ function openHub(){
       x.n[li]+'</span><span style="display:block;font-size:13px;color:var(--panel-muted)">'+x.d[li]+'</span></span>';
     b.addEventListener("click",function(){
       if(x.url){location.href=x.url;return}
-      $("hub").hidden=true;boot();
+      $("hub").hidden=true;
+      if(x.local==="tasks"){openTasks();return}
+      boot();
     });
     box.appendChild(b);
   });
   $("hub").hidden=false;
 }
+
+/* ---------- Tasks ---------- */
+/* Its own experience with its own store: nothing here touches Renew's blocks,
+   monsters or streaks, and nothing in Renew writes to this list. */
+var TK={
+ name:["Λίστα","Tasks"],
+ ph:["Τι πρέπει να γίνει;","What needs doing?"],
+ add:["Πρόσθεσε","Add"],
+ flagOff:["Χωρίς προτεραιότητα","No priority"],
+ flagOn:["Προτεραιότητα","Priority"],
+ fOpen:["Ανοιχτά","Open"],fToday:["Σήμερα","Today"],fDone:["Έτοιμα","Done"],
+ overdue:["Πέρασε η ώρα","Overdue"],today:["Σήμερα","Today"],tomorrow:["Αύριο","Tomorrow"],
+ later:["Αργότερα","Later"],noDate:["Χωρίς ημερομηνία","No date"],
+ sOpen:["ανοιχτά","open"],sToday:["σήμερα","today"],sDone:["έτοιμα","done"],
+ clear:["Καθάρισε τα έτοιμα","Clear what's done"],
+ emptyOpen:["Άδεια λίστα. Γράψε το πρώτο.","Nothing here. Write the first one."],
+ emptyToday:["Τίποτα για σήμερα.","Nothing due today."],
+ emptyDone:["Τίποτα έτοιμο ακόμα.","Nothing finished yet."],
+ focus:["Κάνε ένα μπλοκ","Focus on this"],
+ home:["⌂ EVZO","⌂ EVZO"]
+};
+function tkT(k){return TK[k][li]}
+function tkStore(){root.tasks=root.tasks||[];return root.tasks}
+var tkFilter="open",tkFlag=false;
+
+function tkDayKey(d){return d}
+function tkToday(){var d=new Date();return d.getFullYear()+"-"+two(d.getMonth()+1)+"-"+two(d.getDate())}
+function tkBucket(x){
+  if(!x.due)return "noDate";
+  var t=tkToday();
+  if(x.due<t)return "overdue";
+  if(x.due===t)return "today";
+  var d=new Date();d.setDate(d.getDate()+1);
+  var tm=d.getFullYear()+"-"+two(d.getMonth()+1)+"-"+two(d.getDate());
+  if(x.due===tm)return "tomorrow";
+  return "later";
+}
+function tkApplyLang(){
+  $("tk-name").textContent=tkT("name");
+  $("tk-input").setAttribute("placeholder",tkT("ph"));
+  $("tk-add").textContent=tkT("add");
+  $("tk-flag").textContent=tkFlag?tkT("flagOn"):tkT("flagOff");
+  $("tk-home").textContent=tkT("home");
+  $("tk-clear").textContent=tkT("clear");
+  $("tk-s-open-l").textContent=tkT("sOpen");
+  $("tk-s-today-l").textContent=tkT("sToday");
+  $("tk-s-done-l").textContent=tkT("sDone");
+  Array.prototype.forEach.call(document.querySelectorAll("#tk-filter button"),function(b){
+    b.textContent=tkT({open:"fOpen",today:"fToday",done:"fDone"}[b.getAttribute("data-filter")]);
+  });
+  tkRender();
+}
+function tkRender(){
+  var all=tkStore(),t=tkToday();
+  var open=all.filter(function(x){return !x.done});
+  var done=all.filter(function(x){return x.done});
+  var dueToday=open.filter(function(x){return x.due&&x.due<=t});
+  $("tk-s-open").textContent=open.length;
+  $("tk-s-today").textContent=dueToday.length;
+  $("tk-s-done").textContent=done.length;
+  $("tk-count").textContent=open.length+" / "+all.length;
+
+  var show=tkFilter==="done"?done:tkFilter==="today"?dueToday:open;
+  var box=$("tk-groups");box.innerHTML="";
+  $("tk-empty").hidden=show.length>0;
+  $("tk-empty-l").textContent=tkT(tkFilter==="done"?"emptyDone":tkFilter==="today"?"emptyToday":"emptyOpen");
+
+  var order=["overdue","today","tomorrow","later","noDate"];
+  var groups={};
+  show.forEach(function(x){var b=tkFilter==="done"?"noDate":tkBucket(x);(groups[b]=groups[b]||[]).push(x)});
+  order.forEach(function(key){
+    var list=groups[key];if(!list||!list.length)return;
+    list.sort(function(a,b){
+      if(a.flag!==b.flag)return a.flag?-1:1;
+      return (a.due||"9999")<(b.due||"9999")?-1:1;
+    });
+    var card=document.createElement("div");card.className="card";
+    if(tkFilter!=="done"){
+      var h=document.createElement("h3");h.textContent=tkT(key);
+      if(key==="overdue")h.style.color="var(--slip)";
+      card.appendChild(h);
+    }
+    var ul=document.createElement("ul");ul.className="list";
+    list.forEach(function(x){
+      var li2=document.createElement("li");
+      var tick=document.createElement("button");tick.className="iconbtn";
+      tick.textContent=x.done?"✓":"○";
+      if(x.done)tick.style.color="var(--accent)";
+      tick.addEventListener("click",function(){
+        x.done=!x.done;x.doneAt=x.done?Date.now():null;save();tkRender();
+      });
+      var txt=document.createElement("span");txt.className="v";
+      txt.textContent=(x.flag&&!x.done?"! ":"")+x.text;
+      if(x.done){txt.style.opacity=".45";txt.style.textDecoration="line-through"}
+      if(x.flag&&!x.done)txt.style.color="var(--ink)";
+      var right=document.createElement("span");right.className="m";
+      right.textContent=x.due?x.due.slice(8)+"/"+x.due.slice(5,7):"";
+      right.style.color="var(--muted)";
+      var go=document.createElement("button");go.className="iconbtn";go.textContent="▸";
+      go.title=tkT("focus");
+      go.addEventListener("click",function(){
+        /* the one link between the two: carry this task into a focus block */
+        $("tasksapp").hidden=true;boot();
+        $("intent-input").value=x.text;nav("focus");window.scrollTo(0,0);
+      });
+      var del=document.createElement("button");del.className="iconbtn";del.textContent="✕";
+      del.addEventListener("click",function(){
+        var i=tkStore().indexOf(x);if(i>=0)tkStore().splice(i,1);save();tkRender();
+      });
+      li2.appendChild(tick);li2.appendChild(txt);li2.appendChild(right);
+      if(!x.done)li2.appendChild(go);
+      li2.appendChild(del);
+      ul.appendChild(li2);
+    });
+    card.appendChild(ul);box.appendChild(card);
+  });
+}
+function tkAdd(){
+  var v=$("tk-input").value.trim();if(!v)return;
+  tkStore().push({text:v,due:$("tk-due").value||"",flag:tkFlag,done:false,ts:Date.now()});
+  $("tk-input").value="";$("tk-due").value="";tkFlag=false;
+  $("tk-flag").textContent=tkT("flagOff");
+  save();tkRender();
+}
+$("tk-add").addEventListener("click",tkAdd);
+$("tk-input").addEventListener("keydown",function(e){if(e.key==="Enter")tkAdd()});
+$("tk-flag").addEventListener("click",function(){tkFlag=!tkFlag;$("tk-flag").textContent=tkFlag?tkT("flagOn"):tkT("flagOff")});
+$("tk-clear").addEventListener("click",function(){
+  root.tasks=tkStore().filter(function(x){return !x.done});save();tkRender();
+});
+$("tk-home").addEventListener("click",function(){$("tasksapp").hidden=true;openHub()});
+Array.prototype.forEach.call(document.querySelectorAll("#tk-filter button"),function(b){
+  b.addEventListener("click",function(){
+    tkFilter=b.getAttribute("data-filter");
+    Array.prototype.forEach.call(document.querySelectorAll("#tk-filter button"),function(o){
+      o.setAttribute("aria-pressed",String(o===b))});
+    tkRender();
+  });
+});
+function openTasks(){$("app").hidden=true;$("choose").hidden=true;$("tasksapp").hidden=false;tkApplyLang()}
 
 /* ---------- onboarding ---------- */
 /* A name is the key a profile is stored under, so two people on one phone must
