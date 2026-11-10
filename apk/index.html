@@ -1,34 +1,78 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="el"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>EVZO</title>
 <meta name="robots" content="noindex">
-
+<meta name="theme-color" content="#0B1220">
+<meta property="og:title" content="EVZO">
+<meta property="og:description" content="Renew, Tasks και Uncover σε μία εφαρμογή.">
+<meta property="og:image" content="https://evzomethod.com/renew/og.png">
 <style>
 :root{color-scheme:dark}
-body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0B1220;color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;text-align:center;padding:24px}
-.w{max-width:420px;display:flex;flex-direction:column;gap:16px;align-items:center}
-h1{font-size:28px;margin:0}
-p{color:#7A849A;margin:0;line-height:1.5}
-a.btn{display:block;width:100%;padding:18px;border-radius:14px;background:#FFE14D;color:#06101B;
-  text-decoration:none;font-size:18px;font-weight:600}
-a.alt{color:#FFE14D}
-</style><script>
-(function(){
-  var ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
-  addEventListener("DOMContentLoaded",function(){
-    document.body.setAttribute("data-os",ios?"ios":"other");
-  });
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:#0B1220;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  padding:28px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.w{max-width:440px;width:100%;display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center}
+h1{font-size:21px;font-weight:600;margin:0}
+h1 span{color:#7A849A;font-weight:400}
+p{color:#7A849A;margin:0;line-height:1.5;font-size:15px}
+p .en{opacity:.65;display:block}
+.card{width:100%;background:#141C2C;border:1px solid rgba(255,255,255,.14);border-radius:16px;
+  padding:18px;display:flex;flex-direction:column;gap:12px;text-align:left}
+.card.me{border-color:#FFE14D}
+.card h2{margin:0;font-size:17px;font-weight:600;display:flex;align-items:center;gap:9px}
+.tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#06101B;background:#FFE14D;
+  border-radius:99px;padding:3px 9px}
+a.btn,button.btn{display:block;width:100%;padding:16px;border-radius:13px;border:0;cursor:pointer;
+  background:#FFE14D;color:#06101B;text-decoration:none;font-size:17px;font-weight:600;text-align:center;
+  font-family:inherit}
+a.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
+ol{margin:0;padding-left:20px;color:#7A849A;font-size:14px;line-height:1.7}
+ol b{color:#fff;font-weight:600}
+</style>
+</head><body>
+<div class="w">
+  <svg width="128" height="128" viewBox="0 0 100 100" role="img" aria-label="EVZO" style="display:block">
+    <g transform="translate(15.50,16.42) scale(0.4437)"><g transform="translate(2.75,68.80)" fill="#FFE14D"><g transform="scale(0.100000,-0.100000)"><path d="M74 688H669V523H295V428H615V270H295V165H679V0H74Z"/><path d="M712 688H941L1097 231H1101L1257 688H1486L1253 0H945Z"/></g></g>
+    <g transform="translate(2.75,151.80)" fill="#FFFFFF"><g transform="scale(0.100000,-0.100000)"><path d="M45 688H739V523L330 165H752V0H30V165L439 523H45Z"/><path d="M1130 702C1420 702 1570 536 1570 344C1570 152 1420 -14 1130 -14C840 -14 690 152 690 344C690 536 840 702 1130 702ZM1130 537C1010 537 931 455 931 344C931 233 1010 151 1130 151C1250 151 1329 233 1329 344C1329 455 1250 537 1130 537Z"/></g></g></g>
+  </svg>
+  <h1>ευ ζω <span>· live well</span></h1>
+  <p>Renew, Λίστα και Uncover σε μία εφαρμογή.<span class="en">Renew, Tasks and Uncover in one app.</span></p>
+
+  <div class="card" id="c-android">
+    <h2>Android <span class="tag" id="t-android" hidden>το κινητό σου</span></h2>
+    <p>Η κανονική εφαρμογή. Μπλοκάρει στ' αλήθεια τις άλλες εφαρμογές.<span class="en">The full app. It really does block other apps.</span></p>
+    <a class="btn" href="/evzo.apk" download>Κατέβασε · Download</a>
+    <ol>
+      <li>Άνοιξε το αρχείο · <b>open the file</b></li>
+      <li>Πάτα Εγκατάσταση · <b>tap Install</b></li>
+      <li>Άνοιξε το EVZO · <b>open EVZO</b></li>
+    </ol>
+  </div>
+
+  <div class="card" id="c-ios">
+    <h2>iPhone <span class="tag" id="t-ios" hidden>το κινητό σου</span></h2>
+    <p>Η Apple δεν επιτρέπει εγκατάσταση εκτός App Store, ούτε μπλοκάρισμα εφαρμογών χωρίς δική της έγκριση. Το EVZO μπαίνει στην αρχική οθόνη και δουλεύει σαν εφαρμογή — με όλα, εκτός από το μπλοκάρισμα.<span class="en">Apple allows neither installing outside the App Store nor blocking apps without its own approval. EVZO goes on the home screen and behaves like an app — everything except the blocking.</span></p>
+    <a class="btn ghost" href="/renew/">Άνοιξέ το · Open it</a>
+    <ol>
+      <li>Άνοιξέ το σε <b>Safari</b></li>
+      <li>Πάτα <b>Μοιραστείτε</b> ⬆︎ · the Share button</li>
+      <li><b>Προσθήκη στην οθόνη Αφετηρίας</b> · Add to Home Screen</li>
+    </ol>
+  </div>
+</div>
+<script>
+(function () {
+  // mark the card that matches the phone in hand, but show both:
+  // people share this link, and whoever opens it should see their own path
+  var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var mine = document.getElementById(ios ? "c-ios" : "c-android");
+  var tag = document.getElementById(ios ? "t-ios" : "t-android");
+  mine.classList.add("me");
+  tag.hidden = false;
+  if (ios) document.querySelector(".w").insertBefore(mine, document.getElementById("c-android"));
 })();
 </script>
-<style>body[data-os="ios"] .android{display:none}body[data-os="other"] .ios{display:none}</style>
-</head><body><div class="w">
-<svg width="128" height="128" style="display:block;margin:0 auto" role="img" aria-label="EVZO" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g transform="translate(15.50,16.42) scale(0.4437)"><g transform="translate(2.75,68.80)" fill="#FFE14D"><g transform="scale(0.100000,-0.100000)"><path d="M74 688H669V523H295V428H615V270H295V165H676V0H74Z" transform="translate(0.00,0)"/><path d="M261 0 17 688H253L391 228H395L534 688H760L517 0Z" transform="translate(722.00,0)"/></g></g><g transform="translate(0.00,151.36)" fill="#FFFFFF"><g transform="scale(0.100000,-0.100000)"><path d="M364 165H691V0H24V71L343 523H48V688H683V617Z" transform="translate(0.00,0)"/><path d="M788 344Q788 170 691.0 79.0Q594 -12 416 -12Q238 -12 141.5 78.5Q45 169 45 344Q45 519 141.5 609.5Q238 700 416 700Q594 700 691.0 609.0Q788 518 788 344ZM271 376V312Q271 239 308.0 196.0Q345 153 416 153Q487 153 524.5 196.0Q562 239 562 312V376Q562 449 524.5 492.0Q487 535 416 535Q345 535 308.0 492.0Q271 449 271 376Z" transform="translate(722.00,0)"/></g></g></g></svg>
-<h1 style="font-size:22px;font-weight:600;letter-spacing:.02em">ευ ζω <span style="color:#7A849A;font-weight:400">· live well</span></h1>
-<p>Renew, EVZO Method και Uncover σε μία εφαρμογή. Ένα πάτημα και τελείωσε.<br><span style="opacity:.7">Renew, EVZO Method and Uncover in one app. One tap and it is done.</span></p>
-<a class="btn android" href="/evzo.apk" download>Κατέβασε · Download</a>
-<a class="btn ios" href="/renew/">Άνοιξέ το εδώ · Open it here</a>
-<p class="android">Άνοιξε το αρχείο, πάτα Εγκατάσταση, μετά άνοιξε το EVZO.<br><span style="opacity:.7">Open the file, tap Install, then open EVZO.</span></p>
-<p class="ios">Για iPhone δεν υπάρχει ακόμη εφαρμογή: η Apple ζητάει δική της έγκριση για το μπλοκάρισμα. Άνοιξε το EVZO στο Safari και πρόσθεσέ το στην αρχική οθόνη.<br><span style="opacity:.7">There is no iPhone app yet: Apple requires its own approval for blocking. Open EVZO in Safari and add it to your home screen.</span></p>
-</div></body></html>
+</body></html>

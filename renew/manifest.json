@@ -1,7 +1,7 @@
 {
-  "name": "Renew — EVZO",
-  "short_name": "Renew",
-  "description": "Put the phone down and win your hours back.",
+  "name": "EVZO",
+  "short_name": "EVZO",
+  "description": "Renew, Tasks and Uncover in one app.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
