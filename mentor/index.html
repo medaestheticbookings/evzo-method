@@ -808,7 +808,11 @@ Array.prototype.forEach.call(document.querySelectorAll('#segOffer button'),funct
 drawSeg();
 
 /* ---- value equation ---- */
-S.ve=S.ve||{s1:7,s2:4,s3:6,s4:5};
+/* merge rather than replace, so a half-written older state can't show NaN */
+S.ve=S.ve||{};
+[['s1',7],['s2',4],['s3',6],['s4',5]].forEach(function(p){
+  if(typeof S.ve[p[0]]!=='number' || isNaN(S.ve[p[0]])) S.ve[p[0]]=p[1];
+});
 function drawVE(){
   [1,2,3,4].forEach(function(i){
     var el=$('s'+i); el.value=S.ve['s'+i]; $('v'+i).textContent=S.ve['s'+i];
