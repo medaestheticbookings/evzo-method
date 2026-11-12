@@ -72,14 +72,14 @@ a{color:var(--yellow)}
 <div class="box">
   <span class="pill">Private</span>
   <h1>The Mentor</h1>
-  <p class="sm mute">Encrypted. Your username and PIN unlock it here in the
+  <p class="sm mute">Encrypted. Your username and passphrase unlock it here in the
   browser and are never sent anywhere — there is no server to send them to.</p>
 
   <form id="f" autocomplete="off">
     <input type="text" id="user" placeholder="Username" autocomplete="username"
            autocapitalize="off" autocorrect="off" spellcheck="false">
-    <input type="password" id="pw" placeholder="PIN" autocomplete="current-password"
-           autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="numeric">
+    <input type="password" id="pw" placeholder="Passphrase" autocomplete="current-password"
+           autocapitalize="off" autocorrect="off" spellcheck="false">
     <button type="submit" id="go">Unlock</button>
   </form>
   <p class="msg" id="msg" role="status" aria-live="polite"></p>
@@ -165,7 +165,7 @@ function unlock(pass, remember){
     .catch(function(err){
       go.disabled = false;
       if (String(err && err.message).indexOf('app.enc') === 0) say('Cannot load the page data. Are you online?', 'bad');
-      else say('Wrong username or PIN.', 'bad');
+      else say('Wrong username or passphrase.', 'bad');
       var pw = document.getElementById('pw'); pw.value=''; pw.focus();
     });
 }

@@ -12,7 +12,7 @@
        MENTOR_PASS="..." node tools/mentor-seal.mjs
        MENTOR_PASS="..." node tools/mentor-seal.mjs <plaintext> <out>
 
-   AES-256-GCM with a PBKDF2-SHA256 key, 310,000 iterations - the same
+   AES-256-GCM with a PBKDF2-SHA256 key, 1,000,000 iterations - the same
    parameters the loader in mentor/index.html uses through WebCrypto, so the
    two must be changed together. GCM authenticates as well as encrypts, so a
    wrong passphrase fails loudly rather than producing garbage.
@@ -22,7 +22,11 @@ import { createCipheriv, pbkdf2Sync, randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 
-const ITER = 310000;
+/* Raised from 310k: the ciphertext is downloadable by anyone, so the only
+   thing standing between a copy of it and the contents is how expensive one
+   guess is. A million iterations costs about a second once per device and
+   multiplies an attacker's bill by three. */
+const ITER = 1000000;
 
 const pass = process.env.MENTOR_PASS;
 if (!pass) {

@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- No permissions at all. Deliberately: there is no INTERNET permission,
-         so this app physically cannot send anything anywhere, and the whole
-         page is bundled inside the APK rather than fetched. Everything typed
-         into it stays on this phone. -->
+    <!-- One permission, and only one: INTERNET, so the app can pick up a new
+         sealed page without being reinstalled.
+
+         What it can reach is pinned down three ways. The network config below
+         allows https to evzomethod.com and nothing in cleartext. The only file
+         ever downloaded is mentor/app.enc, which is AES-GCM ciphertext - if
+         anyone swaps it, the authentication tag fails and it is discarded, so
+         no downloaded byte can become code. The lock screen that handles the
+         passphrase is never fetched; it stays the signed copy inside the APK.
+
+         Nothing is uploaded, ever. There is no analytics, no crash reporter and
+         no account: what is typed into the app stays in this phone's WebView
+         storage, and the passphrase is never sent anywhere by anything. -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"

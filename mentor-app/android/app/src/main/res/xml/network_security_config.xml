@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One host, HTTPS only.
+
+  cleartextTrafficPermitted is false everywhere, including the default, so no
+  request this app makes can be downgraded to http and read or rewritten on a
+  cafe network. User-added certificate authorities are deliberately left out of
+  the trust store: a proxy certificate installed on the phone cannot sit in the
+  middle of the update and hand the app a file of its own.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">evzomethod.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
