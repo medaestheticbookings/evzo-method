@@ -70,8 +70,10 @@ dependencies {
     // on the next launch, and the whole app is local storage.
     implementation("androidx.webkit:webkit:1.11.0")
 
-    // NotificationCompat, for the daily reminders: the channel, permission and
-    // builder rules differ on every Android version from 8 to 14, and this is
-    // the one place where writing that by hand buys nothing.
-    implementation("androidx.core:core:1.13.1")
+    // Deliberately nothing else. androidx.core was tried for NotificationCompat
+    // and its manifest merged android.permission.DUMP into the app - harmless,
+    // since the system never grants it to an ordinary app, but this app's whole
+    // claim is that it asks for nothing it does not need, and a permission list
+    // that needs explaining is a worse deal than ten lines of platform code.
+    // minSdk is 26, so notification channels exist everywhere it runs.
 }

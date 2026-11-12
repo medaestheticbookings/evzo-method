@@ -8,8 +8,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
+import android.app.Notification
 import java.util.Calendar
 
 /**
@@ -100,39 +99,20 @@ object Reminders {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val n = NotificationCompat.Builder(ctx, CHANNEL)
+        val n = Notification.Builder(ctx, CHANNEL)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
             .setContentTitle(title)
             .setContentText(body)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setStyle(Notification.BigTextStyle().bigText(body))
             .setAutoCancel(true)
             .setContentIntent(open)
             .build()
 
         try {
-            NotificationManagerCompat.from(ctx).notify(200 + which, n)
+            ctx.getSystemService(NotificationManager::class.java)?.notify(200 + which, n)
         } catch (e: SecurityException) {
             // notifications turned off for the app: nothing to do, and nothing
             // worth crashing over
         }
     }
-}
 
-/**
- * Fires the notification and immediately books the same slot for tomorrow.
- * Also re-arms everything after a reboot, because alarms do not survive one.
- */
-class ReminderReceiver : BroadcastReceiver() {
-    override fun onReceive(ctx: Context, intent: Intent) {
-        when (intent.action) {
-            Intent.ACTION_BOOT_COMPLETED,
-            "android.intent.action.QUICKBOOT_POWERON" -> Reminders.scheduleAll(ctx)
-            else -> {
-                val which = intent.getIntExtra("which", 0)
-                Reminders.post(ctx, which)
-                Reminders.scheduleAll(ctx)   // books tomorrow for every slot
-            }
-        }
-    }
-}
