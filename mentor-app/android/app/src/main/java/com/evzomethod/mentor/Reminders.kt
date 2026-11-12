@@ -116,3 +116,22 @@ object Reminders {
         }
     }
 
+}
+
+/**
+ * Fires the notification and immediately books the same slot for tomorrow.
+ * Also re-arms everything after a reboot, because alarms do not survive one.
+ */
+class ReminderReceiver : BroadcastReceiver() {
+    override fun onReceive(ctx: Context, intent: Intent) {
+        when (intent.action) {
+            Intent.ACTION_BOOT_COMPLETED,
+            "android.intent.action.QUICKBOOT_POWERON" -> Reminders.scheduleAll(ctx)
+            else -> {
+                val which = intent.getIntExtra("which", 0)
+                Reminders.post(ctx, which)
+                Reminders.scheduleAll(ctx)   // books tomorrow for every slot
+            }
+        }
+    }
+}
