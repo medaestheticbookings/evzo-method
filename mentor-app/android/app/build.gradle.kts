@@ -69,4 +69,9 @@ dependencies {
     // persist. On a file:// page some WebView versions hand back an empty store
     // on the next launch, and the whole app is local storage.
     implementation("androidx.webkit:webkit:1.11.0")
+
+    // NotificationCompat, for the daily reminders: the channel, permission and
+    // builder rules differ on every Android version from 8 to 14, and this is
+    // the one place where writing that by hand buys nothing.
+    implementation("androidx.core:core:1.13.1")
 }

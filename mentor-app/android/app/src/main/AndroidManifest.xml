@@ -16,6 +16,14 @@
          storage, and the passphrase is never sent anywhere by anything. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- The daily reminders are local alarms, not push: no server, no account,
+         nothing leaves the phone to make them happen. POST_NOTIFICATIONS is
+         asked for at runtime on Android 13 and up, and saying no simply means
+         no reminders - the app works the same. RECEIVE_BOOT_COMPLETED is what
+         lets them survive a restart, since alarms do not. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="false"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -43,5 +51,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Not exported: only this app's own alarms and the system's boot
+             broadcast reach it, so nothing installed later can make the
+             mentor post notifications of its own. -->
+        <receiver
+            android:name=".ReminderReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

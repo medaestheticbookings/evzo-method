@@ -163,6 +163,35 @@ class MainActivity : Activity() {
         setContentView(w)
 
         Thread { syncPage() }.start()
+
+        askForNotifications()
+        Reminders.scheduleAll(this)
+    }
+
+    /**
+     * Android 13 and up will not post a notification until the app has asked.
+     * Asked once; a refusal is remembered by the system and never nags again,
+     * and the app behaves identically either way - it just stays quiet.
+     */
+    private fun askForNotifications() {
+        if (android.os.Build.VERSION.SDK_INT < 33) return
+        val granted = checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) ==
+            android.content.pm.PackageManager.PERMISSION_GRANTED
+        if (!granted) {
+            try {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)
+            } catch (e: Exception) {
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) Reminders.scheduleAll(this)
     }
 
     /**
