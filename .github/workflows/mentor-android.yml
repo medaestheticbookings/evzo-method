@@ -32,28 +32,10 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # The page is copied in at its own path, mentor/, because its markup asks
-      # for ../site/fonts.css - so the fonts have to sit beside it in the same
-      # shape they have on the website, or the Greek text falls back to a
-      # system font and the layout shifts.
-      # The lock screen AND the ciphertext go in, never the plaintext page.
-      # That is what makes a public mentor.apk harmless: pull it apart and all
-      # you find is app.enc. The passphrase is typed once on the phone and the
-      # derived key is cached in the WebView, so it opens straight after.
-      - name: Bundle the sealed page and its fonts into the APK
-        run: |
-          A=mentor-app/android/app/src/main/assets
-          mkdir -p "$A/mentor" "$A/site/fonts" "$A/brand"
-          cp mentor/index.html "$A/mentor/index.html"
-          cp mentor/app.enc   "$A/mentor/app.enc"
-          cp site/fonts.css "$A/site/fonts.css"
-          cp -r site/fonts/. "$A/site/fonts/"
-          cp brand/evzo-profile-navy-zowhite.png "$A/brand/" || true
-          if grep -q "Offer Builder" "$A/mentor/index.html"; then
-            echo "REFUSING: plaintext page reached the assets"; exit 1
-          fi
-          echo "bundled:"; find "$A" -type f | wc -l; du -sh "$A"
-
+      # Nothing is bundled any more. The mentor is a private Claude artifact
+      # with real AI in it, so it cannot ship inside an APK; this app is a
+      # launcher icon plus the daily local alarms, and it opens the page in
+      # the phone's own browser, where the Claude session already lives.
       - name: Build the APK
         working-directory: mentor-app/android
         env:

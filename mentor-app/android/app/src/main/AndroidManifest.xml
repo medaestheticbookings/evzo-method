@@ -1,33 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- One permission, and only one: INTERNET, so the app can pick up a new
-         sealed page without being reinstalled.
-
-         What it can reach is pinned down three ways. The network config below
-         allows https to evzomethod.com and nothing in cleartext. The only file
-         ever downloaded is mentor/app.enc, which is AES-GCM ciphertext - if
-         anyone swaps it, the authentication tag fails and it is discarded, so
-         no downloaded byte can become code. The lock screen that handles the
-         passphrase is never fetched; it stays the signed copy inside the APK.
-
-         Nothing is uploaded, ever. There is no analytics, no crash reporter and
-         no account: what is typed into the app stays in this phone's WebView
-         storage, and the passphrase is never sent anywhere by anything. -->
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- The daily reminders are local alarms, not push: no server, no account,
-         nothing leaves the phone to make them happen. POST_NOTIFICATIONS is
-         asked for at runtime on Android 13 and up, and saying no simply means
-         no reminders - the app works the same. RECEIVE_BOOT_COMPLETED is what
-         lets them survive a restart, since alarms do not. -->
+    <!-- The app does not open a socket itself: it hands the URL to the
+         browser, which does. What is left is the two permissions the daily
+         reminders need - local alarms, no server, nothing uploaded. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="false"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"

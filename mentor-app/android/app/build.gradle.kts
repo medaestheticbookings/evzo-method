@@ -64,16 +64,6 @@ android {
 }
 
 dependencies {
-    // WebViewAssetLoader: it serves the bundled page over an https:// origin
-    // instead of file://, which is the only reliable way to get localStorage to
-    // persist. On a file:// page some WebView versions hand back an empty store
-    // on the next launch, and the whole app is local storage.
-    implementation("androidx.webkit:webkit:1.11.0")
-
-    // Deliberately nothing else. androidx.core was tried for NotificationCompat
-    // and its manifest merged android.permission.DUMP into the app - harmless,
-    // since the system never grants it to an ordinary app, but this app's whole
-    // claim is that it asks for nothing it does not need, and a permission list
-    // that needs explaining is a worse deal than ten lines of platform code.
-    // minSdk is 26, so notification channels exist everywhere it runs.
+    // None. The app is a launcher icon, an alarm receiver and a notification;
+    // everything else happens in the browser the phone already has.
 }
