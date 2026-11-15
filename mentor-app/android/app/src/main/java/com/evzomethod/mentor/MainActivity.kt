@@ -36,16 +36,38 @@ class MainActivity : Activity() {
         Reminders.scheduleAll(this)
         askForNotifications()
 
+        open()
+
+        finish()
+    }
+
+    /**
+     * Chrome, by name, every time.
+     *
+     * A bare ACTION_VIEW hands the link to whatever browser the phone feels
+     * like, or to a chooser - which is what made this annoying. Naming the
+     * package skips both. Only if Chrome is genuinely not installed does it
+     * fall back to the default browser, and then to a chooser.
+     */
+    private fun open() {
+        val uri = Uri.parse(MENTOR)
+        for (pkg in listOf("com.android.chrome", "com.chrome.beta", "com.chrome.dev")) {
+            try {
+                startActivity(
+                    Intent(Intent.ACTION_VIEW, uri)
+                        .setPackage(pkg)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+                return
+            } catch (e: ActivityNotFoundException) {
+                // that flavour of Chrome is not here; try the next
+            }
+        }
         try {
-            startActivity(
-                Intent(Intent.ACTION_VIEW, Uri.parse(MENTOR))
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
+            startActivity(Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(this, "No browser found", Toast.LENGTH_LONG).show()
         }
-
-        finish()
     }
 
     /**

@@ -4,6 +4,16 @@
     <!-- The app does not open a socket itself: it hands the URL to the
          browser, which does. What is left is the two permissions the daily
          reminders need - local alarms, no server, nothing uploaded. -->
+    <!-- Android 11 and up hide other apps unless you declare what you look
+         for. Without this, asking for Chrome by name fails even when Chrome
+         is sitting right there on the phone. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
