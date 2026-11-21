@@ -4,23 +4,23 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0C0A07" />
-<title>Marcos Hiking</title>
+<title>EVZO — Hiking Cyprus</title>
 <meta name="description" content="Plan the trail, train for it, and find the people who walk it — from one catalogue of every marked route in Cyprus." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --obsidian:oklch(13.5% .012 60);
-  --graphite:oklch(19% .017 58);
-  --slate:oklch(23% .021 58);
-  --elevated:oklch(27% .025 58);
-  --snow:oklch(95.5% .012 80);
-  --mist:oklch(68% .021 70);
-  --mist-dim:oklch(52% .024 70);
-  --azure:oklch(76% .155 62);
-  --azure-bright:oklch(87% .105 78);
-  --azure-cta:oklch(66% .17 48);
+  --obsidian:#0B1220;
+  --graphite:#111B2C;
+  --slate:#16233A;
+  --elevated:#1C2C47;
+  --snow:#F4F7FC;
+  --mist:#93A3BC;
+  --mist-dim:#65748F;
+  --azure:#FFE14D;
+  --azure-bright:#FFEB8A;
+  --azure-cta:#FFE14D;
   --summit:oklch(66.87% .1119 149.6);
   --alert:oklch(74.71% .127 77.8);
   --hairline:oklch(100% 0 0/.07);
@@ -49,7 +49,7 @@ img{max-width:100%;display:block}
 .lede{margin-top:18px;max-width:52ch;color:var(--mist);font-size:17px;font-weight:300}
 .serif{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:var(--r-pill);font-size:14.5px;font-weight:500;transition:all .26s var(--ease)}
-.btn-p{background:var(--azure-cta);color:#fff;box-shadow:0 1px 0 oklch(100% 0 0/.18) inset}
+.btn-p{background:var(--azure-cta);color:#06101B;font-weight:600;box-shadow:0 1px 0 oklch(100% 0 0/.18) inset}
 .btn-p:hover{background:var(--azure);transform:translateY(-1px)}
 .btn-g{border:1px solid var(--hairline-strong);color:var(--snow);background:oklch(100% 0 0/.03)}
 .btn-g:hover{background:oklch(100% 0 0/.07)}
@@ -60,8 +60,10 @@ img{max-width:100%;display:block}
 /* header */
 header{position:fixed;inset:16px 0 auto;z-index:60;padding:0 16px}
 .bar{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:9px 10px 9px 18px;border-radius:var(--r-pill);
-  background:oklch(18.14% .0158 261.5/.72);backdrop-filter:blur(18px);border:1px solid var(--hairline-strong)}
-.logo{text-transform:uppercase;font-weight:600;letter-spacing:.14em;font-size:14px}
+  background:rgba(17,27,44,.78);backdrop-filter:blur(18px);border:1px solid var(--hairline-strong)}
+.logo{display:block;line-height:0}
+.lockup{height:24px;width:auto;display:block}
+footer .lockup{height:28px}
 .logo i{display:inline-block;width:8px;height:8px;margin-right:9px;border-radius:2px;transform:rotate(45deg);background:var(--azure)}
 nav.links{display:none;gap:2px;margin-left:10px}
 @media(min-width:900px){nav.links{display:flex}}
@@ -75,8 +77,8 @@ nav.links a:hover,nav.links a.on{color:var(--snow);background:oklch(100% 0 0/.06
 .hero{padding:8px 8px 0}
 @media(min-width:640px){.hero{padding:12px 12px 0}}
 .hero-panel{position:relative;overflow:hidden;border-radius:26px;background:
-  radial-gradient(120% 90% at 78% 8%,oklch(42% .2 268/.45),transparent 62%),
-  linear-gradient(180deg,oklch(17% .018 55),oklch(10.5% .011 55));
+  radial-gradient(120% 90% at 78% 8%,rgba(36,58,104,.45),transparent 62%),
+  linear-gradient(180deg,#0F1829,#080E19);
   border:1px solid var(--hairline);min-height:min(92vh,880px);display:flex;align-items:flex-end}
 .ridge{position:absolute;inset:auto 0 0;width:100%;height:68%;opacity:.9}
 .stars{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 18%,#fff6,transparent),radial-gradient(1px 1px at 68% 12%,#fff4,transparent),radial-gradient(1.5px 1.5px at 42% 28%,#fff3,transparent),radial-gradient(1px 1px at 88% 32%,#fff5,transparent)}
@@ -86,17 +88,17 @@ nav.links a:hover,nav.links a.on{color:var(--snow);background:oklch(100% 0 0/.06
 .badges{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:var(--r-pill);border:1px solid var(--hairline-strong);background:oklch(100% 0 0/.05);font-size:12.5px;color:var(--mist)}
 .pill b{color:var(--azure-bright);font-weight:500}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--azure);box-shadow:0 0 0 4px oklch(76% .155 62/.18)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--azure);box-shadow:0 0 0 4px rgba(255,225,77,.18)}
 h1{margin-top:26px;max-width:13ch;font-size:clamp(42px,6.2vw,70px);font-weight:500;line-height:1.02;letter-spacing:-.05em}
 h1 .ac{color:var(--azure-bright)}
 .hero p.sub{margin-top:22px;max-width:46ch;font-size:17.5px;font-weight:300;color:var(--mist)}
 .hero .cta{margin-top:30px;display:flex;gap:10px;flex-wrap:wrap}
 .hero .stat{margin-top:26px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist-dim)}
-.glass{border-radius:20px;border:1px solid var(--hairline-strong);background:oklch(22.13% .0192 262.1/.55);backdrop-filter:blur(14px);padding:20px}
+.glass{border-radius:20px;border:1px solid var(--hairline-strong);background:rgba(22,35,58,.62);backdrop-filter:blur(14px);padding:20px}
 .glass .hd{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--mist-dim)}
 .glass h3{margin-top:14px;font-size:26px;font-weight:500;letter-spacing:-.035em}
 .rows{margin-top:16px;display:grid;gap:1px;background:var(--hairline);border-radius:var(--r-tile);overflow:hidden}
-.rows div{display:flex;justify-content:space-between;gap:12px;background:oklch(18.14% .0158 261.5/.85);padding:10px 13px;font-size:13.5px}
+.rows div{display:flex;justify-content:space-between;gap:12px;background:rgba(17,27,44,.88);padding:10px 13px;font-size:13.5px}
 .rows span:first-child{color:var(--mist-dim)}
 .rows span:last-child{font-family:var(--mono);font-size:12.5px}
 .stops{margin-top:16px;display:grid;gap:8px}
@@ -134,7 +136,7 @@ h1 .ac{color:var(--azure-bright)}
 .kit span.box{width:15px;height:15px;border-radius:4px;border:1.5px solid var(--hairline-strong);flex:none}
 .chat{display:grid;gap:9px}
 .bub{border-radius:12px;padding:10px 12px;font-size:13px;max-width:92%}
-.bub.me{background:var(--azure-cta);color:#fff;margin-left:auto;border-bottom-right-radius:4px}
+.bub.me{background:var(--azure-cta);color:#06101B;margin-left:auto;border-bottom-right-radius:4px}
 .bub.ai{background:var(--elevated);border:1px solid var(--hairline);border-bottom-left-radius:4px}
 
 /* steps / accordion */
@@ -151,7 +153,7 @@ h1 .ac{color:var(--azure-bright)}
 .step .tag{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mist-dim);align-self:center}
 .phone{margin:0 auto;width:300px;max-width:100%;border-radius:36px;border:1px solid var(--hairline-strong);background:var(--graphite);padding:10px;box-shadow:0 40px 90px -30px #000}
 .screen{border-radius:28px;overflow:hidden;background:var(--obsidian);min-height:580px;display:flex;flex-direction:column}
-.sc-top{height:170px;background:radial-gradient(90% 120% at 70% 0%,oklch(42% .2 268/.6),transparent 70%),linear-gradient(180deg,oklch(26% .03 262),oklch(16% .016 55));position:relative;display:flex;align-items:flex-end;padding:14px}
+.sc-top{height:170px;background:radial-gradient(90% 120% at 70% 0%,rgba(36,58,104,.6),transparent 70%),linear-gradient(180deg,#1C2C47,#0E1727);position:relative;display:flex;align-items:flex-end;padding:14px}
 .sc-top b{font-size:19px;font-weight:500;letter-spacing:-.03em}
 .sc-body{padding:14px;display:grid;gap:10px;flex:1}
 .tabbar{height:58px;border-top:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-around;padding:0 10px}
@@ -169,13 +171,13 @@ h1 .ac{color:var(--azure-bright)}
 .aud ul{margin-top:20px;display:grid;gap:12px;list-style:none}
 .aud li{display:flex;gap:11px;font-size:15px;color:var(--mist);font-weight:300}
 .aud li i{color:var(--azure);flex:none;font-style:normal}
-.peak{border-radius:20px;overflow:hidden;border:1px solid var(--hairline);background:linear-gradient(180deg,oklch(32% .045 60),oklch(13.5% .013 58));aspect-ratio:4/3;position:relative;display:flex;align-items:flex-end;padding:20px}
+.peak{border-radius:20px;overflow:hidden;border:1px solid var(--hairline);background:linear-gradient(180deg,#223455,#0B1220);aspect-ratio:4/3;position:relative;display:flex;align-items:flex-end;padding:20px}
 .peak .cap{position:relative;z-index:2}
 .peak .cap b{display:block;font-size:22px;font-weight:500;letter-spacing:-.03em}
 .peak .cap span{font-family:var(--mono);font-size:11px;color:var(--mist)}
 
 /* route */
-.route-panel{border-radius:26px;border:1px solid var(--hairline);background:linear-gradient(180deg,oklch(16% .015 261),oklch(11.5% .012 55));padding:28px}
+.route-panel{border-radius:26px;border:1px solid var(--hairline);background:linear-gradient(180deg,#0E1727,#090F1B);padding:28px}
 @media(min-width:640px){.route-panel{padding:44px}}
 .rstats{margin-top:30px;display:grid;gap:1px;background:var(--hairline);border:1px solid var(--hairline);border-radius:var(--r-card);overflow:hidden;grid-template-columns:repeat(2,1fr)}
 @media(min-width:760px){.rstats{grid-template-columns:repeat(4,1fr)}}
@@ -239,7 +241,7 @@ h1 .ac{color:var(--azure-bright)}
 .plans{margin-top:30px;display:grid;gap:16px}
 @media(min-width:900px){.plans{grid-template-columns:1fr 1fr}}
 .plan{padding:28px;position:relative}
-.plan.pro{border-color:oklch(76% .155 62/.35);background:linear-gradient(180deg,oklch(23% .026 55),var(--graphite))}
+.plan.pro{border-color:rgba(255,225,77,.35);background:linear-gradient(180deg,#16233A,var(--graphite))}
 .plan .rec{position:absolute;top:28px;right:28px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--azure-bright)}
 .plan h3{font-size:20px;font-weight:500;letter-spacing:-.03em}
 .plan .for{margin-top:6px;font-size:14px;color:var(--mist);font-weight:300}
@@ -272,7 +274,7 @@ h1 .ac{color:var(--azure-bright)}
 .final{padding:8px}
 @media(min-width:640px){.final{padding:12px}}
 .final-panel{border-radius:26px;border:1px solid var(--hairline);overflow:hidden;position:relative;
-  background:radial-gradient(100% 120% at 50% 110%,oklch(42% .2 268/.5),transparent 60%),linear-gradient(180deg,oklch(16% .016 55),oklch(10.5% .011 55));
+  background:radial-gradient(100% 120% at 50% 110%,rgba(36,58,104,.5),transparent 60%),linear-gradient(180deg,#0E1727,#080E19);
   padding:90px 28px;text-align:center}
 .final-panel h2{margin-top:22px;font-size:clamp(34px,5vw,56px);font-weight:500;letter-spacing:-.05em;line-height:1.03;max-width:15ch;margin-left:auto;margin-right:auto}
 .final-panel p{margin-top:18px;color:var(--mist);font-weight:300}
@@ -291,7 +293,7 @@ footer{padding:48px 8px 12px}
 
 /* cookie */
 .cookie{position:fixed;left:16px;bottom:16px;z-index:80;max-width:26rem;border-radius:20px;border:1px solid var(--hairline-strong);
-  background:oklch(26.27% .0231 259.3/.92);backdrop-filter:blur(20px);padding:22px;box-shadow:0 30px 70px -20px #000;transition:.4s var(--ease)}
+  background:rgba(28,44,71,.94);backdrop-filter:blur(20px);padding:22px;box-shadow:0 30px 70px -20px #000;transition:.4s var(--ease)}
 .cookie.gone{opacity:0;transform:translateY(16px);pointer-events:none}
 .cookie h2{font-size:17px;font-weight:300;letter-spacing:-.02em}
 .cookie p{margin-top:10px;font-size:13px;color:var(--mist);font-weight:300}
@@ -306,18 +308,18 @@ footer{padding:48px 8px 12px}
 .hero-panel{min-height:min(96vh,940px)}
 .terrain{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
 .glowtop{position:absolute;left:50%;top:26%;width:min(60vw,760px);height:min(42vh,420px);transform:translate(-50%,-30%);
-  background:radial-gradient(closest-side,oklch(76% .155 62/.22),transparent 72%);z-index:1;pointer-events:none;filter:blur(8px)}
+  background:radial-gradient(closest-side,rgba(255,225,77,.22),transparent 72%);z-index:1;pointer-events:none;filter:blur(8px)}
 .vignette{position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(130% 90% at 50% 100%,transparent 40%,oklch(8% .01 55/.75) 100%),
-             linear-gradient(90deg,oklch(8% .01 55/.72) 0%,transparent 42%)}
+  background:radial-gradient(130% 90% at 50% 100%,transparent 40%,rgba(5,10,20,.75) 100%),
+             linear-gradient(90deg,rgba(5,10,20,.72) 0%,transparent 42%)}
 .mlabel{position:absolute;z-index:3;transform:translate(-50%,-100%);padding:8px 12px;border-radius:10px;
-  border:1px solid var(--hairline-strong);background:oklch(13% .013 58/.78);backdrop-filter:blur(10px);
+  border:1px solid var(--hairline-strong);background:rgba(11,18,32,.82);backdrop-filter:blur(10px);
   font-family:var(--mono);white-space:nowrap;opacity:0;animation:lblIn .9s var(--ease) forwards}
 .mlabel b{display:block;font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--snow)}
 .mlabel span{display:block;margin-top:3px;font-size:10px;letter-spacing:.12em;color:var(--mist-dim)}
 .mlabel i{position:absolute;left:50%;top:100%;width:1px;height:var(--leg,46px);
   background:linear-gradient(180deg,var(--hairline-strong),transparent)}
-.mlabel.pk b{color:oklch(87% .105 78)}
+.mlabel.pk b{color:#FFEB8A}
 @keyframes lblIn{from{opacity:0;transform:translate(-50%,calc(-100% + 10px))}to{opacity:1;transform:translate(-50%,-100%)}}
 @media(max-width:900px){.mlabel{display:none}.terrain{opacity:.5}}
 .hero-grid{z-index:4}
@@ -329,30 +331,101 @@ footer{padding:48px 8px 12px}
 @keyframes wheel{0%{opacity:0;transform:translate(-50%,0)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
 @media(max-width:1049px){.scrollcue{display:none}}
 .credit{position:absolute;left:0;right:0;bottom:8px;z-index:4;text-align:center;font-family:var(--mono);
-  font-size:9px;letter-spacing:.16em;color:oklch(52% .024 70/.5);text-transform:uppercase}
-.btn-w{background:var(--snow);color:oklch(13% .013 58);padding-right:6px}
-.btn-w:hover{background:#fff;transform:translateY(-1px)}
-.btn-w em{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:oklch(13% .013 58);
-  color:var(--snow);font-style:normal;font-size:13px;transition:transform .26s var(--ease)}
+  font-size:9px;letter-spacing:.16em;color:rgba(101,116,143,.5);text-transform:uppercase}
+.btn-w{background:var(--azure-cta);color:#06101B;font-weight:600;padding-right:6px}
+.btn-w:hover{background:#FFEB8A;transform:translateY(-1px)}
+.btn-w em{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#06101B;
+  color:var(--azure);font-style:normal;font-size:13px;transition:transform .26s var(--ease)}
 .btn-w:hover em{transform:rotate(45deg)}
 .proof{margin-top:30px;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
 .faces{display:flex}
-.faces b{width:30px;height:30px;border-radius:50%;border:2px solid oklch(11% .012 55);margin-left:-10px;
-  background:linear-gradient(145deg,oklch(45% .09 60),oklch(24% .03 58))}
+.faces b{width:30px;height:30px;border-radius:50%;border:2px solid #090F1B;margin-left:-10px;
+  background:linear-gradient(145deg,#2B3C5E,#16233A)}
 .faces b:first-child{margin-left:0}
 .proof span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist-dim)}
 .bar .right .su{display:inline-flex;align-items:center;gap:9px;padding:0 6px 0 18px;min-height:38px;border-radius:999px;
-  background:var(--snow);color:oklch(13% .013 58);font-size:14px;font-weight:500;transition:.26s var(--ease)}
+  background:var(--azure-cta);color:#06101B;font-size:14px;font-weight:600;transition:.26s var(--ease)}
 .bar .right .su em{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
-  background:oklch(13% .013 58);color:var(--snow);font-style:normal;font-size:12px;transition:transform .26s var(--ease)}
+  background:#06101B;color:var(--azure);font-style:normal;font-size:12px;transition:transform .26s var(--ease)}
 .bar .right .su:hover em{transform:rotate(45deg)}
+
+/* ================= motion layer ================= */
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}}
+
+/* staggered reveals */
+.rv>*{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv.in>*{opacity:1;transform:none}
+.rv.in>*:nth-child(1){transition-delay:.04s}.rv.in>*:nth-child(2){transition-delay:.11s}
+.rv.in>*:nth-child(3){transition-delay:.18s}.rv.in>*:nth-child(4){transition-delay:.25s}
+.rv.in>*:nth-child(5){transition-delay:.32s}.rv.in>*:nth-child(6){transition-delay:.39s}
+
+/* the walkthrough: phone stays, steps move past it */
+.app{position:relative}
+@media(min-width:960px){
+  .phone{position:sticky;top:104px;transform-style:preserve-3d;
+    transition:transform .5s var(--ease);will-change:transform}
+  .steps .step{padding:26px 0}
+  .step.on{padding-bottom:30px}
+}
+.phone{perspective:1400px}
+.screen{transform-style:preserve-3d}
+.sc-body{animation:screenIn .5s var(--ease)}
+@keyframes screenIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.step .tag{transition:color .3s var(--ease)}
+.step.on .tag{color:var(--azure)}
+.step u{transition:color .3s var(--ease)}
+.step.on u{color:var(--azure)}
+.steps{counter-reset:none;position:relative}
+.step:before{content:"";position:absolute;left:-14px;width:2px;height:0;background:var(--azure);
+  border-radius:2px;transition:height .45s var(--ease),opacity .3s;opacity:0}
+@media(min-width:960px){.step{position:relative}.step.on:before{height:calc(100% - 26px);opacity:1;top:13px}}
+
+/* cards lift and tilt under the pointer */
+.tiltwrap{perspective:900px}
+.bcard,.rule,.plan,.hcard,.ccard{transition:transform .45s var(--ease),border-color .45s var(--ease),box-shadow .45s var(--ease);will-change:transform}
+.bcard:hover,.rule:hover,.hcard:hover{border-color:var(--hairline-strong);box-shadow:0 24px 60px -28px #000}
+
+/* the route draws itself */
+.trail .line{background:none}
+.trail svg.draw{position:absolute;left:0;right:0;top:22px;width:100%;height:30px;overflow:visible}
+.trail svg.draw path{fill:none;stroke:var(--azure);stroke-width:2;stroke-linecap:round;
+  stroke-dasharray:var(--len,1200);stroke-dashoffset:var(--len,1200);
+  transition:stroke-dashoffset 2.6s cubic-bezier(.33,.9,.4,1)}
+.trail.go svg.draw path{stroke-dashoffset:0}
+.trail svg.draw path.ghost{stroke:var(--hairline-strong);stroke-width:1;stroke-dasharray:5 7;stroke-dashoffset:0;transition:none}
+.v{opacity:.3;transform:translateY(6px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.v.lit{opacity:1;transform:none}
+.v.lit i{box-shadow:0 0 0 4px rgba(255,225,77,.14)}
+.v i{transition:background .4s,border-color .4s,box-shadow .4s}
+.v.lit.hi i{background:var(--azure);border-color:var(--azure)}
+
+/* numbers tick up in mono so they do not reflow */
+.nums b,.rstats b{font-variant-numeric:tabular-nums}
+
+/* peak card parallax */
+.peak{transform-style:preserve-3d}
+.peak svg{transition:transform .6s var(--ease)}
+.peak:hover svg{transform:scale(1.04)}
+
+/* glass card breathes */
+@media(min-width:1050px){
+  .glass{animation:floaty 7s ease-in-out infinite;will-change:transform}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+}
+
+/* section headings get a drawn underline */
+.h2{position:relative}
+.eyebrow{position:relative;padding-left:0}
+.eyebrow:after{content:"";display:inline-block;vertical-align:middle;margin-left:12px;height:1px;width:0;
+  background:linear-gradient(90deg,var(--azure),transparent);transition:width 1.1s var(--ease) .2s}
+.rv.in .eyebrow:after{width:84px}
 </style>
 </head>
 <body>
 
 <header>
   <div class="bar">
-    <a href="#" class="logo"><i></i>Marcos Hiking</a>
+    <a href="#" class="logo"><svg class="lockup" role="img" aria-label="EVZO" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 424.46 88.06"><g transform="scale(0.8806)"><rect x="13.0" y="11.5" width="74" height="17" rx="3.5" fill="#FFE14D"/><rect x="24.0" y="41.5" width="52" height="17" rx="3.5" fill="#FFE14D"/><rect x="35.0" y="71.5" width="30" height="17" rx="3.5" fill="#FFE14D"/></g><g transform="translate(116.96,78.43)" fill="#FFFFFF"><g transform="scale(0.100000,-0.100000)"><path d="M74 688H669V523H295V428H615V270H295V165H676V0H74Z" transform="translate(0.00,0)"/><path d="M261 0 17 688H253L391 228H395L534 688H760L517 0Z" transform="translate(732.00,0)"/></g></g><g transform="translate(267.96,78.43)" fill="#FFE14D"><g transform="scale(0.100000,-0.100000)"><path d="M364 165H691V0H24V71L343 523H48V688H683V617Z" transform="translate(0.00,0)"/><path d="M788 344Q788 170 691.0 79.0Q594 -12 416 -12Q238 -12 141.5 78.5Q45 169 45 344Q45 519 141.5 609.5Q238 700 416 700Q594 700 691.0 609.0Q788 518 788 344ZM271 376V312Q271 239 308.0 196.0Q345 153 416 153Q487 153 524.5 196.0Q562 239 562 312V376Q562 449 524.5 492.0Q487 535 416 535Q345 535 308.0 492.0Q271 449 271 376Z" transform="translate(732.00,0)"/></g></g></svg></a>
     <nav class="links">
       <a href="#" class="on">Home</a><a href="#features">Features</a><a href="#">Guides</a>
       <a href="#">Trails</a><a href="#pricing">Pricing</a><a href="#">About</a>
@@ -418,7 +491,7 @@ footer{padding:48px 8px 12px}
 
 <!-- STATEMENT -->
 <section class="sec">
-  <p class="statement rv">Hiking Cyprus lives in <span class="hl">Facebook groups</span>, <span class="hl">photocopied leaflets</span> and <span class="hl">blog posts from 2014</span>. <em>Marcos Hiking puts the checkable parts in one place, and says where each one came from.</em></p>
+  <p class="statement rv">Hiking Cyprus lives in <span class="hl">Facebook groups</span>, <span class="hl">photocopied leaflets</span> and <span class="hl">blog posts from 2014</span>. <em>EVZO puts the checkable parts in one place, and says where each one came from.</em></p>
 </section>
 
 <!-- FEATURES -->
@@ -452,18 +525,18 @@ footer{padding:48px 8px 12px}
         <div><div class="big">70</div><div class="eyebrow" style="margin-top:8px">the ceiling on a self-report</div></div>
         <div class="body">
           <h3>Readiness, not permission</h3>
-          <p>A score built from your own answers can never pass 70, and Marcos Hiking never tells anyone a gorge or a ridge is safe for them today.</p>
+          <p>A score built from your own answers can never pass 70, and EVZO never tells anyone a gorge or a ridge is safe for them today.</p>
         </div>
       </article>
 
       <article class="card bcard rv">
         <div class="mini" style="padding:0;overflow:hidden">
           <svg viewBox="0 0 320 130" style="width:100%;display:block">
-            <rect width="320" height="130" fill="#100d09"/>
-            <path d="M10 110 C 70 100, 90 70, 140 62 S 240 40, 310 22" fill="none" stroke="oklch(76% .155 62)" stroke-width="2" stroke-dasharray="5 5"/>
-            <circle cx="10" cy="110" r="4" fill="#fff"/><circle cx="310" cy="22" r="4" fill="oklch(76% .155 62)"/>
-            <text x="20" y="104" fill="#b09a78" font-size="9" font-family="monospace">PSILO DENDRO · 1,100 M</text>
-            <text x="160" y="16" fill="#f5e3cf" font-size="9" font-family="monospace">TROODOS SQ · 1,725 M</text>
+            <rect width="320" height="130" fill="#0B1220"/>
+            <path d="M10 110 C 70 100, 90 70, 140 62 S 240 40, 310 22" fill="none" stroke="#FFE14D" stroke-width="2" stroke-dasharray="5 5"/>
+            <circle cx="10" cy="110" r="4" fill="#fff"/><circle cx="310" cy="22" r="4" fill="#FFE14D"/>
+            <text x="20" y="104" fill="#7E8DA8" font-size="9" font-family="monospace">PSILO DENDRO · 1,100 M</text>
+            <text x="160" y="16" fill="#FFEFA8" font-size="9" font-family="monospace">TROODOS SQ · 1,725 M</text>
           </svg>
         </div>
         <div class="body">
@@ -498,7 +571,7 @@ footer{padding:48px 8px 12px}
         </div>
         <div class="body">
           <h3>A coach that knows the trail</h3>
-          <p>Ask the Marcos Hiking coach about your plan; it answers for the trail you set.</p>
+          <p>Ask the EVZO coach about your plan; it answers for the trail you set.</p>
         </div>
       </article>
     </div>
@@ -514,7 +587,7 @@ footer{padding:48px 8px 12px}
     </div>
     <div class="app">
       <div class="steps rv">
-        <button class="step on" data-step="0"><u>01</u><div><h3>Pick the trail.</h3><p>Set the route and the date, and every screen after this works back from them. The date is yours: Marcos Hiking doesn't recommend one.</p></div><span class="tag">OBJECTIVE</span></button>
+        <button class="step on" data-step="0"><u>01</u><div><h3>Pick the trail.</h3><p>Set the route and the date, and every screen after this works back from them. The date is yours: EVZO doesn't recommend one.</p></div><span class="tag">OBJECTIVE</span></button>
         <button class="step" data-step="1"><u>02</u><div><h3>Know the route, stop by stop.</h3><p>Each junction, each spring, each grade — numbered on the map, with ascent and time to the next one.</p></div><span class="tag">ROUTE</span></button>
         <button class="step" data-step="2"><u>03</u><div><h3>Check the conditions up there.</h3><p>Troodos right now, the heat warning, the next seven days and whether the forest road is open.</p></div><span class="tag">CONDITIONS</span></button>
         <button class="step" data-step="3"><u>04</u><div><h3>Train for that trail.</h3><p>Week 6 of the plan, what you have done this week, today's session, and plan changes you can undo.</p></div><span class="tag">PLAN</span></button>
@@ -528,7 +601,7 @@ footer{padding:48px 8px 12px}
         </div>
       </div>
     </div>
-    <p style="margin-top:26px;font-size:12.5px;color:var(--mist-dim)">Screens from the Marcos Hiking app, shown with an example account.</p>
+    <p style="margin-top:26px;font-size:12.5px;color:var(--mist-dim)">Screens from the EVZO app, shown with an example account.</p>
   </div>
 </section>
 
@@ -551,8 +624,8 @@ footer{padding:48px 8px 12px}
       </div>
       <div class="peak">
         <svg viewBox="0 0 400 300" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true">
-          <path d="M0 300 L120 150 L200 60 L280 170 L400 300 Z" fill="#1b2troke" style="fill:#2e2318"/>
-          <path d="M200 60 L232 105 L196 96 L178 120 L160 100 Z" fill="#fff5e6" opacity=".9"/>
+          <path d="M0 300 L120 150 L200 60 L280 170 L400 300 Z" fill="#1b2troke" style="fill:#17253C"/>
+          <path d="M200 60 L232 105 L196 96 L178 120 L160 100 Z" fill="#FFFFFF" opacity=".9"/>
         </svg>
         <div class="cap"><b>Mount Olympus</b><span>1,952 m · Troodos · 34.94° N · 32.86° E</span></div>
       </div>
@@ -565,7 +638,7 @@ footer{padding:48px 8px 12px}
   <div class="route-panel rv">
     <div class="eyebrow">Routes</div>
     <h2 class="h2">Every trail, traced from the map itself.</h2>
-    <p class="lede">Marcos Hiking draws each route on the path’s real line and pins every junction to it. This is the Caledonia Trail, Psilo Dendro up to Troodos Square — the same line the app draws.</p>
+    <p class="lede">EVZO draws each route on the path’s real line and pins every junction to it. This is the Caledonia Trail, Psilo Dendro up to Troodos Square — the same line the app draws.</p>
     <div class="rstats">
       <div><u>ONE WAY</u><b data-count="3.0">0</b></div>
       <div><u>TROODOS SQUARE</u><u style="display:none"></u><b data-count="1725">0</b></div>
@@ -574,6 +647,7 @@ footer{padding:48px 8px 12px}
     </div>
     <div class="trail">
       <div class="line"></div>
+      <svg class="draw" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true"><path class="ghost" d="M8 24 C 160 20, 240 17, 330 15 S 620 11, 760 9 S 1020 5, 1192 2"/><path d="M8 24 C 160 20, 240 17, 330 15 S 620 11, 760 9 S 1020 5, 1192 2"/></svg>
       <div class="vlist">
         <div class="v hi"><i></i><b>PSILO DENDRO</b><span>1,100 m</span></div>
         <div class="v"><i></i><b>TROUT FARM</b><span>1,135 m</span></div>
@@ -635,7 +709,7 @@ footer{padding:48px 8px 12px}
         <div class="srch">
           <div class="q" style="border:0;padding:0">EXAMPLE · 8 WEEKS</div>
           <svg viewBox="0 0 280 80" style="width:100%">
-            <g fill="oklch(27% .025 58)">
+            <g fill="#1C2C47">
               <rect x="0" y="50" width="14" height="30" rx="3"/><rect x="20" y="42" width="14" height="38" rx="3"/>
               <rect x="40" y="34" width="14" height="46" rx="3"/><rect x="60" y="38" width="14" height="42" rx="3"/>
               <rect x="80" y="26" width="14" height="54" rx="3"/><rect x="100" y="18" width="14" height="62" rx="3"/>
@@ -643,9 +717,9 @@ footer{padding:48px 8px 12px}
               <rect x="160" y="16" width="14" height="64" rx="3"/><rect x="180" y="30" width="14" height="50" rx="3"/>
               <rect x="200" y="44" width="14" height="36" rx="3"/>
             </g>
-            <rect x="220" y="4" width="14" height="76" rx="3" fill="oklch(66% .17 48)"/>
-            <rect x="240" y="52" width="14" height="28" rx="3" fill="oklch(27% .025 58)"/>
-            <rect x="260" y="60" width="14" height="20" rx="3" fill="oklch(27% .025 58)"/>
+            <rect x="220" y="4" width="14" height="76" rx="3" fill="#FFE14D"/>
+            <rect x="240" y="52" width="14" height="28" rx="3" fill="#1C2C47"/>
+            <rect x="260" y="60" width="14" height="20" rx="3" fill="#1C2C47"/>
           </svg>
           <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--mist-dim)"><span>WEEK 1</span><span>TAPER</span><span>TRAIL WEEK</span></div>
         </div>
@@ -678,7 +752,7 @@ footer{padding:48px 8px 12px}
       <div class="card ccard" style="background:var(--obsidian)"><span class="nm">Garmin Connect</span><span class="st">Not yet</span></div>
       <div class="card ccard" style="background:var(--obsidian)"><span class="nm">Apple Health</span><span class="st">Not yet</span></div>
     </div>
-    <p style="margin-top:20px;font-size:13px;color:var(--mist-dim);max-width:70ch">COROS accounts link today, though Marcos Hiking can't read their activities yet. The others aren't connected yet, and each card says so rather than appearing to work.</p>
+    <p style="margin-top:20px;font-size:13px;color:var(--mist-dim);max-width:70ch">COROS accounts link today, though EVZO can't read their activities yet. The others aren't connected yet, and each card says so rather than appearing to work.</p>
   </div>
 </section>
 
@@ -688,15 +762,15 @@ footer{padding:48px 8px 12px}
     <div class="rv">
       <div class="eyebrow">Our rules</div>
       <h2 class="h2">Built on rules, not reviews.</h2>
-      <p class="lede">Marcos Hiking won't put words in anyone's mouth. Instead of testimonials, here are the rules it runs on.</p>
+      <p class="lede">EVZO won't put words in anyone's mouth. Instead of testimonials, here are the rules it runs on.</p>
     </div>
     <div class="rules rv">
-      <article class="card rule" style="background:var(--obsidian)"><div class="n">01</div><h3>No safe-to-go verdict. Ever.</h3><p>Readiness helps you plan. Marcos Hiking never tells anyone a trail is safe for them today — that judgement belongs to you and your guide.</p></article>
+      <article class="card rule" style="background:var(--obsidian)"><div class="n">01</div><h3>No safe-to-go verdict. Ever.</h3><p>Readiness helps you plan. EVZO never tells anyone a trail is safe for them today — that judgement belongs to you and your guide.</p></article>
       <article class="card rule" style="background:var(--obsidian)"><div class="n">02</div><h3>Self-reported stays self-reported.</h3><p>A score built from your own answers can never pass 70, and your passport shows what you added yourself as your own statement.</p></article>
       <article class="card rule" style="background:var(--obsidian)"><div class="n">03</div><h3>No number it cannot measure.</h3><p>No member counts, no ratings, no success rates. If a figure appears, something counted it, and the page says what.</p></article>
-      <article class="card rule" style="background:var(--obsidian)"><div class="n">04</div><h3>Guides are checked, not rated.</h3><p>Marcos Hiking reads a guide's licence, insurance and first-aid certificate and dates the check. No stars, no reviews, no ranking.</p></article>
-      <article class="card rule" style="background:var(--obsidian)"><div class="n">05</div><h3>Only recorded walks count.</h3><p>Leaderboards count trails finished on an activity recorded in Marcos Hiking. Nothing typed in by hand, from anyone.</p></article>
-      <article class="card rule" style="background:var(--obsidian)"><div class="n">06</div><h3>One figure, everywhere.</h3><p>Where published figures disagree, Marcos Hiking records one and every screen uses it. Photographs are credited to the people who took them.</p></article>
+      <article class="card rule" style="background:var(--obsidian)"><div class="n">04</div><h3>Guides are checked, not rated.</h3><p>EVZO reads a guide's licence, insurance and first-aid certificate and dates the check. No stars, no reviews, no ranking.</p></article>
+      <article class="card rule" style="background:var(--obsidian)"><div class="n">05</div><h3>Only recorded walks count.</h3><p>Leaderboards count trails finished on an activity recorded in EVZO. Nothing typed in by hand, from anyone.</p></article>
+      <article class="card rule" style="background:var(--obsidian)"><div class="n">06</div><h3>One figure, everywhere.</h3><p>Where published figures disagree, EVZO records one and every screen uses it. Photographs are credited to the people who took them.</p></article>
     </div>
   </div>
 </section>
@@ -738,7 +812,7 @@ footer{padding:48px 8px 12px}
       </article>
       <article class="card plan pro">
         <span class="rec">Recommended</span>
-        <h3>Pro</h3><div class="for">Everything Marcos Hiking does.</div>
+        <h3>Pro</h3><div class="for">Everything EVZO does.</div>
         <div class="price"><b id="proPrice">€9.99</b><span id="proPer">a month</span></div>
         <div class="alt" id="proAlt">or €79 a year</div>
         <a href="#" class="btn btn-p">Create an account</a>
@@ -776,7 +850,7 @@ footer{padding:48px 8px 12px}
       </div>
       <div class="card" style="padding:24px">
         <b style="font-weight:500">Still have a question?</b>
-        <p style="margin-top:10px;font-size:14px;color:var(--mist);font-weight:300">The About page explains where every number comes from and what Marcos Hiking will not do.</p>
+        <p style="margin-top:10px;font-size:14px;color:var(--mist);font-weight:300">The About page explains where every number comes from and what EVZO will not do.</p>
         <a href="#" class="btn btn-g" style="margin-top:16px">Read About</a>
       </div>
     </div>
@@ -784,7 +858,7 @@ footer{padding:48px 8px 12px}
       <div class="q on"><button>Which trails does it cover?<span>+</span></button><div class="a"><p>Every marked nature trail in Cyprus — Troodos, Akamas, Pentadaktylos, Cape Greco — plus the full E4 across the island, each with its length, grade and season.</p></div></div>
       <div class="q"><button>What does it cost?<span>+</span></button><div class="a"><p>Base is free forever. Pro is €9.99 a month, or €79 a year, and it starts with a seven-day free trial. Nothing is charged before subscriptions open.</p></div></div>
       <div class="q"><button>Will it tell me a trail is safe today?<span>+</span></button><div class="a"><p>No. Readiness is there to help you plan. The decision to set off belongs to you and the guide you walk with.</p></div></div>
-      <div class="q"><button>Are the guides verified?<span>+</span></button><div class="a"><p>Marcos Hiking reads each guide's CTO licence, insurance and first-aid certificate and records the date of the check. There are no stars, reviews or rankings.</p></div></div>
+      <div class="q"><button>Are the guides verified?<span>+</span></button><div class="a"><p>EVZO reads each guide's CTO licence, insurance and first-aid certificate and records the date of the check. There are no stars, reviews or rankings.</p></div></div>
       <div class="q"><button>Which watches and apps connect?<span>+</span></button><div class="a"><p>COROS accounts link today, though activities can't be read yet. Polar, Suunto, Garmin Connect and Apple Health are not connected yet, and each one says so.</p></div></div>
       <div class="q"><button>Does it work without signal?<span>+</span></button><div class="a"><p>Yes — every trail downloads for offline use, which matters on the Akamas and in the Troodos valleys where there is no coverage.</p></div></div>
     </div>
@@ -805,16 +879,16 @@ footer{padding:48px 8px 12px}
   <div class="fpanel">
     <div class="fgrid">
       <div>
-        <a href="#" class="logo"><i></i>Marcos Hiking</a>
+        <a href="#" class="logo"><svg class="lockup" role="img" aria-label="EVZO" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 424.46 88.06"><g transform="scale(0.8806)"><rect x="13.0" y="11.5" width="74" height="17" rx="3.5" fill="#FFE14D"/><rect x="24.0" y="41.5" width="52" height="17" rx="3.5" fill="#FFE14D"/><rect x="35.0" y="71.5" width="30" height="17" rx="3.5" fill="#FFE14D"/></g><g transform="translate(116.96,78.43)" fill="#FFFFFF"><g transform="scale(0.100000,-0.100000)"><path d="M74 688H669V523H295V428H615V270H295V165H676V0H74Z" transform="translate(0.00,0)"/><path d="M261 0 17 688H253L391 228H395L534 688H760L517 0Z" transform="translate(732.00,0)"/></g></g><g transform="translate(267.96,78.43)" fill="#FFE14D"><g transform="scale(0.100000,-0.100000)"><path d="M364 165H691V0H24V71L343 523H48V688H683V617Z" transform="translate(0.00,0)"/><path d="M788 344Q788 170 691.0 79.0Q594 -12 416 -12Q238 -12 141.5 78.5Q45 169 45 344Q45 519 141.5 609.5Q238 700 416 700Q594 700 691.0 609.0Q788 518 788 344ZM271 376V312Q271 239 308.0 196.0Q345 153 416 153Q487 153 524.5 196.0Q562 239 562 312V376Q562 449 524.5 492.0Q487 535 416 535Q345 535 308.0 492.0Q271 449 271 376Z" transform="translate(732.00,0)"/></g></g></svg></a>
         <p style="margin-top:14px;max-width:30ch;font-size:14px;color:var(--mist);font-weight:300">Plan a trail in Cyprus, train for it, and find the people who walk it.</p>
         <a href="#" class="btn btn-p" style="margin-top:18px">Create an account</a>
       </div>
       <div><h4>The product</h4><ul><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#">Create an account</a></li></ul></div>
       <div><h4>Cyprus</h4><ul><li><a href="#">Troodos</a></li><li><a href="#">Akamas</a></li><li><a href="#">E4 path</a></li></ul></div>
-      <div><h4>Marcos Hiking</h4><ul><li><a href="#">About</a></li><li><a href="#">Support</a></li><li><a href="#">Sign in</a></li></ul></div>
+      <div><h4>EVZO</h4><ul><li><a href="#">About</a></li><li><a href="#">Support</a></li><li><a href="#">Sign in</a></li></ul></div>
       <div><h4>Legal</h4><ul><li><a href="#">Terms of Use</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Ambassador programme</a></li></ul></div>
     </div>
-    <div class="fbot"><span>Maps, terrain and photographs are credited where they appear.</span><span>© 2026 Marcos Hiking</span></div>
+    <div class="fbot"><span>Maps, terrain and photographs are credited where they appear.</span><span>© 2026 EVZO</span></div>
   </div>
 </footer>
 
@@ -860,7 +934,7 @@ function paint(i){
     '<div class="rows" style="margin-top:4px">'+s.rows.map(r=>'<div><span>'+r[0]+'</span><span>'+r[1]+'</span></div>').join('')+'</div>'+
     '<div class="mini" style="margin-top:auto"><div class="ttl">EXAMPLE ACCOUNT</div><div class="bar-t"><i style="width:'+((i+1)*20)+'%"></i></div></div>';
 }
-paint(0);
+paint(0); window.__paint=paint;
 document.querySelectorAll('.step').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.step').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');paint(+b.dataset.step);
@@ -870,7 +944,7 @@ document.querySelectorAll('.step').forEach(b=>b.addEventListener('click',()=>{
 const aud=[
  {h:'Train for the trail, not for fitness in general.',l:['Explore 60+ marked Cyprus trails, then set your route, with its length, grade and season.','A plan built backwards from the date, counting what you actually recorded.','A passport that shows what you added yourself as your own statement, never as a checked fact.']},
  {h:'Know the climb before you run it.',l:['Every trail with its real ascent profile, drawn from the mapped line itself.','Surface noted stop by stop — forest road, rock steps, riverbed.','Shade and water points marked, which is the whole game from May to September.']},
- {h:'Checked credentials, not star ratings.',l:['CTO licence, insurance and first-aid certificate read and dated by Marcos Hiking.','Your own routes and group walks listed from the same catalogue clients search.','No reviews, no ranking, no ordering you can pay to change.']},
+ {h:'Checked credentials, not star ratings.',l:['CTO licence, insurance and first-aid certificate read and dated by EVZO.','Your own routes and group walks listed from the same catalogue clients search.','No reviews, no ranking, no ordering you can pay to change.']},
  {h:'One catalogue behind every walk you sell.',l:['The same trail data your clients see, with one figure used on every screen.','Tour pages built from real routes, permits and seasons.','Guides on your roster shown with the date each credential was checked.']}
 ];
 function paintAud(i){
@@ -939,20 +1013,22 @@ window.addEventListener('scroll',()=>{
          + .035*Math.sin(x*13.0)*Math.exp(-(z-.62)*(z-.62)/.22)
          + .022*Math.sin(x*27.0+1.7)*Math.exp(-(z-.75)*(z-.75)/.30);
   }
-  function draw(){
+  function draw(T,CLIMB){
+    T=T||0; CLIMB=CLIMB||0;
     var dpr=Math.min(window.devicePixelRatio||1,2);
     var W=c.clientWidth,H=c.clientHeight;
     if(!W||!H) return;
     c.width=W*dpr; c.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.clearRect(0,0,W,H);
     var narrow=W<700, ROWS=52, COLS=narrow?84:150;
-    var horizon=H*0.30, depth=H*0.78, peak=H*(narrow?0.30:0.44);
+    var horizon=H*0.30-CLIMB*H*0.06, depth=H*0.78, peak=H*(narrow?0.30:0.44)*(1+CLIMB*0.30);
     var grid=[],i,j;
     for(i=0;i<=ROWS;i++){
       var z=i/ROWS, persp=0.30+z*0.78, y0=horizon+Math.pow(z,1.45)*depth, row=[];
       for(j=0;j<=COLS;j++){
         var x=(j/COLS-0.5)*2;
-        var h=height(x*(narrow?0.50:0.92),0.20+z*0.82);
+        var drift=Math.sin(T*0.22+z*1.6)*0.008;
+        var h=height(x*(narrow?0.50:0.92)+drift, 0.20+z*0.82-CLIMB*0.20)*(1+0.02*Math.sin(T*0.9+z*3.1));
         row.push([W*0.52+x*W*(narrow?0.80:0.58)*persp, y0-h*peak*persp, h]);
       }
       grid.push(row);
@@ -962,18 +1038,18 @@ window.addEventListener('scroll',()=>{
     for(j=0;j<=COLS;j+=5){
       ctx.beginPath();
       for(i=0;i<=ROWS;i++){var p=grid[i][j]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}
-      ctx.strokeStyle='rgba(224,160,80,0.055)'; ctx.stroke();
+      ctx.strokeStyle='rgba(255,225,77,0.055)'; ctx.stroke();
     }
     /* contour rows, brighter as they come forward */
     for(i=0;i<=ROWS;i++){
       var zz=i/ROWS;
       ctx.beginPath();
       for(j=0;j<=COLS;j++){var q=grid[i][j]; j?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);}
-      ctx.strokeStyle='rgba(232,168,88,'+(0.05+zz*0.30).toFixed(3)+')';
+      ctx.strokeStyle='rgba(255,225,77,'+(0.05+zz*0.30).toFixed(3)+')';
       ctx.lineWidth=0.7+zz*0.35; ctx.stroke();
     }
     /* the lit ridge line */
-    ctx.save(); ctx.shadowColor='rgba(255,196,120,0.85)'; ctx.shadowBlur=16;
+    ctx.save(); ctx.shadowColor='rgba(255,235,150,0.8)'; ctx.shadowBlur=16;
     for(i=0;i<=ROWS;i++){
       var open=false; ctx.beginPath();
       for(j=0;j<=COLS;j++){
@@ -981,15 +1057,110 @@ window.addEventListener('scroll',()=>{
         if(r[2]>0.50){ if(open){ctx.lineTo(r[0],r[1]);} else {ctx.moveTo(r[0],r[1]);open=true;} }
         else open=false;
       }
-      if(ctx.currentPath!==undefined||true){ctx.strokeStyle='rgba(255,219,174,0.45)';ctx.lineWidth=1;ctx.stroke();}
+      if(ctx.currentPath!==undefined||true){ctx.strokeStyle='rgba(255,240,180,0.45)';ctx.lineWidth=1;ctx.stroke();}
     }
     ctx.restore();
   }
   function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);}
-  draw(); window.addEventListener('resize',schedule,{passive:true});
+  draw(); window.__terrain=draw; window.addEventListener('resize',schedule,{passive:true});
   /* labels fade in with a stagger once the relief is painted */
   var ls=document.querySelectorAll('.mlabel');
   for(var k=0;k<ls.length;k++){ls[k].style.animationDelay=(0.5+k*0.18)+'s';}
+})();
+
+/* ================= motion layer ================= */
+var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- 1. the hero relief animates: it breathes, and scrolling climbs into it ---- */
+(function(){
+  var c=document.getElementById('terrain'); if(!c||REDUCED) return;
+  var hero=document.querySelector('.hero-panel'), inView=true, t0=performance.now();
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(e){inView=e[0].isIntersecting;if(inView)loop();},{threshold:0})
+      .observe(hero);
+  }
+  function loop(){
+    if(!inView) return;
+    var now=performance.now();
+    if(now-loop.last>33){                       /* ~30fps is plenty for a wireframe */
+      loop.last=now;
+      var sc=Math.max(0,Math.min(1,window.scrollY/(window.innerHeight*0.9)));
+      window.__terrain && window.__terrain((now-t0)/1000, sc);
+    }
+    requestAnimationFrame(loop);
+  }
+  loop.last=0; loop();
+})();
+
+/* ---- 2. the app walkthrough advances itself as the section scrolls past ---- */
+(function(){
+  var sec=document.querySelector('.app'); if(!sec) return;
+  var steps=[].slice.call(document.querySelectorAll('.step')), held=0;
+  steps.forEach(function(b){b.addEventListener('click',function(){held=Date.now()+6000;});});
+  var phone=document.querySelector('.phone');
+  function onScroll(){
+    if(Date.now()<held) return;
+    var r=sec.getBoundingClientRect(), vh=window.innerHeight;
+    var span=r.height-vh*0.55;
+    if(span<=0||r.bottom<vh*0.2||r.top>vh*0.9) return;
+    var prog=Math.max(0,Math.min(0.999,(vh*0.42-r.top)/span));
+    var i=Math.floor(prog*steps.length);
+    if(i!==onScroll.last){
+      onScroll.last=i;
+      steps.forEach(function(x){x.classList.remove('on');});
+      steps[i].classList.add('on');
+      if(window.__paint) window.__paint(i);
+    }
+    if(phone&&!REDUCED){
+      phone.style.transform='rotateY('+(6-prog*12).toFixed(2)+'deg) rotateX('+(2-prog*4).toFixed(2)+'deg)';
+    }
+  }
+  onScroll.last=-1;
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+
+/* ---- 3. the route draws, village by village ---- */
+(function(){
+  var trail=document.querySelector('.trail'); if(!trail) return;
+  var path=trail.querySelector('svg.draw path:not(.ghost)');
+  if(path){ var len=path.getTotalLength(); path.style.setProperty('--len',len); }
+  var vs=[].slice.call(trail.querySelectorAll('.v'));
+  new IntersectionObserver(function(es,o){
+    if(!es[0].isIntersecting) return;
+    o.disconnect(); trail.classList.add('go');
+    vs.forEach(function(v,i){setTimeout(function(){v.classList.add('lit');}, 180+i*(REDUCED?0:260));});
+  },{threshold:.3}).observe(trail);
+})();
+
+/* ---- 4. pointer tilt: a little depth, never a funfair ---- */
+(function(){
+  if(REDUCED||matchMedia('(pointer:coarse)').matches) return;
+  var sel='.bcard,.rule,.hcard,.plan';
+  document.querySelectorAll(sel).forEach(function(card){
+    card.parentElement.classList.add('tiltwrap');
+    card.addEventListener('pointermove',function(e){
+      var r=card.getBoundingClientRect();
+      var px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform='translateY(-4px) rotateX('+(-py*4).toFixed(2)+'deg) rotateY('+(px*4).toFixed(2)+'deg)';
+    });
+    card.addEventListener('pointerleave',function(){card.style.transform='';});
+  });
+})();
+
+/* ---- 5. hero labels and glass drift with the pointer ---- */
+(function(){
+  var hero=document.querySelector('.hero-panel'); if(!hero||REDUCED) return;
+  if(matchMedia('(pointer:coarse)').matches) return;
+  var labels=[].slice.call(document.querySelectorAll('.mlabel'));
+  hero.addEventListener('pointermove',function(e){
+    var r=hero.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
+    labels.forEach(function(l,i){
+      var k=(i+1)*7;
+      l.style.marginLeft=(x*k).toFixed(1)+'px';
+      l.style.marginTop=(y*k*0.6).toFixed(1)+'px';
+    });
+  });
 })();
 </script>
 </body>
