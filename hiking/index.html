@@ -319,7 +319,7 @@ footer{padding:48px 8px 12px}
   background:linear-gradient(180deg,var(--hairline-strong),transparent)}
 .mlabel.pk b{color:oklch(87% .105 78)}
 @keyframes lblIn{from{opacity:0;transform:translate(-50%,calc(-100% + 10px))}to{opacity:1;transform:translate(-50%,-100%)}}
-@media(max-width:900px){.mlabel{display:none}}
+@media(max-width:900px){.mlabel{display:none}.terrain{opacity:.5}}
 .hero-grid{z-index:4}
 .scrollcue{position:absolute;left:50%;bottom:26px;z-index:4;transform:translateX(-50%);display:grid;gap:9px;justify-items:center;
   font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mist-dim)}
@@ -945,15 +945,15 @@ window.addEventListener('scroll',()=>{
     if(!W||!H) return;
     c.width=W*dpr; c.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.clearRect(0,0,W,H);
-    var ROWS=52, COLS=W<700?84:150;
-    var horizon=H*0.30, depth=H*0.78, peak=H*0.44;
+    var narrow=W<700, ROWS=52, COLS=narrow?84:150;
+    var horizon=H*0.30, depth=H*0.78, peak=H*(narrow?0.30:0.44);
     var grid=[],i,j;
     for(i=0;i<=ROWS;i++){
       var z=i/ROWS, persp=0.30+z*0.78, y0=horizon+Math.pow(z,1.45)*depth, row=[];
       for(j=0;j<=COLS;j++){
         var x=(j/COLS-0.5)*2;
-        var h=height(x*0.92,0.20+z*0.82);
-        row.push([W*0.52+x*W*0.58*persp, y0-h*peak*persp, h]);
+        var h=height(x*(narrow?0.50:0.92),0.20+z*0.82);
+        row.push([W*0.52+x*W*(narrow?0.80:0.58)*persp, y0-h*peak*persp, h]);
       }
       grid.push(row);
     }
