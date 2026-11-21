@@ -1213,6 +1213,22 @@ function openHub(){
     });
     box.appendChild(b);
   });
+  /* the app download belongs on the hub too: most people land here and never
+     open Renew, so the button inside Renew was invisible to them */
+  var dl=$("hub-apk"), note=$("hub-apk-note");
+  if(!dl){
+    dl=document.createElement("a");dl.id="hub-apk";dl.className="btn";
+    dl.href="/growthlock.apk";dl.setAttribute("download","evzo.apk");
+    dl.style.cssText="display:none;margin-top:16px;width:100%;max-width:440px;align-self:center;text-decoration:none;text-align:center";
+    note=document.createElement("p");note.id="hub-apk-note";note.className="sub";
+    note.style.cssText="display:none;margin-top:8px;width:100%;max-width:440px;align-self:center;text-align:center;font-size:12px";
+    $("hub").appendChild(dl);$("hub").appendChild(note);
+  }
+  dl.textContent=t("getApk");note.textContent=t("apkNote");
+  var isIOSh=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var showDl=location.protocol.indexOf("http")===0&&!NATIVE&&!isIOSh;
+  dl.style.display=showDl?"block":"none";
+  note.style.display=showDl?"block":"none";
   $("hub").hidden=false;
 }
 
