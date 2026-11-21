@@ -364,8 +364,11 @@ footer{padding:48px 8px 12px}
 @media(min-width:960px){
   .phone{position:sticky;top:104px;transform-style:preserve-3d;
     transition:transform .5s var(--ease);will-change:transform}
-  .steps .step{padding:26px 0}
-  .step.on{padding-bottom:30px}
+  .steps{justify-content:space-between}
+  /* every step reserves the open height, so opening one never shifts the
+     others: without this the "nearest step" keeps flipping back */
+  .steps .step{padding:22px 0;min-height:132px;align-items:flex-start}
+  .step u{padding-top:6px}
 }
 .phone{perspective:1400px}
 .screen{transform-style:preserve-3d}
@@ -1092,31 +1095,42 @@ var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)'
   loop.last=0; loop();
 })();
 
-/* ---- 2. the app walkthrough advances itself as the section scrolls past ---- */
+/* ---- 2. the app walkthrough follows whichever step is nearest the eye ---- */
 (function(){
-  var sec=document.querySelector('.app'); if(!sec) return;
-  var steps=[].slice.call(document.querySelectorAll('.step')), held=0;
-  steps.forEach(function(b){b.addEventListener('click',function(){held=Date.now()+6000;});});
-  var phone=document.querySelector('.phone');
-  function onScroll(){
+  var list=document.querySelector(".steps"); if(!list) return;
+  var steps=[].slice.call(document.querySelectorAll(".step")), held=0, phone=document.querySelector(".phone"), tick=0;
+  steps.forEach(function(b){b.addEventListener("click",function(){held=Date.now()+6000;});});
+  function stretch(){
+    list.style.minHeight="";
+    if(innerWidth>=960) list.style.minHeight=Math.round(innerHeight*1.15)+"px";
+  }
+  /* nearest-to-centre beats measuring scroll offsets: the list changes height
+     as a step opens, and any maths based on that height fights itself */
+  function pick(){
+    tick=0;
     if(Date.now()<held) return;
-    var r=sec.getBoundingClientRect(), vh=window.innerHeight;
-    var span=r.height-vh*0.55;
-    if(span<=0||r.bottom<vh*0.2||r.top>vh*0.9) return;
-    var prog=Math.max(0,Math.min(0.999,(vh*0.42-r.top)/span));
-    var i=Math.floor(prog*steps.length);
-    if(i!==onScroll.last){
-      onScroll.last=i;
-      steps.forEach(function(x){x.classList.remove('on');});
-      steps[i].classList.add('on');
-      if(window.__paint) window.__paint(i);
+    var eye=innerHeight*0.46, best=-1, bestD=1e9, i, r, d;
+    for(i=0;i<steps.length;i++){
+      r=steps[i].getBoundingClientRect();
+      d=Math.abs(r.top+r.height/2-eye);
+      if(d<bestD){bestD=d;best=i;}
+    }
+    if(best<0) return;
+    if(best!==pick.last){
+      pick.last=best;
+      for(i=0;i<steps.length;i++) steps[i].classList.toggle("on",i===best);
+      if(window.__paint) window.__paint(best);
     }
     if(phone&&!REDUCED){
-      phone.style.transform='rotateY('+(6-prog*12).toFixed(2)+'deg) rotateX('+(2-prog*4).toFixed(2)+'deg)';
+      var p=best/(steps.length-1);
+      phone.style.transform="rotateY("+(5-p*10).toFixed(2)+"deg) rotateX("+(2-p*4).toFixed(2)+"deg)";
     }
   }
-  onScroll.last=-1;
-  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  pick.last=-1;
+  function onScroll(){ if(!tick) tick=requestAnimationFrame(pick); }
+  addEventListener("scroll",onScroll,{passive:true});
+  addEventListener("resize",function(){stretch();onScroll();},{passive:true});
+  stretch(); onScroll();
 })();
 
 /* ---- 3. the route draws, village by village ---- */
