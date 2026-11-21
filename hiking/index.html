@@ -87,7 +87,7 @@ nav.links a:hover,nav.links a.on{color:var(--snow);background:oklch(100% 0 0/.06
 .pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:var(--r-pill);border:1px solid var(--hairline-strong);background:oklch(100% 0 0/.05);font-size:12.5px;color:var(--mist)}
 .pill b{color:var(--azure-bright);font-weight:500}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--azure);box-shadow:0 0 0 4px oklch(76% .155 62/.18)}
-h1{margin-top:26px;max-width:13ch;font-size:clamp(44px,7.4vw,80px);font-weight:500;line-height:1.02;letter-spacing:-.05em}
+h1{margin-top:26px;max-width:13ch;font-size:clamp(42px,6.2vw,70px);font-weight:500;line-height:1.02;letter-spacing:-.05em}
 h1 .ac{color:var(--azure-bright)}
 .hero p.sub{margin-top:22px;max-width:46ch;font-size:17.5px;font-weight:300;color:var(--mist)}
 .hero .cta{margin-top:30px;display:flex;gap:10px;flex-wrap:wrap}
@@ -301,6 +301,51 @@ footer{padding:48px 8px 12px}
 /* reveal */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .rv.in{opacity:1;transform:none}
+
+/* ---- hero v2: wireframe terrain ---- */
+.hero-panel{min-height:min(96vh,940px)}
+.terrain{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.glowtop{position:absolute;left:50%;top:26%;width:min(60vw,760px);height:min(42vh,420px);transform:translate(-50%,-30%);
+  background:radial-gradient(closest-side,oklch(76% .155 62/.22),transparent 72%);z-index:1;pointer-events:none;filter:blur(8px)}
+.vignette{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(130% 90% at 50% 100%,transparent 40%,oklch(8% .01 55/.75) 100%),
+             linear-gradient(90deg,oklch(8% .01 55/.72) 0%,transparent 42%)}
+.mlabel{position:absolute;z-index:3;transform:translate(-50%,-100%);padding:8px 12px;border-radius:10px;
+  border:1px solid var(--hairline-strong);background:oklch(13% .013 58/.78);backdrop-filter:blur(10px);
+  font-family:var(--mono);white-space:nowrap;opacity:0;animation:lblIn .9s var(--ease) forwards}
+.mlabel b{display:block;font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--snow)}
+.mlabel span{display:block;margin-top:3px;font-size:10px;letter-spacing:.12em;color:var(--mist-dim)}
+.mlabel i{position:absolute;left:50%;top:100%;width:1px;height:var(--leg,46px);
+  background:linear-gradient(180deg,var(--hairline-strong),transparent)}
+.mlabel.pk b{color:oklch(87% .105 78)}
+@keyframes lblIn{from{opacity:0;transform:translate(-50%,calc(-100% + 10px))}to{opacity:1;transform:translate(-50%,-100%)}}
+@media(max-width:900px){.mlabel{display:none}}
+.hero-grid{z-index:4}
+.scrollcue{position:absolute;left:50%;bottom:26px;z-index:4;transform:translateX(-50%);display:grid;gap:9px;justify-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mist-dim)}
+.mouse{width:22px;height:34px;border-radius:999px;border:1px solid var(--hairline-strong);position:relative}
+.mouse i{position:absolute;left:50%;top:7px;width:3px;height:6px;border-radius:2px;background:var(--azure);
+  transform:translateX(-50%);animation:wheel 1.9s var(--ease) infinite}
+@keyframes wheel{0%{opacity:0;transform:translate(-50%,0)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
+@media(max-width:1049px){.scrollcue{display:none}}
+.credit{position:absolute;left:0;right:0;bottom:8px;z-index:4;text-align:center;font-family:var(--mono);
+  font-size:9px;letter-spacing:.16em;color:oklch(52% .024 70/.5);text-transform:uppercase}
+.btn-w{background:var(--snow);color:oklch(13% .013 58);padding-right:6px}
+.btn-w:hover{background:#fff;transform:translateY(-1px)}
+.btn-w em{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:oklch(13% .013 58);
+  color:var(--snow);font-style:normal;font-size:13px;transition:transform .26s var(--ease)}
+.btn-w:hover em{transform:rotate(45deg)}
+.proof{margin-top:30px;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.faces{display:flex}
+.faces b{width:30px;height:30px;border-radius:50%;border:2px solid oklch(11% .012 55);margin-left:-10px;
+  background:linear-gradient(145deg,oklch(45% .09 60),oklch(24% .03 58))}
+.faces b:first-child{margin-left:0}
+.proof span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist-dim)}
+.bar .right .su{display:inline-flex;align-items:center;gap:9px;padding:0 6px 0 18px;min-height:38px;border-radius:999px;
+  background:var(--snow);color:oklch(13% .013 58);font-size:14px;font-weight:500;transition:.26s var(--ease)}
+.bar .right .su em{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
+  background:oklch(13% .013 58);color:var(--snow);font-style:normal;font-size:12px;transition:transform .26s var(--ease)}
+.bar .right .su:hover em{transform:rotate(45deg)}
 </style>
 </head>
 <body>
@@ -314,7 +359,7 @@ footer{padding:48px 8px 12px}
     </nav>
     <div class="right">
       <a href="#" class="sin">Sign in</a>
-      <a href="#" class="btn btn-p" style="min-height:38px;padding:0 18px">Sign up</a>
+      <a href="#" class="su">Sign up <em>↗</em></a>
     </div>
   </div>
 </header>
@@ -323,33 +368,29 @@ footer{padding:48px 8px 12px}
 <section class="hero">
   <div class="hero-panel">
     <div class="stars"></div>
-    <svg class="ridge" viewBox="0 0 1440 520" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#4a3524"/><stop offset="1" stop-color="#0f0c08"/>
-        </linearGradient>
-        <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#2b2016"/><stop offset="1" stop-color="#0b0906"/>
-        </linearGradient>
-      </defs>
-      <path d="M0 520 L250 250 L390 330 L560 120 L700 300 L860 180 L1040 360 L1200 230 L1440 520 Z" fill="url(#g1)"/>
-      <path d="M560 120 L600 190 L540 175 L520 210 L480 185 Z" fill="#fff4e2" opacity=".85"/>
-      <path d="M860 180 L895 240 L850 228 L830 255 Z" fill="#f3e2cc" opacity=".6"/>
-      <path d="M0 520 L180 380 L340 440 L520 330 L720 450 L900 360 L1100 470 L1280 390 L1440 520 Z" fill="url(#g2)"/>
-    </svg>
+    <div class="glowtop"></div>
+    <canvas id="terrain" class="terrain" aria-hidden="true"></canvas>
+    <div class="vignette"></div>
+
+    <div class="mlabel pk" style="left:54%;top:24%;--leg:60px"><b>MOUNT OLYMPUS</b><span>1,952 M · SUMMIT</span><i></i></div>
+    <div class="mlabel" style="left:45%;top:57%;--leg:40px"><b>CHIONISTRA RIDGE</b><span>1,880 M · TRAIL</span><i></i></div>
+
     <div class="hero-grid">
       <div>
         <div class="badges">
           <span class="pill"><b>New</b></span>
-          <span class="pill"><i class="dot"></i> Cyprus · 60+ trails</span>
+          <span class="pill"><i class="dot"></i> 60+ trails mapped</span>
         </div>
         <h1 class="rv in">Everything you need to hike <span class="ac">Cyprus.</span></h1>
         <p class="sub">Plan the trail, train for it, and find the people who walk it — from one catalogue of every marked route in Cyprus.</p>
         <div class="cta">
-          <a href="#" class="btn btn-p">Create an account</a>
+          <a href="#" class="btn btn-w">Create an account <em>↗</em></a>
           <a href="#features" class="btn btn-g">See what it does</a>
         </div>
-        <div class="stat">60+ marked trails · 1,952 m high point · E4 across the island</div>
+        <div class="proof">
+          <span class="faces"><b></b><b></b><b></b><b></b></span>
+          <span>60+ marked trails · 539 km of E4 · 1,952 m high point</span>
+        </div>
       </div>
       <div class="glass">
         <div class="hd"><span>OBJECTIVE</span><span>Artemis trail</span></div>
@@ -369,6 +410,9 @@ footer{padding:48px 8px 12px}
         <p style="margin-top:16px;font-size:12.5px;color:var(--mist-dim);font-weight:300">Real terrain. Real trailheads. The line of the path.</p>
       </div>
     </div>
+
+    <div class="scrollcue"><span class="mouse"><i></i></span>Scroll to climb</div>
+    <div class="credit">Relief illustration · not survey data</div>
   </div>
 </section>
 
@@ -880,6 +924,73 @@ window.addEventListener('scroll',()=>{
   navMap.forEach(a=>{const id=a.getAttribute('href');if(id&&id.startsWith('#')&&id.length>1){
     const t=document.querySelector(id);if(t){a.classList.toggle('on',y>=t.offsetTop&&y<t.offsetTop+t.offsetHeight)}}});
 },{passive:true});
+
+/* ---------- hero terrain: wireframe relief in perspective ---------- */
+(function(){
+  var c=document.getElementById('terrain'); if(!c||!c.getContext) return;
+  var ctx=c.getContext('2d'), raf=0;
+  function height(x,z){
+    function g(cx,cz,sx,sz,a){return a*Math.exp(-((x-cx)*(x-cx)/sx+(z-cz)*(z-cz)/sz));}
+    return g(0,.46,.055,.070,1)
+         + g(-.40,.62,.075,.090,.46)
+         + g(.44,.60,.080,.095,.52)
+         + g(-.24,.84,.10,.060,.20)
+         + g(.30,.88,.11,.070,.18)
+         + .035*Math.sin(x*13.0)*Math.exp(-(z-.62)*(z-.62)/.22)
+         + .022*Math.sin(x*27.0+1.7)*Math.exp(-(z-.75)*(z-.75)/.30);
+  }
+  function draw(){
+    var dpr=Math.min(window.devicePixelRatio||1,2);
+    var W=c.clientWidth,H=c.clientHeight;
+    if(!W||!H) return;
+    c.width=W*dpr; c.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,W,H);
+    var ROWS=52, COLS=W<700?84:150;
+    var horizon=H*0.30, depth=H*0.78, peak=H*0.44;
+    var grid=[],i,j;
+    for(i=0;i<=ROWS;i++){
+      var z=i/ROWS, persp=0.30+z*0.78, y0=horizon+Math.pow(z,1.45)*depth, row=[];
+      for(j=0;j<=COLS;j++){
+        var x=(j/COLS-0.5)*2;
+        var h=height(x*0.92,0.20+z*0.82);
+        row.push([W*0.52+x*W*0.58*persp, y0-h*peak*persp, h]);
+      }
+      grid.push(row);
+    }
+    /* depth columns, faint */
+    ctx.lineWidth=0.6;
+    for(j=0;j<=COLS;j+=5){
+      ctx.beginPath();
+      for(i=0;i<=ROWS;i++){var p=grid[i][j]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}
+      ctx.strokeStyle='rgba(224,160,80,0.055)'; ctx.stroke();
+    }
+    /* contour rows, brighter as they come forward */
+    for(i=0;i<=ROWS;i++){
+      var zz=i/ROWS;
+      ctx.beginPath();
+      for(j=0;j<=COLS;j++){var q=grid[i][j]; j?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);}
+      ctx.strokeStyle='rgba(232,168,88,'+(0.05+zz*0.30).toFixed(3)+')';
+      ctx.lineWidth=0.7+zz*0.35; ctx.stroke();
+    }
+    /* the lit ridge line */
+    ctx.save(); ctx.shadowColor='rgba(255,196,120,0.85)'; ctx.shadowBlur=16;
+    for(i=0;i<=ROWS;i++){
+      var open=false; ctx.beginPath();
+      for(j=0;j<=COLS;j++){
+        var r=grid[i][j];
+        if(r[2]>0.50){ if(open){ctx.lineTo(r[0],r[1]);} else {ctx.moveTo(r[0],r[1]);open=true;} }
+        else open=false;
+      }
+      if(ctx.currentPath!==undefined||true){ctx.strokeStyle='rgba(255,219,174,0.45)';ctx.lineWidth=1;ctx.stroke();}
+    }
+    ctx.restore();
+  }
+  function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);}
+  draw(); window.addEventListener('resize',schedule,{passive:true});
+  /* labels fade in with a stagger once the relief is painted */
+  var ls=document.querySelectorAll('.mlabel');
+  for(var k=0;k<ls.length;k++){ls[k].style.animationDelay=(0.5+k*0.18)+'s';}
+})();
 </script>
 </body>
 </html>
