@@ -75,28 +75,33 @@ button.ghost{background:transparent; color:var(--mute); border:1px solid var(--l
 .msg.bad{color:var(--bad)} .msg.ok{color:var(--good)} .msg.work{color:var(--yellow)}
 .foot{margin-top:28px; border-top:1px solid var(--line); padding-top:18px}
 a{color:var(--yellow)}
+.langbtn{position:fixed; top:14px; right:14px; width:auto; padding:8px 12px; font-size:12px;
+  font-weight:700; letter-spacing:.08em; background:transparent; color:var(--mute);
+  border:1px solid var(--line); border-radius:10px}
 </style>
 
+<button class="langbtn" id="lang" type="button">EN</button>
+
 <div class="box">
-  <span class="pill">Ιδιωτικό</span>
+  <span class="pill" data-t="pill">Ιδιωτικό</span>
   <h1>Entrepreneur OS</h1>
-  <p class="sm mute">Mentor, Renew και Tasks σε μία εφαρμογή. Κρυπτογραφημένη:
+  <p class="sm mute" data-t="lede">Mentor, Renew και Tasks σε μία εφαρμογή. Κρυπτογραφημένη:
   το όνομα και ο κωδικός την ξεκλειδώνουν εδώ, στον browser, και δεν φεύγουν
   πουθενά — δεν υπάρχει server για να σταλούν.</p>
 
   <form id="f" autocomplete="off">
-    <input type="text" id="user" placeholder="Όνομα" autocomplete="username"
+    <input type="text" id="user" data-ph="user" placeholder="Όνομα" autocomplete="username"
            autocapitalize="off" autocorrect="off" spellcheck="false">
-    <input type="password" id="pw" placeholder="Κωδικός" autocomplete="current-password"
+    <input type="password" id="pw" data-ph="pass" placeholder="Κωδικός" autocomplete="current-password"
            autocapitalize="off" autocorrect="off" spellcheck="false">
-    <button type="submit" id="go">Ξεκλείδωσε</button>
+    <button type="submit" id="go" data-t="go">Ξεκλείδωσε</button>
   </form>
   <p class="msg" id="msg" role="status" aria-live="polite"></p>
 
   <div class="foot">
-    <p class="xs" id="remembered" hidden>Αυτή η συσκευή είναι αποθηκευμένη, οπότε ανοίγει
-    χωρίς πληκτρολόγηση. <button class="ghost" id="forget" type="button">Ξέχνα τη συσκευή</button></p>
-    <p class="xs"><strong>Στο κινητό:</strong> Κοινή χρήση → Πρόσθεση στην αρχική οθόνη.
+    <p class="xs" id="remembered" hidden><span data-t="remembered">Αυτή η συσκευή είναι αποθηκευμένη, οπότε ανοίγει
+    χωρίς πληκτρολόγηση.</span> <button class="ghost" id="forget" type="button" data-t="forget">Ξέχνα τη συσκευή</button></p>
+    <p class="xs" data-t="install"><strong>Στο κινητό:</strong> Κοινή χρήση → Πρόσθεση στην αρχική οθόνη.
     <strong>Στον υπολογιστή:</strong> Chrome → Εγκατάσταση. Μετά ανοίγει σαν κανονική
     εφαρμογή και δουλεύει και χωρίς ίντερνετ.</p>
   </div>
@@ -116,6 +121,48 @@ a{color:var(--yellow)}
 var KEYSTORE = 'evzo_mentor_key_v1';
 var msg = document.getElementById('msg');
 var go = document.getElementById('go');
+
+/* Greek first: the page opens in Greek whatever the browser's locale says,
+   and only a tap on EN changes it. The choice is remembered per device.
+   The OS behind the lock has its own switch and its own memory of it. */
+var LANGSTORE = 'eos_lock_lang';
+var L = {
+  pill:       ['Ιδιωτικό', 'Private'],
+  lede:       ['Mentor, Renew και Tasks σε μία εφαρμογή. Κρυπτογραφημένη: το όνομα και ο κωδικός την ξεκλειδώνουν εδώ, στον browser, και δεν φεύγουν πουθενά — δεν υπάρχει server για να σταλούν.',
+               'Mentor, Renew and Tasks in one app. Encrypted: your name and passphrase unlock it here in the browser and never leave it — there is no server to send them to.'],
+  go:         ['Ξεκλείδωσε', 'Unlock'],
+  user:       ['Όνομα', 'Username'],
+  pass:       ['Κωδικός', 'Passphrase'],
+  remembered: ['Αυτή η συσκευή είναι αποθηκευμένη, οπότε ανοίγει χωρίς πληκτρολόγηση.',
+               'This device is remembered, so it opens without typing.'],
+  forget:     ['Ξέχνα τη συσκευή', 'Forget this device'],
+  install:    ['<strong>Στο κινητό:</strong> Κοινή χρήση → Πρόσθεση στην αρχική οθόνη. <strong>Στον υπολογιστή:</strong> Chrome → Εγκατάσταση. Μετά ανοίγει σαν κανονική εφαρμογή και δουλεύει και χωρίς ίντερνετ.',
+               '<strong>On the phone:</strong> Share → Add to Home Screen. <strong>On a computer:</strong> Chrome → Install. After that it opens like a normal app and works with no internet.'],
+  unlocking:  ['Ξεκλειδώνει…', 'Unlocking…'],
+  opening:    ['Ανοίγει…', 'Opening…'],
+  offline:    ['Δεν φορτώνουν τα δεδομένα. Είσαι online;', 'Cannot load the app data. Are you online?'],
+  wrong:      ['Λάθος όνομα ή κωδικός.', 'Wrong username or passphrase.'],
+  updated:    ['Η εφαρμογή ενημερώθηκε — ξεκλείδωσε άλλη μια φορά.', 'The app was updated — unlock once more.'],
+  both:       ['Και τα δύο πεδία.', 'Both fields.'],
+  forgotten:  ['Ξεχάστηκε σε αυτή τη συσκευή.', 'Forgotten on this device.']
+};
+var li = 0;
+try { li = localStorage.getItem(LANGSTORE) === 'en' ? 1 : 0; } catch(e){}
+function t(k){ return L[k][li]; }
+function paintLang(){
+  var els = document.querySelectorAll('[data-t]');
+  for (var i = 0; i < els.length; i++) els[i].innerHTML = t(els[i].getAttribute('data-t'));
+  var phs = document.querySelectorAll('[data-ph]');
+  for (var j = 0; j < phs.length; j++) phs[j].setAttribute('placeholder', t(phs[j].getAttribute('data-ph')));
+  document.getElementById('lang').textContent = li ? 'ΕΛ' : 'EN';
+  document.documentElement.lang = li ? 'en' : 'el';
+}
+document.getElementById('lang').addEventListener('click', function(){
+  li = li ? 0 : 1;
+  try { localStorage.setItem(LANGSTORE, li ? 'en' : 'el'); } catch(e){}
+  paintLang();
+});
+paintLang();
 
 function say(text, cls){ msg.textContent = text; msg.className = 'msg' + (cls ? ' ' + cls : ''); }
 function b64bytes(s){ var r = atob(s), a = new Uint8Array(r.length); for (var i=0;i<r.length;i++) a[i]=r.charCodeAt(i); return a; }
@@ -166,7 +213,7 @@ function show(html){
 }
 
 function unlock(pass, remember){
-  say('Ξεκλειδώνει\u2026', 'work');
+  say(t('unlocking'), 'work');
   go.disabled = true;
   return sealed()
     .then(function(s){
@@ -184,8 +231,8 @@ function unlock(pass, remember){
     })
     .catch(function(err){
       go.disabled = false;
-      if (String(err && err.message).indexOf('app.enc') === 0) say('Δεν φορτώνουν τα δεδομένα. Είσαι online;', 'bad');
-      else say('Λάθος όνομα ή κωδικός.', 'bad');
+      if (String(err && err.message).indexOf('app.enc') === 0) say(t('offline'), 'bad');
+      else say(t('wrong'), 'bad');
       var pw = document.getElementById('pw'); pw.value=''; pw.focus();
     });
 }
@@ -199,9 +246,9 @@ function unlock(pass, remember){
   var saved;
   try { saved = JSON.parse(raw); } catch(e) { drop(KEYSTORE); return; }
   document.getElementById('remembered').hidden = false;
-  say('Ανοίγει\u2026', 'work');
+  say(t('opening'), 'work');
   sealed().then(function(s){
-    if (saved.salt !== s.salt) { drop(KEYSTORE); say('Η εφαρμογή ενημερώθηκε \u2014 ξεκλείδωσε άλλη μια φορά.', 'work'); return; }
+    if (saved.salt !== s.salt) { drop(KEYSTORE); say(t('updated'), 'work'); return; }
     return crypto.subtle.importKey('raw', b64bytes(saved.k), 'AES-GCM', true, ['decrypt'])
       .then(function(key){ return open_(key, s).then(show); });
   }).catch(function(){ drop(KEYSTORE); say('', ''); });
@@ -215,13 +262,13 @@ document.getElementById('f').addEventListener('submit', function(e){
   e.preventDefault();
   var user = document.getElementById('user').value.trim().toLowerCase();
   var pin = document.getElementById('pw').value.trim();
-  if (!user || !pin) { say('Και τα δύο πεδία.', 'bad'); return; }
+  if (!user || !pin) { say(t('both'), 'bad'); return; }
   unlock(user + ':' + pin, true);
 });
 
 document.getElementById('forget').addEventListener('click', function(){
   drop(KEYSTORE);
   document.getElementById('remembered').hidden = true;
-  say('Ξεχάστηκε σε αυτή τη συσκευή.', 'ok');
+  say(t('forgotten'), 'ok');
 });
 </script>
