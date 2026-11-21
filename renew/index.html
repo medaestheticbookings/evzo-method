@@ -1142,7 +1142,8 @@ function applyLang(){
   var apk=$("get-apk"),isAndroid=/Android/i.test(navigator.userAgent),onSite=location.protocol.indexOf("http")===0;
   if(apk){
     apk.textContent=t("getApk");$("apk-note").textContent=t("apkNote");
-    var show=isAndroid&&onSite&&!NATIVE;
+    var isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var show=onSite&&!NATIVE&&!isIOS;
     apk.style.display=show?"block":"none";
     $("apk-note").style.display=show?"block":"none";
   }
